@@ -262,15 +262,26 @@ def build_cashflow_snapshot(raw: pd.DataFrame, indexes=DEFAULT_CASHFLOW_INDEXES)
 
 
 def _window_bounds(label: str, end: pd.Timestamp) -> tuple[pd.Timestamp, pd.Timestamp]:
-    if label == "last_week": return end - pd.Timedelta(days=7), end
-    if label == "last_month": return end - pd.DateOffset(months=1), end
-    if label == "last_6_months": return end - pd.DateOffset(months=6), end
-    if label == "ytd": return pd.Timestamp(end.year, 1, 1), end
-    if label == "rolling_1_year": return end - pd.DateOffset(years=1), end
-    if label == "year_2025": return pd.Timestamp("2025-01-01"), pd.Timestamp("2025-12-31")
-    if label == "since_20240924": return pd.Timestamp("2024-09-24"), end
-    if label == "last_3_years": return end - pd.DateOffset(years=3), end
-    if label == "last_5_years": return end - pd.DateOffset(years=5), end
-    if label == "last_10_years": return end - pd.DateOffset(years=10), end
-    if label == "last_15_years": return end - pd.DateOffset(years=15), end
+    if label == "last_week":
+        return end - pd.Timedelta(days=7), end
+    if label == "last_month":
+        return end - pd.DateOffset(months=1), end
+    if label == "last_6_months":
+        return end - pd.DateOffset(months=6), end
+    if label == "ytd":
+        return pd.Timestamp(end.year, 1, 1), end
+    if label == "rolling_1_year":
+        return end - pd.DateOffset(years=1), end
+    if label == "year_2025":
+        return pd.Timestamp("2025-01-01"), pd.Timestamp("2025-12-31")
+    if label == "since_20240924":
+        return pd.Timestamp("2024-09-24"), end
+    if label == "last_3_years":
+        return end - pd.DateOffset(years=3), end
+    if label == "last_5_years":
+        return end - pd.DateOffset(years=5), end
+    if label == "last_10_years":
+        return end - pd.DateOffset(years=10), end
+    if label == "last_15_years":
+        return end - pd.DateOffset(years=15), end
     raise ValueError(label)
