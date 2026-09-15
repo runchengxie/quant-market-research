@@ -107,7 +107,7 @@ def main() -> None:
     """).fetchdf()
     coverage.to_csv(args.output / "coverage_by_year.csv", index=False)
     manifest = {"start": args.start, "end": args.end, "sources": [str(historical_daily), str(historical_basic), str(historical_adj), str(clean_daily), str(status), str(suspensions), str(instruments)],
-                "formation": "same-close point-in-time market cap; smallest N; equal weight; exact next observed panel date return",
+                "formation": "close-date point-in-time market cap; smallest N; equal weight; execute at next observed market close and measure return from execution close through the following market close",
                 "marking": "confirmed S suspension missing close marked stale-flat; unknown missing close separately flat and -100% sensitivity",
                 "limitations": "reconstructed ST intervals, local Tushare data, index-style marks; no costs, limit execution, capacity, or cash ledger"}
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

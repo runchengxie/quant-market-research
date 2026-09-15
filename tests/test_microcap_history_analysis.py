@@ -12,10 +12,11 @@ def test_size_portfolio_returns_keep_stale_suspensions_and_bound_unknown_marks()
             ("2020-01-02", "B", 2.0, 100.0, 20.0, True, False),
             ("2020-01-02", "C", 3.0, 100.0, 30.0, True, False),
             ("2020-01-02", "D", 4.0, 100.0, 40.0, True, False),
-            ("2020-01-03", "B", 2.0, 100.0, 22.0, True, False),
-            ("2020-01-03", "C", 3.0, 100.0, 33.0, True, False),
-            ("2020-01-06", "A", 1.0, 100.0, 9.0, True, False),
-            ("2020-01-06", "B", 2.0, 100.0, 20.0, True, False),
+            ("2020-01-03", "A", 1.0, 100.0, 10.0, True, False),
+            ("2020-01-03", "B", 2.0, 100.0, 20.0, True, False),
+            ("2020-01-03", "C", 3.0, 100.0, 30.0, True, False),
+            ("2020-01-03", "D", 4.0, 100.0, 40.0, True, False),
+            ("2020-01-06", "B", 2.0, 100.0, 18.0, True, False),
             ("2020-01-06", "C", 3.0, 100.0, 36.0, True, False),
         ],
         columns=[
@@ -30,7 +31,11 @@ def test_size_portfolio_returns_keep_stale_suspensions_and_bound_unknown_marks()
     )
     panel["date"] = pd.to_datetime(panel["date"])
     events = pd.DataFrame(
-        {"symbol": ["A"], "date": pd.to_datetime(["2020-01-03"]), "suspend_type": ["S"]}
+        {
+            "symbol": ["A", "D"],
+            "date": pd.to_datetime(["2020-01-06", "2020-01-06"]),
+            "suspend_type": ["S", "U"],
+        }
     )
     with duckdb.connect() as connection:
         connection.register("market_panel", panel)
@@ -40,13 +45,14 @@ def test_size_portfolio_returns_keep_stale_suspensions_and_bound_unknown_marks()
     first = returns.loc[returns.formation_date.eq(pd.Timestamp("2020-01-02"))].set_index(
         "constituent_count"
     )
-    assert first.loc[2, "return_unknown_flat"] == pytest.approx(0.05)
-    assert first.loc[2, "return_unknown_total_loss"] == pytest.approx(0.05)
+    assert first.loc[2, "return_date"] == pd.Timestamp("2020-01-06")
+    assert first.loc[2, "return_unknown_flat"] == pytest.approx(-0.05)
+    assert first.loc[2, "return_unknown_total_loss"] == pytest.approx(-0.05)
     assert first.loc[2, "confirmed_suspension_stale_marks"] == 1
     assert first.loc[2, "unresolved_missing_marks"] == 0
     assert first.loc[2, "mark_status"] == "price_complete_with_suspension_mark"
-    assert first.loc[4, "return_unknown_flat"] == pytest.approx(0.05)
-    assert first.loc[4, "return_unknown_total_loss"] == pytest.approx(-0.2)
+    assert first.loc[4, "return_unknown_flat"] == pytest.approx(0.025)
+    assert first.loc[4, "return_unknown_total_loss"] == pytest.approx(-0.225)
     assert first.loc[4, "unresolved_missing_marks"] == 1
     assert first.loc[4, "mark_status"] == "unresolved_price_sensitivity"
 

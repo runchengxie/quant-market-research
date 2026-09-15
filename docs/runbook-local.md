@@ -66,7 +66,7 @@ uv run --extra duckdb python scripts/analyze_microcap_history.py
 该脚本组合 2008–2014 历史行情与 2015 年后的清洗日频面板，构造最小 50/100/200/400/800
 只股票的等权序列，并明确输出停牌估值和无法分类缺价敏感性。NAV、逐日结果和 episode
 明细写入仓库外 `/home/richard/data/market-research/outputs/microcap_history_2008_2026/`；
-重建不是 Wind 官方序列，也不含成本、成交限制或容量模型。研究结论见
+形成日收盘产生信号，下一交易日收盘成交，之后才计算持有收益，以避免使用信号日收盘价造成前视成交。重建不是 Wind 官方序列，也不含成本、涨跌停成交限制或容量模型。研究结论见
 `docs/research/experiments/turnover-microcap-followup-20260915.md`。
 
 生成两套口径的重叠期审计：
