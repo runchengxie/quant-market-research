@@ -19,9 +19,9 @@
 ## 验证
 
 ```bash
-uv run --extra duckdb --with pytest pytest -q
-uv run --extra dev ruff check src tests
-uv run --extra docs mkdocs build --strict
+uv run --locked --extra duckdb --extra dev pytest -q
+uv run --locked --extra dev ruff check src tests scripts
+uv run --locked --extra docs mkdocs build --strict
 git diff --check
 cd web
 npm ci

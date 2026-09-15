@@ -13,22 +13,21 @@ from market_research.underwater import build_underwater_episodes, summarize_unde
 from market_research.microcap_history import build_daily_portfolio_returns
 
 
-BASE = Path("/home/richard/data/quant/market-data-platform")
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--output", type=Path, default=Path("/home/richard/data/market-research/outputs/microcap_history_2008_2026"))
+    parser.add_argument("--data-root", type=Path, required=True, help="quant-market-data-platform data root")
+    parser.add_argument("--output", type=Path, default=Path("outputs/microcap_history_2008_2026"))
     parser.add_argument("--start", default="2008-01-02")
     parser.add_argument("--end", default="2026-09-14")
     args = parser.parse_args()
-    a = BASE / "assets/tushare/a_share"
+    data_root = args.data_root.expanduser()
+    a = data_root / "assets/tushare/a_share"
     historical_daily = a / "daily/a_share_all_20080102_20260821_union_daily/data/**/*.parquet"
     historical_basic = a / "daily_basic/a_share_all_20080102_20260821_union_daily_basic/data/**/*.parquet"
     historical_adj = a / "adj_factor/a_share_all_20080101_20141231_adj_factor/data/**/*.parquet"
     clean_daily = a / "daily/a_share_all_20150101_20260914_daily_clean/data/*.parquet"
-    status = BASE / "staging/tushare_constraints_20260802/st_intervals_reconstructed.parquet"
-    suspensions = BASE / "staging/tushare_constraints_20260802/suspend_d.parquet"
+    status = data_root / "staging/tushare_constraints_20260802/st_intervals_reconstructed.parquet"
+    suspensions = data_root / "staging/tushare_constraints_20260802/suspend_d.parquet"
     instruments = a / "instruments/a_share_all_instruments_latest.parquet"
     for path in (status, suspensions, instruments):
         if not path.exists():

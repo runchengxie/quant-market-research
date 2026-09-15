@@ -60,11 +60,13 @@ uv run market-research report smallcap-turnover-history --config configs/local.t
 如果需要把微盘最大回撤和水下时间向前延长，可运行：
 
 ```bash
-uv run --extra duckdb python scripts/analyze_microcap_history.py
+uv run --locked --extra duckdb python scripts/analyze_microcap_history.py \
+  --data-root /path/to/quant-market-data-platform \
+  --output /path/to/research-outputs/microcap-history
 ```
 
 该脚本组合 2008–2014 年历史行情与 2015 年后的清洗日频面板，构造最小 50、100、200、400、800
-只股票的等权序列，并输出停牌估值和无法分类缺价的敏感性分析。净值、逐日结果和水下时期明细写入仓库外 `<output_root>/microcap_history_2008_2026/`。
+只股票的等权序列，并输出停牌估值和无法分类缺价的敏感性分析。输入目录需指向 `quant-market-data-platform` 数据根目录。净值、逐日结果和水下时期明细写入 `--output` 指定目录，省略该参数时写入当前目录下的 `outputs/microcap_history_2008_2026/`。
 信号在形成日收盘后生成，下一交易日收盘成交，再从执行日收盘计算持有收益。该规则重建不代表 Wind 官方序列，也没有计入成本、涨跌停成交限制或容量模型。研究结论见
 `docs/research/experiments/turnover-microcap-followup-20260915.md`。
 
@@ -80,7 +82,21 @@ uv run market-research report smallcap-turnover-audit --config configs/local.tom
 网页发布年度和月度汇总。月度值先计算每个交易日的成交额中位数，再取月度中位数。可以用以下
 命令从仓库外日频结果刷新网页快照：
 
-node web/scripts/build-smallcap-turnover-public.mjs
+MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs node web/scripts/build-smallcap-turnover-public.mjs
+
+## 日股股数估算辅助脚本
+
+`scripts/build_yfinance_shares_sidecar.py` 根据 NIRA 中的日股行情，从 Yahoo Finance 获取上市股数估算。该结果只用于本地探索，不能替代授权来源。先安装可选依赖，再指定数据根目录和输出文件：
+
+```bash
+uv sync --locked --extra yahoo
+uv run --locked --extra yahoo python scripts/build_yfinance_shares_sidecar.py \
+  --jp-root /path/to/japan-market-data \
+  --output /path/to/local-output/shares-sidecar.parquet \
+  --start 2020-01-01
+```
+
+脚本支持按代码筛选、设置请求间隔和并发数，也支持保存检查点与失败记录。Yahoo Finance 数据的覆盖和质量不作完整性保证。运行结果保存在本机，不会自动发布。
 
 ## 数据目录配置
 

@@ -14,7 +14,7 @@
 本地预览说明站：
 
 ```bash
-uv run --extra docs mkdocs serve
+uv run --locked --extra docs mkdocs serve
 ```
 
 本地构建会生成 `web/dist/docs/`。完整发布还会构建主网页。配置和发布流程见仓库根目录的 `mkdocs.yml` 与 `.github/workflows/pages.yml`。

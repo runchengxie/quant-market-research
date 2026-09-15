@@ -5,7 +5,7 @@
 共享数据由 `quant-market-data-platform` 管理，通用回测和执行模拟由
 `quant-platform` 提供。私有信号、模型和飞书选股研究保留在 `quant-research`。
 本项目是独立仓库，Python 包名 `market_research` 和命令 `market-research` 沿用现有名称。
-原始数据、缓存和完整运行结果保留在仓库外，不复制数据副本。本仓库当前没有 Git 子模块。
+原始数据、缓存和完整运行结果保留在仓库外，不复制数据副本。本仓库没有 Git 子模块，`quant-research` 是单独维护的相邻仓库。
 
 ## 现金流与微盘研究笔记
 
@@ -24,7 +24,7 @@ uv run market-research report index-study --study studies/index_replication/stud
 旧网页 `research/recovery.html` 会跳转到 `#cashflow-recovery`，不要用本地报告覆盖跳转页。
 现金流按价格指数统一比较沪深 800、国证 2000、中证 A500、中证 1000、中证全指和中证 500。
 微盘研究纳入同花顺、万得及中证 2000、国证 2000 对照。数据缺口会明确标记，不用代理序列补齐。
-这是行情证据层，不能把它当作已完成成分复刻。研究进度和阻断项见
+这些结果属于行情证据，尚未完成成分复刻。研究进度和阻断项见
 `studies/index_replication/README.md`。
 
 迁移后旧路径保留兼容链接和已有 worktree，以免影响其他在途任务。详见 `docs/quant-family-migration.md`。
@@ -36,7 +36,7 @@ uv run market-research report index-study --study studies/index_replication/stud
 ## 本地环境
 
 ```bash
-uv sync --extra dev --extra duckdb
+uv sync --locked --extra dev --extra duckdb
 cp configs/local.example.toml configs/local.toml
 uv run market-research --help
 uv run market-research config inspect --output-root outputs
@@ -50,12 +50,12 @@ uv run market-research config inspect --output-root outputs
 
 ## 测试与构建
 
-本地验证命令与 GitHub Actions 使用同一套入口。Python 测试覆盖命令行、市场数据适配器、计算结果和报告输出；Ruff 检查 Python 代码；MkDocs 检查公开说明站；网页测试和构建检查前端。
+本地验证命令与 GitHub Actions 使用同一套入口。Python 测试覆盖命令行、市场数据适配器、计算结果和报告输出。Ruff 检查 Python 代码，MkDocs 检查公开说明站，网页测试和构建检查前端。
 
 ```bash
-uv run --extra duckdb --with pytest pytest -q
-uv run --extra dev ruff check src tests
-uv run --extra docs mkdocs build --strict
+uv run --locked --extra duckdb --extra dev pytest -q
+uv run --locked --extra dev ruff check src tests scripts
+uv run --locked --extra docs mkdocs build --strict
 
 cd web
 npm ci
@@ -63,7 +63,7 @@ npm test
 npm run build
 ```
 
-`mkdocs build` 只生成 `web/dist/docs/`，网页构建只处理主站。GitHub Actions 会在拉取请求中运行这些测试和构建，并检查公开产物中是否包含本机路径或凭证标记。部署只会在推送到 `main` 后执行。
+`mkdocs build` 只生成 `web/dist/docs/`，网页构建只处理主站。GitHub Actions 会在拉取请求中运行这些测试和构建，并检查公开产物中是否包含本机路径或凭证标记。通过检查后，推送到 `main` 会触发部署。
 
 架构和迁移范围见 `docs/superpowers/specs/2026-09-07-market-research-design.md`。首个报告包包括流动性汇总、覆盖率诊断、基于滞后流动性特征的机械容量面板，以及来源元数据。
 数据保存、Parquet/CSV 分工和公开发布边界见 `docs/data-storage-and-publication.md`。
@@ -115,6 +115,14 @@ uv run market-research report barra --config configs/local.toml
 和策略决策属于 `quant-research`，通用回测与执行模拟属于 `quant-platform`。
 六市场研究仍处于探索阶段，不提交订单，也不把 ETF 代理结果当作完整的国家股票市场表现。
 
+## 辅助脚本
+
+仓库还提供两类本地研究脚本。`scripts/analyze_microcap_history.py` 使用本机行情资产重建 2008 年以来的微盘组合路径，运行时通过 `--data-root` 和 `--output` 指定输入、输出目录。`scripts/build_yfinance_shares_sidecar.py` 从 Yahoo Finance 获取日股股数估算，依赖 `yfinance`，结果仅用于本地探索，不替代 J-Quants Pro 的授权数据。完整参数见 `docs/runbook-local.md`。
+
+网页的 `npm run snapshot` 从默认的 `outputs/` 读取微盘摘要和净值，生成 `web/public/data/` 下的派生快照。成交额网页快照由 `web/scripts/build-smallcap-turnover-public.mjs` 单独生成，需设置 `MARKET_RESEARCH_OUTPUT_ROOT` 指向本机研究结果目录。
+
+`scripts/sync_public_research_data.py` 是迁移期间的旧数据同步脚本，依赖旧 `index-research` 仓库中的本地产物，不属于当前网页构建流程。当前网页快照由 `web/scripts/` 下的脚本生成。
+
 ## GitHub Pages
 
 公开页面只使用派生文件，不发布原始行情、机器路径和凭证。运行本地页面：
@@ -128,7 +136,7 @@ npm run dev
 
 经审查的因子定义、研究解释和限制说明由 MkDocs 发布在同一 Pages 站点的
 [`/docs/`](https://runchengxie.github.io/quant-market-research/docs/)。本地可运行
-`uv run --extra docs mkdocs serve` 预览。说明站只发布首页和两篇经过审查的因子研究文档，不会公开其余内部文档。
+`uv run --locked --extra docs mkdocs serve` 预览。说明站只发布首页和两篇经过审查的因子研究文档，不会公开其余内部文档。
 
 推送到 `main` 后，GitHub Actions 会运行 Python 测试、网页测试和构建，再发布主网页与说明站。页面地址为：
 

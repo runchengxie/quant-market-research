@@ -67,11 +67,12 @@ N=400 水下时间最长的一段从 2011-04-22 开始，2012-01-05 到达低点
 ## 运行和产物
 
 ```bash
-uv run --extra duckdb python scripts/analyze_microcap_history.py
+uv run --locked --extra duckdb python scripts/analyze_microcap_history.py \
+  --data-root /path/to/quant-market-data-platform \
+  --output /path/to/research-outputs/microcap-history
 ```
 
-脚本把逐日收益、五种 N 的 NAV、完整水下 episode、年度覆盖统计和 manifest 写到：
-`<外部研究输出目录>/microcap_history_2008_2026/`。
+脚本把逐日收益、五种 N 的净值、完整水下时期、年度覆盖统计和 manifest 写入 `--output` 指定的目录。省略参数时，输出到当前工作目录下的 `outputs/microcap_history_2008_2026/`。
 原始行情和运行结果均不进入 Git。
 
 低换手底层产物位于本机相邻的 `quant-research` 仓库，主要包括 `docs/research/experiments/style_factors/low-turnover-factor-diagnostics-2008-2026.md`、`small-cap-low-turnover-exploration-20260826.md` 和对应的候选诊断 CSV。该仓库不在本次改动范围内。
