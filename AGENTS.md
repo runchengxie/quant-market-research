@@ -23,6 +23,7 @@
 
 ```bash
 uv run --extra duckdb --with pytest pytest -q
+uv run --extra dev ruff check src tests
 git diff --check
 cd web
 npm ci
@@ -31,4 +32,5 @@ npm run build
 ```
 
 按改动范围执行。文档改动检查路径、命令与现状；算法改动先补回归测试。
+Ruff 是 Python lint 门禁。格式检查待存量代码完成格式统一后再评估。
 指数表现比较和本地成分复刻必须分开标注；形成时点不得使用未来报价或今天的证券资格。
