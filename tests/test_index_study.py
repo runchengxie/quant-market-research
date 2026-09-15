@@ -32,7 +32,7 @@ def test_index_study_uses_common_dates_and_marks_missing_sources(tmp_path):
     assert coverage.loc[coverage.ts_code.eq("883418.TI"), "status"].item() == "missing"
     assert str(tmp_path) not in (output / "report.html").read_text()
     recovery = pd.read_csv(output / "recovery_summary.csv")
-    assert recovery.loc[recovery.ts_code.eq("932368.CSI"), "currently_underwater"].item() == False
+    assert not recovery.loc[recovery.ts_code.eq("932368.CSI"), "currently_underwater"].item()
     assert (output / "recovery.html").is_file()
     snapshot = json.loads((output / "recovery.json").read_text())
     item = next(row for row in snapshot["series"] if row["ts_code"] == "932368.CSI")
