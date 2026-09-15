@@ -65,3 +65,13 @@ def test_public_docs_keep_mkdocs_theme_and_search_assets():
         "!/assets/docs.css",
     } <= exclusions
     assert config["extra_css"] == ["assets/docs.css"]
+
+
+def test_public_docs_css_targets_the_mkdocs_bootstrap_layout():
+    root = Path(__file__).resolve().parents[1]
+    css = (root / "docs/assets/docs.css").read_text(encoding="utf-8")
+
+    assert ".navbar.bg-primary" in css
+    assert ".navbar .container" in css
+    assert "#toc-collapse" in css
+    assert '[role="main"]' in css
