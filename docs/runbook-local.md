@@ -63,10 +63,9 @@ uv run market-research report smallcap-turnover-history --config configs/local.t
 uv run --extra duckdb python scripts/analyze_microcap_history.py
 ```
 
-该脚本组合 2008–2014 历史行情与 2015 年后的清洗日频面板，构造最小 50/100/200/400/800
-只股票的等权序列，并明确输出停牌估值和无法分类缺价敏感性。NAV、逐日结果和 episode
-明细写入仓库外 `/home/richard/data/market-research/outputs/microcap_history_2008_2026/`；
-形成日收盘产生信号，下一交易日收盘成交，之后才计算持有收益，以避免使用信号日收盘价造成前视成交。重建不是 Wind 官方序列，也不含成本、涨跌停成交限制或容量模型。研究结论见
+该脚本组合 2008–2014 年历史行情与 2015 年后的清洗日频面板，构造最小 50、100、200、400、800
+只股票的等权序列，并输出停牌估值和无法分类缺价的敏感性分析。净值、逐日结果和水下时期明细写入仓库外 `<output_root>/microcap_history_2008_2026/`。
+信号在形成日收盘后生成，下一交易日收盘成交，再从执行日收盘计算持有收益。该规则重建不代表 Wind 官方序列，也没有计入成本、涨跌停成交限制或容量模型。研究结论见
 `docs/research/experiments/turnover-microcap-followup-20260915.md`。
 
 生成两套口径的重叠期审计：
@@ -83,12 +82,9 @@ uv run market-research report smallcap-turnover-audit --config configs/local.tom
 
 node web/scripts/build-smallcap-turnover-public.mjs
 
-## 当前数据目录
+## 数据目录配置
 
-- A 股日频清洗数据：`/home/richard/data/quant/market-data-platform/assets/tushare/a_share/daily/a_share_all_daily_clean_latest/data`
-- 港股 RQData：`/mnt/data/cold4t/hk-liquidity/assets/rqdata/hk`
-- 美股 SimFin：`/mnt/data/cold4t/simfin/us/extracted/us-shareprices-daily.csv`
-- nira 提供的 JPX、J-Quants 数据：`/mnt/data/cold4t/nira/current/guan-japanese-nira/data`
+数据位置填写在 `configs/local.toml` 的 `[sources]` 下。A 股使用 `a_share_root`，港股使用 `hk_daily_root`、`hk_valuation_root` 和 `hk_instruments_path`，美股使用 `us_shareprices_path`，日股使用 `jp_root`。先从 `configs/local.example.toml` 复制模板，再替换为本机已有目录。
 ## Barra / 风格因子报告
 
 在 `configs/local.toml` 中配置 A 股数据根目录和可选的历史风格因子结果目录后运行：

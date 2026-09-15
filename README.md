@@ -1,11 +1,11 @@
 # quant-market-research
 
-Quant 家族的可执行、可视化研究笔记：跨市场股票、流动性、容量和指数复现。
+这里记录可复算、可浏览的市场研究，主题包括跨市场股票、流动性、容量和指数复现。
 
-共享数据由 `quant-market-data-platform` 管理，通用回测与执行能力由
-`quant-platform` 提供，私有 alpha 与飞书选股留在 `quant-research`。
-本项目保留独立仓库；Python 包 `market_research` 和 CLI `market-research` 保持兼容。
-原始数据、缓存和完整运行结果不随代码迁移，不另建数据副本。
+共享数据由 `quant-market-data-platform` 管理，通用回测和执行模拟由
+`quant-platform` 提供。私有信号、模型和飞书选股研究保留在 `quant-research`。
+本项目是独立仓库，Python 包名 `market_research` 和命令 `market-research` 沿用现有名称。
+原始数据、缓存和完整运行结果保留在仓库外，不复制数据副本。本仓库当前没有 Git 子模块。
 
 ## 现金流与微盘研究笔记
 
@@ -13,23 +13,23 @@ Quant 家族的可执行、可视化研究笔记：跨市场股票、流动性�
 uv run market-research report index-study --study studies/index_replication/study.example.json
 ```
 
-示例只读共享行情，输出在仓库外；异机先修改示例中的路径。
-输出 coverage.csv、comparison.csv、normalized_nav.csv、receipt.json 和本地 report.html。
-同时输出回本水下期、买入日等待、固定持有年限亏损比例、recovery.json 和本地 recovery.html。长窗口配置见
-`studies/index_replication/recovery.study.json`，详细口径见 `recovery-methodology.md`。
-主站首页仅显示研究摘要，回本数据和方法在现金流、小微盘专题内阅读。
-两个专题另设指数复刻进展，展示经过复核的派生汇总，价格回报与税前全收益分别比较。
+示例只读共享行情，结果写在仓库外。换一台机器运行前，应先修改示例配置中的路径。
+报告会生成覆盖率、指数比较、标准化净值和运行收据，并输出本地 HTML 页面。
+报告还包括回本水下期、买入后等待时间、固定持有期亏损比例及对应的 HTML 页面。
+长窗口配置见 `studies/index_replication/recovery.study.json`，计算口径见
+`studies/index_replication/recovery-methodology.md`。
+主网页首页展示研究摘要，回本数据和计算方法收录在现金流与微盘专题中。
+两个专题还展示经过复核的指数复刻汇总，分别比较价格回报和税前全收益。
 数据来源、固定实验区间和待补证据见 [复刻研究记录](studies/index_replication/replication-progress-20260909.md)。
 旧网页 `research/recovery.html` 会跳转到 `#cashflow-recovery`，不要用本地报告覆盖跳转页。
-现金流按价格指数统一比较800、国证、A500、1000、全指和500；
-微盘纳入同花顺、万得及中证/国证2000对照，缺数据明确标记，不以代理填补。
+现金流按价格指数统一比较沪深 800、国证 2000、中证 A500、中证 1000、中证全指和中证 500。
+微盘研究纳入同花顺、万得及中证 2000、国证 2000 对照。数据缺口会明确标记，不用代理序列补齐。
 这是行情证据层，不能把它当作已完成成分复刻。研究进度和阻断项见
 `studies/index_replication/README.md`。
 
-新开发路径为 `/home/richard/code/quant/quant-market-research`。
-迁移后旧路径保留兼容链接及已有 worktree，避免打断其他在途任务；详见 `docs/quant-family-migration.md`。
+迁移后旧路径保留兼容链接和已有 worktree，以免影响其他在途任务。详见 `docs/quant-family-migration.md`。
 
-本项目统一承接并 supersede `index-research` 与 `market-liquidity-profiles` 的独立发布职责。旧仓库保留历史代码和研究记录；持续维护的代码、公开页面和派生快照集中在这里。本项目是 canonical research entry point，旧仓库仅作为 legacy archive。
+本项目承接 `index-research` 和 `market-liquidity-profiles` 的持续维护与独立发布工作。旧仓库保留历史代码和研究记录。当前维护的代码、公开页面和派生快照集中在本仓库，旧仓库作为历史档案保留。
 
 项目采用本地优先的方式读取现有行情资产，不把原始数据复制到仓库。当前支持 A 股、港股、美股和日股。
 
@@ -44,12 +44,7 @@ uv run market-research config inspect --output-root outputs
 
 本地配置包含机器相关路径，已被 Git 忽略。请不要在配置文件中填写凭证。
 
-当前已接入的数据目录包括：
-
-- A 股：`/home/richard/data/quant/market-data-platform/assets/tushare/a_share/daily/a_share_all_daily_clean_latest/data`
-- 港股：`/mnt/data/cold4t/hk-liquidity`
-- 美股：`/mnt/data/cold4t/simfin`
-- 日股：`/mnt/data/cold4t/nira/current/guan-japanese-nira/data`
+数据目录由 `configs/local.toml` 中的 `sources` 配置。请按本机实际位置填写 `a_share_root`、港股数据路径、美股数据路径和 `jp_root`。配置模板中的路径仅作示例，仓库不保存本机目录位置。
 
 日股适配器目前只读取 `daily/*/equities_bars_daily_*.parquet`，并将 J-Quants 的 `Date`、`Code`、`C`、`Vo` 和 `Va` 映射到统一面板。当前 nira 快照没有配套的日频市值字段，因此日股的市值相关分析会标记为 `incomplete`，直到补充相应数据。
 
@@ -67,27 +62,41 @@ uv run market-research report liquidity --config configs/local.toml
 uv run market-research report smallcap-turnover --config configs/local.toml
 uv run market-research report smallcap-turnover-history --config configs/local.toml
 uv run market-research report smallcap-turnover-audit --config configs/local.toml
+uv run market-research report barra-risk-inputs --config configs/local.toml
 uv run market-research validate --config configs/local.toml
 ```
 
-`microcap` 还会生成旧项目公开快照所需的年度收益、滚动 CAGR、滚动回撤和来源标记文件；`indices` 覆盖指数价格回报和 ETF 复权代理，`etf-pairs` 覆盖指数/ETF 配对、全部比较和流动性代表，`cashflow` 覆盖现金流指数研究。迁移输出的命名兼容旧项目，但生成入口统一为本项目。
+`microcap` 还会生成旧项目公开快照所需的年度收益、滚动 CAGR、滚动回撤和来源标记文件。`indices` 覆盖指数价格回报和 ETF 复权代理，`etf-pairs` 覆盖指数与 ETF 配对、比较和流动性代表，`cashflow` 覆盖现金流指数研究。输出文件沿用旧项目的命名，生成入口统一为本项目。
+
+其他研究报告和数据刷新入口：
+
+```bash
+uv run market-research report index-study --study studies/index_replication/study.example.json
+uv run market-research report style-factors --study /path/to/local-style-study.yml
+uv run market-research report global-six-market --study studies/global_six_market/study.yml
+uv run market-research fetch linked-indices --config configs/local.toml
+uv run market-research fetch cashflow --config configs/local.toml
+```
+
+`index-study` 生成指数比较与回本风险报告。`style-factors` 生成风格因子分组结果。`global-six-market` 运行六市场 ETF 代理组合研究，该研究仍处于探索阶段。`fetch` 会在配置的输出目录中更新指数或现金流数据。
+
+研究命令需要外部行情路径。六市场配置中的 `data_root` 是占位值，运行前必须修改。`studies/style_factors_18y/study.yml` 记录研究范围，不含必需的本机 `panel_path`，需另建本地配置后再运行。
 
 ## Barra / 风格因子研究
 
-`market-research` 是 Barra/风格因子研究的 canonical 入口。quant 中的历史结果可以通过 `[barra].result_root` 作为 provenance 输入，原始行情和实验缓存仍留在 quant 数据资产目录。
+`market-research` 是 Barra 和风格因子市场证据的统一入口。`[barra].result_root` 可读取 quant 中的历史结果作为来源记录，原始行情和实验缓存仍保留在 quant 数据目录。
 
 ```bash
 uv run market-research report barra --config configs/local.toml
 ```
 
-该命令输出历史 19 因子摘要，以及基于 canonical A 股面板重新计算的市值分位收益和尾部排序诊断。页面将其标记为历史描述性证据；日频横截面观测存在时间相关性，不自动等同于独立样本、统计显著性或策略有效性。
+该命令输出历史 19 个因子摘要，以及基于标准 A 股面板重新计算的市值分位收益和尾部排序诊断。页面将结果标记为历史描述性证据。日频横截面观测存在时间相关性，不能直接视为独立样本，也不能据此认定统计显著或策略有效。
 
-研究页面以历史研究档案为主线，并区分历史研究、研究中的专题和待补数据。现金流、小微盘、指数/ETF 与 Barra/18 年因子属于历史档案；跨市场小微盘流动性属于研究中的专题；Global Six-Market 和日股同口径分桶属于待补数据与未来研究。完整边界见 `docs/research-information-architecture.md`。
+研究页面区分历史档案、进行中的专题和待补数据。现金流、小微盘、指数与 ETF、Barra 和 18 年因子研究属于历史档案。跨市场小微盘流动性仍在研究中，六市场比较和日股同口径分桶仍待补数据。完整范围见 `docs/research-information-architecture.md`。
 
-市场证据层的 18 年风格研究和六市场 ETF proxy allocation study 位于
-`studies/`；alpha、signal、IC/decay 和策略决策仍属于 `quant-research`，
-通用回测与执行模拟仍属于 `quant-platform`。六市场研究保持
-`exploration`，不提交订单，也不把 ETF proxy 结果等同于完整国家股票市场。
+18 年风格研究和六市场 ETF 代理配置研究位于 `studies/`。alpha、signal、IC、decay
+和策略决策属于 `quant-research`，通用回测与执行模拟属于 `quant-platform`。
+六市场研究仍处于探索阶段，不提交订单，也不把 ETF 代理结果当作完整的国家股票市场表现。
 
 ## GitHub Pages
 
@@ -100,10 +109,10 @@ npm run snapshot  # 仅在刷新本地派生快照时运行
 npm run dev
 ```
 
-完整的因子定义、研究解释和限制说明由 MkDocs 生成在同一 Pages 站点的
-[`/docs/`](https://runchengxie.github.io/quant-market-research/docs/)；本地可运行
-`uv run --extra docs mkdocs serve` 预览。CI 仅发布经过筛选的两份因子研究说明，不会把内部 runbook 一并公开。
+经审查的因子定义、研究解释和限制说明由 MkDocs 发布在同一 Pages 站点的
+[`/docs/`](https://runchengxie.github.io/quant-market-research/docs/)。本地可运行
+`uv run --extra docs mkdocs serve` 预览。说明站只发布首页和两篇经过审查的因子研究文档，不会公开其余内部文档。
 
-推送到 `main` 后，GitHub Actions 会运行页面测试和构建。启用 GitHub Pages 的 Actions 发布来源后，页面地址为：
+推送到 `main` 后，GitHub Actions 会运行 Python 测试、网页测试和构建，再发布主网页与说明站。页面地址为：
 
 <https://runchengxie.github.io/quant-market-research/>

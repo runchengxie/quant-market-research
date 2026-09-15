@@ -1,15 +1,9 @@
-# Style Factors — 18-Year Market Evidence
+# 18 年风格因子市场证据
 
-This study is the canonical `market-research` home for long-horizon market
-evidence about style factors. It asks whether cross-sectional phenomena such
-as size, value, and momentum exist across a defined historical window.
+本研究整理市场长期风格因子表现，关注规模、价值、动量和流动性等横截面现象。
 
-The historical public snapshot contains 19 descriptive style factors. The
-canonical replication currently focuses on four core families: size, value,
-momentum, and liquidity. It does not choose alpha signals, calculate IC/decay,
-or make strategy promotion decisions. Those responsibilities remain in
-`quant-research`.
+历史公开快照包含 19 个描述性因子。当前统一分析聚焦规模、价值、动量和流动性四类。研究不负责选择 alpha 信号、计算 IC 或衰减，也不做策略晋级决策，这些工作由 `quant-research` 负责。
 
-The `18` means an inclusive research window, not calendar year 2018. Raw
-market data and historical quant artifacts remain external; only derived,
-auditable snapshots may be published here.
+标题中的 18 年指包含首尾年份的研究窗口长度。原始行情和历史 quant 产物保留在外部，仓库只保存经过审查的派生结果。
+
+`study.yml` 记录研究范围和因子设置。运行 `market-research report style-factors` 时，还需提供包含外部 `panel_path` 和 `output_root` 的本机配置。不要直接把 `study.yml` 当作完整可运行配置。

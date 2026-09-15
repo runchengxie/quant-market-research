@@ -1,15 +1,15 @@
-output_root = "outputs"
+output_root = "../market-research-results"
 as_of = ""
 use_duckdb = true
 
 [sources]
-a_share_root = "/home/richard/data/quant/market-data-platform/assets/tushare/a_share/daily/a_share_all_daily_clean_latest/data"
-hk_daily_root = "/mnt/data/cold4t/hk-liquidity/assets/rqdata/hk/daily"
-hk_valuation_root = "/mnt/data/cold4t/hk-liquidity/assets/rqdata/hk/valuation"
-hk_instruments_path = "/mnt/data/cold4t/hk-liquidity/assets/rqdata/hk/instruments/hk_all_instruments_20260526.parquet"
-us_shareprices_path = "/mnt/data/cold4t/simfin/us"
-jp_root = "/mnt/data/cold4t/nira/current/guan-japanese-nira/data"
-# Optional external daily valuation sidecar with Date, Code, and MarketCap or SharesOutstanding.
+a_share_root = "../market-research-data/a_share_daily"
+hk_daily_root = "../market-research-data/hong_kong/daily"
+hk_valuation_root = "../market-research-data/hong_kong/valuation"
+hk_instruments_path = "../market-research-data/hong_kong/instruments.parquet"
+us_shareprices_path = "../market-research-data/simfin/us"
+jp_root = "../market-research-data/japan"
+# 可选的外部日频估值文件，需包含 Date、Code，以及 MarketCap 或 SharesOutstanding。
 jp_market_cap_path = ""
 
 [index_research]
@@ -24,18 +24,18 @@ index_start_date = "20160902"
 index_end_date = "20260821"
 
 [barra]
-# Historical quant style-factor result bundle; raw data is not copied into this repo.
-result_root = "/home/richard/data/quant/market-data-platform/strategy_outputs/style-factors/weekly-20260904"
+# 外部历史风格因子结果目录。原始数据不复制到本仓库。
+result_root = "../market-research-data/historical_style_factors"
 size_quantiles = 10
 holding_period = 1
 
 [smallcap_turnover_history]
-# 2008+ raw sources. These do not include reliable historical ST/suspension flags.
-daily_root = "/home/richard/data/quant/market-data-platform/assets/tushare/a_share/daily/a_share_all_20080102_20260821_union_daily"
-daily_basic_root = "/home/richard/data/quant/market-data-platform/assets/tushare/a_share/daily_basic/a_share_all_20080102_20260821_union_daily_basic"
+# 2008 年起的历史来源，缺少可靠的 ST 和停牌标记。
+daily_root = "../market-research-data/a_share_daily_history"
+daily_basic_root = "../market-research-data/a_share_valuation_history"
 start_date = "20080102"
 
 [smallcap_turnover_audit]
-# Compare the two external report artifacts on their common date/rank range.
-clean_daily_path = "/home/richard/data/market-research/outputs/smallcap_turnover_daily.csv"
-historical_daily_path = "/home/richard/data/market-research/outputs/smallcap_turnover_history_daily.csv"
+# 比较两个外部报告在共同日期和分组范围内的结果。
+clean_daily_path = "../market-research-results/smallcap_turnover_daily.csv"
+historical_daily_path = "../market-research-results/smallcap_turnover_history_daily.csv"

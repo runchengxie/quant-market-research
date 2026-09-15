@@ -27,8 +27,8 @@
 - Create: `docs/research/experiments/turnover-microcap-followup-20260915.md`
 - Read: `docs/data-storage-and-publication.md`
 - Read: `web/public/data/barra/historical_report.md`
-- Read-only external reference: `/home/richard/code/quant/quant-research/docs/research/experiments/style_factors/low-turnover-factor-diagnostics-2008-2026.md`
-- Read-only external reference: `/home/richard/data/quant/market-data-platform/research/style_factors/microcap_100_20260911/`
+- Read-only external reference: `<quant-research-repo>/docs/research/experiments/style_factors/low-turnover-factor-diagnostics-2008-2026.md`
+- Read-only external reference: `<shared-data-root>/research/style_factors/microcap_100_20260911/`
 
 **Interfaces:**
 - Consumes: Existing reported factor summaries and their run manifests; historical and clean daily source manifests.
@@ -76,7 +76,7 @@
 - Create: `scripts/analyze_microcap_history.py`
 - Create: `tests/test_microcap_history_analysis.py`
 - Modify: `docs/runbook-local.md`
-- External outputs only: `/home/richard/data/market-research/outputs/microcap_history_2008_2026/`
+- External outputs only: `<external-research-output>/outputs/microcap_history_2008_2026/`
 
 **Interfaces:**
 - Consumes: Daily bars, daily-basic valuation, adjustment factors, exchange calendar, point-in-time listing dates, historical name-change/ST status, and suspension-event records.

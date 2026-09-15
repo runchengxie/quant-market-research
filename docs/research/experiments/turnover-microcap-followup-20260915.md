@@ -71,7 +71,7 @@ uv run --extra duckdb python scripts/analyze_microcap_history.py
 ```
 
 脚本把逐日收益、五种 N 的 NAV、完整水下 episode、年度覆盖统计和 manifest 写到：
-`/home/richard/data/market-research/outputs/microcap_history_2008_2026/`。
+`<外部研究输出目录>/microcap_history_2008_2026/`。
 原始行情和运行结果均不进入 Git。
 
 低换手底层产物位于本机相邻的 `quant-research` 仓库，主要包括 `docs/research/experiments/style_factors/low-turnover-factor-diagnostics-2008-2026.md`、`small-cap-low-turnover-exploration-20260826.md` 及对应 candidate 诊断 CSV；该仓库不属于本次改动范围。

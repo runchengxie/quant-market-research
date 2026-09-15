@@ -1,13 +1,7 @@
-# Research boundary migration
+# 研究职责边界
 
-`market-research` is the canonical home for market evidence: long-horizon
-style-factor behavior, liquidity/capacity, index replication, and the
-research-only six-market ETF proxy allocation study.
+`market-research` 负责整理市场证据，包括长期风格因子表现、流动性与容量、指数复刻，以及仅用于研究的六市场 ETF 代理配置。
 
-`quant-research` retains alpha hypotheses, signal validation, IC/decay,
-strategy experiments, and portfolio decisions. `quant-platform` retains
-generic backtest, portfolio, risk, cost, execution simulation, and artifact
-contract capabilities.
+`quant-research` 负责 alpha 假设、信号验证、IC 与衰减分析、策略实验和组合决策。`quant-platform` 负责通用回测、组合、风险、成本、执行模拟和产物契约。
 
-Raw data, broker acquisition manifests, private caches, and uncertain-license
-implementations remain outside this repository.
+原始数据、券商采集清单、私有缓存和许可证尚未确认的实现均保留在本仓库之外。

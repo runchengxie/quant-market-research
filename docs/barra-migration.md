@@ -8,7 +8,7 @@
 
 本次接入的历史结果目录为：
 
-`/home/richard/data/quant/market-data-platform/strategy_outputs/style-factors/weekly-20260904`
+`<共享数据根>/strategy_outputs/style-factors/weekly-20260904`
 
 该结果包包含 19 个因子：beta、chip concentration、dividend yield、earnings yield、fund breadth/ownership、growth、institution holding、leverage、liquidity、liquidity flow、lowvol、momentum、ps value、quality、size 和 value。
 
