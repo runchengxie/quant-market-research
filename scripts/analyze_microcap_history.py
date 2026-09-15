@@ -16,7 +16,7 @@ from market_research.microcap_history import build_daily_portfolio_returns
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--data-root", type=Path, required=True, help="quant-market-data-platform data root")
-    parser.add_argument("--output", type=Path, default=Path("outputs/microcap_history_2008_2026"))
+    parser.add_argument("--output", type=Path, required=True, help="external directory for research outputs")
     parser.add_argument("--start", default="2008-01-02")
     parser.add_argument("--end", default="2026-09-14")
     args = parser.parse_args()
