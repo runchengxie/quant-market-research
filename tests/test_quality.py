@@ -62,4 +62,6 @@ def test_public_docs_keep_mkdocs_theme_and_search_assets():
         "!/img/**",
         "!/webfonts/**",
         "!/search/**",
+        "!/assets/docs.css",
     } <= exclusions
+    assert config["extra_css"] == ["assets/docs.css"]

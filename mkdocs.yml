@@ -17,6 +17,7 @@ exclude_docs: |
   !/img/**
   !/webfonts/**
   !/search/**
+  !/assets/docs.css
 
 nav:
   - 研究说明: index.md
@@ -29,6 +30,9 @@ theme:
   locale: zh
   features:
     - navigation.top
+
+extra_css:
+  - assets/docs.css
 
 markdown_extensions:
   - toc:
