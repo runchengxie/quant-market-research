@@ -29,6 +29,7 @@ def test_size_portfolio_returns_keep_stale_suspensions_and_bound_unknown_marks()
             "is_suspended",
         ],
     )
+    panel["price_source"] = "test"
     panel["date"] = pd.to_datetime(panel["date"])
     events = pd.DataFrame(
         {
@@ -69,6 +70,7 @@ def test_size_portfolio_returns_reject_duplicate_security_dates():
             "adj_close": [10.0, 10.0],
             "is_eligible": [True, True],
             "is_suspended": [False, False],
+            "price_source": ["test", "test"],
         }
     )
     with duckdb.connect() as connection:
@@ -79,3 +81,36 @@ def test_size_portfolio_returns_reject_duplicate_security_dates():
         )
         with pytest.raises(ValueError, match="unique symbol/date"):
             build_daily_portfolio_returns(connection, constituent_counts=(1,))
+
+
+def test_size_portfolio_returns_skip_cross_source_execution_windows():
+    from market_research.microcap_history import build_daily_portfolio_returns
+
+    dates = pd.to_datetime(["2014-12-30", "2014-12-31", "2015-01-05", "2015-01-06", "2015-01-07"])
+    panel = pd.DataFrame(
+        {
+            "date": dates,
+            "symbol": ["A"] * len(dates),
+            "market_cap": [1.0] * len(dates),
+            "amount": [100.0] * len(dates),
+            "adj_close": [10.0, 11.0, 22.0, 24.0, 26.0],
+            "is_eligible": [True] * len(dates),
+            "is_suspended": [False] * len(dates),
+            "price_source": ["legacy", "legacy", "clean", "clean", "clean"],
+        }
+    )
+    with duckdb.connect() as connection:
+        connection.register("market_panel", panel)
+        connection.register(
+            "suspension_events",
+            pd.DataFrame(columns=["symbol", "date", "suspend_type"]),
+        )
+        returns = build_daily_portfolio_returns(connection, constituent_counts=(1,))
+
+    assert pd.Timestamp("2014-12-30") not in set(returns.formation_date)
+    dec_31_formation = returns.loc[returns.formation_date.eq(pd.Timestamp("2014-12-31"))]
+    assert dec_31_formation.entry_date.item() == pd.Timestamp("2015-01-05")
+    assert dec_31_formation.return_date.item() == pd.Timestamp("2015-01-06")
+    assert dec_31_formation.return_unknown_flat.item() == pytest.approx(24 / 22 - 1)
+    jan_5_formation = returns.loc[returns.formation_date.eq(pd.Timestamp("2015-01-05"))]
+    assert jan_5_formation.return_unknown_flat.item() == pytest.approx(26 / 24 - 1)

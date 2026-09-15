@@ -40,7 +40,7 @@ def main() -> None:
         CREATE TEMP VIEW old_panel AS
         SELECT d.ts_code AS symbol, try_strptime(CAST(d.trade_date AS VARCHAR), '%Y%m%d')::DATE AS date,
                b.total_mv AS market_cap, d.amount AS amount, d.close*f.adj_factor AS adj_close,
-               false AS is_suspended, false AS is_st
+               false AS is_suspended, false AS is_st, 'legacy_tushare'::VARCHAR AS price_source
         FROM read_parquet('{historical_daily}', union_by_name=true) d
         JOIN read_parquet('{historical_basic}', union_by_name=true) b USING(ts_code, trade_date)
         JOIN read_parquet('{historical_adj}', union_by_name=true) f USING(ts_code, trade_date)
@@ -49,7 +49,7 @@ def main() -> None:
     con.execute(f"""
         CREATE TEMP VIEW new_panel AS
         SELECT ts_code AS symbol, try_strptime(trade_date, '%Y%m%d')::DATE AS date, total_mv AS market_cap,
-               amount, adj_close, is_suspended, is_st
+               amount, adj_close, is_suspended, is_st, 'daily_clean'::VARCHAR AS price_source
         FROM read_parquet('{clean_daily}', union_by_name=true)
         WHERE try_strptime(trade_date, '%Y%m%d')::DATE >= DATE '2015-01-01'
     """)
@@ -71,7 +71,7 @@ def main() -> None:
                             coalesce(try_cast(interval_end AS DATE), try_strptime(interval_end, '%Y%m%d')::DATE) AS ends,
                             coalesce(try_cast(ann_date AS DATE), try_strptime(ann_date, '%Y%m%d')::DATE) AS announced
                      FROM read_parquet('{status}'))
-        SELECT p.date, p.symbol, p.market_cap, p.amount, p.adj_close, p.is_suspended,
+        SELECT p.date, p.symbol, p.market_cap, p.amount, p.adj_close, p.price_source, p.is_suspended,
                (i.ts_code IS NOT NULL AND (i.list_date IS NULL OR i.list_date<=p.date)
                 AND (i.delist_date IS NULL OR i.delist_date>p.date)
                 AND NOT coalesce(p.is_st, false)
@@ -107,7 +107,7 @@ def main() -> None:
     """).fetchdf()
     coverage.to_csv(args.output / "coverage_by_year.csv", index=False)
     manifest = {"start": args.start, "end": args.end, "sources": [str(historical_daily), str(historical_basic), str(historical_adj), str(clean_daily), str(status), str(suspensions), str(instruments)],
-                "formation": "close-date point-in-time market cap; smallest N; equal weight; execute at next observed market close and measure return from execution close through the following market close",
+                "formation": "close-date point-in-time market cap; smallest N; equal weight; execute at next observed market close and measure return from execution close through the following market close; skip execution-to-return intervals whose prices cross source vintages",
                 "marking": "confirmed S suspension missing close marked stale-flat; unknown missing close separately flat and -100% sensitivity",
                 "limitations": "reconstructed ST intervals, local Tushare data, index-style marks; no costs, limit execution, capacity, or cash ledger"}
     (args.output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n")

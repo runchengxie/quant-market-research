@@ -7,30 +7,45 @@ def build_daily_portfolio_returns(connection, *, constituent_counts=(50, 100, 20
     """Build equal-weight smallest-cap returns with an explicit close-time fill lag.
 
     ``market_panel`` must expose date, symbol, market_cap, amount, adj_close,
-    is_eligible and is_suspended. Signals use formation-date close data, orders
+    price_source, is_eligible and is_suspended. Signals use formation-date close data, orders
     execute at the next observed market close, and returns start from that
     execution close through the following market close. ``suspension_events``
     identifies confirmed suspension dates with suspend_type == 'S'.
     """
     columns = {row[0] for row in connection.execute("DESCRIBE market_panel").fetchall()}
-    required = {"date", "symbol", "market_cap", "amount", "adj_close", "is_eligible", "is_suspended"}
+    required = {
+        "date",
+        "symbol",
+        "market_cap",
+        "amount",
+        "adj_close",
+        "price_source",
+        "is_eligible",
+        "is_suspended",
+    }
     if not required.issubset(columns):
         raise ValueError("market_panel is missing required columns")
     if connection.execute("SELECT 1 FROM market_panel GROUP BY date, symbol HAVING count(*) > 1 LIMIT 1").fetchone():
         raise ValueError("market_panel must have unique symbol/date keys")
     counts = ",".join(str(int(value)) for value in sorted(set(constituent_counts)))
     return connection.execute(f"""
-        WITH dates AS (
+        WITH source_dates AS (
+            SELECT date,
+                   CASE WHEN count(DISTINCT price_source)=1 THEN min(price_source) END AS price_source
+            FROM market_panel GROUP BY date
+        ), dates AS (
             SELECT date,
                    lead(date, 1) OVER (ORDER BY date) AS entry_date,
-                   lead(date, 2) OVER (ORDER BY date) AS return_date
-            FROM (SELECT DISTINCT date FROM market_panel)
+                   lead(date, 2) OVER (ORDER BY date) AS return_date,
+                   lead(price_source, 1) OVER (ORDER BY date) AS entry_source,
+                   lead(price_source, 2) OVER (ORDER BY date) AS return_source
+            FROM source_dates
         ), ranked AS (
             SELECT p.date AS formation_date, d.entry_date, d.return_date, p.symbol,
                    p.market_cap, p.amount, row_number() OVER (PARTITION BY p.date ORDER BY p.market_cap, p.symbol) AS size_rank
             FROM market_panel p JOIN dates d ON p.date=d.date
             WHERE p.is_eligible AND NOT p.is_suspended AND p.market_cap>0 AND p.amount>0 AND p.adj_close>0
-              AND p.date <> DATE '2014-12-31'
+              AND d.entry_source IS NOT NULL AND d.entry_source=d.return_source
         ), sizes AS (SELECT unnest([{counts}])::INTEGER AS constituent_count), basket AS (
             SELECT r.*, s.constituent_count FROM ranked r CROSS JOIN sizes s
             WHERE r.size_rank <= s.constituent_count AND r.return_date IS NOT NULL
