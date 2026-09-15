@@ -48,6 +48,23 @@ uv run market-research config inspect --output-root outputs
 
 日股适配器目前只读取 `daily/*/equities_bars_daily_*.parquet`，并将 J-Quants 的 `Date`、`Code`、`C`、`Vo` 和 `Va` 映射到统一面板。当前 nira 快照没有配套的日频市值字段，因此日股的市值相关分析会标记为 `incomplete`，直到补充相应数据。
 
+## 测试与构建
+
+本地验证命令与 GitHub Actions 使用同一套入口。Python 测试覆盖命令行、市场数据适配器、计算结果和报告输出；Ruff 检查 Python 代码；MkDocs 检查公开说明站；网页测试和构建检查前端。
+
+```bash
+uv run --extra duckdb --with pytest pytest -q
+uv run --extra dev ruff check src tests
+uv run --extra docs mkdocs build --strict
+
+cd web
+npm ci
+npm test
+npm run build
+```
+
+`mkdocs build` 只生成 `web/dist/docs/`，网页构建只处理主站。GitHub Actions 会在拉取请求中运行这些测试和构建，并检查公开产物中是否包含本机路径或凭证标记。部署只会在推送到 `main` 后执行。
+
 架构和迁移范围见 `docs/superpowers/specs/2026-09-07-market-research-design.md`。首个报告包包括流动性汇总、覆盖率诊断、基于滞后流动性特征的机械容量面板，以及来源元数据。
 数据保存、Parquet/CSV 分工和公开发布边界见 `docs/data-storage-and-publication.md`。
 
