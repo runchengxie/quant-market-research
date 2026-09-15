@@ -46,6 +46,9 @@ jobs:
           npm run build
           touch dist/.nojekyll
 
+      - name: Build public research documentation
+        run: uv run --extra docs mkdocs build --strict
+
       - name: Scan public output for local paths and secrets
         run: |
           if rg -n '/home/|/Users/|/mnt/|TUSHARE_TOKEN=|API_KEY=|SECRET_KEY=' web/dist; then
