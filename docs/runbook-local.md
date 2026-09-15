@@ -3,7 +3,7 @@
 ## 安装
 
 ```bash
-uv sync --extra dev --extra duckdb
+uv sync --locked --extra dev --extra duckdb
 cp configs/local.example.toml configs/local.toml
 ```
 
@@ -101,6 +101,45 @@ uv run --locked --extra yahoo python scripts/build_yfinance_shares_sidecar.py \
 ## 数据目录配置
 
 数据位置填写在 `configs/local.toml` 的 `[sources]` 下。A 股使用 `a_share_root`，港股使用 `hk_daily_root`、`hk_valuation_root` 和 `hk_instruments_path`，美股使用 `us_shareprices_path`，日股使用 `jp_root`。先从 `configs/local.example.toml` 复制模板，再替换为本机已有目录。
+
+## 其他报告和数据刷新
+
+完整报告清单、输入和主要输出见[职责与报告说明](compatibility.md)。常用命令如下：
+
+```bash
+uv run market-research report indices --config configs/local.toml
+uv run market-research report etf-pairs --config configs/local.toml
+uv run market-research report cashflow --config configs/local.toml
+uv run market-research report smallcap-turnover-audit --config configs/local.toml
+uv run market-research report barra-risk-inputs --config configs/local.toml
+uv run market-research report index-study --study studies/index_replication/study.example.json
+uv run market-research report style-factors --study /path/to/local-style-study.yml
+uv run market-research report global-six-market --study studies/global_six_market/study.yml
+uv run market-research fetch linked-indices --config configs/local.toml
+uv run market-research fetch cashflow --config configs/local.toml
+```
+
+示例研究配置中的数据路径需要按本机目录调整。风格因子研究还需提供本地面板路径。六市场 ETF 代理组合处于探索阶段，不代表六个国家的完整股票市场表现。
+
+## 本地网页和公开快照
+
+首次安装网页依赖并启动开发服务器：
+
+```bash
+cd web
+npm ci
+npm run dev
+```
+
+网页读取仓库内经过筛选的派生快照。需刷新微盘摘要时运行 `npm run snapshot`，该命令从默认 `outputs/` 读取本地研究结果。成交额网页使用独立生成脚本：
+
+```bash
+MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs \
+  node web/scripts/build-smallcap-turnover-public.mjs
+```
+
+更新代码后可在 `web/` 目录运行 `npm test` 和 `npm run build`。Python、Ruff 和 MkDocs 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流会先构建首页，再生成 MkDocs 说明站，公开输出位于 `web/dist/`。`scripts/sync_public_research_data.py` 依赖旧 `index-research` 仓库的本地产物，仅供迁移期间使用，不属于当前发布流程。
+
 ## Barra / 风格因子报告
 
 在 `configs/local.toml` 中配置 A 股数据根目录和可选的历史风格因子结果目录后运行：

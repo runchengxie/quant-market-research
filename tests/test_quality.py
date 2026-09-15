@@ -47,3 +47,19 @@ def test_documentation_and_examples_do_not_publish_machine_specific_roots():
         if local_path.search(line)
     ]
     assert not leaks, "Documentation contains machine-specific paths:\n" + "\n".join(leaks)
+
+
+def test_public_docs_keep_mkdocs_theme_and_search_assets():
+    import yaml
+
+    root = Path(__file__).resolve().parents[1]
+    config = yaml.safe_load((root / "mkdocs.yml").read_text(encoding="utf-8"))
+    exclusions = set(config["exclude_docs"].splitlines())
+
+    assert {
+        "!/css/**",
+        "!/js/**",
+        "!/img/**",
+        "!/webfonts/**",
+        "!/search/**",
+    } <= exclusions

@@ -54,6 +54,15 @@ jobs:
       - name: Build public research documentation
         run: uv run --locked --extra docs mkdocs build --strict
 
+      - name: Verify public documentation assets
+        run: |
+          test -s web/dist/docs/css/base.css
+          test -s web/dist/docs/css/bootstrap.min.css
+          test -s web/dist/docs/js/base.js
+          test -s web/dist/docs/img/favicon.ico
+          test -s web/dist/docs/webfonts/fa-solid-900.woff2
+          test -s web/dist/docs/search/main.js
+
       - name: Scan public output for local paths and secrets
         run: |
           if rg -n '/home/|/Users/|/mnt/|TUSHARE_TOKEN=|API_KEY=|SECRET_KEY=' web/dist; then
