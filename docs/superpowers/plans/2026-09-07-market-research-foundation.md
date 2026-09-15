@@ -105,7 +105,7 @@ Expected: PASS.
 
 - [ ] **Step 5: Document local data roots**
 
-Document the known roots: `/home/richard/data/quant/market-data-platform/assets/tushare/a_share`, `/mnt/data/cold4t/hk-liquidity`, `/mnt/data/cold4t/simfin`, and `/mnt/data/cold4t/nira/current/guan-japanese-nira/data`. State that the example config contains no credentials. Add `.gitignore` rules for `configs/local.toml`, `outputs/`, `.venv/`, caches, and raw market-data extensions.
+Document the known roots: `<shared-data-root>/assets/tushare/a_share`, `<external-data-root>/hk-liquidity`, `<external-data-root>/simfin`, and `<external-data-root>/nira/current/guan-japanese-nira/data`. State that the example config contains no credentials. Add `.gitignore` rules for `configs/local.toml`, `outputs/`, `.venv/`, caches, and raw market-data extensions.
 
 - [ ] **Step 6: Commit**
 
@@ -250,7 +250,7 @@ Add a documented command that discovers the nira data root and prints row counts
 
 Run: `pytest tests/markets/test_jp.py -q`
 
-Expected: PASS. Then run the documented smoke command against `/mnt/data/cold4t/nira/current/guan-japanese-nira/data` and confirm it reports non-empty daily data.
+Expected: PASS. Then run the documented smoke command against `<external-data-root>/nira/current/guan-japanese-nira/data` and confirm it reports non-empty daily data.
 
 - [ ] **Step 7: Commit**
 
@@ -439,8 +439,8 @@ Expected: PASS.
 Run against the known paths:
 
 ```bash
-uv run --project /home/richard/code/market-research market-research validate --config configs/local.toml
-uv run --project /home/richard/code/market-research market-research report liquidity --config configs/local.toml
+uv run --project <repository-root> market-research validate --config configs/local.toml
+uv run --project <repository-root> market-research report liquidity --config configs/local.toml
 ```
 
 Expected: no raw files are created or modified; outputs are written only under the configured output root, and missing sources are reported explicitly.

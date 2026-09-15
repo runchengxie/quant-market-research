@@ -1,9 +1,5 @@
-# Methodology
+# 计算方法
 
-Factors are formed using information available at the formation date. Securities
-are ranked cross-sectionally into equal-count buckets and forward returns begin
-on the next available trading observation. The report records coverage,
-exclusions, factor direction, and the source artifact hash.
+每个形成日只使用当时可见的信息。按横截面因子值排序并等量分组，收益从下一可用交易日开始计算。报告记录数据覆盖、过滤数量、因子方向和来源文件哈希。
 
-Tail monotonicity is a descriptive diagnostic. It is not evidence that a factor
-is investable after fees, capacity, or implementation constraints.
+尾部分组的单调性只用于描述排序结果。它不能证明因子扣除费用、容量和执行限制后仍可投资。

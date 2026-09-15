@@ -34,7 +34,7 @@
 
 - 不迁移 `quant-research` 的 alpha、strategy、ML、signal validation 和专属组合决策；
 - 不把 `quant-platform` 的通用回测/执行引擎复制到 `market-research`；
-- 不复制 `D:/data/global-six-market` 或任何原始 Parquet、IBKR 凭证、机器绝对路径和大体量缓存；
+- 不复制 `<external-data-root>/global-six-market` 或任何原始 Parquet、IBKR 凭证、机器绝对路径和大体量缓存；
 - 不复制来源许可证尚未确认的 `portfolio_backtester` style-factor slice；必要算法采用有 provenance 的 clean reimplementation；
 - 不把 `global_six_market` 当前约 37 个月、缺少股息/成本校准的结果提升为 production 或 complete total-return 结论；
 - 不删除旧研究文件。迁移完成后以 README、目录级 notice 和 compatibility map 标明 canonical location。

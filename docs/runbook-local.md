@@ -60,13 +60,14 @@ uv run market-research report smallcap-turnover-history --config configs/local.t
 如果需要把微盘最大回撤和水下时间向前延长，可运行：
 
 ```bash
-uv run --extra duckdb python scripts/analyze_microcap_history.py
+uv run --locked --extra duckdb python scripts/analyze_microcap_history.py \
+  --data-root /path/to/quant-market-data-platform \
+  --output /path/to/research-outputs/microcap-history
 ```
 
-该脚本组合 2008–2014 历史行情与 2015 年后的清洗日频面板，构造最小 50/100/200/400/800
-只股票的等权序列，并明确输出停牌估值和无法分类缺价敏感性。NAV、逐日结果和 episode
-明细写入仓库外 `/home/richard/data/market-research/outputs/microcap_history_2008_2026/`；
-形成日收盘产生信号，下一交易日收盘成交，之后才计算持有收益，以避免使用信号日收盘价造成前视成交。重建不是 Wind 官方序列，也不含成本、涨跌停成交限制或容量模型。研究结论见
+该脚本组合 2008–2014 年历史行情与 2015 年后的清洗日频面板，构造最小 50、100、200、400、800
+只股票的等权序列，并输出停牌估值和无法分类缺价的敏感性分析。输入目录需指向 `quant-market-data-platform` 数据根目录。`--output` 必填，应指向仓库外的研究结果目录。
+信号在形成日收盘后生成，下一交易日收盘成交，再从执行日收盘计算持有收益。该规则重建不代表 Wind 官方序列，也没有计入成本、涨跌停成交限制或容量模型。研究结论见
 `docs/research/experiments/turnover-microcap-followup-20260915.md`。
 
 生成两套口径的重叠期审计：
@@ -78,17 +79,28 @@ uv run market-research report smallcap-turnover-audit --config configs/local.tom
 该命令比较共同日期和 N 分组下的成交额中位数差异，并输出 5%、10% 和 25% 误差范围
 覆盖比例。它用于发现口径变化，不把历史源提升为已验证数据。
 
-网页发布年度和月度汇总；月度值是交易日层面日成交额中位数的月度中位数。可以用以下
+网页发布年度和月度汇总。月度值先计算每个交易日的成交额中位数，再取月度中位数。可以用以下
 命令从仓库外日频结果刷新网页快照：
 
-node web/scripts/build-smallcap-turnover-public.mjs
+MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs node web/scripts/build-smallcap-turnover-public.mjs
 
-## 当前数据目录
+## 日股股数估算辅助脚本
 
-- A 股日频清洗数据：`/home/richard/data/quant/market-data-platform/assets/tushare/a_share/daily/a_share_all_daily_clean_latest/data`
-- 港股 RQData：`/mnt/data/cold4t/hk-liquidity/assets/rqdata/hk`
-- 美股 SimFin：`/mnt/data/cold4t/simfin/us/extracted/us-shareprices-daily.csv`
-- nira 提供的 JPX、J-Quants 数据：`/mnt/data/cold4t/nira/current/guan-japanese-nira/data`
+`scripts/build_yfinance_shares_sidecar.py` 根据 NIRA 中的日股行情，从 Yahoo Finance 获取上市股数估算。该结果只用于本地探索，不能替代授权来源。先安装可选依赖，再指定数据根目录和输出文件：
+
+```bash
+uv sync --locked --extra yahoo
+uv run --locked --extra yahoo python scripts/build_yfinance_shares_sidecar.py \
+  --jp-root /path/to/japan-market-data \
+  --output /path/to/local-output/shares-sidecar.parquet \
+  --start 2020-01-01
+```
+
+脚本支持按代码筛选、设置请求间隔和并发数，也支持保存检查点与失败记录。Yahoo Finance 数据的覆盖和质量不作完整性保证。运行结果保存在本机，不会自动发布。
+
+## 数据目录配置
+
+数据位置填写在 `configs/local.toml` 的 `[sources]` 下。A 股使用 `a_share_root`，港股使用 `hk_daily_root`、`hk_valuation_root` 和 `hk_instruments_path`，美股使用 `us_shareprices_path`，日股使用 `jp_root`。先从 `configs/local.example.toml` 复制模板，再替换为本机已有目录。
 ## Barra / 风格因子报告
 
 在 `configs/local.toml` 中配置 A 股数据根目录和可选的历史风格因子结果目录后运行：
@@ -99,8 +111,8 @@ uv run market-research report barra --config configs/local.toml
 
 输出包括：
 
-- `barra_summary.json`：历史因子摘要、数据来源和市值单调性指标；
-- `barra_size_quantiles.csv`：按形成日和市值升序分位的未来收益；
+- `barra_summary.json`：历史因子摘要、数据来源和市值单调性指标。
+- `barra_size_quantiles.csv`：按形成日和市值升序分位的未来收益。
 - `barra_source_manifest.json`：canonical 项目、历史结果和原始数据的 provenance。
 
-市值分位中 Q1 是最小市值组，`monotonicity_score` 是相邻分位收益满足“小市值收益不低于大市值收益”的比例。该指标不等同于显著性检验，仍需结合成本、容量、停牌和幸存者偏差审阅。
+市值分位中 Q1 是最小市值组。`monotonicity_score` 表示相邻分位中小市值组收益不低于大市值组的比例，不能代替显著性检验。解读时还需考虑成本、容量、停牌和幸存者偏差。

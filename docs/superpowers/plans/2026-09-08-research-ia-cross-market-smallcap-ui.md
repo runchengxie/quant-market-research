@@ -13,7 +13,7 @@
 ## Global Constraints
 
 - [ ] 所有实现使用独立 worktree，不直接在 `main` 开发。
-- [ ] 使用硬盘盒数据作为真实输入：HK `/mnt/data/cold4t/hk-liquidity`，Japanese NIRA `/mnt/data/cold4t/nira/current/guan-japanese-nira/data`；A 股和美股沿用现有配置路径。
+- [ ] 使用硬盘盒数据作为真实输入：HK `<external-data-root>/hk-liquidity`，Japanese NIRA `<external-data-root>/nira/current/guan-japanese-nira/data`；A 股和美股沿用现有配置路径。
 - [ ] 不把原始行情、机器路径、凭证、损坏 Parquet 或大体量历史结果提交到 Git。
 - [ ] 只有真实共同覆盖且达到 lagged ADV20 最低观测要求的区间才能标记 `verified`。
 - [ ] 历史比较按每个市场、每个日期重新计算市值分桶，不使用当前市值回看历史。

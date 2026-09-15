@@ -103,7 +103,7 @@ market-research/
 
 ### 日股
 
-从 `/mnt/data/cold4t/nira/current/guan-japanese-nira/data` 读取 J-Quants/JPX 日线和 master 数据。第一阶段只需要日线、成交量/成交额、上市状态和基础 master 字段；分钟、逐笔、融资融券和因子结果不进入第一版跨市场容量面板。
+从 `<external-data-root>/nira/current/guan-japanese-nira/data` 读取 J-Quants/JPX 日线和 master 数据。第一阶段只需要日线、成交量/成交额、上市状态和基础 master 字段；分钟、逐笔、融资融券和因子结果不进入第一版跨市场容量面板。
 
 日股适配器必须处理 JPY 原生单位，并通过配置提供 JPY/USD 汇率来源。不能直接假设日股字段与 Tushare 或 SimFin 同名同义。
 
@@ -151,7 +151,7 @@ cross-market report snapshot + site data
 1. 从 `market-liquidity-profiles` 迁移或重写容量核心，并保留其现有公式和测试语义；
 2. 从 `index-research` 迁移微盘重建、年度收益、滚动 CAGR 和回撤计算；
 3. 将原项目特有的 CLI 和路径读取改为新项目配置解析；
-4. 新项目通过适配器消费 `/home/richard/data/quant/market-data-platform`、`/mnt/data/cold4t` 和 `nira` 数据，不复制原始文件；
+4. 新项目通过适配器消费 `<shared-data-root>`、`<external-data-root>` 和 `nira` 数据，不复制原始文件；
 5. 每个迁移单元先建立等价测试，再接入统一契约；
 6. 旧仓库在新项目完成最小闭环前保持可运行，不做删除性清理。
 

@@ -1,11 +1,7 @@
-# Global Six-Market Allocation
+# 六市场 ETF 代理组合研究
 
-Research-only fixed-weight allocation using six ETF proxies: US 35%, HK 20%,
-UK 15%, AU 10%, CA 10%, SG 10%. Each market is observed at its local month-end
-and rebalanced on the next available session; non-USD assets require daily FX
-conversion to USD.
+本研究用六只 ETF 观察美国、香港、英国、澳大利亚、加拿大和新加坡市场。目标权重依次为 35%、20%、15%、10%、10% 和 10%。各市场按当地月末行情估值，并在下一个可交易日调仓。非美元资产按日汇率换算为美元。
 
-This is an ETF-proxy allocation study, not a complete country-equity-universe
-study. It does not submit orders. It remains `exploration` until dividend
-coverage, cost calibration, paper-shadow review, and longer history support a
-stronger conclusion.
+这是一项 ETF 代理组合研究，不能代表六个国家和地区的完整股票市场，也不会提交订单。研究配置见 `study.yml`。配置中的 `data_root` 需要改成当前机器上的数据目录，原文件中的路径只是占位值。
+
+当前研究状态为 `exploration`。股息覆盖、成本校准、模拟跟踪审核和更长历史仍需补齐，完成这些检查前不升级结论。
