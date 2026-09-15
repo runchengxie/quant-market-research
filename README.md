@@ -100,6 +100,10 @@ npm run snapshot  # 仅在刷新本地派生快照时运行
 npm run dev
 ```
 
+完整的因子定义、研究解释和限制说明由 MkDocs 生成在同一 Pages 站点的
+[`/docs/`](https://runchengxie.github.io/quant-market-research/docs/)；本地可运行
+`uv run --extra docs mkdocs serve` 预览。CI 仅发布经过筛选的两份因子研究说明，不会把内部 runbook 一并公开。
+
 推送到 `main` 后，GitHub Actions 会运行页面测试和构建。启用 GitHub Pages 的 Actions 发布来源后，页面地址为：
 
 <https://runchengxie.github.io/quant-market-research/>
