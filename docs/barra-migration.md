@@ -1,10 +1,10 @@
 # Barra 研究迁移记录
 
-## Canonical ownership
+## 项目职责
 
-`market-research` 现在是跨市场 Barra/风格因子研究的 canonical 入口。`quant` 继续承担行情资产、回测运行、notebook 和历史实验产物，不再承担这类能力的唯一入口。
+`market-research` 现在是跨市场 Barra 和风格因子研究的统一入口。`quant` 继续管理行情资产、回测运行、notebook 和历史实验结果。
 
-## Migrated source
+## 接入的历史数据
 
 本次接入的历史结果目录为：
 
@@ -12,13 +12,13 @@
 
 该结果包包含 19 个因子：beta、chip concentration、dividend yield、earnings yield、fund breadth/ownership、growth、institution holding、leverage、liquidity、liquidity flow、lowvol、momentum、ps value、quality、size 和 value。
 
-## New canonical capability
+## 当前分析能力
 
-`market-research report barra` 读取历史 manifest/meta/factor summary，并对 canonical A 股面板执行市值因子分位分析。Q1 表示最小市值组，输出未来持有期收益、尾部价差、分位排序诊断和覆盖信息。该结果属于历史描述性证据；形成日数量存在时间相关性，不应直接当作独立样本或统计显著性检验。
+`market-research report barra` 读取历史清单、元数据和因子摘要，并对统一 A 股面板执行市值因子分位分析。Q1 表示最小市值组。报告输出未来持有期收益、尾部价差、分位排序诊断和覆盖信息。该结果属于历史描述性证据，形成日之间存在时间相关性，不能直接视为独立样本或统计显著性检验。
 
-## Known boundary
+## 口径限制
 
-原历史报告使用月末五分位“大市值减小市值”多空口径，但没有保存纯市值十分位/二十分位曲线。因此历史摘要仅作为 provenance，分位排序诊断以新命令生成的 `barra_size_quantiles.csv` 为准；任何正式显著性结论仍需独立的统计检验设计。
+原历史报告使用月末五分位大市值组减小市值组的多空口径，没有保存纯市值十分位或二十分位曲线。因此历史摘要只作来源记录，分位排序诊断以新命令生成的 `barra_size_quantiles.csv` 为准。正式显著性结论仍需另行设计统计检验。
 
 ## 网页收益口径（2026-09-09 核对）
 
@@ -26,12 +26,12 @@
 `style_analysis_report.md`，以及生成端 `style_factors/workflow.py` 和
 `portfolio_backtester/style_factors_backtest.py` 后，网页按以下口径标注：
 
-- 每月末按因子得分分五组，两端初始等权、固定份额持有。日序列为最高分组收益减最低分组收益；市值因子方向为大市值减小市值。
-- 总览的 `geometric_annual_ret` 来自 `product(1 + daily_spread) ** (252 / observations) - 1`；逐年 `annual_ret` 来自当年 `product(1 + daily_spread) - 1`，不是全年外推值。源文件以百分数记录，网页仍除以 100 后交给百分比格式化函数。
-- 年化、年度收益、波动、Sharpe、回撤和胜率均描述历史多空合成序列；相关性也是多空日收益差之间的相关性。这些数值不是已验证的可实现策略账户回报。
+- 每月末按因子得分分五组，两端初始等权并固定份额持有。日序列为最高分组收益减最低分组收益，市值因子方向为大市值减小市值。
+- 总览的 `geometric_annual_ret` 按 `product(1 + daily_spread) ** (252 / observations) - 1` 计算。逐年 `annual_ret` 按当年 `product(1 + daily_spread) - 1` 计算，不将单年收益外推成年化值。源文件以百分数记录，网页除以 100 后再格式化为百分比。
+- 年化、年度收益、波动、Sharpe、回撤和胜率均描述历史多空合成序列。相关性也按多空日收益差计算。这些数值尚未验证能否在策略账户中实现。
 - 历史计算将持仓期缺失收益记为零，退市终值及完整执行限制未验证。逐期券源、借券成本、保证金和资金占用尚未验证，不能由本页判断具体 A 股组合可执行或一概不可执行。
-- 风格风险分析还可用于暴露解释和归因，不能把所有 Barra 分析等同于预测性 alpha。IC / rankIC 和分位单调性更直接检验得分与未来收益的关系，但仍需统计与样本外验证；本页未发布 IC / rankIC 数值。
-- 原始日行情、日频估值及后续重建财务支撑历史包；按公告日对齐和部分持仓 PIT 处理不证明全部历史财务版本完整 PIT。行业信号去均值也不保证组合行业权重中性。
+- 风格风险分析可用于解释暴露和收益来源。部分 Barra 分析用于风险解释，并不预测未来收益。IC、Rank IC 和分位单调性可以检查因子得分与未来收益的关系，仍需统计检验和样本外验证。本页没有发布 IC 或 Rank IC 数值。
+- 历史数据包使用原始日行情、日频估值和后续重建的财务数据。按公告日对齐及部分持仓点时处理，无法证明所有历史财务版本都满足完整点时要求。行业信号去均值也不能保证组合行业权重中性。
 
 公开依据为 [历史摘要](../web/public/data/barra/historical_factor_summary.json)、
 [年度派生表](../web/public/data/barra/factor_yearly.csv)、
@@ -43,14 +43,13 @@
 旧 `./research/recovery.html` 地址跳转到主站 `#cashflow-recovery`，详细统计和计算方法在专题内阅读。
 
 验证时运行 `cd web && npm test && npm run build`，并按 Pages 工作流扫描
-`web/dist` 中的本地路径和凭证标记，确认 `git diff -- web/public/data` 为空。
+`web/dist` 中的本地路径和凭证标记。还需确认 `git diff -- web/public/data` 为空。
 浏览器验收应检查总览入口的可见性和相对地址、Barra 多空合成标签与研究边界、
 因子切换后年化值与公开摘要一致，以及市值十分位仍保持独立诊断口径。
 
-本次验证结果：Python 59 项、前端 12 项通过，生产构建成功（保留既有 ECharts
-大于 500 kB 的分块提示）；公开边界扫描、`git diff --check` 与公开数据零差异检查通过。
+本次验证结果：Python 59 项、前端 12 项通过，生产构建成功。构建仍显示既有的 ECharts
+分块超过 500 kB 提示。公开边界扫描、`git diff --check` 和公开数据零差异检查均通过。
 公开摘要、年度表和相关性文件经 `cmp` 与历史包对应文件逐字节一致。
 Chromium 实际渲染检查通过：总览链接可见且地址准确，Barra 口径与限制说明可见，
 19 个因子逐一切换后的年化值与公开摘要一致，移动端年度标题可见且无页面异常。
-未新增功能 helper 或源码字符串断言测试；研究摘要 HTML 的内容和链接落地验收由
-recovery 任务完成，不能以 Vite 的单页回退响应代替真实 HTML 验证。
+本次没有新增功能 helper 或源码字符串断言测试。研究摘要 HTML 内容和链接的验收已由回本研究任务完成。需要检查真实 HTML 页面，Vite 的单页回退响应无法代替这项验收。

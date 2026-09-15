@@ -35,17 +35,17 @@ CSV 适合体量较小、需要人工核对的公开结果。它便于查看差�
 
 大型或重要的研究输出至少记录：
 
-- 数据结构版本；
-- 生成时间；
-- 数据来源和覆盖范围；
-- 行数与关键筛选条件；
-- 文件格式、大小和校验和；
+- 数据结构版本。
+- 生成时间。
+- 数据来源和覆盖范围。
+- 行数与关键筛选条件。
+- 文件格式、大小和校验和。
 - 文件属于原始数据还是已审核的派生结果。
 
 微盘成交额报告包含：
 
-- `smallcap_turnover_daily.csv`：完整的每日分组汇总，保存在仓库外；
-- `smallcap_turnover_summary.json`：覆盖范围和研究限制；
+- `smallcap_turnover_daily.csv`：完整的每日分组汇总，保存在仓库外。
+- `smallcap_turnover_summary.json`：覆盖范围和研究限制。
 - `smallcap_turnover_manifest.json`：数据结构、文件大小、行数和 SHA-256。
 
 2008 年起的扩展版本使用不同历史数据源，并在 summary 和 manifest 中标记 `quality_status = incomplete`。历史源缺少可靠的 ST 和停牌字段，因此这段序列适合长期描述，不能与 2015 年后的清洗版本合并成同一质量等级。
