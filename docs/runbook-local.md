@@ -57,6 +57,18 @@ uv run market-research report smallcap-turnover-history --config configs/local.t
 可靠的 ST 和停牌字段，输出会标记为 `incomplete`，不能与 2015 年后的清洗版本直接混为
 同一质量等级。
 
+如果需要把微盘最大回撤和水下时间向前延长，可运行：
+
+```bash
+uv run --extra duckdb python scripts/analyze_microcap_history.py
+```
+
+该脚本组合 2008–2014 历史行情与 2015 年后的清洗日频面板，构造最小 50/100/200/400/800
+只股票的等权序列，并明确输出停牌估值和无法分类缺价敏感性。NAV、逐日结果和 episode
+明细写入仓库外 `/home/richard/data/market-research/outputs/microcap_history_2008_2026/`；
+重建不是 Wind 官方序列，也不含成本、成交限制或容量模型。研究结论见
+`docs/research/experiments/turnover-microcap-followup-20260915.md`。
+
 生成两套口径的重叠期审计：
 
 ```bash
