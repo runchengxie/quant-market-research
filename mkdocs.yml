@@ -12,6 +12,11 @@ exclude_docs: |
   !/index.md
   !/research/factors/low-turnover.md
   !/research/factors/microcap.md
+  !/css/**
+  !/js/**
+  !/img/**
+  !/webfonts/**
+  !/search/**
 
 nav:
   - 研究说明: index.md
