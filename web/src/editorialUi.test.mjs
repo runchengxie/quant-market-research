@@ -73,7 +73,7 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
 test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
   assert.match(site, /18 年 A 股风格因子动态：收益、稳定性与市场阶段/);
   assert.match(site, /这些风格因子在不同 A 股市场阶段是否持续存在/);
-  assert.match(site, /Barra-like/);
+  assert.match(site, /Barra-style/);
   assert.match(site, /IC、样本外验证和统计显著性仍待补充/);
 });
 
