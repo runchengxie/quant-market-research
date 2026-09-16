@@ -40,7 +40,7 @@ uv run market-research report microcap --config configs/local.toml
 | `src/` | 可复用的研究代码和命令行入口 |
 | `scripts/` | 独立的研究、数据整理和本地维护脚本 |
 | `studies/` | 研究配置、方法说明和结果记录 |
-| `web/` | 研究网页及经过审核的公开数据快照 |
+| `web/` | Astro 研究网页、React/ECharts 交互图表及经过审核的公开数据快照 |
 | `docs/` | 运行手册、数据约定和研究说明 |
 
 更完整的报告清单和项目职责见[兼容与职责说明](docs/compatibility.md)。原始数据由 `quant-market-data-platform` 管理，通用回测与执行模拟由 `quant-platform` 提供。`quant-research` 是独立维护的相邻仓库，本项目没有 Git 子模块。

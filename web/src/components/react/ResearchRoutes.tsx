@@ -1,25 +1,22 @@
-import { lazy, StrictMode, Suspense, useEffect, useState } from "react";
-import { createRoot } from "react-dom/client";
-import "./styles.css";
-import { readableNotes } from "./research-copy";
-import { applyTheme, persistThemeChoice, readThemeChoice, type ThemeChoice } from "./theme";
-const RecoverySection = lazy(() => import("./components/RecoverySection"));
-const ReplicationSection = lazy(() => import("./components/ReplicationSection"));
-const ResearchOverview = lazy(() => import("./components/ResearchOverview"));
+import { lazy, Suspense, useEffect, useState } from "react";
+import { readableNotes } from "../../research-copy";
+import { parseCsv, publicDataUrl } from "../../lib/public-data";
+import { asNumber, displayLabels, displayValue, formatNumber as num, formatPercent as pct } from "../../lib/format";
+const RecoverySection = lazy(() => import("../RecoverySection"));
+const ReplicationSection = lazy(() => import("../ReplicationSection"));
 
-const NavChart = lazy(() => import("./components/MicrocapCharts").then((module) => ({ default: module.NavChart })));
-const AnnualChart = lazy(() => import("./components/MicrocapCharts").then((module) => ({ default: module.AnnualChart })));
-const MetricChart = lazy(() => import("./components/MicrocapCharts").then((module) => ({ default: module.MetricChart })));
-const UnderwaterChart = lazy(() => import("./components/MicrocapCharts").then((module) => ({ default: module.UnderwaterChart })));
-const ResearchBarChart = lazy(() => import("./components/ResearchCharts").then((module) => ({ default: module.ResearchBarChart })));
-const ResearchLineChart = lazy(() => import("./components/ResearchCharts").then((module) => ({ default: module.ResearchLineChart })));
+const NavChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.NavChart })));
+const AnnualChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.AnnualChart })));
+const MetricChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.MetricChart })));
+const UnderwaterChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.UnderwaterChart })));
+const ResearchBarChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchBarChart })));
+const ResearchLineChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchLineChart })));
 
 type Row = Record<string, string>;
+type Series = { name: string; values: Array<number | null>; color: string };
 type MicrocapSummary = { metrics: { ytd_2026_as_of?: string; ytd_2026_reference?: string }; caveats?: string[] };
-type Tab = "microcap-recovery" | "cashflow-recovery" | "overview" | "microcap" | "style" | "style-factors-18y" | "cashflow" | "cross-market" | "indices" | "liquidity";
 type MicrocapScope = "a-share" | "cross-market";
 type StyleScope = "indices" | "barra";
-type Series = { name: string; values: Array<number | null>; color: string };
 type TurnoverPeriod = { year?: number; month?: string; rank_count: number; turnover_median: number; trading_days: number; median_coverage_ratio: number; min_selected_count: number };
 type TurnoverSnapshot = { coverage_start: string; coverage_end: string; quality_status: "verified" | "incomplete"; rank_counts: number[]; annual: TurnoverPeriod[]; monthly: TurnoverPeriod[] };
 type TurnoverAudit = { rank_count: number; common_days: number; common_start: string; common_end: string; mean_abs_relative_diff_turnover_median: number; p90_abs_relative_diff_turnover_median: number; within_5pct_ratio: number; within_10pct_ratio: number; within_25pct_ratio: number; quality_note: string };
@@ -31,33 +28,10 @@ type LiquiditySummary = { method: { roll_days: number; metric: string; currency:
 type BarraSummary = { source?: { coverage_start?: string; coverage_end?: string }; size_monotonicity?: { quantiles?: number; tail_spread?: number; monotonicity_score?: number; formation_dates?: number }; legacy_barra_result?: { factor_count?: number } };
 type HistoricalFactor = { factor: string; days: number; years: number; cumulative_ret: number; geometric_annual_ret: number; annual_vol: number; sharpe: number; max_drawdown: number; hit_rate: number };
 type CorrelationMatrix = Record<string, Record<string, number>>;
-type DiagnosticView = "daily" | "monthly" | "stage";
 type CashflowBasis = "all" | "price_return" | "gross_total_return";
+type DiagnosticView = "daily" | "monthly" | "stage";
 
-const DATA = "./data";
-const pct = (value: number | null | undefined) => value == null || Number.isNaN(value) ? "未提供" : `${(value * 100).toFixed(1)}%`;
-const num = (value: number | string | null | undefined) => value == null || value === "" || Number.isNaN(Number(value)) ? "未提供" : new Intl.NumberFormat("zh-CN", { maximumFractionDigits: 2 }).format(Number(value));
-const asNumber = (value: string | undefined) => value == null || value === "" ? NaN : Number(value);
-const displayLabels: Record<string, string> = {
-  quarterly: "季度调仓",
-  semiannual: "半年调仓",
-  price_return: "价格回报",
-  gross_total_return: "税前全收益",
-  last_week: "近一周",
-  last_month: "近一个月",
-  last_3_months: "近三个月",
-  last_6_months: "近六个月",
-  ytd: "年初至今",
-  rolling_1_year: "近一年",
-  year_2025: "2025 年全年",
-  since_20240924: "自 2024 年 9 月 24 日以来",
-  last_3_years: "近三年",
-  last_5_years: "近五年",
-  last_10_years: "近十年",
-  last_15_years: "近十五年",
-  "N/A": "未提供",
-};
-const displayValue = (key: string, value: string) => displayLabels[value] ?? value;
+const DATA = publicDataUrl("", import.meta.env.BASE_URL);
 
 function average(values: number[]) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : NaN; }
 function stageForDate(date: string) {
@@ -98,30 +72,6 @@ function SizeDiagnosticPanel({ rows, dailyCurve }: { rows: Row[]; dailyCurve: Ro
   return <><Panel title="补充研究：市值十分组" tag="当前样本的历史统计"><p className="panel-note">这部分用当前已清洗的 A 股每日数据重新计算，覆盖 {rows[0]?.formation_date ?? "未提供"} 至 {rows.at(-1)?.formation_date ?? "未提供"}。按市值分成十组，观察各组下一交易日的收益，并按月和阶段汇总，检查差异是否稳定。这些结果仅描述历史样本。</p><BarChart rows={dailyCurve} labelKey="bucket" valueKey="value" color="#b64d33" formatter={formatter}/><p className="panel-note">上图展示分组后下一交易日的平均收益。相邻交易日的结果可能相关，分组日期的数量不等于独立样本数。</p><SortableTable rows={rows} columns={[["formation_date", "分组日期"], ["bucket", "市值分组"], ["forward_return", "下一交易日收益"], ["count", "股票数"]]} percentColumns={["forward_return"]}/></Panel><Panel title="稳定性观察：按月与按阶段" tag="观察不同时间尺度"><p className="panel-note">月度结果先计算每月平均收益，再对各月等权平均。阶段图展示最小市值组（Q1）减最大市值组（Q10）的平均收益差。尚未校正时间相关性，也未用区块自助法估计置信区间或检验统计显著性。</p><ControlBar><span className="control-label">观察口径</span><Choice active={view === "daily"} onClick={() => setView("daily")}>按日分组</Choice><Choice active={view === "monthly"} onClick={() => setView("monthly")}>按月汇总</Choice><Choice active={view === "stage"} onClick={() => setView("stage")}>阶段收益差</Choice></ControlBar>{view === "stage" ? <><BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/><SimpleTable rows={stages.map((row) => ({ period: row.period, q1: formatter(row.q1), q10: formatter(row.q10), spread: formatter(row.spread), observations: String(row.observations) }))} columns={[["period", "阶段"], ["q1", "最小市值组平均收益"], ["q10", "最大市值组平均收益"], ["spread", "最小组减最大组"], ["observations", "分组数"]]} /></> : <BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/>}</Panel></>;
 }
 
-function parseCsv(text: string): Row[] {
-  const rows: string[][] = [];
-  let row: string[] = [];
-  let cell = "";
-  let quoted = false;
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    if (char === '"' && text[index + 1] === '"' && quoted) { cell += '"'; index += 1; continue; }
-    if (char === '"') { quoted = !quoted; continue; }
-    if (char === "," && !quoted) { row.push(cell); cell = ""; continue; }
-    if ((char === "\n" || char === "\r") && !quoted) {
-      if (char === "\r" && text[index + 1] === "\n") index += 1;
-      row.push(cell); cell = "";
-      if (row.some((value) => value !== "")) rows.push(row);
-      row = [];
-      continue;
-    }
-    cell += char;
-  }
-  if (cell || row.length) { row.push(cell); rows.push(row); }
-  const headers = rows.shift() ?? [];
-  return rows.map((values) => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""])));
-}
-
 function useJson<T>(path: string) {
   const [data, setData] = useState<T | null>(null);
   const [error, setError] = useState("");
@@ -141,8 +91,8 @@ function Panel({ title, tag, children }: { title: string; tag?: string; children
 function SectionHeading({ title, text }: { title: string; text: string }) { return <div className="section-heading"><h3>{title}</h3><p>{text}</p></div>; }
 function ResearchCard({ title, text }: { title: string; text: string }) { return <article className="research-card"><span className="section-kicker">阅读提示</span><h3>{title}</h3><p>{text}</p></article>; }
 
-function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <ResearchLineChart series={series} labels={labels}/>; }
 function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/>; }
+function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <ResearchLineChart series={series} labels={labels}/>; }
 
 function ControlBar({ children }: { children: React.ReactNode }) { return <div className="control-bar">{children}</div>; }
 function Choice({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) { return <button className={`choice ${active ? "active" : ""}`} onClick={onClick}>{children}</button>; }
@@ -217,17 +167,6 @@ function IndicesPage() {
   return <><ThemeHeading kicker="指数长期回报 · ETF 可投资性" title="指数长期回报与可投资的基金产品" text="查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。" asof="已发布的历史数据"/><section className="stat-grid"><Stat label="指数目录" value={num(catalog.length)} note="已收录公开目录" accent/><Stat label="十年可比指数" value={num(returns.length)} note="有完整起止数据"/><Stat label="代表性基金" value={num(etfs.length)} note="与指数对应的基金产品"/><Stat label="符合成交额筛选的基金" value={num(liquid)} note="近60日成交额筛选"/></section><Panel title="十年价格回报最高的指数" tag="前12名"><BarChart rows={top} labelKey="indx_name" valueKey="cagr" color="#1267d6"/></Panel><Panel title="指数与代表性基金的表现" tag="可搜索、可排序"><SortableTable rows={etfs} columns={[["ts_code", "ETF"], ["matched_index_name", "跟踪指数"], ["etf_cagr", "基金年化回报"], ["index_cagr", "指数年化回报"], ["etf_max_drawdown", "基金最大回撤"], ["median_amount_60d", "近60日成交额中位数"]]} percentColumns={["etf_cagr", "index_cagr", "etf_max_drawdown"]}/></Panel></>;
 }
 
-function BarraDiagnosticPage() {
-  const { data: summary, error: summaryError } = useJson<BarraSummary>("barra/barra_summary.json");
-  const { data: quantiles, error: quantilesError } = useCsv("barra/barra_size_quantiles.csv");
-  if (!summary || !quantiles) return <><ThemeHeading kicker="Barra 风格因子历史研究（18年）" title="按市值分组观察后续收益" text="查看因子摘要，以及不同市值组的后续收益。" asof="快照待发布"/><div className="callout status-panel"><span className="section-kicker">研究状态</span><h3>Barra 快照尚未发布到网页</h3><p>{summaryError || quantilesError ? "历史研究数据文件尚未发布，待补充后展示。" : "正在加载 Barra 研究快照。"}</p></div></>;
-  const monotonicity = summary.size_monotonicity;
-  const factorCount = summary.legacy_barra_result?.factor_count;
-  const rows = quantiles.map((row) => ({ bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return, count: row.count, formation_date: row.formation_date }));
-  const curve = Object.values(rows.reduce<Record<string, Row>>((result, row) => { const current = result[row.bucket] ?? { bucket: row.bucket, forward_return: "0", count: "0" }; current.forward_return = String(Number(current.forward_return) + Number(row.forward_return || 0)); current.count = String(Number(current.count) + 1); result[row.bucket] = current; return result; }, {})).map((row) => ({ bucket: row.bucket, value: String(Number(row.forward_return) / Math.max(Number(row.count), 1)) }));
-  return <><ThemeHeading kicker="历史研究档案 · Barra 风格因子" title="市值分组的历史表现" text="查看历史研究摘要，以及用当前可用 A 股数据重新计算的市值分组结果。" asof={summary.source ? `当前重算 ${summary.source.coverage_start ?? "未提供"} 至 ${summary.source.coverage_end ?? "未提供"}` : "研究快照"}/><section className="stat-grid"><Stat label="历史因子数" value={num(factorCount)} note="来自历史结果包" accent/><Stat label="市值分组" value={num(monotonicity?.quantiles)} note="当前诊断"/><Stat label="最小组减最大组的收益" value={pct(Number(monotonicity?.tail_spread))} note="Q1 减 Q10"/><Stat label="分组日期数量" value={num(monotonicity?.formation_dates)} note="存在时间相关性"/></section><Panel title="各市值组的下一交易日平均收益" tag="历史分组统计（下一交易日收益）"><BarChart rows={curve} labelKey="bucket" valueKey="value" color="#b64d33"/></Panel><Panel title="市值分组明细" tag="可搜索、可排序"><SortableTable rows={rows} columns={[["formation_date", "分组日期"], ["bucket", "市值分组"], ["forward_return", "下一交易日收益"], ["count", "股票数"]]} percentColumns={["forward_return"]}/></Panel><div className="fine-print"><span className="section-kicker">研究边界</span><p>18 年指历史研究窗口，起止时间为 {summary.source?.coverage_start ?? "未提供"} 至 {summary.source?.coverage_end ?? "未提供"}。相邻交易日的结果可能相关。这些统计仅描述历史表现，尚未检验统计显著性或实际交易效果。</p></div></>;
-}
-
 const FACTOR_NAMES: Record<string, string> = { beta: "低贝塔", chip_concentration: "筹码集中度", dividend_yield: "股息率", earnings_yield: "盈利收益率", fund_breadth: "公募重仓广度", fund_breadth_change: "公募重仓广度变化", fund_ownership: "公募重仓比例", fund_ownership_change: "公募重仓比例变化", growth: "成长", institution_holding: "机构持仓", leverage: "低杠杆", liquidity: "低换手", liquidity_flow: "大单资金流", lowvol: "低波动", momentum: "21日动量", ps_value: "市销率价值", quality: "质量", size: "市值", value: "价值" };
 const FACTOR_DEFINITIONS: Row[] = [
   { factor: "size", name: "市值", direction: "大市值减小市值", method: "总市值取自然对数，每月分组" },
@@ -259,7 +198,6 @@ function BarraPage() {
   const { data: correlations } = useJson<CorrelationMatrix>("barra/factor_correlation.json");
   const [selectedFactor, setSelectedFactor] = useState("size");
   if (!summary || !quantiles || !factors || !yearly || !correlations) return <><ThemeHeading kicker="18 年 A 股风格因子研究" title="18 年 A 股风格因子动态：收益、稳定性与市场阶段" text="研究快照正在加载；研究问题是这些风格因子在不同 A 股市场阶段是否持续存在。" asof="历史快照加载中"/><div className="callout status-panel"><span className="section-kicker">研究状态</span><h3>历史研究快照正在加载</h3><p>{summaryError || quantilesError ? "网页数据不完整，请先生成并发布 Barra 历史派生文件。" : "正在加载历史因子总览、逐年收益和相关性数据。"}</p></div></>;
-  const monotonicity = summary.size_monotonicity;
   const quantileRows = quantiles.map((row) => ({ bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return, count: row.count, formation_date: row.formation_date }));
   const quantileCurve = Object.values(quantileRows.reduce<Record<string, Row>>((result, row) => { const current = result[row.bucket] ?? { bucket: row.bucket, forward_return: "0", count: "0" }; current.forward_return = String(Number(current.forward_return) + Number(row.forward_return || 0)); current.count = String(Number(current.count) + 1); result[row.bucket] = current; return result; }, {})).map((row) => ({ bucket: row.bucket, value: String(Number(row.forward_return) / Math.max(Number(row.count), 1)) }));
   const factorRows = factors.map((factor) => ({ factor: FACTOR_NAMES[factor.factor] ?? factor.factor, coverage: `${factor.years} 年 · ${factor.days} 日`, annual: String(factor.geometric_annual_ret / 100), vol: String(factor.annual_vol / 100), sharpe: String(factor.sharpe), drawdown: String(factor.max_drawdown / 100), hit: String(factor.hit_rate / 100) }));
@@ -287,18 +225,6 @@ function CashflowPageContent() {
   const basisLabel = basis === "all" ? "全部回报口径" : displayLabels[basis];
   const asOf = [...new Set(rows.map((row) => row.as_of).filter(Boolean))].sort().at(-1);
   return <><ThemeHeading kicker="现金流指数 · 股息与调仓研究" title="比较现金流指数在不同周期下的历史表现。" text="按时间窗口和回报口径筛选，查看调仓频率及历史收益。价格回报只计价格变化，税前全收益计入税前股息再投资。" asof={`数据截至 ${asOf ?? "未提供"}`}/><section className="stat-grid"><Stat label="指数样本" value={num(codes.length)} note="现金流主题指数" accent/><Stat label="调仓频率参考" value={displayValue("rebalance_frequency", frequency[0]?.rebalance_frequency ?? "未提供")} note="首条记录的调仓频率"/><Stat label="可选时间窗口" value={num(windows.length)} note="从近一周到近十年"/></section><Panel title="指数收益对比" tag={`${windowLabel} · ${basisLabel}`}><ControlBar><span className="control-label">时间窗口</span>{windows.map((value) => <Choice key={value} active={windowKey === value} onClick={() => setWindowKey(value)}>{displayValue("window", value)}</Choice>)}<span className="control-label">回报口径</span>{[["all", "全部口径"], ["price_return", "价格回报"], ["gross_total_return", "税前全收益"]].map(([value, label]) => <Choice key={value} active={basis === value} onClick={() => setBasis(value as CashflowBasis)}>{label}</Choice>)}</ControlBar>{comparison.length ? <BarChart rows={comparison} labelKey="name" valueKey="return" color="#1267d6"/> : <p className="panel-note">当前窗口没有对应回报口径的数据。</p>}</Panel><Panel title="当前窗口的表现明细"><SortableTable rows={comparison} columns={[["name", "指数"], ["rebalance_frequency", "调仓"], ["return_basis", "回报口径"], ["window", "窗口"], ["return", "累计回报"], ["cagr", "年化回报"]]} percentColumns={["return", "cagr"]}/></Panel></>;
-}
-
-function AnimalPage() {
-  const { data: animalLatest } = useJson<Row>("animal/latest.json");
-  const { data: animalHistory } = useJson<Row[]>("animal/history.json");
-  const { data: animalChanges } = useJson<Row>("animal/changes.json");
-  const { data: plantLatest } = useJson<Row>("plant/latest.json");
-  const { data: plantHistory } = useJson<Row[]>("plant/history.json");
-  const { data: animalConstituents } = useJson<Row[]>("animal/constituents.json");
-  const { data: plantConstituents } = useJson<Row[]>("plant/constituents.json");
-  if (!animalLatest || !animalHistory || !animalChanges || !plantLatest || !plantHistory || !animalConstituents || !plantConstituents) return <Loading />;
-  return <><ThemeHeading kicker="A股动物与植物主题指数" title="动物与植物主题指数的历史表现" text="查看动物与植物主题指数的严格和扩展口径、基准、历史净值、当前成分及调仓变化。" asof={`截至 ${animalLatest.date}`}/><section className="stat-grid"><Stat label="动物严格口径" value={num(animalLatest.zoo_strict_nav)} note={pct(asNumber(animalLatest.zoo_strict_daily))} accent/><Stat label="动物扩展口径" value={num(animalLatest.zoo_extended_nav)} note={pct(asNumber(animalLatest.zoo_extended_daily))}/><Stat label="植物严格口径" value={num(plantLatest.zoo_strict_nav)} note={pct(asNumber(plantLatest.zoo_strict_daily))}/><Stat label="沪深300 ETF" value={num(animalLatest.benchmark_nav)} note={pct(asNumber(animalLatest.benchmark_daily))}/></section><Panel title="主题指数净值路径" tag="月度调仓"><LineChart labels={animalHistory.map((row) => row.date)} series={[{ name: "动物严格", values: animalHistory.map((row) => Number(row.zoo_strict_nav)), color: "#c84b2f" }, { name: "动物扩展", values: animalHistory.map((row) => Number(row.zoo_extended_nav)), color: "#1267d6" }, { name: "植物严格", values: plantHistory.map((row) => Number(row.zoo_strict_nav)), color: "#51855f" }]}/></Panel><div className="research-grid"><Panel title="当前动物成分"><SimpleTable rows={animalConstituents.slice(0, 12)} columns={Object.keys(animalConstituents[0] ?? {}).slice(0, 4).map((key) => [key, key])}/></Panel><Panel title="当前植物成分"><SimpleTable rows={plantConstituents.slice(0, 12)} columns={Object.keys(plantConstituents[0] ?? {}).slice(0, 4).map((key) => [key, key])}/></Panel><Panel title="最近调仓变化"><SimpleTable rows={Object.entries(animalChanges).map(([variant, value]) => ({ variant, detail: JSON.stringify(value) }))} columns={[["variant", "口径"], ["detail", "变化"]]}/></Panel></div></>;
 }
 
 function LiquidityPage({ embedded = false }: { embedded?: boolean }) { return <><LiquidityPeriodPanel embedded={embedded}/><LiquidityPageLegacy/></>; }
@@ -347,31 +273,19 @@ function SortableTable({ rows, columns, percentColumns = [], searchPlaceholder =
 }
 function Loading() { return <p className="loading">正在加载研究数据……</p>; }
 
-function App() {
-  const validTabs: Tab[] = ["cashflow-recovery", "overview", "microcap", "style", "style-factors-18y", "cashflow", "cross-market", "indices", "liquidity"];
-  const initialHash = window.location.hash.slice(1);
-  const hash = (window.location.hash === "#microcap-recovery" ? "microcap" : initialHash) as Tab;
-  const [tab, setTab] = useState<Tab>(validTabs.includes(hash) ? hash : "overview");
-  const [microcapScope, setMicrocapScope] = useState<MicrocapScope>("a-share");
-  const [styleScope, setStyleScope] = useState<StyleScope>(initialHash === "style-factors-18y" ? "barra" : "indices");
-  const [themeChoice, setThemeChoice] = useState<ThemeChoice>(() => readThemeChoice(window.localStorage));
-  const [resolvedTheme, setResolvedTheme] = useState(() => applyTheme(themeChoice, window.matchMedia("(prefers-color-scheme: dark)").matches, document.documentElement));
-  useEffect(() => {
-    const media = window.matchMedia("(prefers-color-scheme: dark)");
-    const update = () => setResolvedTheme(applyTheme(themeChoice, media.matches, document.documentElement));
-    update();
-    if (themeChoice !== "system") return undefined;
-    media.addEventListener?.("change", update);
-    return () => media.removeEventListener?.("change", update);
-  }, [themeChoice]);
-  const themeLabel = themeChoice === "system" ? `跟随系统 · ${resolvedTheme === "dark" ? "暗" : "亮"}` : themeChoice === "dark" ? "暗色" : "亮色";
-  const cycleTheme = () => { const next: ThemeChoice = themeChoice === "light" ? "dark" : themeChoice === "dark" ? "system" : "light"; persistThemeChoice(window.localStorage, next); setThemeChoice(next); };
-  useEffect(() => { const onHash = () => { const next = window.location.hash.slice(1) as Tab; if (next === "microcap-recovery") { setMicrocapScope("a-share"); setTab("microcap"); } else if (next === "style-factors-18y") { setStyleScope("barra"); setTab("style"); } else if (validTabs.includes(next)) { if (next === "style") setStyleScope("indices"); setTab(next); } }; window.addEventListener("hashchange", onHash); return () => window.removeEventListener("hashchange", onHash); }, []);
-  const page = tab === "microcap" || tab === "cross-market" ? <MicrocapPage scope={tab === "cross-market" ? "cross-market" : microcapScope} onScopeChange={setMicrocapScope}/> : tab === "style" || tab === "style-factors-18y" ? <StylePage scope={styleScope} onScopeChange={setStyleScope}/> : tab === "indices" ? <IndicesPage/> : tab === "cashflow" || tab === "cashflow-recovery" ? <CashflowPage/> : tab === "liquidity" ? <LiquidityPage/> : <Overview/>;
-  const navItems: [Tab, string][] = [["overview", "档案总览"], ["cashflow", "现金流历史研究"], ["microcap", "小微盘历史研究"], ["style", "长期风格历史研究"]];
-  return <div className="app"><header className="site-header"><div className="site-masthead"><div><span className="brand-kicker">历史研究档案 · 证据优先</span><h1>市场研究档案</h1><p className="site-deck">汇集历史市场研究，注明研究进展、数据来源和使用限制。</p></div><div className="site-meta"><span>历史档案 · 研究中 · 待补数据</span><strong>公开汇总结果 · 仅描述历史</strong><button className="theme-toggle" type="button" onClick={cycleTheme} aria-label={`切换主题，当前为${themeLabel}`}>主题：{themeLabel}</button></div></div><nav className="site-nav" aria-label="研究主题">{navItems.map(([key, label]) => <a key={key} className={tab === key || (key === "cashflow" && tab === "cashflow-recovery") || (key === "style" && (tab === "indices" || tab === "style-factors-18y")) || (key === "cross-market" && tab === "liquidity") ? "active" : ""} href={`#${key}`} onClick={() => setTab(key)}>{label}</a>)}</nav></header><main className="site-main">{page}</main><footer className="site-footer"><span>市场研究档案 · 历史证据优先</span><a href="docs/">研究说明 ↗</a><a href="https://github.com/runchengxie/quant-market-research">查看 GitHub 仓库 ↗</a></footer></div>;
+export type ResearchRouteKey = "cashflow" | "cashflowRecovery" | "microcap" | "microcapRecovery" | "crossMarketLiquidity" | "indices" | "styleFactors" | "liquidity";
+
+export function ResearchRoute({ route }: { route: ResearchRouteKey }) {
+  const [microcapScope, setMicrocapScope] = useState<MicrocapScope>(route === "crossMarketLiquidity" ? "cross-market" : "a-share");
+  const [styleScope, setStyleScope] = useState<StyleScope>(route === "styleFactors" ? "barra" : "indices");
+  const page = route === "microcap" || route === "microcapRecovery" || route === "crossMarketLiquidity"
+    ? <MicrocapPage scope={microcapScope} onScopeChange={setMicrocapScope}/>
+    : route === "styleFactors"
+      ? <StylePage scope={styleScope} onScopeChange={setStyleScope}/>
+      : route === "indices"
+        ? <IndicesPage/>
+        : route === "cashflow" || route === "cashflowRecovery"
+          ? <CashflowPage/>
+          : <LiquidityPage/>;
+  return <Suspense fallback={<Loading />}>{page}</Suspense>;
 }
-
-function Overview() { return <ResearchOverview/>; }
-
-createRoot(document.getElementById("root")!).render(<StrictMode><Suspense fallback={<Loading />}><App /></Suspense></StrictMode>);

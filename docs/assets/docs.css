@@ -1,5 +1,3 @@
-@import url('theme-tokens.css');
-
 :root { --bs-body-bg: var(--paper); --bs-body-color: var(--ink); }
 
 html,
@@ -172,7 +170,7 @@ body > .container {
 [role="main"] th {
   background: #eee8de;
   color: var(--muted);
-  font: 500 11px/1.5 "DM Mono", monospace;
+  font: 500 11px/1.5 var(--font-mono);
   letter-spacing: .02em;
 }
 
@@ -192,7 +190,7 @@ body > .container {
   padding: 2px 5px;
   background: #eee8de;
   color: #8d402f;
-  font: 0.88em "DM Mono", monospace;
+  font: 0.88em var(--font-mono);
 }
 
 [role="main"] pre {
@@ -230,7 +228,7 @@ footer {
   border-top: 1px solid var(--rule);
   padding: 18px 0 28px;
   color: var(--muted);
-  font: 11px/1.7 "DM Mono", monospace;
+  font: 11px/1.7 var(--font-mono);
 }
 
 @media (max-width: 767px) {

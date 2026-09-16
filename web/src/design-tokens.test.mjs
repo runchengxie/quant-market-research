@@ -14,7 +14,8 @@ test("shared design tokens are the single source for the research and docs palet
     assert.match(tokens, new RegExp(`${token}:`));
   }
   assert.match(webStyles, /\.\.\/\.\.\/docs\/assets\/theme-tokens\.css/);
-  assert.match(docsStyles, /theme-tokens\.css/);
+  assert.match(docsStyles, /var\(--font-body\)/);
+  assert.match(docsStyles, /var\(--font-heading\)/);
   assert.match(mkdocs, /- assets\/theme-tokens\.css[\s\S]*- assets\/docs\.css/);
   assert.match(mkdocs, /!\/assets\/theme-tokens\.css/);
 });

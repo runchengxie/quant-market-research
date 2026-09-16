@@ -1,5 +1,6 @@
 ---
 import ThemeToggle from "./react/ThemeToggle";
+import { withBase } from "../lib/routes";
 
 interface Props { activeRoute: string }
 
@@ -27,6 +28,6 @@ const links = [
     </div>
   </div>
   <nav class="site-nav" aria-label="研究主题">
-    {links.map((link) => <a class:list={{ active: activeRoute === link.id }} href={link.href}>{link.label}</a>)}
+    {links.map((link) => <a class:list={{ active: activeRoute === link.id }} href={withBase(link.href, import.meta.env.BASE_URL)}>{link.label}</a>)}
   </nav>
 </header>
