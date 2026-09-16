@@ -49,6 +49,7 @@ jobs:
           npm ci
           npm test
           npm run build
+          npm run report:bundle
           touch dist/.nojekyll
 
       - name: Build public research documentation

@@ -1,21 +1,13 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseCsv } from "./csv.mjs";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, "../..");
 const output = path.join(root, "outputs");
 const target = path.resolve(here, "../public/data");
 fs.mkdirSync(target, { recursive: true });
-
-const parseCsv = (text) => {
-  const lines = text.trim().split(/\r?\n/);
-  const headers = lines.shift().split(",");
-  return lines.filter(Boolean).map((line) => {
-    const values = line.split(",");
-    return Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""]));
-  });
-};
 
 const summary = JSON.parse(fs.readFileSync(path.join(output, "microcap_summary.json"), "utf8"));
 const nav = parseCsv(fs.readFileSync(path.join(output, "microcap_nav.csv"), "utf8"))

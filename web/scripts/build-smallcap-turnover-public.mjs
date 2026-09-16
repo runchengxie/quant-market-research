@@ -1,34 +1,10 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { parseCsv } from "./csv.mjs";
 
 const outputRoot = process.env.MARKET_RESEARCH_OUTPUT_ROOT ?? "/home/richard/data/market-research/outputs";
 const publicPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../public/data/smallcap_turnover.json");
-
-function parseCsv(text) {
-  const rows = [];
-  let row = [];
-  let cell = "";
-  let quoted = false;
-  for (let index = 0; index < text.length; index += 1) {
-    const char = text[index];
-    if (char === '"' && text[index + 1] === '"' && quoted) { cell += '"'; index += 1; continue; }
-    if (char === '"') { quoted = !quoted; continue; }
-    if (char === "," && !quoted) { row.push(cell); cell = ""; continue; }
-    if ((char === "\n" || char === "\r") && !quoted) {
-      if (char === "\r" && text[index + 1] === "\n") index += 1;
-      row.push(cell);
-      if (row.some((value) => value !== "")) rows.push(row);
-      row = [];
-      cell = "";
-      continue;
-    }
-    cell += char;
-  }
-  if (cell || row.length) { row.push(cell); rows.push(row); }
-  const headers = rows.shift() ?? [];
-  return rows.map((values) => Object.fromEntries(headers.map((header, index) => [header, values[index] ?? ""])));
-}
 
 function median(values) {
   const sorted = [...values].sort((left, right) => left - right);
