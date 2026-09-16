@@ -10,9 +10,12 @@ interface Props {
   kicker: string;
   introduction: string;
   boundary: string;
+  evidence?: string;
+  question?: string;
+  nextStep?: string;
 }
 
-const { title, description, route, activeRoute, kicker, introduction, boundary } = Astro.props;
+const { title, description, route, activeRoute, kicker, introduction, boundary, evidence = "描述性研究", question = "这项研究正在回答什么问题？", nextStep = "补充数据核验和可执行性测试。" } = Astro.props;
 ---
 
 <SiteLayout title={title} description={description} activeRoute={activeRoute}>
@@ -24,5 +27,10 @@ const { title, description, route, activeRoute, kicker, introduction, boundary }
     </div>
   </section>
   <p class="fine-print"><span class="section-kicker">阅读边界</span><br />{boundary}</p>
+  <section class="report-context" aria-label="研究摘要">
+    <div><span class="section-kicker">研究问题</span><p>{question}</p></div>
+    <div><span class="section-kicker">证据状态</span><p><span class="evidence-status">{evidence}</span></p></div>
+    <div><span class="section-kicker">下一步</span><p>{nextStep}</p></div>
+  </section>
   <ResearchRoute client:load route={route} />
 </SiteLayout>
