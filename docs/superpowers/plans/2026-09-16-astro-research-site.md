@@ -4,7 +4,7 @@
 
 **Goal:** 将公开研究网页迁移为 Astro 静态多页面站，保留 React/ECharts 交互、MkDocs 说明站、GitHub Pages 地址和公开数据契约。
 
-**Architecture:** Astro 提供正式路由、公共页面框架和静态首页摘要。现有研究主体暂由共享 React 路由组件承载，交互组件保留 React/ECharts。主页和 MkDocs 共用 CSS 设计变量。Astro 先输出到 `web/dist/`，随后 MkDocs 写入 `web/dist/docs/`。逐页静态化正文和路由级交互代码拆分列为后续工作。
+**Architecture:** Astro 提供正式路由、公共页面框架和静态首页摘要。研究主体按微盘、风格、现金流和流动性拆成独立 React 页面模块，路由分发通过动态导入形成分包，交互组件保留 React/ECharts。主页和 MkDocs 共用 CSS 设计变量。Astro 先输出到 `web/dist/`，随后 MkDocs 写入 `web/dist/docs/`。稳定的专题解释段落仍可继续前移到 Astro。
 
 **Tech Stack:** Astro、`@astrojs/react`、React 18、TypeScript、ECharts、MkDocs、GitHub Actions、Node.js test runner；路由验收使用 Playwright。
 
@@ -581,4 +581,4 @@ PR CI 通过后合并到 `main`，等待 Pages workflow 成功。访问项目主
 
 ## 本轮实施说明
 
-本轮实际完成了 Astro 静态多页面入口、正式路由和旧 hash 兼容、共享站点框架与设计变量、主页公开快照静态摘要、MkDocs 顺序构建、静态产物检查和 Playwright 冒烟测试。研究专题主体仍由 `web/src/components/react/ResearchRoutes.tsx` 统一分发，因此不满足原计划中的逐页 Astro 正文和路由级 bundle 拆分目标。后续按专题将静态解释内容迁入 Astro，并把图表与筛选拆成独立交互组件。此计划用于记录已执行方案及尚存差距，原步骤中的文件名和命令仅在与当前实现一致时作为参考。
+本轮实际完成了 Astro 静态多页面入口、正式路由和旧 hash 兼容、共享站点框架与设计变量、主页公开快照静态摘要、按研究主题拆分 React 页面、路由级动态分包、MkDocs 顺序构建、静态产物检查和 Playwright 冒烟测试。专题正文仍主要由 React 生成，尚未全部迁成静态 Astro 内容。后续可按专题把稳定解释段落迁入 Astro，并继续观察分包大小和首屏加载。此计划用于记录已执行方案及尚存差距，原步骤中的文件名和命令仅在与当前实现一致时作为参考。
