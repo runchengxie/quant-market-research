@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const routes = [
-  ["", "研究到了哪一步，有哪些发现？"],
+  ["", "从主要发现开始了解这些研究"],
   ["research/cashflow/", "现金流历史研究"],
   ["research/cashflow/recovery/", "现金流回撤与回本时间"],
   ["research/microcap/", "A 股微盘历史研究"],
@@ -59,5 +59,5 @@ test("replication data loads from the GitHub Pages base path", async ({ page }) 
   const replicationResponse = page.waitForResponse((response) => response.url().endsWith("/data/research/replication.json"));
   await page.goto("research/microcap/", { waitUntil: "domcontentloaded" });
   expect((await replicationResponse).ok()).toBeTruthy();
-  await expect(page.getByRole("heading", { name: "我们自己算出的结果，跟指数有多接近？" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "自行计算的结果与官方指数有多接近？" })).toBeVisible();
 });
