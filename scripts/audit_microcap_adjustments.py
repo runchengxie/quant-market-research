@@ -3,7 +3,9 @@
 
 This is a diagnostic, not a return publication pipeline. It requires the
 external quant-market-data-platform Tushare parquet assets and writes its
-receipt outside the repository.
+receipt outside the repository. Adjusted-factor jumps are detected on the
+complete per-symbol daily panel before intersecting with basket members, so a
+stock entering a basket later cannot shift the event date.
 """
 from __future__ import annotations
 import argparse
@@ -58,13 +60,16 @@ def main() -> None:
     for n in [50,100,200,400,800]:
         con.execute(f"CREATE OR REPLACE TABLE h AS SELECT r.*,e.adj_close entry_close,x.adj_close exit_close,(x.adj_close/e.adj_close-1) ret FROM ranked r LEFT JOIN panel e ON e.symbol=r.symbol AND e.date=r.entry_date LEFT JOIN panel x ON x.symbol=r.symbol AND x.date=r.return_date WHERE r.rn<={n} AND e.adj_close>0 AND x.adj_close>0")
         annual=con.execute("SELECT year(formation_date) AS calendar_year,exp(sum(ln(1+ret)))-1 AS cumulative_return FROM (SELECT formation_date,avg(ret) ret FROM h GROUP BY formation_date HAVING count(*)=?) GROUP BY calendar_year ORDER BY calendar_year",[n]).fetchall()
-        jumps=con.execute("""SELECT symbol,formation_date,adj_factor,prev,ratio,price_vintage,prev_vintage
-          FROM (SELECT symbol,formation_date,adj_factor,price_vintage,
-                lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date) prev,
-                lag(price_vintage) OVER (PARTITION BY symbol ORDER BY formation_date) prev_vintage,
-                adj_factor/nullif(lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date),0) ratio
-                FROM h)
-          WHERE ratio>1.5 OR ratio<0.667 ORDER BY abs(ln(ratio)) DESC LIMIT 20""").fetchall()
+        jumps=con.execute("""SELECT j.symbol,j.date,j.adj_factor,j.prev,j.ratio,j.price_vintage,j.prev_vintage
+          FROM (SELECT symbol,date,adj_factor,price_vintage,
+                lag(adj_factor) OVER (PARTITION BY symbol ORDER BY date) prev,
+                lag(price_vintage) OVER (PARTITION BY symbol ORDER BY date) prev_vintage,
+                adj_factor/nullif(lag(adj_factor) OVER (PARTITION BY symbol ORDER BY date),0) ratio
+                FROM panel) j
+          JOIN (SELECT DISTINCT symbol FROM h) members USING(symbol)
+          WHERE j.date BETWEEN CAST(? AS DATE) AND CAST(? AS DATE)
+            AND (ratio>1.5 OR ratio<0.667)
+          ORDER BY abs(ln(ratio)) DESC LIMIT 20""", [a.start, a.end]).fetchall()
         jump_rows=[]
         for symbol, formation_date, factor, prev, ratio, vintage, prev_vintage in jumps:
             matches=con.execute(f"SELECT ex_date,record_date,stk_div,stk_bo_rate,stk_co_rate,cash_div FROM read_parquet('{events}') WHERE ts_code=? AND (abs(date_diff('day',try_strptime(ex_date,'%Y%m%d'),CAST(? AS DATE)))<=7 OR abs(date_diff('day',try_strptime(record_date,'%Y%m%d'),CAST(? AS DATE)))<=7)", [symbol,str(formation_date)[:10],str(formation_date)[:10]]).fetchall()
