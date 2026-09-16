@@ -37,7 +37,7 @@ def main() -> None:
     con.execute(f"""CREATE OR REPLACE TABLE panel AS
       SELECT d.ts_code symbol, try_strptime(cast(d.trade_date as varchar),'%Y%m%d') date,
              d.close raw_close, f.adj_factor, d.close*f.adj_factor adj_close,
-             b.total_mv, d.amount
+             b.total_mv, d.amount, 'historical' AS price_vintage
       FROM read_parquet('{daily}',union_by_name=true) d
       JOIN read_parquet('{basic}',union_by_name=true) b USING(ts_code,trade_date)
       JOIN read_parquet('{adj}',union_by_name=true) f USING(ts_code,trade_date)
@@ -45,23 +45,30 @@ def main() -> None:
         AND d.trade_date BETWEEN {int(start)} AND {int(end)}
         AND d.close>0 AND f.adj_factor>0 AND b.total_mv>0 AND d.amount>0
       UNION ALL
-      SELECT ts_code symbol, try_strptime(trade_date,'%Y%m%d') date, close raw_close, adj_factor, adj_close, total_mv, amount
+      SELECT ts_code symbol, try_strptime(trade_date,'%Y%m%d') date, close raw_close, adj_factor, adj_close, total_mv, amount,
+             'clean' AS price_vintage
       FROM read_parquet('{clean}',union_by_name=true)
       WHERE trade_date >= '20150101'
         AND trade_date BETWEEN '{start}' AND '{end}'
         AND close>0 AND adj_factor>0 AND total_mv>0 AND amount>0
     """)
     con.execute("CREATE OR REPLACE TABLE dts AS SELECT date, lead(date,1) over(order by date) entry_date, lead(date,2) over(order by date) return_date FROM (select distinct date from panel)")
-    con.execute("CREATE OR REPLACE TABLE ranked AS SELECT p.date formation_date,d.entry_date,d.return_date,p.symbol,p.total_mv,p.adj_factor,p.raw_close,p.adj_close,row_number() over(partition by p.date order by p.total_mv,p.symbol) rn FROM panel p join dts d using(date)")
+    con.execute("CREATE OR REPLACE TABLE ranked AS SELECT p.date formation_date,d.entry_date,d.return_date,p.symbol,p.total_mv,p.adj_factor,p.raw_close,p.adj_close,p.price_vintage,row_number() over(partition by p.date order by p.total_mv,p.symbol) rn FROM panel p join dts d using(date)")
     results=[]
     for n in [50,100,200,400,800]:
         con.execute(f"CREATE OR REPLACE TABLE h AS SELECT r.*,e.adj_close entry_close,x.adj_close exit_close,(x.adj_close/e.adj_close-1) ret FROM ranked r LEFT JOIN panel e ON e.symbol=r.symbol AND e.date=r.entry_date LEFT JOIN panel x ON x.symbol=r.symbol AND x.date=r.return_date WHERE r.rn<={n} AND e.adj_close>0 AND x.adj_close>0")
         annual=con.execute("SELECT year(formation_date) AS calendar_year,exp(sum(ln(1+ret)))-1 AS cumulative_return FROM (SELECT formation_date,avg(ret) ret FROM h GROUP BY formation_date HAVING count(*)=?) GROUP BY calendar_year ORDER BY calendar_year",[n]).fetchall()
-        jumps=con.execute("SELECT symbol,formation_date,adj_factor,prev,ratio FROM (SELECT symbol,formation_date,adj_factor,lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date) prev,adj_factor/nullif(lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date),0) ratio FROM h) WHERE ratio>1.5 OR ratio<0.667 ORDER BY abs(ln(ratio)) DESC LIMIT 20").fetchall()
+        jumps=con.execute("""SELECT symbol,formation_date,adj_factor,prev,ratio,price_vintage,prev_vintage
+          FROM (SELECT symbol,formation_date,adj_factor,price_vintage,
+                lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date) prev,
+                lag(price_vintage) OVER (PARTITION BY symbol ORDER BY formation_date) prev_vintage,
+                adj_factor/nullif(lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date),0) ratio
+                FROM h)
+          WHERE ratio>1.5 OR ratio<0.667 ORDER BY abs(ln(ratio)) DESC LIMIT 20""").fetchall()
         jump_rows=[]
-        for symbol, formation_date, factor, prev, ratio in jumps:
+        for symbol, formation_date, factor, prev, ratio, vintage, prev_vintage in jumps:
             matches=con.execute(f"SELECT ex_date,record_date,stk_div,stk_bo_rate,stk_co_rate,cash_div FROM read_parquet('{events}') WHERE ts_code=? AND (abs(date_diff('day',try_strptime(ex_date,'%Y%m%d'),CAST(? AS DATE)))<=7 OR abs(date_diff('day',try_strptime(record_date,'%Y%m%d'),CAST(? AS DATE)))<=7)", [symbol,str(formation_date)[:10],str(formation_date)[:10]]).fetchall()
-            jump_rows.append({'symbol':symbol,'formation_date':str(formation_date)[:10],'adj_factor':factor,'previous_adj_factor':prev,'ratio':ratio,'dividend_matches':matches})
+            jump_rows.append({'symbol':symbol,'formation_date':str(formation_date)[:10],'adj_factor':factor,'previous_adj_factor':prev,'ratio':ratio,'price_vintage':vintage,'previous_price_vintage':prev_vintage,'boundary_jump':vintage != prev_vintage,'dividend_matches':matches})
         results.append({'constituent_count':n,'annual_returns':annual,'adjusted_factor_jumps':jump_rows,'observations':con.execute('select count(*) from h').fetchone()[0]})
     a.output.parent.mkdir(parents=True, exist_ok=True)
     payload = {
