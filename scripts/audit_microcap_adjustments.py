@@ -20,8 +20,25 @@ def main() -> None:
     daily=str(base/'daily/a_share_all_20080102_20260821_union_daily/data/**/*.parquet')
     basic=str(base/'daily_basic/a_share_all_20080102_20260821_union_daily_basic/data/**/*.parquet')
     adj=str(base/'adj_factor/a_share_all_20080101_20141231_adj_factor/data/**/*.parquet')
+    clean=str(base/'daily/a_share_all_20150101_20260914_daily_clean/data/*.parquet')
     con=duckdb.connect()
-    con.execute(f"""CREATE OR REPLACE TABLE panel AS SELECT d.ts_code symbol, try_strptime(cast(d.trade_date as varchar),'%Y%m%d') date, d.close raw_close, f.adj_factor, d.close*f.adj_factor adj_close, b.total_mv, d.amount FROM read_parquet('{daily}',union_by_name=true) d JOIN read_parquet('{basic}',union_by_name=true) b USING(ts_code,trade_date) JOIN read_parquet('{adj}',union_by_name=true) f USING(ts_code,trade_date) WHERE d.trade_date BETWEEN strftime(CAST(? AS DATE), '%Y%m%d')::INTEGER AND strftime(CAST(? AS DATE), '%Y%m%d')::INTEGER AND d.close>0 AND f.adj_factor>0 AND b.total_mv>0 AND d.amount>0""", [a.start,a.end])
+    con.execute(f"""CREATE OR REPLACE TABLE panel AS
+      SELECT d.ts_code symbol, try_strptime(cast(d.trade_date as varchar),'%Y%m%d') date,
+             d.close raw_close, f.adj_factor, d.close*f.adj_factor adj_close,
+             b.total_mv, d.amount
+      FROM read_parquet('{daily}',union_by_name=true) d
+      JOIN read_parquet('{basic}',union_by_name=true) b USING(ts_code,trade_date)
+      JOIN read_parquet('{adj}',union_by_name=true) f USING(ts_code,trade_date)
+      WHERE d.trade_date < 20150101
+        AND d.trade_date BETWEEN strftime(CAST(? AS DATE), '%Y%m%d')::INTEGER AND strftime(CAST(? AS DATE), '%Y%m%d')::INTEGER
+        AND d.close>0 AND f.adj_factor>0 AND b.total_mv>0 AND d.amount>0
+      UNION ALL
+      SELECT ts_code symbol, try_strptime(trade_date,'%Y%m%d') date, close raw_close, adj_factor, adj_close, total_mv, amount
+      FROM read_parquet('{clean}',union_by_name=true)
+      WHERE trade_date >= '20150101'
+        AND trade_date BETWEEN strftime(CAST(? AS DATE), '%Y%m%d') AND strftime(CAST(? AS DATE), '%Y%m%d')
+        AND close>0 AND adj_factor>0 AND total_mv>0 AND amount>0
+    """, [a.start,a.end,a.start,a.end])
     con.execute("CREATE OR REPLACE TABLE dts AS SELECT date, lead(date,1) over(order by date) entry_date, lead(date,2) over(order by date) return_date FROM (select distinct date from panel)")
     con.execute("CREATE OR REPLACE TABLE ranked AS SELECT p.date formation_date,d.entry_date,d.return_date,p.symbol,p.total_mv,p.adj_factor,p.raw_close,p.adj_close,row_number() over(partition by p.date order by p.total_mv,p.symbol) rn FROM panel p join dts d using(date)")
     results=[]
@@ -30,5 +47,5 @@ def main() -> None:
         annual=con.execute("SELECT year(formation_date) AS calendar_year,exp(sum(ln(1+ret)))-1 AS cumulative_return FROM (SELECT formation_date,avg(ret) ret FROM h GROUP BY formation_date HAVING count(*)=?) GROUP BY calendar_year ORDER BY calendar_year",[n]).fetchall()
         jumps=con.execute("SELECT symbol,formation_date,adj_factor,prev,ratio FROM (SELECT symbol,formation_date,adj_factor,lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date) prev,adj_factor/nullif(lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date),0) ratio FROM h) WHERE ratio>1.5 OR ratio<0.667 ORDER BY abs(ln(ratio)) DESC LIMIT 20").fetchall()
         results.append({'constituent_count':n,'annual_returns':annual,'adjusted_factor_jumps':jumps,'observations':con.execute('select count(*) from h').fetchone()[0]})
-    a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps({'start':a.start,'end':a.end,'method':'diagnostic only; no status, delist or execution constraints','results':results},default=str,ensure_ascii=False,indent=2)+'\n')
+    a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps({'start':a.start,'end':a.end,'method':'diagnostic only; no status, delist or execution constraints; historical and daily_clean price vintages are joined only for diagnostics and must be checked at the 2015 boundary','results':results},default=str,ensure_ascii=False,indent=2)+'\n')
 if __name__=='__main__': main()
