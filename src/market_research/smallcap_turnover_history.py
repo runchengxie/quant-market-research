@@ -12,6 +12,12 @@ def _date_parameter(value: str) -> str:
     return pd.Timestamp(text).date().isoformat()
 
 
+def _parquet_pattern(root: Path) -> str:
+    """Resolve both platform asset roots and legacy flat parquet directories."""
+    data_root = root / "data"
+    return str((data_root if data_root.is_dir() else root) / "**" / "*.parquet")
+
+
 def load_historical_turnover_panel(
     daily_root: Path,
     daily_basic_root: Path,
@@ -35,7 +41,7 @@ def load_historical_turnover_panel(
         raise RuntimeError("historical daily and daily_basic roots are required")
 
     filters = ["d.date IS NOT NULL", "b.date IS NOT NULL", "d.amount > 0", "b.total_mv > 0"]
-    parameters: list[object] = [str(daily_path / "**" / "*.parquet"), str(basic_path / "**" / "*.parquet")]
+    parameters: list[object] = [_parquet_pattern(daily_path), _parquet_pattern(basic_path)]
     if start_date is not None:
         filters.append("d.date >= CAST(? AS DATE)")
         parameters.append(_date_parameter(start_date))

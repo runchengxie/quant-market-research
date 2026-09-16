@@ -35,3 +35,23 @@ def test_load_historical_turnover_panel_joins_daily_and_daily_basic(tmp_path: Pa
     ]
     assert metadata["quality_status"] == "incomplete"
     assert "ST" in metadata["universe_filter"]
+
+
+def test_loader_reads_platform_asset_data_subdirectory(tmp_path: Path):
+    import duckdb
+
+    from market_research.smallcap_turnover_history import load_historical_turnover_panel
+
+    daily = tmp_path / "daily" / "data"
+    basic = tmp_path / "daily_basic" / "data"
+    daily.mkdir(parents=True)
+    basic.mkdir(parents=True)
+    con = duckdb.connect()
+    try:
+        con.execute("COPY (SELECT '000001.SZ' ts_code, 20080102 trade_date, 10.0 amount) TO ? (FORMAT PARQUET)", [str(daily / "part.parquet")])
+        con.execute("COPY (SELECT '000001.SZ' ts_code, 20080102 trade_date, 100.0 total_mv) TO ? (FORMAT PARQUET)", [str(basic / "part.parquet")])
+    finally:
+        con.close()
+    frame, _ = load_historical_turnover_panel(tmp_path / "daily", tmp_path / "daily_basic", "20080102", "20080102")
+    assert len(frame) == 1
+    assert frame.iloc[0]["symbol"] == "000001.SZ"

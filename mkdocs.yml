@@ -12,6 +12,7 @@ exclude_docs: |
   !/index.md
   !/research/factors/low-turnover.md
   !/research/factors/microcap.md
+  !/research/factors/smallcap-turnover-history.md
   !/css/**
   !/js/**
   !/img/**
@@ -25,6 +26,7 @@ nav:
   - 因子研究:
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md
+      - 小市值成交活跃度补充: research/factors/smallcap-turnover-history.md
 
 theme:
   name: mkdocs
