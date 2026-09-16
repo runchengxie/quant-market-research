@@ -27,6 +27,7 @@ from .indexes import (
 )
 from .reports import build_liquidity_report, write_report_bundle
 from .microcap import write_microcap_snapshot
+from .output_paths import resolve_output_root
 from .smallcap_turnover import DEFAULT_RANK_COUNTS, build_smallcap_turnover_stats
 from .smallcap_turnover_audit import build_overlap_audit
 from .smallcap_turnover_history import load_historical_turnover_panel
@@ -46,7 +47,7 @@ def _build_parser() -> argparse.ArgumentParser:
     config = subparsers.add_parser("config")
     config_subparsers = config.add_subparsers(dest="config_command")
     inspect = config_subparsers.add_parser("inspect")
-    inspect.add_argument("--output-root", default="outputs")
+    inspect.add_argument("--output-root")
     report = subparsers.add_parser("report")
     report_subparsers = report.add_subparsers(dest="report_command")
     liquidity = report_subparsers.add_parser("liquidity")
@@ -95,7 +96,8 @@ def main(argv: list[str] | None = None) -> int:
             return 0
         raise
     if args.command == "config" and args.config_command == "inspect":
-        print(json.dumps({"output_root": str(Path(args.output_root).expanduser().resolve())}))
+        config = {"output_root": args.output_root} if args.output_root else None
+        print(json.dumps({"output_root": str(resolve_output_root(config))}))
         return 0
     if args.command == "report" and args.report_command == "index-study":
         from .studies.index_study import run_study
@@ -110,7 +112,7 @@ def main(argv: list[str] | None = None) -> int:
         factor = str(study.get("factor_column", "factor"))
         rows = build_quantile_returns(panel, factor, int(study.get("quantiles", 10)), int(study.get("holding_period", 1)))
         summary = summarize_market_factor_evidence(rows, factor, {"study_id": study.get("study_id"), "window_years": study.get("window_years")})
-        output = Path(str(study.get("output_root", "outputs")))
+        output = resolve_output_root(study)
         output.mkdir(parents=True, exist_ok=True)
         rows.to_csv(output / "style_factor_quantiles.csv", index=False)
         (output / "style_factor_summary.json").write_text(json.dumps(summary, indent=2, default=str) + "\n", encoding="utf-8")
@@ -118,7 +120,7 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "report" and args.report_command == "global-six-market":
         study_path = Path(args.study)
         study = _load_yaml(study_path)
-        output = Path(str(study.get("output_root", "outputs/global_six_market")))
+        output = resolve_output_root(study, subdir="global_six_market")
         run_global_six_market(study_path, output)
         return 0
     if args.command == "validate":
@@ -131,11 +133,11 @@ def main(argv: list[str] | None = None) -> int:
             mapping = _index_research_path(config, "mapping_csv")
             if mapping is None:
                 raise RuntimeError("index_research.mapping_csv is required")
-            output = Path(config.get("output_root", "outputs")) / "linked_indices"
+            output = resolve_output_root(config, subdir="linked_indices")
             fetch_linked_indices(mapping, output, start_date=str(config.get("index_start_date", "20150101")), end_date=str(config.get("index_end_date", "20260821")))
             return 0
         if args.fetch_command == "cashflow":
-            output = Path(config.get("output_root", "outputs")) / "cashflow_indices"
+            output = resolve_output_root(config, subdir="cashflow_indices")
             refresh_cashflow_indices(output, end_date=str(config.get("index_end_date", "20260904")))
             return 0
     if args.command == "report" and args.report_command == "liquidity":
@@ -143,7 +145,7 @@ def main(argv: list[str] | None = None) -> int:
         panels, metadata = _build_configured_panels(config)
         if not panels:
             raise RuntimeError("no configured market source produced a panel")
-        write_report_bundle(build_liquidity_report(panels, metadata), Path(config.get("output_root", "outputs")))
+        write_report_bundle(build_liquidity_report(panels, metadata), resolve_output_root(config))
         return 0
     if args.command == "report" and args.report_command == "smallcap-turnover":
         config = _load_config(Path(args.config))
@@ -157,7 +159,7 @@ def main(argv: list[str] | None = None) -> int:
             use_duckdb=bool(config.get("use_duckdb", False)),
         )
         stats = build_smallcap_turnover_stats(panel)
-        output_root = Path(config.get("output_root", "outputs"))
+        output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         stats.to_csv(output_root / "smallcap_turnover_daily.csv", index=False)
         summary = {
@@ -223,7 +225,7 @@ def main(argv: list[str] | None = None) -> int:
             end_date=str(section["end_date"]) if section.get("end_date") else config.get("as_of") or None,
         )
         stats = build_smallcap_turnover_stats(panel)
-        output_root = Path(config.get("output_root", "outputs"))
+        output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         daily_artifact = output_root / "smallcap_turnover_history_daily.csv"
         summary_artifact = output_root / "smallcap_turnover_history_summary.json"
@@ -269,7 +271,7 @@ def main(argv: list[str] | None = None) -> int:
         if not clean_path.exists() or not historical_path.exists():
             raise RuntimeError("clean_daily_path and historical_daily_path are required")
         audit = build_overlap_audit(_read_table(clean_path), _read_table(historical_path))
-        output_root = Path(config.get("output_root", "outputs"))
+        output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         audit_artifact = output_root / "smallcap_turnover_overlap_audit.csv"
         summary_artifact = output_root / "smallcap_turnover_overlap_audit_summary.json"
@@ -302,7 +304,7 @@ def main(argv: list[str] | None = None) -> int:
         a_share_root = Path(str(sources.get("a_share_root", ""))) if isinstance(sources, dict) else Path("")
         if not a_share_root.exists():
             raise RuntimeError("A-share source is required for microcap report")
-        output_root = Path(config.get("output_root", "outputs"))
+        output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         if bool(config.get("use_duckdb", False)) and a_share_root.is_dir():
             reconstruction = reconstruct_smallest_cap_index_from_parquet(a_share_root, constituent_count=400)
@@ -345,7 +347,7 @@ def main(argv: list[str] | None = None) -> int:
             raise RuntimeError("configured A-share source does not exist")
         if not isinstance(barra_config, dict):
             barra_config = {}
-        output_root = Path(config.get("output_root", "outputs"))
+        output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         panel, panel_metadata = build_a_share_panel(
             a_share_root,
@@ -429,7 +431,7 @@ def main(argv: list[str] | None = None) -> int:
             industry_column=str(industry_column) if industry_column is not None else None,
             standardize=bool(risk_config.get("standardize", True)),
         )
-        output_root = Path(config.get("output_root", "outputs"))
+        output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         inputs.exposures.to_parquet(output_root / "barra_risk_exposures.parquet")
         inputs.returns.to_frame().to_parquet(output_root / "barra_risk_returns.parquet")
@@ -450,7 +452,7 @@ def main(argv: list[str] | None = None) -> int:
         start = str(config.get("index_start_date", "20160902"))
         end = str(config.get("index_end_date", config.get("as_of", "20260821"))).replace("-", "")
         result = build_index_price_snapshot(frame, start, end)
-        output = Path(config.get("output_root", "outputs"))
+        output = resolve_output_root(config)
         output.mkdir(parents=True, exist_ok=True)
         result.to_csv(output / "a_share_index_price_returns.csv", index=False)
         etf_daily = _index_research_path(config, "etf_daily_path")
@@ -465,7 +467,7 @@ def main(argv: list[str] | None = None) -> int:
         if source is None:
             raise RuntimeError("index_research.linked_index_daily_path is required")
         outputs = build_cashflow_snapshot(_read_table(source))
-        output = Path(config.get("output_root", "outputs")) / "cashflow_indices"
+        output = resolve_output_root(config, subdir="cashflow_indices")
         output.mkdir(parents=True, exist_ok=True)
         outputs["performance"].to_csv(output / "cashflow_performance.csv", index=False)
         outputs["status"].to_csv(output / "cashflow_data_status.csv", index=False)
@@ -484,7 +486,7 @@ def main(argv: list[str] | None = None) -> int:
             _read_table(required["etf_daily_path"]), _read_table(required["etf_adj_factor_path"]),
             _read_table(required["index_daily_path"]), start, end,
         )
-        output = Path(config.get("output_root", "outputs")) / "linked_indices"
+        output = resolve_output_root(config, subdir="linked_indices")
         output.mkdir(parents=True, exist_ok=True)
         reports["pairing"].to_csv(output / "etf_index_pairing.csv", index=False)
         reports["all"].to_csv(output / "paired_index_etf_returns_all.csv", index=False)
