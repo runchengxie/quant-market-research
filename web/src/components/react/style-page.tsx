@@ -1,11 +1,5 @@
 import { useState } from "react";
-import { readableNotes } from "../../research-copy";
-import { asNumber, displayLabels, displayValue, formatNumber as num, formatPercent as pct } from "../../lib/format";
-import { parseCsv } from "../../lib/public-data";
-import RecoverySection from "../RecoverySection";
-import ReplicationSection from "../ReplicationSection";
-import { NavChart, AnnualChart, MetricChart, UnderwaterChart } from "../MicrocapCharts";
-import { ResearchBarChart, ResearchLineChart } from "../ResearchCharts";
+import { asNumber, formatNumber as num, formatPercent as pct } from "../../lib/format";
 import { Stat, Panel, SectionHeading, ResearchCard, BarChart, ControlBar, Choice, StyleSubTabs, ThemeHeading, SimpleTable, SortableTable, Loading, useJson, useCsv, SizeDiagnosticPanel } from "./research-shared";
 import type { Row, StyleScope, BarraSummary, HistoricalFactor, CorrelationMatrix } from "./research-shared";
 

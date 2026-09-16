@@ -1,11 +1,7 @@
 import { useState } from "react";
-import { readableNotes } from "../../research-copy";
-import { asNumber, displayLabels, displayValue, formatNumber as num, formatPercent as pct } from "../../lib/format";
-import { parseCsv } from "../../lib/public-data";
+import { displayLabels, displayValue, formatNumber as num } from "../../lib/format";
 import RecoverySection from "../RecoverySection";
 import ReplicationSection from "../ReplicationSection";
-import { NavChart, AnnualChart, MetricChart, UnderwaterChart } from "../MicrocapCharts";
-import { ResearchBarChart, ResearchLineChart } from "../ResearchCharts";
 import { Stat, Panel, BarChart, ControlBar, Choice, ThemeHeading, SortableTable, Loading, useCsv } from "./research-shared";
 import type { CashflowBasis } from "./research-shared";
 
