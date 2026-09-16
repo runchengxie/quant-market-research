@@ -27,6 +27,8 @@
 | 质量 | 盈利稳定性 | 过去 8 个季度净利润同比波动的反向值 | 利润接近零时增长率可能不稳定 |
 | 质量 | 复合质量 | 上述四个子因子等权 | 归因时不要与杠杆子因子同时回归 |
 
+研究引擎现在会同时保留四个子因子的标准化得分，字段分别为 `factor_quality_profitability`、`factor_quality_leverage`、`factor_quality_earnings_variability` 和 `factor_quality_earnings_quality`。复合 `factor_quality` 仍按可用子因子等权计算。这样可以在同一份因子面板中检查质量家族的组成，避免把复合质量和其中的杠杆成分重复解释。
+
 ## 数据和时间口径
 
 每个 descriptor 都应记录来源字段、变换、窗口、方向和形成日可见性。行情变量使用形成日前已完成的观测。基本面变量还需要依赖来源数据的披露和可见时间，当前公开快照不应被描述为完整的 PIT 基本面数据库。
