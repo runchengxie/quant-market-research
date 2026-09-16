@@ -52,6 +52,10 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
         limitation="正市盈率样本、未来缺价处理和交易成本仍需统一核验。"
         next="先比较避开高换手与主动买入低换手，再登记新的前瞻检验。"/>
     </section>
+    <section className="featured-study study-intro" aria-label="后续探索执行协议">
+      <div><span className="section-kicker">研究方法与下一步</span><h2>每项研究都有明确的证据状态和停止条件</h2><p>前瞻检验、微盘审计、Quality 重跑和 ETF 探索都记录输入快照、数据边界和结果状态。缺少必要数据时保留阻塞记录，不用估算值填补空白。</p></div>
+      <a href={withBase("/docs/next-explorations/", import.meta.env?.BASE_URL ?? "/")}>查看后续探索协议 ↗</a>
+    </section>
     <div className="fine-print"><span className="section-kicker">阅读提示</span><p>各专题的样本时间不同，历史最长等待也会受到样本范围影响。页面保留尚未回本和数据缺失的记录。历史结果仅供研究参考。</p></div>
   </>;
 }
