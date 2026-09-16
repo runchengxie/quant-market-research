@@ -1,0 +1,106 @@
+{
+  "schema_version": "microcap_history_ui.v1",
+  "coverage_start": "2008-01-02",
+  "coverage_end": "2014-12-31",
+  "trading_days": 1702,
+  "source_manifest_sha256": "67d0124b7fc2630b06eefa98dbac1fc3ae74227902427162cb33c070e8fb3199",
+  "method": "按当日总市值选取最小 N，收盘价乘复权因子，显式区分停牌未成交与缺价压力情景。",
+  "quality_status": "historical_incomplete",
+  "series": {
+    "50": {
+      "max_drawdown": -0.5988183814059915,
+      "longest_completed_underwater_sessions": 420,
+      "completed_duration_quantiles": {
+        "0.5": 2.0,
+        "0.75": 6.0,
+        "0.9": 22.700000000000003,
+        "0.95": 33.24999999999997
+      },
+      "survival_probability_beyond_sessions": {
+        "252": 0.02051282051282052,
+        "504": 0.0,
+        "756": 0.0,
+        "1260": 0.0
+      },
+      "completed_episode_count": 104,
+      "right_censored_episode_count": 1
+    },
+    "100": {
+      "max_drawdown": -0.6181410293587178,
+      "longest_completed_underwater_sessions": 282,
+      "completed_duration_quantiles": {
+        "0.5": 2.0,
+        "0.75": 6.75,
+        "0.9": 22.900000000000006,
+        "0.95": 40.799999999999955
+      },
+      "survival_probability_beyond_sessions": {
+        "252": 0.020804438280166444,
+        "504": 0.0,
+        "756": 0.0,
+        "1260": 0.0
+      },
+      "completed_episode_count": 102,
+      "right_censored_episode_count": 1
+    },
+    "200": {
+      "max_drawdown": -0.6316354079012289,
+      "longest_completed_underwater_sessions": 442,
+      "completed_duration_quantiles": {
+        "0.5": 2.0,
+        "0.75": 7.0,
+        "0.9": 22.200000000000003,
+        "0.95": 41.599999999999994
+      },
+      "survival_probability_beyond_sessions": {
+        "252": 0.023931623931623947,
+        "504": 0.0,
+        "756": 0.0,
+        "1260": 0.0
+      },
+      "completed_episode_count": 89,
+      "right_censored_episode_count": 1
+    },
+    "400": {
+      "max_drawdown": -0.6572047751693624,
+      "longest_completed_underwater_sessions": 506,
+      "completed_duration_quantiles": {
+        "0.5": 3.0,
+        "0.75": 9.0,
+        "0.9": 30.799999999999997,
+        "0.95": 47.39999999999999
+      },
+      "survival_probability_beyond_sessions": {
+        "252": 0.029106029106029135,
+        "504": 0.014553014553014568,
+        "756": 0.0,
+        "1260": 0.0
+      },
+      "completed_episode_count": 73,
+      "right_censored_episode_count": 1
+    },
+    "800": {
+      "max_drawdown": -0.6876726215473723,
+      "longest_completed_underwater_sessions": 611,
+      "completed_duration_quantiles": {
+        "0.5": 3.0,
+        "0.75": 9.25,
+        "0.9": 34.90000000000001,
+        "0.95": 110.89999999999993
+      },
+      "survival_probability_beyond_sessions": {
+        "252": 0.04489795918367347,
+        "504": 0.022448979591836737,
+        "756": 0.0,
+        "1260": 0.0
+      },
+      "completed_episode_count": 48,
+      "right_censored_episode_count": 1
+    }
+  },
+  "caveats": [
+    "历史区间缺少与2015年以后完全一致的ST和停牌字段。",
+    "这是规则重建的描述性序列，不代表Wind官方指数或可成交策略净值。",
+    "最长水下期只统计已完成区间，当前右删失区间单独计数。"
+  ]
+}
