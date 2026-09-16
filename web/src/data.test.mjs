@@ -34,6 +34,17 @@ test("publishes the historical Barra report datasets", () => {
   assert.ok(correlations.size);
 });
 
+test("publishes the explicitly scoped Quality component diagnostic", () => {
+  const rows = fs
+    .readFileSync(path.join(root, "barra/quality_component_summary.csv"), "utf8")
+    .trim()
+    .split("\n");
+  assert.equal(rows.length, 5);
+  assert.match(rows[0], /factor,days,years,cumulative_ret,annual_ret,geometric_annual_ret/);
+  assert.match(rows.slice(1).join("\n"), /quality_profitability/);
+  assert.match(rows.slice(1).join("\n"), /quality_earnings_quality/);
+});
+
 test("publishes complete multi-period rows for representative ETFs", () => {
   const rows = fs
     .readFileSync(path.join(root, "index/linked_indices/etf_multi_period_returns.csv"), "utf8")
