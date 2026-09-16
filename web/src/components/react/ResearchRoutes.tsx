@@ -10,13 +10,12 @@ export type ResearchRouteKey = "cashflow" | "cashflowRecovery" | "microcap" | "m
 
 export function ResearchRoute({ route }: { route: ResearchRouteKey }) {
   const [microcapScope, setMicrocapScope] = useState<"a-share" | "cross-market">(route === "crossMarketLiquidity" ? "cross-market" : "a-share");
-  const [styleScope, setStyleScope] = useState<"indices" | "barra">(route === "styleFactors" ? "barra" : "indices");
   const page = route === "microcap" || route === "microcapRecovery" || route === "crossMarketLiquidity"
     ? <MicrocapPage scope={microcapScope} onScopeChange={setMicrocapScope}/>
     : route === "styleFactors"
-      ? <StylePage scope={styleScope} onScopeChange={setStyleScope}/>
+      ? <StylePage scope="barra"/>
       : route === "indices"
-        ? <StylePage scope="indices" onScopeChange={setStyleScope}/>
+        ? <StylePage scope="indices"/>
         : route === "cashflow" || route === "cashflowRecovery"
           ? <CashflowPage/>
           : <LiquidityPage/>;

@@ -62,7 +62,7 @@ export function ReplicationContent({scope, snapshot}: {scope: Scope; snapshot: S
   const comparisons = snapshot.comparisons.filter(g => g.scope === scope);
   const sources = snapshot.sources.filter(s => indices.some(i => i.source_id === s.id) || comparisons.some(g => g.source_id === s.id));
   return <section className="replication-section" aria-label="指数复刻进展">
-    <div className="theme-heading"><div><span className="section-kicker">指数复刻</span><h2>我们自己算出的结果，跟指数有多接近？</h2><p>这里单独记录本地选股和持仓回放的结果。完整指数与少量股票组合需要分别验证。</p></div><span className="asof">研究更新 {snapshot.as_of}</span></div>
+    <div className="theme-heading"><div><span className="section-kicker">指数复刻</span><h2>自行计算的结果与官方指数有多接近？</h2><p>本节展示本地选股和持仓回放结果，帮助读者区分完整指数表现与少量股票组合的复刻误差。</p></div><span className="asof">研究更新 {snapshot.as_of}</span></div>
     <div className="evidence-grid">{indices.map(i => <article className="evidence-card" key={i.code}><span className="tag warm">{i.status}</span><h3>{i.name}</h3><p>{i.finding}</p><dl><dt>仍需解决</dt><dd>{i.limitation}</dd><dt>下一步</dt><dd>{i.next}</dd></dl><a href={snapshot.sources.find(s => s.id === i.source_id)?.url}>查看来源与方法 ↗</a></article>)}</div>
     {comparisons.map(g => <section className="panel" key={`${g.basis}-${g.start}-${g.end}`}>
       <h3>{g.basis === 'price' ? '价格回报' : '税前全收益'}估值对照</h3>

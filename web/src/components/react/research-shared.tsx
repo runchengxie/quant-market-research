@@ -1,5 +1,6 @@
 import { lazy, useEffect, useState } from "react";
 import { parseCsv, publicDataUrl } from "../../lib/public-data";
+import { withBase } from "../../lib/routes";
 import { asNumber, displayValue, formatPercent as pct } from "../../lib/format";
 const ResearchBarChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchBarChart })));
 const ResearchLineChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchLineChart })));
@@ -89,7 +90,7 @@ export function LineChart({ series, labels }: { series: Series[]; labels: string
 export function ControlBar({ children }: { children: React.ReactNode }) { return <div className="control-bar">{children}</div>; }
 export function Choice({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) { return <button className={`choice ${active ? "active" : ""}`} onClick={onClick}>{children}</button>; }
 export function MicrocapSubTabs({ scope, onChange }: { scope: MicrocapScope; onChange: (value: MicrocapScope) => void }) { return <div className="sub-tabs" aria-label="小微盘研究子主题"><button className={scope === "a-share" ? "active" : ""} onClick={() => onChange("a-share")}>A股小微盘</button><button className={scope === "cross-market" ? "active" : ""} onClick={() => onChange("cross-market")}>跨市场小微盘流动性</button></div>; }
-export function StyleSubTabs({ scope, onChange }: { scope: StyleScope; onChange: (value: StyleScope) => void }) { return <div className="sub-tabs" aria-label="市场长期风格研究子主题"><button className={scope === "indices" ? "active" : ""} onClick={() => onChange("indices")}>指数与 ETF</button><button className={scope === "barra" ? "active" : ""} onClick={() => onChange("barra")}>Barra 风格因子研究（18年）</button></div>; }
+export function StyleSubTabs({ scope }: { scope: StyleScope }) { const base = import.meta.env.BASE_URL ?? "/"; return <div className="sub-tabs" aria-label="市场长期风格研究子主题"><a className={scope === "indices" ? "active" : ""} href={withBase("/research/indices/", base)}>指数与 ETF</a><a className={scope === "barra" ? "active" : ""} href={withBase("/research/style-factors-18y/", base)}>Barra 风格因子研究（18年）</a></div>; }
 
 export function formatTurnover(value: number) {
   if (!Number.isFinite(value)) return "未提供";
