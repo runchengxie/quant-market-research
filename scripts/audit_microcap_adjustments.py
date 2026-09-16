@@ -6,7 +6,8 @@ external quant-market-data-platform Tushare parquet assets and writes its
 receipt outside the repository.
 """
 from __future__ import annotations
-import argparse, json
+import argparse
+import json
 from pathlib import Path
 import duckdb
 
@@ -16,7 +17,9 @@ def main() -> None:
     ap.add_argument('--output', type=Path, required=True)
     ap.add_argument('--start', default='2013-01-01')
     ap.add_argument('--end', default='2016-12-31')
-    a=ap.parse_args(); root=a.data_root.expanduser(); base=root/'assets/tushare/a_share'
+    a = ap.parse_args()
+    root = a.data_root.expanduser()
+    base = root / 'assets/tushare/a_share'
     daily=str(base/'daily/a_share_all_20080102_20260821_union_daily/data/**/*.parquet')
     basic=str(base/'daily_basic/a_share_all_20080102_20260821_union_daily_basic/data/**/*.parquet')
     adj=str(base/'adj_factor/a_share_all_20080101_20141231_adj_factor/data/**/*.parquet')
@@ -52,5 +55,13 @@ def main() -> None:
             matches=con.execute(f"SELECT ex_date,record_date,stk_div,stk_bo_rate,stk_co_rate,cash_div FROM read_parquet('{events}') WHERE ts_code=? AND (abs(date_diff('day',try_strptime(ex_date,'%Y%m%d'),CAST(? AS DATE)))<=7 OR abs(date_diff('day',try_strptime(record_date,'%Y%m%d'),CAST(? AS DATE)))<=7)", [symbol,str(date)[:10],str(date)[:10]]).fetchall()
             jump_rows.append({'symbol':symbol,'formation_date':str(date)[:10],'adj_factor':factor,'previous_adj_factor':prev,'ratio':ratio,'dividend_matches':matches})
         results.append({'constituent_count':n,'annual_returns':annual,'adjusted_factor_jumps':jump_rows,'observations':con.execute('select count(*) from h').fetchone()[0]})
-    a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps({'start':a.start,'end':a.end,'method':'diagnostic only; no status, delist or execution constraints; historical and daily_clean price vintages are joined only for diagnostics and must be checked at the 2015 boundary','results':results},default=str,ensure_ascii=False,indent=2)+'\n')
-if __name__=='__main__': main()
+    a.output.parent.mkdir(parents=True, exist_ok=True)
+    payload = {
+        'start': a.start,
+        'end': a.end,
+        'method': 'diagnostic only; no status, delist or execution constraints; historical and daily_clean price vintages are joined only for diagnostics and must be checked at the 2015 boundary',
+        'results': results,
+    }
+    a.output.write_text(json.dumps(payload, default=str, ensure_ascii=False, indent=2) + '\n')
+if __name__ == '__main__':
+    main()
