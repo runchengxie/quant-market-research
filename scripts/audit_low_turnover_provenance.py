@@ -43,6 +43,7 @@ def audit_outputs(manifest_path: Path, effect_summary_path: Path, prospective_ma
         "effect_summary_sha256": sha256(effect_summary_path),
         "source_experiment": manifest.get("source_experiment"),
         "return_basis": manifest.get("forward_return_basis"),
+        "ranking_mode": manifest.get("ranking_mode", "legacy_complete_case_unknown"),
         "completed_periods": completed_periods,
         "signals": effects["signal"].astype(str).tolist(),
         "quality_status": "historical_pseudo_oos" if completed_periods < 24 else "descriptive_with_research_selection_risk",
@@ -51,6 +52,8 @@ def audit_outputs(manifest_path: Path, effect_summary_path: Path, prospective_ma
             "unique_signal_rows": True,
             "future_price_selection_disclosed": True,
             "positive_pe_sample_disclosed": True,
+            "formation_ranks_fixed_before_return_filter": manifest.get("ranking_mode")
+            == "formation_signal_support_fixed_before_forward_return_filter",
         },
     }
     if prospective_manifest_path is not None:

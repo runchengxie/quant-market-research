@@ -18,6 +18,20 @@ def test_audit_requires_manifest_and_effect_periods_to_match(tmp_path: Path):
     result = audit_outputs(manifest, effects)
     assert result["completed_periods"] == 2
     assert result["checks"]["positive_pe_sample_disclosed"] is True
+    assert result["checks"]["formation_ranks_fixed_before_return_filter"] is False
+
+
+def test_audit_reports_point_in_time_ranking_mode(tmp_path: Path):
+    manifest = tmp_path / "manifest.json"
+    effects = tmp_path / "effect.csv"
+    manifest.write_text(json.dumps({
+        "completed_formation_periods_by_signal": {"raw": 2},
+        "ranking_mode": "formation_signal_support_fixed_before_forward_return_filter",
+    }), encoding="utf-8")
+    pd.DataFrame({"signal": ["raw"], "count": [2], "mean": [0.01], "bootstrap_ci_low": [0.0], "bootstrap_ci_high": [0.02]}).to_csv(effects, index=False)
+    result = audit_outputs(manifest, effects)
+    assert result["ranking_mode"] == "formation_signal_support_fixed_before_forward_return_filter"
+    assert result["checks"]["formation_ranks_fixed_before_return_filter"] is True
 
 
 def test_audit_rejects_duplicate_signal_rows(tmp_path: Path):
