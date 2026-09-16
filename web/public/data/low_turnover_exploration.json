@@ -594,5 +594,28 @@
       "development_annualized_return": 6.178388462578832,
       "holdout_annualized_return": 26.76620663658187
     }
+  ],
+  "window_sensitivity": [
+    {
+      "window_days": 20,
+      "net_annual_return": 3.519612,
+      "net_sharpe": 0.263731,
+      "net_max_drawdown": -65.009288,
+      "annualized_turnover": 11.592836
+    },
+    {
+      "window_days": 60,
+      "net_annual_return": 5.334535,
+      "net_sharpe": 0.330517,
+      "net_max_drawdown": -52.389378,
+      "annualized_turnover": 6.785942
+    },
+    {
+      "window_days": 120,
+      "net_annual_return": 7.601898,
+      "net_sharpe": 0.411345,
+      "net_max_drawdown": -45.607451,
+      "annualized_turnover": 4.474725
+    }
   ]
 }
