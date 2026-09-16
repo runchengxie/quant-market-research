@@ -107,7 +107,7 @@ Astro 构建输出仍为 `web/dist/`。随后 MkDocs 构建到 `web/dist/docs/`�
 
 本轮已完成 Astro 静态多页面入口、共享站点外壳、正式研究 URL、旧 hash 兼容、GitHub Pages 子路径数据访问、MkDocs 共享设计变量、构建产物检查和浏览器冒烟测试。主页摘要由 Astro 在构建时读取公开快照并生成静态 HTML。
 
-当前各研究页仍由 `ResearchRoutes.tsx` 统一承载，Astro 页面输出独立标题、摘要和研究边界，再加载该 React 路由组件呈现专题主体。图表及部分数据组件按需加载，但研究正文尚未逐页迁成静态 Astro 内容，React bundle 也尚未做到路由级拆分。因此本轮实现了可分享的静态路由和站点框架，尚未达到目标中完整的正文静态化和每页独立交互代码加载。后续应按访问量和维护优先级逐页拆分，不应将现状描述为零 JavaScript 或已完成路由级代码拆分。
+研究页现在由 `ResearchRoutes.tsx` 负责轻量分发，各主题主体分别位于 `microcap-page.tsx`、`style-page.tsx`、`cashflow-page.tsx` 和 `liquidity-page.tsx`，通过动态导入形成路由级分包。Astro 页面输出独立标题、摘要和研究边界，图表及数据组件继续按需加载。专题正文仍主要由 React 生成，尚未全部迁成静态 Astro 内容，因此当前实现不应描述为零 JavaScript。后续可以按专题把稳定的解释段落进一步前移到 Astro。
 
 公开快照发布脚本现在共用 `web/scripts/csv.mjs`，解析器覆盖带引号的逗号、双引号和换行字段，并有回归测试。`web/scripts/report-bundle-size.mjs` 用于记录构建后的实际文件大小，当前最大文件是 ECharts 图表包，优化前先保留实测基线。
 

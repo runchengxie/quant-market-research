@@ -3,7 +3,14 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const [source, overview, routes, pages] = await Promise.all([
-  readFileSync(new URL("./components/react/ResearchRoutes.tsx", import.meta.url), "utf8"),
+  Promise.all([
+    "./components/react/ResearchRoutes.tsx",
+    "./components/react/research-shared.tsx",
+    "./components/react/microcap-page.tsx",
+    "./components/react/style-page.tsx",
+    "./components/react/cashflow-page.tsx",
+    "./components/react/liquidity-page.tsx",
+  ].map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))).then((files) => files.join("\n")),
   readFileSync(new URL("./components/ResearchOverview.tsx", import.meta.url), "utf8"),
   readFileSync(new URL("./lib/routes.ts", import.meta.url), "utf8"),
   Promise.all([
@@ -29,6 +36,13 @@ test("微盘页面保留旧版研究阅读顺序和图表组件", () => {
   assert.match(charts, /dataZoom/);
   assert.match(charts, /AnnualChart/);
   assert.match(charts, /UnderwaterChart/);
+});
+
+test("研究路由按主题动态加载页面模块", () => {
+  assert.match(source, /import\("\.\/microcap-page"\)/);
+  assert.match(source, /import\("\.\/style-page"\)/);
+  assert.match(source, /import\("\.\/cashflow-page"\)/);
+  assert.match(source, /import\("\.\/liquidity-page"\)/);
 });
 
 test("研究总览使用三个研究域和小微盘子主题", () => {
