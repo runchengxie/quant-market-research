@@ -21,6 +21,7 @@ def main() -> None:
     basic=str(base/'daily_basic/a_share_all_20080102_20260821_union_daily_basic/data/**/*.parquet')
     adj=str(base/'adj_factor/a_share_all_20080101_20141231_adj_factor/data/**/*.parquet')
     clean=str(base/'daily/a_share_all_20150101_20260914_daily_clean/data/*.parquet')
+    events=str(base/'research/dividend_pit_implemented_20260903/dividend_implemented_pit.parquet')
     con=duckdb.connect()
     con.execute(f"""CREATE OR REPLACE TABLE panel AS
       SELECT d.ts_code symbol, try_strptime(cast(d.trade_date as varchar),'%Y%m%d') date,
@@ -46,6 +47,10 @@ def main() -> None:
         con.execute(f"CREATE OR REPLACE TABLE h AS SELECT r.*,e.adj_close entry_close,x.adj_close exit_close,(x.adj_close/e.adj_close-1) ret FROM ranked r LEFT JOIN panel e ON e.symbol=r.symbol AND e.date=r.entry_date LEFT JOIN panel x ON x.symbol=r.symbol AND x.date=r.return_date WHERE r.rn<={n} AND e.adj_close>0 AND x.adj_close>0")
         annual=con.execute("SELECT year(formation_date) AS calendar_year,exp(sum(ln(1+ret)))-1 AS cumulative_return FROM (SELECT formation_date,avg(ret) ret FROM h GROUP BY formation_date HAVING count(*)=?) GROUP BY calendar_year ORDER BY calendar_year",[n]).fetchall()
         jumps=con.execute("SELECT symbol,formation_date,adj_factor,prev,ratio FROM (SELECT symbol,formation_date,adj_factor,lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date) prev,adj_factor/nullif(lag(adj_factor) OVER (PARTITION BY symbol ORDER BY formation_date),0) ratio FROM h) WHERE ratio>1.5 OR ratio<0.667 ORDER BY abs(ln(ratio)) DESC LIMIT 20").fetchall()
-        results.append({'constituent_count':n,'annual_returns':annual,'adjusted_factor_jumps':jumps,'observations':con.execute('select count(*) from h').fetchone()[0]})
+        jump_rows=[]
+        for symbol, date, factor, prev, ratio in jumps:
+            matches=con.execute(f"SELECT ex_date,record_date,stk_div,stk_bo_rate,stk_co_rate,cash_div FROM read_parquet('{events}') WHERE ts_code=? AND (abs(date_diff('day',try_strptime(ex_date,'%Y%m%d'),CAST(? AS DATE)))<=7 OR abs(date_diff('day',try_strptime(record_date,'%Y%m%d'),CAST(? AS DATE)))<=7)", [symbol,str(date)[:10],str(date)[:10]]).fetchall()
+            jump_rows.append({'symbol':symbol,'formation_date':str(date)[:10],'adj_factor':factor,'previous_adj_factor':prev,'ratio':ratio,'dividend_matches':matches})
+        results.append({'constituent_count':n,'annual_returns':annual,'adjusted_factor_jumps':jump_rows,'observations':con.execute('select count(*) from h').fetchone()[0]})
     a.output.parent.mkdir(parents=True,exist_ok=True); a.output.write_text(json.dumps({'start':a.start,'end':a.end,'method':'diagnostic only; no status, delist or execution constraints; historical and daily_clean price vintages are joined only for diagnostics and must be checked at the 2015 boundary','results':results},default=str,ensure_ascii=False,indent=2)+'\n')
 if __name__=='__main__': main()
