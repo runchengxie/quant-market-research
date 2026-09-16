@@ -26,6 +26,7 @@ exclude_docs: |
 nav:
   - 研究说明: index.md
   - 研究路线与证据状态: research-roadmap.md
+  - 网页产物基线: web-bundle-baseline.md
   - 因子研究:
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md
