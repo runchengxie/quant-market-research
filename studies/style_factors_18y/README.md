@@ -7,3 +7,5 @@
 标题中的 18 年指包含首尾年份的研究窗口长度。原始行情和历史 quant 产物保留在外部，仓库只保存经过审查的派生结果。
 
 `study.yml` 记录研究范围和因子设置。运行 `market-research report style-factors` 时，还需提供包含外部 `panel_path` 和 `output_root` 的本机配置。不要直接把 `study.yml` 当作完整可运行配置。
+
+因子的 descriptor、风格因子和家族层级记录在 [`factor-descriptors.yml`](factor-descriptors.yml)，面向读者的说明见 [`docs/research/factors/barra-factor-dictionary.md`](../../docs/research/factors/barra-factor-dictionary.md)。当前定义是 Barra 风格的简化研究口径，不代表商业 Barra 模型的完整复刻。
