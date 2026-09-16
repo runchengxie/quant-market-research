@@ -414,6 +414,185 @@
     "收益字段按报告约定以百分数记录。",
     "这是探索性结果，未登记为生产策略。",
     "延迟成交和容量结果依赖日频成交额代理，尚未用真实成交回报校准。",
-    "联合矩阵阶段因计算耗时未生成，不影响已落盘的候选、归因、稳健性和容量文件。"
+    "联合矩阵阶段因计算耗时未生成，不影响已落盘的候选、归因、稳健性和容量文件。",
+    "联合矩阵使用缓存后的滚动窗口计算，覆盖四种换手窗口和四种调仓频率。"
+  ],
+  "joint_matrix": [
+    {
+      "turnover_definition": "mean_20",
+      "rebalance_frequency": "weekly",
+      "formation_dates": 592,
+      "net_annual_return": 8.676371096623603,
+      "net_max_drawdown": -58.55021911900549,
+      "net_sharpe": 0.4282386887910352,
+      "annualized_turnover": 6.125794141304429,
+      "development_annualized_return": 6.752056114838134,
+      "holdout_annualized_return": 15.58944630253909
+    },
+    {
+      "turnover_definition": "mean_60",
+      "rebalance_frequency": "weekly",
+      "formation_dates": 592,
+      "net_annual_return": 9.564571121518185,
+      "net_max_drawdown": -61.56304266945693,
+      "net_sharpe": 0.4524903914852216,
+      "annualized_turnover": 5.176664992411469,
+      "development_annualized_return": 6.4417185545881495,
+      "holdout_annualized_return": 21.065474533595506
+    },
+    {
+      "turnover_definition": "median_60",
+      "rebalance_frequency": "weekly",
+      "formation_dates": 592,
+      "net_annual_return": 9.52165741173825,
+      "net_max_drawdown": -62.62891088741781,
+      "net_sharpe": 0.4497305013026507,
+      "annualized_turnover": 5.136493921071407,
+      "development_annualized_return": 6.477795168039391,
+      "holdout_annualized_return": 20.713224820673524
+    },
+    {
+      "turnover_definition": "mean_120",
+      "rebalance_frequency": "weekly",
+      "formation_dates": 592,
+      "net_annual_return": 13.20006456964149,
+      "net_max_drawdown": -65.30931755487835,
+      "net_sharpe": 0.5528810240117161,
+      "annualized_turnover": 4.705515416479056,
+      "development_annualized_return": 10.160791475868969,
+      "holdout_annualized_return": 24.350380316004134
+    },
+    {
+      "turnover_definition": "mean_20",
+      "rebalance_frequency": "biweekly",
+      "formation_dates": 296,
+      "net_annual_return": 17.06751841707501,
+      "net_max_drawdown": -60.15939963592758,
+      "net_sharpe": 0.648829114853865,
+      "annualized_turnover": 3.675981239398998,
+      "development_annualized_return": 16.526576426013474,
+      "holdout_annualized_return": 18.95417735347724
+    },
+    {
+      "turnover_definition": "mean_60",
+      "rebalance_frequency": "biweekly",
+      "formation_dates": 296,
+      "net_annual_return": 19.002621416024024,
+      "net_max_drawdown": -59.37071285157113,
+      "net_sharpe": 0.7025099408954455,
+      "annualized_turnover": 3.245039027842306,
+      "development_annualized_return": 17.857912457199276,
+      "holdout_annualized_return": 23.04017919653532
+    },
+    {
+      "turnover_definition": "median_60",
+      "rebalance_frequency": "biweekly",
+      "formation_dates": 296,
+      "net_annual_return": 18.5961394019486,
+      "net_max_drawdown": -59.75274446767877,
+      "net_sharpe": 0.6889573844838027,
+      "annualized_turnover": 3.2359462415775204,
+      "development_annualized_return": 17.368451541106733,
+      "holdout_annualized_return": 22.93354437621875
+    },
+    {
+      "turnover_definition": "mean_120",
+      "rebalance_frequency": "biweekly",
+      "formation_dates": 296,
+      "net_annual_return": 21.178342284003303,
+      "net_max_drawdown": -60.48354296507368,
+      "net_sharpe": 0.7458184245911078,
+      "annualized_turnover": 3.106793537334426,
+      "development_annualized_return": 20.724447935522548,
+      "holdout_annualized_return": 22.75830373788017
+    },
+    {
+      "turnover_definition": "mean_20",
+      "rebalance_frequency": "monthly",
+      "formation_dates": 139,
+      "net_annual_return": 7.8126215758892,
+      "net_max_drawdown": -68.42020231085972,
+      "net_sharpe": 0.4019895664787221,
+      "annualized_turnover": 8.599706012110698,
+      "development_annualized_return": 3.1117180956957258,
+      "holdout_annualized_return": 25.748931118692408
+    },
+    {
+      "turnover_definition": "mean_60",
+      "rebalance_frequency": "monthly",
+      "formation_dates": 139,
+      "net_annual_return": 7.728743973237395,
+      "net_max_drawdown": -68.5879756667711,
+      "net_sharpe": 0.3994899347200397,
+      "annualized_turnover": 6.769113351770957,
+      "development_annualized_return": 4.546659292904653,
+      "holdout_annualized_return": 19.4759778338176
+    },
+    {
+      "turnover_definition": "median_60",
+      "rebalance_frequency": "monthly",
+      "formation_dates": 139,
+      "net_annual_return": 7.910960552227531,
+      "net_max_drawdown": -66.28299464400953,
+      "net_sharpe": 0.40571598072228,
+      "annualized_turnover": 6.625532912159893,
+      "development_annualized_return": 4.5424629732936594,
+      "holdout_annualized_return": 20.394961023974577
+    },
+    {
+      "turnover_definition": "mean_120",
+      "rebalance_frequency": "monthly",
+      "formation_dates": 139,
+      "net_annual_return": 13.883974250098952,
+      "net_max_drawdown": -65.15337128527243,
+      "net_sharpe": 0.5739249061676736,
+      "annualized_turnover": 5.57115897015604,
+      "development_annualized_return": 10.831711556031909,
+      "holdout_annualized_return": 25.080723851247043
+    },
+    {
+      "turnover_definition": "mean_20",
+      "rebalance_frequency": "quarterly",
+      "formation_dates": 47,
+      "net_annual_return": 7.349757905613341,
+      "net_max_drawdown": -58.3428034358478,
+      "net_sharpe": 0.3868261736612775,
+      "annualized_turnover": 4.689214315945435,
+      "development_annualized_return": 3.128734472781836,
+      "holdout_annualized_return": 23.118728279143586
+    },
+    {
+      "turnover_definition": "mean_60",
+      "rebalance_frequency": "quarterly",
+      "formation_dates": 47,
+      "net_annual_return": 8.334079616208111,
+      "net_max_drawdown": -64.98732883775912,
+      "net_sharpe": 0.4192007490007047,
+      "annualized_turnover": 4.239988742720121,
+      "development_annualized_return": 3.229749510228719,
+      "holdout_annualized_return": 27.75538007304621
+    },
+    {
+      "turnover_definition": "median_60",
+      "rebalance_frequency": "quarterly",
+      "formation_dates": 47,
+      "net_annual_return": 9.156000966499178,
+      "net_max_drawdown": -65.04506908427456,
+      "net_sharpe": 0.443413236279771,
+      "annualized_turnover": 4.157719559833907,
+      "development_annualized_return": 4.366585594100614,
+      "holdout_annualized_return": 27.240470047752364
+    },
+    {
+      "turnover_definition": "mean_120",
+      "rebalance_frequency": "quarterly",
+      "formation_dates": 47,
+      "net_annual_return": 10.525554582011676,
+      "net_max_drawdown": -65.06855262460736,
+      "net_sharpe": 0.4787012461055037,
+      "annualized_turnover": 4.212985995397732,
+      "development_annualized_return": 6.178388462578832,
+      "holdout_annualized_return": 26.76620663658187
+    }
   ]
 }
