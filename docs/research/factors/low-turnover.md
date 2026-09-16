@@ -116,6 +116,22 @@
 
 ## 数据出处与口径边界
 
+### 本轮产物核验
+
+2026-09-16 的执行窗口产物已用仓库脚本核验：七个信号阶段使用同一组 86 个完整形成期，收益口径为下一交易日复权开盘至形成期末复权收盘。核验同时记录了主清单和收益汇总文件的 SHA-256，并确认前瞻登记冻结日为 2026-07-31。前瞻部分目前只有 1 个已完成月份和 1 个待完成月份，因此仍属于描述性伪样本外证据。
+
+可在有本机数据目录时运行：
+
+```bash
+uv run --locked --extra dev python scripts/audit_low_turnover_provenance.py \
+  --manifest <execution-window-output>/manifest.json \
+  --effect-summary <execution-window-output>/effect_summary.csv \
+  --prospective-manifest <prospective-output>/prospective_manifest.json \
+  --output <execution-window-output>/provenance_audit.json
+```
+
+脚本只读取外部产物，不复制原始数据。它会在形成期数量、信号行唯一性或清单不一致时直接失败。
+
 本页同时记录早期定义比较、2015 年起的候选组合研究和截至 2026-09-16 完成的 86 个月共同样本归因。各项研究的形成日、执行时点、收益口径和组合引擎不同，不能拼接收益序列。2024 年后的历史数据已被多轮查看，不是独立确认样本。候选实验的历史修订安全仍不完整，ST 状态依据重建的点时信息。所有结论都应视为探索结果。
 
 不应把不同实验的收益、窗口、持仓和执行引擎拼成一条序列。完整运行结果与原始输入留在受控数据资产目录，不进入本仓库。
