@@ -1,0 +1,419 @@
+{
+  "schema_version": "low_turnover_exploration.v1",
+  "generated_at": "2026-09-16",
+  "coverage": {
+    "start": "2015-01-01",
+    "end": "2026-07-31",
+    "trading_days": 2778,
+    "formation_dates": 133
+  },
+  "provenance": {
+    "source": "quant-research small_cap_low_turnover_exploration_20260826.py",
+    "raw_data_published": false,
+    "status": "exploratory"
+  },
+  "candidates": [
+    {
+      "candidate": "small_cap",
+      "net_annual_return": 2.0509118006931226,
+      "net_max_drawdown": -73.78193982185863,
+      "net_sharpe": 0.2175983115524268,
+      "annualized_turnover": 2.9721636528202344,
+      "blocked_entry_days": 605,
+      "blocked_exit_days": 1231
+    },
+    {
+      "candidate": "low_turnover",
+      "net_annual_return": 5.334534555154336,
+      "net_max_drawdown": -52.38937783294797,
+      "net_sharpe": 0.3305170142317029,
+      "annualized_turnover": 6.785941502347826,
+      "blocked_entry_days": 327,
+      "blocked_exit_days": 2383
+    },
+    {
+      "candidate": "low_turnover_residual",
+      "net_annual_return": -9.95531405923854,
+      "net_max_drawdown": -88.25088144138962,
+      "net_sharpe": -0.1761501725588327,
+      "annualized_turnover": 19.217909577811728,
+      "blocked_entry_days": 869,
+      "blocked_exit_days": 2735
+    },
+    {
+      "candidate": "low_turnover_residual_industry",
+      "net_annual_return": -7.615350435574064,
+      "net_max_drawdown": -84.49035747157033,
+      "net_sharpe": -0.0857618132950441,
+      "annualized_turnover": 19.947323518027428,
+      "blocked_entry_days": 724,
+      "blocked_exit_days": 1402
+    },
+    {
+      "candidate": "composite",
+      "net_annual_return": 7.728743973237395,
+      "net_max_drawdown": -68.5879756667711,
+      "net_sharpe": 0.3994899347200397,
+      "annualized_turnover": 6.769113351770957,
+      "blocked_entry_days": 661,
+      "blocked_exit_days": 916
+    },
+    {
+      "candidate": "composite_residual",
+      "net_annual_return": 4.83980492262468,
+      "net_max_drawdown": -74.30059883184387,
+      "net_sharpe": 0.3092048869070302,
+      "annualized_turnover": 15.418124788155623,
+      "blocked_entry_days": 824,
+      "blocked_exit_days": 1502
+    },
+    {
+      "candidate": "composite_residual_industry",
+      "net_annual_return": 1.914778639765169,
+      "net_max_drawdown": -81.32669579359026,
+      "net_sharpe": 0.2194808846144233,
+      "annualized_turnover": 13.02226945759798,
+      "blocked_entry_days": 765,
+      "blocked_exit_days": 1305
+    },
+    {
+      "candidate": "large_cap_control",
+      "net_annual_return": 6.819008398843551,
+      "net_max_drawdown": -44.38614376706818,
+      "net_sharpe": 0.4112505719932269,
+      "annualized_turnover": 1.4012481489342394,
+      "blocked_entry_days": 200,
+      "blocked_exit_days": 775
+    },
+    {
+      "candidate": "lowvol_control",
+      "net_annual_return": 0.40755033889881,
+      "net_max_drawdown": -67.51965398493473,
+      "net_sharpe": 0.1314123251253394,
+      "annualized_turnover": 16.96296755168382,
+      "blocked_entry_days": 372,
+      "blocked_exit_days": 970
+    }
+  ],
+  "anatomy": [
+    {
+      "sample": "development",
+      "stage": "raw",
+      "formation_dates": 103,
+      "observations": 369066,
+      "mean_rank_ic": 0.0730044832000907,
+      "low_turnover_leg_return": 0.0037879403278368,
+      "high_turnover_leg_return": -0.0122509126067907,
+      "low_minus_high_return": 0.0160388529346275
+    },
+    {
+      "sample": "development",
+      "stage": "size",
+      "formation_dates": 103,
+      "observations": 369066,
+      "mean_rank_ic": 0.0790019046776301,
+      "low_turnover_leg_return": 0.0071535757333394,
+      "high_turnover_leg_return": -0.0134844439952099,
+      "low_minus_high_return": 0.0206380197285494
+    },
+    {
+      "sample": "development",
+      "stage": "size_lowvol",
+      "formation_dates": 103,
+      "observations": 369066,
+      "mean_rank_ic": 0.0261931192161917,
+      "low_turnover_leg_return": 8.65925550058387e-05,
+      "high_turnover_leg_return": -0.0095386544518545,
+      "low_minus_high_return": 0.0096252470068603
+    },
+    {
+      "sample": "development",
+      "stage": "size_lowvol_liquidity",
+      "formation_dates": 103,
+      "observations": 369066,
+      "mean_rank_ic": 0.0077767124062427,
+      "low_turnover_leg_return": -0.0009201059806212,
+      "high_turnover_leg_return": -0.0081302619099289,
+      "low_minus_high_return": 0.0072101559293077
+    },
+    {
+      "sample": "development",
+      "stage": "size_lowvol_liquidity_returns",
+      "formation_dates": 103,
+      "observations": 369066,
+      "mean_rank_ic": 0.0209887044987416,
+      "low_turnover_leg_return": 0.0013309088915684,
+      "high_turnover_leg_return": -0.0097722552095608,
+      "low_minus_high_return": 0.0111031641011292
+    },
+    {
+      "sample": "holdout_descriptive",
+      "stage": "raw",
+      "formation_dates": 30,
+      "observations": 160324,
+      "mean_rank_ic": 0.0599697582615158,
+      "low_turnover_leg_return": 0.0254239602789354,
+      "high_turnover_leg_return": 0.0082496955023764,
+      "low_minus_high_return": 0.0171742647765589
+    },
+    {
+      "sample": "holdout_descriptive",
+      "stage": "size",
+      "formation_dates": 30,
+      "observations": 160324,
+      "mean_rank_ic": 0.0726961515339736,
+      "low_turnover_leg_return": 0.0275507129854252,
+      "high_turnover_leg_return": 0.0092821527583177,
+      "low_minus_high_return": 0.0182685602271075
+    },
+    {
+      "sample": "holdout_descriptive",
+      "stage": "size_lowvol",
+      "formation_dates": 30,
+      "observations": 160324,
+      "mean_rank_ic": 0.0277574498552594,
+      "low_turnover_leg_return": 0.0191564668254018,
+      "high_turnover_leg_return": 0.0104549419796459,
+      "low_minus_high_return": 0.0087015248457559
+    },
+    {
+      "sample": "holdout_descriptive",
+      "stage": "size_lowvol_liquidity",
+      "formation_dates": 30,
+      "observations": 160324,
+      "mean_rank_ic": 0.0179612605066186,
+      "low_turnover_leg_return": 0.022220167351857,
+      "high_turnover_leg_return": 0.0094021397526517,
+      "low_minus_high_return": 0.0128180275992052
+    },
+    {
+      "sample": "holdout_descriptive",
+      "stage": "size_lowvol_liquidity_returns",
+      "formation_dates": 30,
+      "observations": 160324,
+      "mean_rank_ic": 0.0179430082123635,
+      "low_turnover_leg_return": 0.0215589344628705,
+      "high_turnover_leg_return": 0.0103979981300087,
+      "low_minus_high_return": 0.0111609363328617
+    },
+    {
+      "sample": "full_descriptive",
+      "stage": "raw",
+      "formation_dates": 133,
+      "observations": 529390,
+      "mean_rank_ic": 0.0700643196801114,
+      "low_turnover_leg_return": 0.0086682455799643,
+      "high_turnover_leg_return": -0.0076267152889334,
+      "low_minus_high_return": 0.0162949608688977
+    },
+    {
+      "sample": "full_descriptive",
+      "stage": "size",
+      "formation_dates": 133,
+      "observations": 529390,
+      "mean_rank_ic": 0.0775795543444745,
+      "low_turnover_leg_return": 0.0117544337601257,
+      "high_turnover_leg_return": -0.0083491214192262,
+      "low_minus_high_return": 0.020103555179352
+    },
+    {
+      "sample": "full_descriptive",
+      "stage": "size_lowvol",
+      "formation_dates": 133,
+      "observations": 529390,
+      "mean_rank_ic": 0.0265459757513197,
+      "low_turnover_leg_return": 0.0043880679543432,
+      "high_turnover_leg_return": -0.005028820670313,
+      "low_minus_high_return": 0.0094168886246563
+    },
+    {
+      "sample": "full_descriptive",
+      "stage": "size_lowvol_liquidity",
+      "formation_dates": 133,
+      "observations": 529390,
+      "mean_rank_ic": 0.0100739788950493,
+      "low_turnover_leg_return": 0.0042995045455016,
+      "high_turnover_leg_return": -0.0041755848431814,
+      "low_minus_high_return": 0.0084750893886831
+    },
+    {
+      "sample": "full_descriptive",
+      "stage": "size_lowvol_liquidity_returns",
+      "formation_dates": 133,
+      "observations": 529390,
+      "mean_rank_ic": 0.0203017053364007,
+      "low_turnover_leg_return": 0.0058936214264485,
+      "high_turnover_leg_return": -0.0052225740051466,
+      "low_minus_high_return": 0.0111161954315952
+    }
+  ],
+  "capacity": [
+    {
+      "capital": 100000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 5.281108971740633,
+      "net_sharpe": 0.5304518013431161,
+      "max_drawdown": -25.61463030553177,
+      "fill_ratio": 0.138193320897377,
+      "avg_cash_weight": 0.3824967747817702,
+      "delayed_orders": 28
+    },
+    {
+      "capital": 500000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 11.462538938223954,
+      "net_sharpe": 0.5868256507381304,
+      "max_drawdown": -48.69287183006534,
+      "fill_ratio": 0.4094436467289848,
+      "avg_cash_weight": 0.0510834031596292,
+      "delayed_orders": 37
+    },
+    {
+      "capital": 1000000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 11.847297022731109,
+      "net_sharpe": 0.5846136087023628,
+      "max_drawdown": -49.93597112086915,
+      "fill_ratio": 0.4389447281045132,
+      "avg_cash_weight": 0.0254198800571083,
+      "delayed_orders": 38
+    },
+    {
+      "capital": 5000000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 12.480294182108697,
+      "net_sharpe": 0.59639441983667,
+      "max_drawdown": -51.58596913521593,
+      "fill_ratio": 0.4448407439161874,
+      "avg_cash_weight": 0.0071215021906903,
+      "delayed_orders": 40
+    },
+    {
+      "capital": 10000000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 13.003225316600474,
+      "net_sharpe": 0.6079104310861856,
+      "max_drawdown": -51.66719784397302,
+      "fill_ratio": 0.4573590297843152,
+      "avg_cash_weight": 0.0066029665586596,
+      "delayed_orders": 44
+    },
+    {
+      "capital": 30000000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 14.471757452822676,
+      "net_sharpe": 0.6453936974215646,
+      "max_drawdown": -51.40422991380944,
+      "fill_ratio": 0.4770563956076796,
+      "avg_cash_weight": 0.0203797381755026,
+      "delayed_orders": 41
+    },
+    {
+      "capital": 50000000.0,
+      "capacity_candidate": "composite",
+      "participation_rate": 0.05,
+      "net_annual_return": 15.070227231004264,
+      "net_sharpe": 0.6644705653451614,
+      "max_drawdown": -51.70367107571772,
+      "fill_ratio": 0.4828847732069141,
+      "avg_cash_weight": 0.0617515137835788,
+      "delayed_orders": 40
+    }
+  ],
+  "rebalance": [
+    {
+      "rebalance_frequency": "weekly",
+      "candidate": "composite_weekly",
+      "net_annual_return": 9.564571121518185,
+      "net_max_drawdown": -61.56304266945693,
+      "net_sharpe": 0.4524903914852216,
+      "annualized_turnover": 5.176664992411469,
+      "development_annualized_return": 6.4417185545881495,
+      "holdout_annualized_return": 21.065474533595506
+    },
+    {
+      "rebalance_frequency": "biweekly",
+      "candidate": "composite_biweekly",
+      "net_annual_return": 19.002621416024024,
+      "net_max_drawdown": -59.37071285157113,
+      "net_sharpe": 0.7025099408954455,
+      "annualized_turnover": 3.245039027842306,
+      "development_annualized_return": 17.857912457199276,
+      "holdout_annualized_return": 23.04017919653532
+    },
+    {
+      "rebalance_frequency": "monthly",
+      "candidate": "composite_monthly",
+      "net_annual_return": 7.728743973237395,
+      "net_max_drawdown": -68.5879756667711,
+      "net_sharpe": 0.3994899347200397,
+      "annualized_turnover": 6.769113351770957,
+      "development_annualized_return": 4.546659292904653,
+      "holdout_annualized_return": 19.4759778338176
+    },
+    {
+      "rebalance_frequency": "quarterly",
+      "candidate": "composite_quarterly",
+      "net_annual_return": 8.334079616208111,
+      "net_max_drawdown": -64.98732883775912,
+      "net_sharpe": 0.4192007490007047,
+      "annualized_turnover": 4.239988742720121,
+      "development_annualized_return": 3.229749510228719,
+      "holdout_annualized_return": 27.75538007304621
+    }
+  ],
+  "share_ledger": [
+    {
+      "rebalance_frequency": "monthly",
+      "formation_dates": 139,
+      "status": "ok",
+      "share_ledger_net_annual_return": 15.05502728877468,
+      "share_ledger_net_sharpe": 0.6583295604539122,
+      "share_ledger_max_drawdown": -51.07212770226519,
+      "share_ledger_fill_ratio": 0.5055867703083365,
+      "share_ledger_avg_cash_weight": 0.1263122521352181,
+      "share_ledger_cumulative_turnover": 147.42960414949914,
+      "share_ledger_temporary_impact": 0.0,
+      "share_ledger_delay_opportunity_cost": 291602.5886172973,
+      "share_ledger_delayed_orders": 40,
+      "weight_level_targets": 138,
+      "owner_period_replay_status": "ok",
+      "owner_period_replay_periods": 137,
+      "owner_period_replay_cumulative_return": 2.854121455084153,
+      "owner_ledger_temporary_impact": 0.0,
+      "owner_canonical_status": "comparison_only_period_replay"
+    },
+    {
+      "rebalance_frequency": "biweekly",
+      "formation_dates": 296,
+      "status": "ok",
+      "share_ledger_net_annual_return": 14.134823271852737,
+      "share_ledger_net_sharpe": 0.6319692773770509,
+      "share_ledger_max_drawdown": -59.51226985024741,
+      "share_ledger_fill_ratio": 0.7536766211133031,
+      "share_ledger_avg_cash_weight": 0.2112046520658362,
+      "share_ledger_cumulative_turnover": 69.34806072557998,
+      "share_ledger_temporary_impact": 0.0,
+      "share_ledger_delay_opportunity_cost": -40144.75542917348,
+      "share_ledger_delayed_orders": 13,
+      "weight_level_targets": 295,
+      "owner_period_replay_status": "ok",
+      "owner_period_replay_periods": 37,
+      "owner_period_replay_cumulative_return": 6.11209483751244,
+      "owner_ledger_temporary_impact": 0.0,
+      "owner_canonical_status": "comparison_only_period_replay"
+    }
+  ],
+  "caveats": [
+    "收益字段按报告约定以百分数记录。",
+    "这是探索性结果，未登记为生产策略。",
+    "延迟成交和容量结果依赖日频成交额代理，尚未用真实成交回报校准。",
+    "联合矩阵阶段因计算耗时未生成，不影响已落盘的候选、归因、稳健性和容量文件。"
+  ]
+}

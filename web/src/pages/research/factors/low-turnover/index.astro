@@ -1,6 +1,7 @@
 ---
 import SiteLayout from "../../../../layouts/SiteLayout.astro";
 import { withBase } from "../../../../lib/routes";
+import LowTurnoverExecutionEvidence from "../../../../components/LowTurnoverExecutionEvidence";
 const base = import.meta.env.BASE_URL ?? "/";
 const docsUrl = withBase("/docs/research/factors/low-turnover/", base);
 ---
@@ -13,6 +14,7 @@ const docsUrl = withBase("/docs/research/factors/low-turnover/", base);
     <section class="report-section"><span class="section-kicker">怎么理解这个因子</span><h3>低换手更像一个信息集合</h3><div class="research-grid"><article class="research-card"><h3>低波动</h3><p>低换手与低波动的历史收益序列相关性较高。控制低波动后差值明显收窄，说明两者有一部分共同信息。</p></article><article class="research-card"><h3>交易活跃度</h3><p>换手率、成交额和 Amihud 指标描述交易环境的不同侧面。控制它们后，排序信息会变化，也可能把低换手的构成部分一起控制掉。</p></article><article class="research-card"><h3>高换手反转</h3><p>早期结果中，高换手端表现较差。收益可能主要来自避开拥挤和投机交易，而不是最低换手端持续上涨。</p></article></div></section>
     <section class="report-section"><span class="section-kicker">证据边界</span><h3>当前结果需要按三个问题阅读</h3><ol class="report-list"><li><strong>样本是什么。</strong> 最新共同样本包含正市盈率股票，不能直接代表全部 A 股。</li><li><strong>形成时知道什么。</strong> 分组前删除未来缺价股票会改变组合名单，组合检验必须先固定形成日名单和权重。</li><li><strong>能不能成交。</strong> 低换手组合的理论多空收益明显高于扣成本多头结果，停牌、涨跌停、成交额和冲击成本需要统一账本验证。</li></ol></section>
     <section class="report-section report-next"><span class="section-kicker">下一步</span><h3>先验证增量价值，再扩展机制解释</h3><p>固定同一股票池、同一份额账本和成本设定，比较基准组合、剔除最高换手组和偏向低换手组。随后把 1 日、20 日和 60 日换手拆开，区分长期低换手与短期异常放量。所有前瞻检验在持有期开始前登记代码版本、输入快照、名单、权重和评价指标。</p></section>
+    <LowTurnoverExecutionEvidence client:load />
     <nav class="report-links" aria-label="低换手研究资料"><a class="button-link" href={docsUrl}>阅读完整方法说明 ↗</a><a class="button-link secondary" href={withBase("/research/style-factors-18y/", base)}>查看 18 年风格因子 ↗</a></nav>
   </article>
 </SiteLayout>
