@@ -64,8 +64,9 @@ Astro 页面负责可静态确定的标题、描述、方法、解释和风险�
 | --- | --- | --- |
 | 研究总览 | `/` | `#overview` 或空 hash |
 | 现金流研究 | `/research/cashflow/` | `#cashflow` |
-| 现金流恢复研究 | `/research/cashflow/recovery/` | `#cashflow-recovery` |
-| 微盘研究 | `/research/microcap/` | `#microcap`、`#microcap-recovery` |
+| 现金流恢复研究 | `/research/cashflow/recovery/` | `#cashflow-recovery` 跳转到新页的 `#cashflow-recovery` 区块 |
+| 微盘研究 | `/research/microcap/` | `#microcap` |
+| 微盘回本与持有期研究 | `/research/microcap/#microcap-recovery` | `#microcap-recovery` |
 | 微盘跨市场流动性 | `/research/microcap/cross-market-liquidity/` | `#cross-market` |
 | 市场指数 | `/research/indices/` | `#style`、`#indices` |
 | 风格因子研究 | `/research/style-factors-18y/` | `#style-factors-18y` |
