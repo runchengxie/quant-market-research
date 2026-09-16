@@ -12,9 +12,10 @@ test("public routes and legacy hashes preserve every existing research entry", (
     "/research/indices/",
     "/research/style-factors-18y/",
     "/research/liquidity/",
+    "/research/factors/low-turnover/",
   ]);
 
-  for (const hash of ["", "#overview", "#cashflow", "#cashflow-recovery", "#microcap", "#microcap-recovery", "#cross-market", "#style", "#style-factors-18y", "#indices", "#liquidity"]) {
+  for (const hash of ["", "#overview", "#cashflow", "#cashflow-recovery", "#microcap", "#microcap-recovery", "#cross-market", "#style", "#style-factors-18y", "#indices", "#liquidity", "#low-turnover"]) {
     assert.ok(LEGACY_HASH_ROUTES[hash], `missing legacy entry for ${hash}`);
   }
   assert.equal(LEGACY_HASH_ROUTES["#microcap-recovery"], "/research/microcap/#microcap-recovery");
