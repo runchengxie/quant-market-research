@@ -53,7 +53,7 @@
 - React 集成允许 Astro 页面导入 `.tsx` 组件。
 - GitHub Pages 配置使用 `site: "https://runchengxie.github.io"` 和 `base: "/quant-market-research"`。
 
-- [ ] **Step 1：先加构建配置测试**
+- [x] **Step 1：先加构建配置测试**
 
 在 `web/src/astro-config.test.mjs` 检查配置中的静态输出、站点地址、base 和 React 集成名称：
 
@@ -63,13 +63,13 @@ assert.match(config, /base:\s*["']\/quant-market-research["']/);
 assert.match(config, /react\(\)/);
 ```
 
-- [ ] **Step 2：运行测试确认当前配置失败**
+- [x] **Step 2：运行测试确认当前配置失败**
 
 运行：`cd web && npm test -- --test-name-pattern="Astro build configuration"`
 
 预期：新测试因缺少 `astro.config.mjs` 失败。
 
-- [ ] **Step 3：安装稳定版 Astro 和 React 集成并建立入口**
+- [x] **Step 3：安装稳定版 Astro 和 React 集成并建立入口**
 
 运行：`cd web && npm install --save-dev astro @astrojs/react @astrojs/check`
 
@@ -96,7 +96,7 @@ export default defineConfig({
 
 更新 `tsconfig.json` 使用 Astro 推荐配置并保留 `strict: true`、`jsx: "react-jsx"`。首页先输出站点名和简短研究站说明，不挂载旧 React 总应用。
 
-- [ ] **Step 4：验证 Astro 静态构建**
+- [x] **Step 4：验证 Astro 静态构建**
 
 运行：`cd web && npm test && npm run build`
 
@@ -453,6 +453,8 @@ assert.equal(withBase("/", "/"), "/");
 - Modify: `web/src/components/LegacyHashRedirect.astro`
 - Modify: `web/src/components/ResearchOverview.tsx`
 - Modify: `web/src/components/RecoverySection.tsx`
+- Modify: `web/src/editorialUi.test.mjs`
+- Modify: `web/src/themeUi.test.mjs`
 - Delete: `web/src/main.tsx`
 - Delete: `web/index.html`
 - Delete: `web/vite.config.ts`
