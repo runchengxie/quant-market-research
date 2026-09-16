@@ -106,4 +106,5 @@ test("低换手页面接入统一账本执行验证快照", () => {
   assert.match(snapshot, /\"schema_version\": \"low_turnover_exploration.v1\"/);
   assert.match(snapshot, /\"candidate\": \"low_turnover\"/);
   assert.match(snapshot, /\"capacity\"/);
+  assert.match(snapshot, /\"joint_matrix\"/);
 });
