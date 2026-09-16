@@ -34,6 +34,18 @@ test("publishes the historical Barra report datasets", () => {
   assert.ok(correlations.size);
 });
 
+test("publishes complete multi-period rows for representative ETFs", () => {
+  const rows = fs
+    .readFileSync(path.join(root, "index/linked_indices/etf_multi_period_returns.csv"), "utf8")
+    .trim()
+    .split("\n");
+  assert.equal(rows.length, 101);
+  assert.match(rows[0], /ts_code,period,start,end/);
+  for (const period of ["1Y", "3Y", "5Y", "10Y"]) {
+    assert.equal(rows.filter((row) => row.split(",")[1] === period).length, 25);
+  }
+});
+
 test("does not publish the retired animal index dataset", () => {
   assert.equal(fs.existsSync(path.join(root, "animal")), false);
   assert.equal(fs.existsSync(path.join(root, "plant")), false);
