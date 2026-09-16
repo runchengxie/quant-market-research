@@ -1,14 +1,6 @@
-import { lazy, Suspense, useEffect, useState } from "react";
-import { readableNotes } from "../../research-copy";
+import { lazy, useEffect, useState } from "react";
 import { parseCsv, publicDataUrl } from "../../lib/public-data";
-import { asNumber, displayLabels, displayValue, formatNumber as num, formatPercent as pct } from "../../lib/format";
-const RecoverySection = lazy(() => import("../RecoverySection"));
-const ReplicationSection = lazy(() => import("../ReplicationSection"));
-
-const NavChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.NavChart })));
-const AnnualChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.AnnualChart })));
-const MetricChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.MetricChart })));
-const UnderwaterChart = lazy(() => import("../MicrocapCharts").then((module) => ({ default: module.UnderwaterChart })));
+import { asNumber, displayValue, formatPercent as pct } from "../../lib/format";
 const ResearchBarChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchBarChart })));
 const ResearchLineChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchLineChart })));
 

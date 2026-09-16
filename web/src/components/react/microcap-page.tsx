@@ -1,14 +1,12 @@
 import { useState } from "react";
 import { readableNotes } from "../../research-copy";
-import { asNumber, displayLabels, displayValue, formatNumber as num, formatPercent as pct } from "../../lib/format";
-import { parseCsv } from "../../lib/public-data";
+import { asNumber, formatNumber as num, formatPercent as pct } from "../../lib/format";
 import RecoverySection from "../RecoverySection";
 import ReplicationSection from "../ReplicationSection";
 import { LiquidityPage } from "./liquidity-page";
 import { NavChart, AnnualChart, MetricChart, UnderwaterChart } from "../MicrocapCharts";
-import { ResearchBarChart, ResearchLineChart } from "../ResearchCharts";
 import { Stat, Panel, SectionHeading, ResearchCard, LineChart, ControlBar, Choice, MicrocapSubTabs, ThemeHeading, SimpleTable, Loading, useJson, useCsv, formatTurnover } from "./research-shared";
-import type { Row, Series, MicrocapSummary, MicrocapScope, StyleScope, TurnoverPeriod, TurnoverSnapshot, TurnoverAudit, SmallcapTurnoverData, LiquidityBucket, LiquidityPeriodMarket, LiquidityPeriod, LiquiditySummary, BarraSummary, HistoricalFactor, CorrelationMatrix, CashflowBasis, DiagnosticView } from "./research-shared";
+import type { Row, MicrocapSummary, MicrocapScope, TurnoverPeriod, SmallcapTurnoverData } from "./research-shared";
 
 type HistoricalMicrocapData = { coverage_start: string; coverage_end: string; trading_days: number; quality_status: string; series: Record<string, { max_drawdown: number; longest_completed_underwater_sessions: number; completed_duration_quantiles: Record<string, number>; survival_probability_beyond_sessions: Record<string, number>; completed_episode_count: number; right_censored_episode_count: number }>; caveats: string[] };
 
