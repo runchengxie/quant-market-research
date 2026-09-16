@@ -11,6 +11,7 @@ exclude_docs: |
   **
   !/index.md
   !/research-roadmap.md
+  !/web-bundle-baseline.md
   !/research/factors/low-turnover.md
   !/research/factors/microcap.md
   !/research/factors/smallcap-turnover-history.md
