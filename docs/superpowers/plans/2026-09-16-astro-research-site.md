@@ -4,7 +4,7 @@
 
 **Goal:** 将公开研究网页迁移为 Astro 静态多页面站，保留 React/ECharts 交互、MkDocs 说明站、GitHub Pages 地址和公开数据契约。
 
-**Architecture:** Astro 提供路由、公共页面框架和静态正文。现有 React 页面按研究主题拆成组件，仅交互图表与控件在浏览器运行。主页和 MkDocs 共用 CSS 设计变量，页面结构样式分别维护。Astro 先输出到 `web/dist/`，随后 MkDocs 写入 `web/dist/docs/`。
+**Architecture:** Astro 提供正式路由、公共页面框架和静态首页摘要。现有研究主体暂由共享 React 路由组件承载，交互组件保留 React/ECharts。主页和 MkDocs 共用 CSS 设计变量。Astro 先输出到 `web/dist/`，随后 MkDocs 写入 `web/dist/docs/`。逐页静态化正文和路由级交互代码拆分列为后续工作。
 
 **Tech Stack:** Astro、`@astrojs/react`、React 18、TypeScript、ECharts、MkDocs、GitHub Actions、Node.js test runner；路由验收使用 Playwright。
 
@@ -53,7 +53,7 @@
 - React 集成允许 Astro 页面导入 `.tsx` 组件。
 - GitHub Pages 配置使用 `site: "https://runchengxie.github.io"` 和 `base: "/quant-market-research"`。
 
-- [ ] **Step 1：先加构建配置测试**
+- [x] **Step 1：先加构建配置测试**
 
 在 `web/src/astro-config.test.mjs` 检查配置中的静态输出、站点地址、base 和 React 集成名称：
 
@@ -63,13 +63,13 @@ assert.match(config, /base:\s*["']\/quant-market-research["']/);
 assert.match(config, /react\(\)/);
 ```
 
-- [ ] **Step 2：运行测试确认当前配置失败**
+- [x] **Step 2：运行测试确认当前配置失败**
 
 运行：`cd web && npm test -- --test-name-pattern="Astro build configuration"`
 
 预期：新测试因缺少 `astro.config.mjs` 失败。
 
-- [ ] **Step 3：安装稳定版 Astro 和 React 集成并建立入口**
+- [x] **Step 3：安装稳定版 Astro 和 React 集成并建立入口**
 
 运行：`cd web && npm install --save-dev astro @astrojs/react @astrojs/check`
 
@@ -96,7 +96,7 @@ export default defineConfig({
 
 更新 `tsconfig.json` 使用 Astro 推荐配置并保留 `strict: true`、`jsx: "react-jsx"`。首页先输出站点名和简短研究站说明，不挂载旧 React 总应用。
 
-- [ ] **Step 4：验证 Astro 静态构建**
+- [x] **Step 4：验证 Astro 静态构建**
 
 运行：`cd web && npm test && npm run build`
 
@@ -129,21 +129,21 @@ git commit -m "build: add Astro static site foundation"
 - `SiteLayout.astro` 接受 `title`、`description`、`activeRoute` 和页面内容 slot。
 - `ThemeToggle.tsx` 继续使用 `web/src/theme.ts` 的 `ThemeChoice`、`readThemeChoice`、`persistThemeChoice` 和 `applyTheme`。
 
-- [ ] **Step 1：写共享变量契约测试**
+- [x] **Step 1：写共享变量契约测试**
 
 检查主页和说明站样式都引用唯一 tokens 文件，且该文件声明设计说明中列出的变量。测试还要确保 `mkdocs.yml` 的 `extra_css` 加载 token 文件。
 
-- [ ] **Step 2：运行测试确认共享文件尚不存在**
+- [x] **Step 2：运行测试确认共享文件尚不存在**
 
 运行：`cd web && npm test -- --test-name-pattern="shared design tokens"`
 
 预期：测试因共享文件不存在失败。
 
-- [ ] **Step 3：抽取变量并建立 Astro 布局**
+- [x] **Step 3：抽取变量并建立 Astro 布局**
 
 将首页和 `docs/assets/docs.css` 重复的浅色变量与字体栈移入 `docs/assets/theme-tokens.css`。主页通过相对 CSS import 加载同一文件，必要时仅为开发服务器配置仓库根目录的 `server.fs.allow`。MkDocs 先加载 `assets/theme-tokens.css`，再加载 `assets/docs.css`，并在 `exclude_docs` 精确放行 token 文件。主页暗色调色板继续在主题选择层覆写共享变量。页面 CSS 继续只定义自身布局。`SiteLayout.astro` 输出主页同款 Header/Footer 结构和每页 Meta。
 
-- [ ] **Step 4：验证主题测试及两套构建**
+- [x] **Step 4：验证主题测试及两套构建**
 
 运行：
 
@@ -453,6 +453,8 @@ assert.equal(withBase("/", "/"), "/");
 - Modify: `web/src/components/LegacyHashRedirect.astro`
 - Modify: `web/src/components/ResearchOverview.tsx`
 - Modify: `web/src/components/RecoverySection.tsx`
+- Modify: `web/src/editorialUi.test.mjs`
+- Modify: `web/src/themeUi.test.mjs`
 - Delete: `web/src/main.tsx`
 - Delete: `web/index.html`
 - Delete: `web/vite.config.ts`
@@ -574,3 +576,7 @@ PR CI 通过后合并到 `main`，等待 Pages workflow 成功。访问项目主
 - 单独建立 Python 公开快照发布计划，替换 `web/scripts/build-public-snapshot.mjs` 的简单 CSV 分割器，固定 JSON schema 并增加公开字段审查。
 - 等公开文档规模增长后，再单独比较 MkDocs 与 Starlight 的迁移成本。
 - 比较迁移前后的首屏 JS、页面 HTML 大小和图表加载时机，只记录实测值，不预设收益。
+
+## 本轮实施说明
+
+本轮实际完成了 Astro 静态多页面入口、正式路由和旧 hash 兼容、共享站点框架与设计变量、主页公开快照静态摘要、MkDocs 顺序构建、静态产物检查和 Playwright 冒烟测试。研究专题主体仍由 `web/src/components/react/ResearchRoutes.tsx` 统一分发，因此不满足原计划中的逐页 Astro 正文和路由级 bundle 拆分目标。后续按专题将静态解释内容迁入 Astro，并把图表与筛选拆成独立交互组件。此计划用于记录已执行方案及尚存差距，原步骤中的文件名和命令仅在与当前实现一致时作为参考。

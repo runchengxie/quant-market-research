@@ -138,7 +138,14 @@ MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs \
   node web/scripts/build-smallcap-turnover-public.mjs
 ```
 
-更新代码后可在 `web/` 目录运行 `npm test` 和 `npm run build`。Python、Ruff 和 MkDocs 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流会先构建首页，再生成 MkDocs 说明站，公开输出位于 `web/dist/`。`scripts/sync_public_research_data.py` 依赖旧 `index-research` 仓库的本地产物，仅供迁移期间使用，不属于当前发布流程。
+更新代码后可在 `web/` 目录运行 `npm test` 和 `npm run build`。需要验证所有页面直达、刷新与交互时，先安装 Chromium：
+
+```bash
+npx playwright install chromium
+npm run e2e
+```
+
+Python、Ruff 和 MkDocs 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流会先构建 Astro 网站，再生成 MkDocs 说明站，检查路由、资源和公开数据边界，并运行浏览器冒烟测试。公开输出位于 `web/dist/`。`scripts/sync_public_research_data.py` 依赖旧 `index-research` 仓库的本地产物，仅供迁移期间使用，不属于当前发布流程。
 
 ## Barra / 风格因子报告
 

@@ -17,6 +17,7 @@ exclude_docs: |
   !/img/**
   !/webfonts/**
   !/search/**
+  !/assets/theme-tokens.css
   !/assets/docs.css
 
 nav:
@@ -32,6 +33,7 @@ theme:
     - navigation.top
 
 extra_css:
+  - assets/theme-tokens.css
   - assets/docs.css
 
 markdown_extensions:

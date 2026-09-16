@@ -1,0 +1,28 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import { ResearchRoute, type ResearchRouteKey } from "./react/ResearchRoutes";
+
+interface Props {
+  title: string;
+  description: string;
+  route: ResearchRouteKey;
+  activeRoute: string;
+  kicker: string;
+  introduction: string;
+  boundary: string;
+}
+
+const { title, description, route, activeRoute, kicker, introduction, boundary } = Astro.props;
+---
+
+<SiteLayout title={title} description={description} activeRoute={activeRoute}>
+  <section class="theme-heading">
+    <div>
+      <span class="section-kicker">{kicker}</span>
+      <h2>{title}</h2>
+      <p>{introduction}</p>
+    </div>
+  </section>
+  <p class="fine-print"><span class="section-kicker">阅读边界</span><br />{boundary}</p>
+  <ResearchRoute client:load route={route} />
+</SiteLayout>

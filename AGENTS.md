@@ -29,6 +29,8 @@ npm test
 npm run build
 ```
 
+构建 Astro 网站后还要运行 `npm run verify:static`，检查静态路由、资源、说明站和公开数据边界。完整本地检查需先构建 MkDocs，再运行 `npm run verify:static`。浏览器冒烟测试使用 `npm run e2e`，首次运行前执行 `npx playwright install chromium`。
+
 按改动范围运行检查。文档修改应核对路径、命令和当前事实。算法修改先补回归测试。Ruff 用于 Python lint 检查，格式检查需等存量代码完成格式统一后再评估。
 
 比较指数表现与重建指数成分时，必须分开说明两者的口径。形成信号时不得使用未来报价或当日之后才能知道的证券资格。

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { publicDataUrl } from '../lib/public-data';
 
 type Scope = 'cashflow' | 'microcap';
 type Measurement = {
@@ -43,7 +44,7 @@ export default function ReplicationSection({scope}: {scope: Scope}) {
   const [loading, setLoading] = useState(true);
   useEffect(() => {
     const controller = new AbortController();
-    fetch('./data/research/replication.json', {signal: controller.signal})
+    fetch(publicDataUrl('research/replication.json', import.meta.env?.BASE_URL ?? '/'), {signal: controller.signal})
       .then(r => { if (!r.ok) throw new Error('Unavailable'); return r.json(); })
       .then(data => { if (!controller.signal.aborted && isReplicationSnapshot(data)) setSnapshot(data); })
       .catch(() => {})

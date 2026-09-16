@@ -14,11 +14,11 @@ test('overview dates and representative observations come from the corresponding
   assert.match(html, /2026-08-14/);
   assert.match(html, /1,073/);
   assert.match(html, /308/);
-  assert.match(html, /href="#cashflow"/);
-  assert.match(html, /href="#microcap"/);
-  assert.match(html, /href="#style"/);
+  assert.match(html, /href="\/research\/cashflow\/"/);
+  assert.match(html, /href="\/research\/microcap\/"/);
+  assert.match(html, /href="\/research\/indices\/"/);
   assert.match(html, /18 年 A 股风格因子动态/);
-  assert.match(html, /href="#style-factors-18y"/);
+  assert.match(html, /href="\/research\/style-factors-18y\/"/);
   assert.match(html, /收益、稳定性与市场阶段/);
   assert.doesNotMatch(html, /-22\.16|独立报告|recovery\.html|<table|<select|research-chart/);
 });

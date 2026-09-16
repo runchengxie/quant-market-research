@@ -1,0 +1,33 @@
+---
+import ThemeToggle from "./react/ThemeToggle";
+import { withBase } from "../lib/routes";
+
+interface Props { activeRoute: string }
+
+const { activeRoute } = Astro.props;
+const links = [
+  { id: "overview", label: "研究总览", href: "/" },
+  { id: "cashflow", label: "现金流", href: "/research/cashflow/" },
+  { id: "microcap", label: "微盘股", href: "/research/microcap/" },
+  { id: "style", label: "指数与风格", href: "/research/indices/" },
+  { id: "liquidity", label: "流动性", href: "/research/liquidity/" },
+];
+---
+
+<header class="site-header">
+  <div class="site-masthead">
+    <div>
+      <span class="brand-kicker">历史研究档案 · 证据优先</span>
+      <h1>市场研究档案</h1>
+      <p class="site-deck">汇集历史市场研究，注明研究进展、数据来源和使用限制。</p>
+    </div>
+    <div class="site-meta">
+      <span>历史档案 · 研究中 · 待补数据</span>
+      <strong>公开汇总结果 · 仅描述历史</strong>
+      <ThemeToggle client:load />
+    </div>
+  </div>
+  <nav class="site-nav" aria-label="研究主题">
+    {links.map((link) => <a class:list={{ active: activeRoute === link.id }} href={withBase(link.href, import.meta.env.BASE_URL)}>{link.label}</a>)}
+  </nav>
+</header>

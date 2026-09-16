@@ -30,6 +30,7 @@ test('cashflow recovery defaults to price series and preserves censoring and imm
   assert.match(entryTable, /交易日/);
   assert.match(entryTable, /回本前最差收益/);
   assert.match(entryTable, /-20\.00%/);
+  assert.match(html, /href="\/research\/microcap\/#microcap-recovery"/);
   assert.doesNotMatch(html, /<iframe|NaN|undefined/);
 });
 
@@ -38,6 +39,7 @@ test('microcap recovery cannot silently display a cashflow result', () => {
   assert.match(html, /同花顺微盘/);
   assert.doesNotMatch(html, /800现金流/);
   assert.match(html, /分红口径/);
+  assert.match(html, /href="\/research\/cashflow\/recovery\/"/);
 });
 
 test('empty or blocked research shows explicit unavailable status, not zero recovery', () => {

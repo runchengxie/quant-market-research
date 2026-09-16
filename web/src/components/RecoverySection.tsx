@@ -1,6 +1,8 @@
 import { useEffect, useRef, useState } from 'react';
 import { ResearchBarChart } from './ResearchCharts';
 import { isRecoverySnapshot, type Snapshot } from './recovery-data';
+import { PUBLIC_ROUTES, withBase } from '../lib/routes';
+import { publicDataUrl } from '../lib/public-data';
 export { isRecoverySnapshot } from './recovery-data';
 export type { Snapshot } from './recovery-data';
 
@@ -15,7 +17,7 @@ export default function RecoverySection({scope}: {scope: Scope}) {
   const [error, setError] = useState(false);
   useEffect(() => {
     const controller = new AbortController();
-    fetch('./data/research/recovery.json', {signal: controller.signal}).then(response => {
+    fetch(publicDataUrl('research/recovery.json', import.meta.env?.BASE_URL ?? '/'), {signal: controller.signal}).then(response => {
       if (!response.ok) throw new Error('Recovery snapshot unavailable');
       return response.json();
     }).then(value => {
@@ -80,7 +82,7 @@ export function RecoveryContent({scope, snapshot}: {scope: Scope; snapshot: Snap
         <p>样本开始前的高点无法识别。历史最长等待不保证未来也能在同样时间内回本。价格指数不含分红，税前全收益计入分红再投资。税费、通胀、机会成本和实际买卖限制尚未计入。</p>
         <p>来源为 Tushare 指数日线，交易日期已按上交所日历检查。这里只展示计算后的统计，完整输入和检查记录保存在研究环境中。</p>
       </details>
-      <p className="panel-note"><a href={scope === 'cashflow' ? '#microcap-recovery' : '#cashflow-recovery'}>查看{scope === 'cashflow' ? '小微盘' : '现金流'}回本研究 ↗</a></p>
+      <p className="panel-note"><a href={scope === 'cashflow' ? `${withBase(PUBLIC_ROUTES.microcap, import.meta.env?.BASE_URL ?? '/')}#microcap-recovery` : withBase(PUBLIC_ROUTES.cashflowRecovery, import.meta.env?.BASE_URL ?? '/')}>查看{scope === 'cashflow' ? '小微盘' : '现金流'}回本研究 ↗</a></p>
     </div>
   </section>;
 }

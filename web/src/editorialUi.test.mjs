@@ -2,7 +2,20 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
-const source = readFileSync(new URL("./main.tsx", import.meta.url), "utf8");
+const [source, overview, routes, pages] = await Promise.all([
+  readFileSync(new URL("./components/react/ResearchRoutes.tsx", import.meta.url), "utf8"),
+  readFileSync(new URL("./components/ResearchOverview.tsx", import.meta.url), "utf8"),
+  readFileSync(new URL("./lib/routes.ts", import.meta.url), "utf8"),
+  Promise.all([
+    "./pages/research/cashflow/index.astro",
+    "./pages/research/microcap/index.astro",
+    "./pages/research/indices/index.astro",
+    "./pages/research/style-factors-18y/index.astro",
+    "./pages/research/liquidity/index.astro",
+    "./components/SiteHeader.astro",
+  ].map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))),
+]);
+const site = [source, overview, routes, ...pages].join("\n");
 const charts = readFileSync(new URL("./components/MicrocapCharts.tsx", import.meta.url), "utf8");
 const researchCharts = readFileSync(new URL("./components/ResearchCharts.tsx", import.meta.url), "utf8");
 
@@ -19,51 +32,48 @@ test("微盘页面保留旧版研究阅读顺序和图表组件", () => {
 });
 
 test("研究总览使用三个研究域和小微盘子主题", () => {
-  assert.match(source, /现金流历史研究/);
-  assert.match(source, /小微盘历史研究/);
-  assert.match(source, /长期风格历史研究/);
-  assert.match(source, /历史研究档案/);
-  assert.match(source, /实际账户盈亏/);
-  assert.match(source, /跨市场小微盘流动性/);
-  assert.match(source, /研究问题与方法/);
-  assert.match(source, /19 个因子表现总览/);
-  assert.match(source, /逐年合成收益与阶段表现/);
-  assert.match(source, /因子相关性/);
-  assert.match(source, /历史多空合成收益/);
-  assert.match(source, /Barra 风格因子研究（18年）/);
-  assert.match(source, /style-factors-18y/);
-  assert.match(source, /setStyleScope\("barra"\)/);
+  assert.match(site, /现金流历史研究/);
+  assert.match(site, /小微盘历史研究/);
+  assert.match(site, /长期风格研究/);
+  assert.match(site, /历史研究档案/);
+  assert.match(site, /实际账户盈亏/);
+  assert.match(site, /跨市场小微盘流动性/);
+  assert.match(site, /研究问题与方法/);
+  assert.match(site, /19 个因子表现总览/);
+  assert.match(site, /逐年合成收益与阶段表现/);
+  assert.match(site, /因子相关性/);
+  assert.match(site, /历史多空合成收益/);
+  assert.match(site, /Barra 风格因子研究（18年）/);
+  assert.match(site, /style-factors-18y/);
   assert.match(source, /ResearchBarChart/);
-  assert.match(source, /ResearchLineChart/);
   assert.match(source, /稳定性观察：按月与按阶段/);
   assert.match(source, /区块自助法/);
   assert.match(source, /2015–2019/);
   assert.match(source, /搜索表格内容/);
-  assert.match(source, /Barra 快照尚未发布到网页/);
-  assert.match(source, /navItems/);
+  assert.match(site, /links = \[/);
   assert.match(source, /时间窗口/);
   assert.match(source, /各市场最近可用数据/);
   assert.doesNotMatch(source, /跨市场研究中/);
 });
 
 test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
-  assert.match(source, /18 年 A 股风格因子动态：收益、稳定性与市场阶段/);
-  assert.match(source, /这些风格因子在不同 A 股市场阶段是否持续存在/);
-  assert.match(source, /Barra-like/);
-  assert.match(source, /IC、样本外验证和统计显著性仍待补充/);
+  assert.match(site, /18 年 A 股风格因子动态：收益、稳定性与市场阶段/);
+  assert.match(site, /这些风格因子在不同 A 股市场阶段是否持续存在/);
+  assert.match(site, /Barra-like/);
+  assert.match(site, /IC、样本外验证和统计显著性仍待补充/);
 });
 
 test("收益图表为缺失值保留 N/A 标记", () => {
   assert.match(researchCharts, /未提供/);
-  assert.match(source, /当前窗口没有对应回报口径的数据/);
+  assert.match(site, /当前窗口没有对应回报口径的数据/);
 });
 
 test("小微盘页面呈现成交额研究的覆盖与审计边界", () => {
-  assert.match(source, /小微盘成交额研究/);
-  assert.match(source, /2008 年起历史口径/);
-  assert.match(source, /重叠审计/);
-  assert.match(source, /smallcap_turnover\.json/);
-  assert.match(source, /N=1/);
-  assert.match(source, /极端诊断/);
-  assert.match(source, /月度汇总/);
+  assert.match(site, /小微盘成交额研究/);
+  assert.match(site, /2008 年起历史口径/);
+  assert.match(site, /重叠审计/);
+  assert.match(site, /smallcap_turnover\.json/);
+  assert.match(site, /N=1/);
+  assert.match(site, /极端诊断/);
+  assert.match(site, /月度汇总/);
 });

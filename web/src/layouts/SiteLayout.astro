@@ -1,0 +1,44 @@
+---
+import "../styles.css";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  activeRoute?: string;
+}
+
+const { title, description, activeRoute = "overview" } = Astro.props;
+const pageTitle = `${title} · Quant Market Research`;
+---
+
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f4f0e8" />
+    <meta name="description" content={description} />
+    <title>{pageTitle}</title>
+    <script is:inline>
+      (() => {
+        try {
+          const stored = localStorage.getItem("market-research-theme");
+          const choice = stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
+          const dark = choice === "dark" || (choice === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.dataset.theme = dark ? "dark" : "light";
+        } catch {
+          document.documentElement.dataset.theme = "light";
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div class="app">
+      <SiteHeader activeRoute={activeRoute} />
+      <main class="site-main"><slot /></main>
+      <SiteFooter />
+    </div>
+  </body>
+</html>

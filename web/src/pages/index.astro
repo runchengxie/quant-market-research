@@ -1,0 +1,16 @@
+---
+import SiteLayout from "../layouts/SiteLayout.astro";
+import LegacyHashRedirect from "../components/LegacyHashRedirect.astro";
+import { OverviewContent } from "../components/ResearchOverview";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import type { Snapshot } from "../components/recovery-data";
+
+const recovery = JSON.parse(await readFile(resolve(process.cwd(), "public/data/research/recovery.json"), "utf8")) as Snapshot;
+const barra = JSON.parse(await readFile(resolve(process.cwd(), "public/data/barra/barra_summary.json"), "utf8"));
+---
+
+<SiteLayout title="研究总览" description="历史市场研究与公开数据的总览页面。" activeRoute="overview">
+  <LegacyHashRedirect />
+  <OverviewContent recovery={recovery} barra={barra} />
+</SiteLayout>
