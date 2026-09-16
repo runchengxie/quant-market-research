@@ -23,7 +23,9 @@ uv run market-research validate --config configs/local.toml
 uv run market-research report liquidity --config configs/local.toml
 ```
 
-结果会写入 `output_root`：
+结果会写入 `output_root`。未填写时，命令按以下顺序选择仓库外的持久输出目录：配置中的
+`output_root`、环境变量 `MARKET_RESEARCH_OUTPUT_ROOT`，最后是
+`$DATA_PLATFORM_ROOT/reports/market-research`。未配置任何目录会直接报错，避免把产物写进代码检出。
 
 - `liquidity_report.json`
 - `liquidity_summary.csv`
