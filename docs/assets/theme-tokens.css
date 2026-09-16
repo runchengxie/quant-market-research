@@ -1,0 +1,25 @@
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap');
+
+:root {
+  color-scheme: light;
+  --paper: #f4f0e8;
+  --surface: #f8f5ef;
+  --surface-strong: #fffefa;
+  --ink: #252525;
+  --ink-soft: #514b43;
+  --muted: #81796e;
+  --muted-2: #8d8579;
+  --rule: #d8d0c3;
+  --rule-soft: #e2dbd0;
+  --accent: #b64d33;
+  --accent-strong: #c84b2f;
+  --accent-soft: #ede5d9;
+  --chart-grid: #e8e1d6;
+  --chart-axis: #81796e;
+  --chart-label: #514b43;
+  --chart-tooltip: #252525;
+  --table-hover: #f0e9df;
+  --font-body: Manrope, "Noto Sans SC", sans-serif;
+  --font-heading: "Noto Serif SC", serif;
+  --font-mono: "DM Mono", monospace;
+}

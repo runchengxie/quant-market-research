@@ -1,27 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap');
+@import url('theme-tokens.css');
 
-:root {
-  color-scheme: light;
-  --paper: #f4f0e8;
-  --surface: #f8f5ef;
-  --ink: #252525;
-  --ink-soft: #514b43;
-  --muted: #81796e;
-  --rule: #d8d0c3;
-  --rule-soft: #e2dbd0;
-  --accent: #b64d33;
-  --accent-strong: #c84b2f;
-  --accent-soft: #ede5d9;
-  --bs-body-bg: var(--paper);
-  --bs-body-color: var(--ink);
-}
+:root { --bs-body-bg: var(--paper); --bs-body-color: var(--ink); }
 
 html,
 body {
   min-width: 320px;
   background: var(--paper);
   color: var(--ink);
-  font-family: Manrope, "Noto Sans SC", sans-serif;
+  font-family: var(--font-body);
   font-size: 15px;
   line-height: 1.8;
 }
@@ -55,7 +41,7 @@ a:focus {
 
 .navbar .navbar-brand {
   color: var(--ink);
-  font: 600 14px/20px "Noto Serif SC", serif;
+  font: 600 14px/20px var(--font-heading);
 }
 
 .navbar .nav-link {
@@ -134,7 +120,7 @@ body > .container {
 [role="main"] h4,
 [role="main"] h5 {
   color: var(--ink);
-  font-family: "Noto Serif SC", serif;
+  font-family: var(--font-heading);
   font-weight: 600;
   letter-spacing: -.025em;
 }

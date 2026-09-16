@@ -129,21 +129,21 @@ git commit -m "build: add Astro static site foundation"
 - `SiteLayout.astro` 接受 `title`、`description`、`activeRoute` 和页面内容 slot。
 - `ThemeToggle.tsx` 继续使用 `web/src/theme.ts` 的 `ThemeChoice`、`readThemeChoice`、`persistThemeChoice` 和 `applyTheme`。
 
-- [ ] **Step 1：写共享变量契约测试**
+- [x] **Step 1：写共享变量契约测试**
 
 检查主页和说明站样式都引用唯一 tokens 文件，且该文件声明设计说明中列出的变量。测试还要确保 `mkdocs.yml` 的 `extra_css` 加载 token 文件。
 
-- [ ] **Step 2：运行测试确认共享文件尚不存在**
+- [x] **Step 2：运行测试确认共享文件尚不存在**
 
 运行：`cd web && npm test -- --test-name-pattern="shared design tokens"`
 
 预期：测试因共享文件不存在失败。
 
-- [ ] **Step 3：抽取变量并建立 Astro 布局**
+- [x] **Step 3：抽取变量并建立 Astro 布局**
 
 将首页和 `docs/assets/docs.css` 重复的浅色变量与字体栈移入 `docs/assets/theme-tokens.css`。主页通过相对 CSS import 加载同一文件，必要时仅为开发服务器配置仓库根目录的 `server.fs.allow`。MkDocs 先加载 `assets/theme-tokens.css`，再加载 `assets/docs.css`，并在 `exclude_docs` 精确放行 token 文件。主页暗色调色板继续在主题选择层覆写共享变量。页面 CSS 继续只定义自身布局。`SiteLayout.astro` 输出主页同款 Header/Footer 结构和每页 Meta。
 
-- [ ] **Step 4：验证主题测试及两套构建**
+- [x] **Step 4：验证主题测试及两套构建**
 
 运行：
 
