@@ -1,10 +1,12 @@
 import { useState } from "react";
 import { asNumber, formatNumber as num, formatPercent as pct } from "../../lib/format";
+import { withBase } from "../../lib/routes";
 import { Stat, Panel, SectionHeading, ResearchCard, BarChart, ControlBar, Choice, StyleSubTabs, ThemeHeading, SimpleTable, SortableTable, Loading, useJson, useCsv, SizeDiagnosticPanel } from "./research-shared";
 import type { Row, StyleScope, BarraSummary, HistoricalFactor, CorrelationMatrix } from "./research-shared";
 
 export function StyleFactorStudyIntro() {
-  return <section className="featured-study study-intro" aria-label="18-year style factor study framing"><div><span className="section-kicker">Featured Quant Research · Barra-style 风格归因</span><h2>18 年 A 股风格因子动态：收益、稳定性与市场阶段</h2><p>这些风格因子在不同 A 股市场阶段是否持续存在？本页用历史分组收益、年度阶段、相关性和市值诊断来观察这个问题。当前定义和口径见 <a href="/docs/research/factors/barra-factor-dictionary/">Barra 风格因子字典</a>。IC、样本外验证和统计显著性仍待补充。</p></div></section>;
+  const docsHref = withBase("/docs/research/factors/barra-factor-dictionary/", import.meta.env?.BASE_URL ?? "/");
+  return <section className="featured-study study-intro" aria-label="18-year style factor study framing"><div><span className="section-kicker">Featured Quant Research · Barra-style 风格归因</span><h2>18 年 A 股风格因子动态：收益、稳定性与市场阶段</h2><p>这些风格因子在不同 A 股市场阶段是否持续存在？本页用历史分组收益、年度阶段、相关性和市值诊断来观察这个问题。当前定义和口径见 <a href={docsHref}>Barra 风格因子字典</a>。IC、样本外验证和统计显著性仍待补充。</p></div></section>;
 }
 export function StylePage({ scope, onScopeChange }: { scope: StyleScope; onScopeChange: (value: StyleScope) => void }) {
   return <><StyleSubTabs scope={scope} onChange={onScopeChange}/>{scope === "barra" ? <><StyleFactorStudyIntro/><BarraPage/></> : <IndicesPage/>}</>;
