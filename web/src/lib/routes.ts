@@ -7,6 +7,7 @@ export const PUBLIC_ROUTES = {
   indices: "/research/indices/",
   styleFactors: "/research/style-factors-18y/",
   liquidity: "/research/liquidity/",
+  lowTurnover: "/research/factors/low-turnover/",
 } as const;
 
 export const LEGACY_HASH_ROUTES: Record<string, string> = {
@@ -21,6 +22,7 @@ export const LEGACY_HASH_ROUTES: Record<string, string> = {
   "#indices": PUBLIC_ROUTES.indices,
   "#style-factors-18y": PUBLIC_ROUTES.styleFactors,
   "#liquidity": PUBLIC_ROUTES.liquidity,
+  "#low-turnover": PUBLIC_ROUTES.lowTurnover,
 };
 
 export function withBase(path: string, baseUrl: string): string {

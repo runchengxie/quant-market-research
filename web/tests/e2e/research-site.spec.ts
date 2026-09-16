@@ -9,6 +9,7 @@ const routes = [
   ["research/indices/", "指数与 ETF 历史表现"],
   ["research/style-factors-18y/", "18 年 A 股风格因子研究"],
   ["research/liquidity/", "跨市场流动性"],
+  ["research/factors/low-turnover/", "低换手因子：它保留了什么信息？"],
 ] as const;
 
 test.beforeEach(async ({ page }) => {
@@ -29,6 +30,11 @@ test("legacy hash links redirect to the new research URL", async ({ page }) => {
   await page.goto("#microcap");
   await expect(page).toHaveURL(/\/research\/microcap\/$/);
   await expect(page.locator("main h2").first()).toContainText("A 股微盘历史研究");
+});
+
+test("low-turnover report links to its full methodology", async ({ page }) => {
+  await page.goto("research/factors/low-turnover/");
+  await expect(page.getByRole("link", { name: /阅读完整方法说明/ })).toHaveAttribute("href", /\/docs\/research\/factors\/low-turnover\//);
 });
 
 test("microcap research loads its public data and theme control works", async ({ page }) => {

@@ -14,6 +14,7 @@ const routes = [
   ["research/indices/index.html", "指数与 ETF 历史表现"],
   ["research/style-factors-18y/index.html", "18 年 A 股风格因子研究"],
   ["research/liquidity/index.html", "跨市场流动性"],
+  ["research/factors/low-turnover/index.html", "低换手因子：它保留了什么信息？"],
 ];
 
 async function makeSite() {
