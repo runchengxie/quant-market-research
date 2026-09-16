@@ -10,7 +10,7 @@ import { Stat, Panel, SectionHeading, ResearchCard, BarChart, ControlBar, Choice
 import type { Row, StyleScope, BarraSummary, HistoricalFactor, CorrelationMatrix } from "./research-shared";
 
 export function StyleFactorStudyIntro() {
-  return <section className="featured-study study-intro" aria-label="18-year style factor study framing"><div><span className="section-kicker">Featured Quant Research · Barra-like style-factor attribution</span><h2>18 年 A 股风格因子动态：收益、稳定性与市场阶段</h2><p>这些风格因子在不同 A 股市场阶段是否持续存在？本页用历史分组收益、年度阶段、相关性和市值诊断来观察这个问题。IC、样本外验证和统计显著性仍待补充。</p></div></section>;
+  return <section className="featured-study study-intro" aria-label="18-year style factor study framing"><div><span className="section-kicker">Featured Quant Research · Barra-style 风格归因</span><h2>18 年 A 股风格因子动态：收益、稳定性与市场阶段</h2><p>这些风格因子在不同 A 股市场阶段是否持续存在？本页用历史分组收益、年度阶段、相关性和市值诊断来观察这个问题。当前定义和口径见 <a href="/docs/research/factors/barra-factor-dictionary/">Barra 风格因子字典</a>。IC、样本外验证和统计显著性仍待补充。</p></div></section>;
 }
 export function StylePage({ scope, onScopeChange }: { scope: StyleScope; onScopeChange: (value: StyleScope) => void }) {
   return <><StyleSubTabs scope={scope} onChange={onScopeChange}/>{scope === "barra" ? <><StyleFactorStudyIntro/><BarraPage/></> : <IndicesPage/>}</>;
@@ -26,18 +26,18 @@ export function IndicesPage() {
   return <><ThemeHeading kicker="指数长期回报 · ETF 可投资性" title="指数长期回报与可投资的基金产品" text="查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。" asof="已发布的历史数据"/><section className="stat-grid"><Stat label="指数目录" value={num(catalog.length)} note="已收录公开目录" accent/><Stat label="十年可比指数" value={num(returns.length)} note="有完整起止数据"/><Stat label="代表性基金" value={num(etfs.length)} note="与指数对应的基金产品"/><Stat label="符合成交额筛选的基金" value={num(liquid)} note="近60日成交额筛选"/></section><Panel title="十年价格回报最高的指数" tag="前12名"><BarChart rows={top} labelKey="indx_name" valueKey="cagr" color="#1267d6"/></Panel><Panel title="指数与代表性基金的表现" tag="可搜索、可排序"><SortableTable rows={etfs} columns={[["ts_code", "ETF"], ["matched_index_name", "跟踪指数"], ["etf_cagr", "基金年化回报"], ["index_cagr", "指数年化回报"], ["etf_max_drawdown", "基金最大回撤"], ["median_amount_60d", "近60日成交额中位数"]]} percentColumns={["etf_cagr", "index_cagr", "etf_max_drawdown"]}/></Panel></>;
 }
 
-const FACTOR_NAMES: Record<string, string> = { beta: "低贝塔", chip_concentration: "筹码集中度", dividend_yield: "股息率", earnings_yield: "盈利收益率", fund_breadth: "公募重仓广度", fund_breadth_change: "公募重仓广度变化", fund_ownership: "公募重仓比例", fund_ownership_change: "公募重仓比例变化", growth: "成长", institution_holding: "机构持仓", leverage: "低杠杆", liquidity: "低换手", liquidity_flow: "大单资金流", lowvol: "低波动", momentum: "21日动量", ps_value: "市销率价值", quality: "质量", size: "市值", value: "价值" };
+const FACTOR_NAMES: Record<string, string> = { beta: "低贝塔", chip_concentration: "筹码集中度", dividend_yield: "股息率", earnings_yield: "盈利收益率", fund_breadth: "公募重仓广度", fund_breadth_change: "公募重仓广度变化", fund_ownership: "公募重仓比例", fund_ownership_change: "公募重仓比例变化", growth: "成长", institution_holding: "机构持仓", leverage: "低杠杆", liquidity: "低换手（当前快照）", liquidity_flow: "大单资金流", lowvol: "总波动率（21日）", momentum: "短期动量（21日）", ps_value: "市销率价值", quality: "复合质量", size: "市值", value: "价值" };
 const FACTOR_DEFINITIONS: Row[] = [
   { factor: "size", name: "市值", direction: "大市值减小市值", method: "总市值取自然对数，每月分组" },
   { factor: "value", name: "价值", direction: "低市净率减高市净率", method: "市净率倒数，每月分组" },
-  { factor: "momentum", name: "21日动量", direction: "强势减弱势", method: "21日收益，每月分组" },
-  { factor: "quality", name: "质量", direction: "高质量减低质量", method: "净资产收益率、低杠杆、盈利稳定性和现金流质量等权合成" },
+  { factor: "momentum", name: "短期动量（21日）", direction: "强势减弱势", method: "排除形成日的21日收益，每月分组" },
+  { factor: "quality", name: "复合质量", direction: "高质量减低质量", method: "盈利能力、低杠杆、盈利稳定性和现金流质量等权合成" },
   { factor: "earnings_yield", name: "盈利收益率", direction: "低市盈率减高市盈率", method: "滚动市盈率倒数" },
-  { factor: "lowvol", name: "低波动", direction: "低波动减高波动", method: "最近21个收益观察值的波动率" },
+  { factor: "lowvol", name: "总波动率（21日）", direction: "低波动减高波动", method: "最近21个收益观察值的总收益波动率" },
   { factor: "growth", name: "成长", direction: "高增长减低增长", method: "净利润同比和营业收入同比，按公告日对齐" },
   { factor: "leverage", name: "低杠杆", direction: "低杠杆减高杠杆", method: "资产负债率，按公告日对齐" },
   { factor: "beta", name: "低贝塔", direction: "低贝塔减高贝塔", method: "252日滚动市场贝塔，至少126日" },
-  { factor: "liquidity", name: "低换手", direction: "低换手减高换手", method: "换手率" },
+  { factor: "liquidity", name: "低换手（当前快照）", direction: "低换手减高换手", method: "形成日单日换手率，长期低换手研究另有20日和60日口径" },
   { factor: "liquidity_flow", name: "大单资金流", direction: "大单净买入较高减较低", method: "大单净买入占比" },
   { factor: "chip_concentration", name: "筹码集中度", direction: "集中度较高减较低", method: "前十大流通股东持股占比" },
   { factor: "institution_holding", name: "机构持仓", direction: "机构持仓较高减较低", method: "前十大机构流通持股占比" },
