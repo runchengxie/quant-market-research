@@ -98,3 +98,12 @@ test("小微盘页面呈现成交额研究的覆盖与审计边界", () => {
   assert.match(site, /极端诊断/);
   assert.match(site, /月度汇总/);
 });
+
+test("低换手页面接入统一账本执行验证快照", () => {
+  const page = readFileSync(new URL("./pages/research/factors/low-turnover/index.astro", import.meta.url), "utf8");
+  const snapshot = readFileSync(new URL("../public/data/low_turnover_exploration.json", import.meta.url), "utf8");
+  assert.match(page, /LowTurnoverExecutionEvidence/);
+  assert.match(snapshot, /\"schema_version\": \"low_turnover_exploration.v1\"/);
+  assert.match(snapshot, /\"candidate\": \"low_turnover\"/);
+  assert.match(snapshot, /\"capacity\"/);
+});
