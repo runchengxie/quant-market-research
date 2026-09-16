@@ -9,6 +9,7 @@
     "snapshot": "node scripts/build-public-snapshot.mjs",
     "build": "astro check && astro build",
     "verify:static": "node scripts/verify-static-site.mjs dist",
+    "report:bundle": "node scripts/report-bundle-size.mjs dist",
     "e2e": "playwright test",
     "serve:preview": "node scripts/serve-static.mjs dist",
     "test": "node --import tsx --test src/*.test.mjs",

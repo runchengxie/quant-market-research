@@ -574,8 +574,10 @@ PR CI 通过后合并到 `main`，等待 Pages workflow 成功。访问项目主
 ## 迁移完成后的后续工作
 
 - 单独建立 Python 公开快照发布计划，替换 `web/scripts/build-public-snapshot.mjs` 的简单 CSV 分割器，固定 JSON schema 并增加公开字段审查。
+- 已将两个 Node 快照发布脚本改为共用 `web/scripts/csv.mjs`，并用带引号逗号、双引号和换行的样例做回归验证。后续仍可将快照规范化和隐私检查迁入 Python 发布流程。
 - 等公开文档规模增长后，再单独比较 MkDocs 与 Starlight 的迁移成本。
 - 比较迁移前后的首屏 JS、页面 HTML 大小和图表加载时机，只记录实测值，不预设收益。
+- 使用 `cd web && npm run report:bundle` 记录当前静态产物基线。当前最大文件为 ECharts 包，逐页拆分后再比较变化。
 
 ## 本轮实施说明
 
