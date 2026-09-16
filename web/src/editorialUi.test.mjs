@@ -80,7 +80,7 @@ test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
 test("指数研究支持按目录类别筛选长期回报", () => {
   assert.match(source, /指数类别/);
   assert.match(source, /filteredReturns/);
-  assert.match(source, /当前公开快照提供十年价格回报/);
+  assert.match(source, /指数排行榜仍使用十年价格回报/);
 });
 
 test("收益图表为缺失值保留 N/A 标记", () => {
