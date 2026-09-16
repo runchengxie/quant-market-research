@@ -52,8 +52,8 @@ h1 { margin: 10px 0 12px; font: 700 clamp(36px, 6vw, 70px)/.98 var(--font-headin
 .overview-grid p { max-width: 410px; margin-bottom: 22px; color: #716c63; font-size: 13px; line-height: 1.8; }
 .overview-grid b { color: #b64d33; font: 11px var(--font-mono); }
 .sub-tabs { display: flex; gap: 6px; margin: 0 0 24px; border-bottom: 1px solid #d8d0c3; padding-bottom: 10px; }
-.sub-tabs button { border: 1px solid transparent; padding: 8px 12px; color: #81796e; background: transparent; cursor: pointer; font-size: 12px; }
-.sub-tabs button:hover, .sub-tabs button:focus-visible, .sub-tabs button.active { border-color: #dba58f; color: #b64d33; background: #ede5d9; }
+.sub-tabs button, .sub-tabs a { border: 1px solid transparent; padding: 8px 12px; color: #81796e; background: transparent; cursor: pointer; font-size: 12px; text-decoration: none; }
+.sub-tabs button:hover, .sub-tabs button:focus-visible, .sub-tabs button.active, .sub-tabs a:hover, .sub-tabs a:focus-visible, .sub-tabs a.active { border-color: #dba58f; color: #b64d33; background: #ede5d9; }
 .period-panel { margin: 0 0 42px; border: 1px solid #d8d0c3; padding: 24px; background: #f8f5ef; }
 .period-panel.embedded { margin-top: 10px; }
 .period-heading { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
@@ -134,7 +134,7 @@ tr:hover td { background: #f0e9df; }
 .recovery-entries { margin: 28px 0; }
 .recovery-entries summary { cursor: pointer; font-size: 14px; }
 @media (max-width: 800px) { .recovery-section .recovery-stats { grid-template-columns: 1fr; } .recovery-stats .stat:last-child { grid-column: auto; } }
-.evidence-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin: 28px 0; }
+.evidence-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin: 28px 0; }
 .featured-study { display: flex; justify-content: space-between; gap: 28px; align-items: end; margin: 28px 0 42px; border: 1px solid #c84b2f; padding: 28px; background: #ede5d9; }
 .featured-study h2 { max-width: 760px; margin: 9px 0 10px; font: 600 clamp(24px, 3vw, 38px)/1.15 var(--font-heading); letter-spacing: -.04em; }
 .featured-study p { max-width: 760px; margin: 0; color: #514b43; line-height: 1.8; }
@@ -188,7 +188,7 @@ html, body { background: var(--paper); color: var(--ink); }
 .site-deck, .theme-heading p, .callout p, .section-heading p, .panel-note, .research-card p, .market-card small, .featured-study p, .site-meta, .site-nav a, .stat span, .stat small, .period-heading p, .period-meta, .source-note, .loading, .site-footer { color: var(--muted); }
 .site-nav a, .site-footer, .fine-print, .panel, .stat, .overview-grid a, .market-card, .evidence-card, .control-bar, table, th, td, .tag, .status-badge, .table-controls input, .recovery-selector select { border-color: var(--rule); }
 .overview-grid a, .market-card, .evidence-card, .control-bar, .panel, .stat, .chart-tooltip { background: var(--surface); }
-.callout, .featured-study, .sub-tabs button:hover, .sub-tabs button:focus-visible, .sub-tabs button.active, .choice:hover, .choice.active { background: var(--accent-soft); }
+.callout, .featured-study, .sub-tabs button:hover, .sub-tabs button:focus-visible, .sub-tabs button.active, .sub-tabs a:hover, .sub-tabs a:focus-visible, .sub-tabs a.active, .choice:hover, .choice.active { background: var(--accent-soft); }
 .callout p, td, .featured-study p, .evidence-card dt { color: var(--ink-soft); }
 .tag, th, .control-label, .choice, .chart-axis, .source-note { color: var(--muted); }
 .brand-kicker, .section-kicker, .stat.accent strong, .market-card strong.ready, .load-error, .site-footer a, .table-sort:hover { color: var(--accent); }

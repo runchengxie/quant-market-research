@@ -10,6 +10,7 @@ const [source, overview, routes, pages] = await Promise.all([
     "./components/react/style-page.tsx",
     "./components/react/cashflow-page.tsx",
     "./components/react/liquidity-page.tsx",
+    "./components/ReplicationSection.tsx",
   ].map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))).then((files) => files.join("\n")),
   readFileSync(new URL("./components/ResearchOverview.tsx", import.meta.url), "utf8"),
   readFileSync(new URL("./lib/routes.ts", import.meta.url), "utf8"),
@@ -25,6 +26,7 @@ const [source, overview, routes, pages] = await Promise.all([
 const site = [source, overview, routes, ...pages].join("\n");
 const charts = readFileSync(new URL("./components/MicrocapCharts.tsx", import.meta.url), "utf8");
 const researchCharts = readFileSync(new URL("./components/ResearchCharts.tsx", import.meta.url), "utf8");
+const styles = readFileSync(new URL("./styles.css", import.meta.url), "utf8");
 
 test("微盘页面保留旧版研究阅读顺序和图表组件", () => {
   assert.match(source, /MicrocapCharts/);
@@ -72,9 +74,22 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
 
 test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
   assert.match(site, /18 年 A 股风格因子动态：收益、稳定性与市场阶段/);
-  assert.match(site, /这些风格因子在不同 A 股市场阶段是否持续存在/);
+  assert.match(site, /读者可以了解各类风格因子在不同市场阶段的表现/);
   assert.match(site, /Barra-style/);
   assert.match(site, /IC、样本外验证和统计显著性仍待补充/);
+});
+
+test("研究页面使用读者导向的入口和文案", () => {
+  assert.match(overview, /先浏览每项研究的结论和证据范围/);
+  assert.match(overview, /详细方法与数据口径收录在文档区/);
+  assert.match(site, /自行计算的结果与官方指数有多接近/);
+  assert.match(site, /本节展示本地选股和持仓回放结果/);
+  assert.match(styles, /\.evidence-grid[^\n]*repeat\(2, minmax\(0, 1fr\)\)/);
+});
+
+test("指数页的 Barra 子主题使用独立研究链接", () => {
+  assert.match(source, /withBase\("\/research\/style-factors-18y\//);
+  assert.match(source, /Barra 风格因子研究（18年）/);
 });
 
 test("指数研究支持按目录类别筛选长期回报", () => {

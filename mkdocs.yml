@@ -4,19 +4,23 @@ docs_dir: docs
 site_dir: web/dist/docs
 use_directory_urls: true
 strict: true
+theme:
+  name: mkdocs
+  custom_dir: docs/overrides
+  locale: zh
+  features:
+    - navigation.top
 
 # The repository's internal runbooks include local-only paths and operational
 # details. Only reviewed public research notes are included in GitHub Pages.
 exclude_docs: |
   **
   !/index.md
-  !/research-roadmap.md
-  !/web-bundle-baseline.md
-  !/next-explorations.md
   !/research/factors/low-turnover.md
   !/research/factors/microcap.md
   !/research/factors/smallcap-turnover-history.md
   !/research/factors/barra-factor-dictionary.md
+  !/research/factors/barra-source-inventory.md
   !/css/**
   !/js/**
   !/img/**
@@ -27,20 +31,14 @@ exclude_docs: |
 
 nav:
   - 研究说明: index.md
-  - 研究路线与证据状态: research-roadmap.md
-  - 网页产物基线: web-bundle-baseline.md
-  - 后续探索执行协议: next-explorations.md
   - 因子研究:
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md
       - 小市值成交活跃度补充: research/factors/smallcap-turnover-history.md
       - Barra 风格因子字典: research/factors/barra-factor-dictionary.md
-
-theme:
-  name: mkdocs
-  locale: zh
-  features:
-    - navigation.top
+      - Barra 研究资料清单: research/factors/barra-source-inventory.md
+extra:
+  public_site_url: https://runchengxie.github.io/quant-market-research/
 
 extra_css:
   - assets/theme-tokens.css
