@@ -8,14 +8,15 @@ import { NavChart, AnnualChart, MetricChart, UnderwaterChart } from "../Microcap
 import { Stat, Panel, SectionHeading, ResearchCard, LineChart, ControlBar, Choice, MicrocapSubTabs, ThemeHeading, SimpleTable, Loading, useJson, useCsv, formatTurnover } from "./research-shared";
 import type { Row, MicrocapSummary, MicrocapScope, TurnoverPeriod, SmallcapTurnoverData } from "./research-shared";
 
-type HistoricalMicrocapData = { coverage_start: string; coverage_end: string; trading_days: number; quality_status: string; series: Record<string, { max_drawdown: number; longest_completed_underwater_sessions: number; completed_duration_quantiles: Record<string, number>; survival_probability_beyond_sessions: Record<string, number>; completed_episode_count: number; right_censored_episode_count: number }>; caveats: string[] };
+type HistoricalMicrocapData = { coverage_start: string; coverage_end: string; trading_days: number; quality_status: string; series: Record<string, { max_drawdown: number; longest_completed_underwater_sessions: number; longest_observed_underwater_sessions: number; completed_duration_quantiles: Record<string, number>; survival_probability_beyond_sessions: Record<string, number>; episode_count: number; completed_episode_count: number; right_censored_episode_count: number }>; coverage_by_year: Array<{ calendar_year: number; rows: number; valid_adj_close: number; eligible_rows: number; suspended_rows: number }>; audit_notes: string[]; caveats: string[] };
 
 function HistoricalMicrocapSection() {
   const { data, error } = useJson<HistoricalMicrocapData>("microcap_history_2008_2014.json");
   if (error) return <div className="callout compact"><span className="section-kicker">2008–2014 历史补充</span><p>历史补充汇总暂时无法加载：{error}</p></div>;
   if (!data) return <Loading />;
   const rows = Object.entries(data.series).map(([n, item]) => ({ n: `N=${n}`, max_drawdown: pct(item.max_drawdown), longest: `${num(item.longest_completed_underwater_sessions)} 个交易日`, p95: `${num(item.completed_duration_quantiles["0.95"])} 个交易日`, over_year: pct(item.survival_probability_beyond_sessions["252"]), episodes: num(item.completed_episode_count) }));
-  return <Panel title="2008–2014 年微盘历史补充" tag="独立历史口径"><p className="panel-note">这段日频重建覆盖 {data.coverage_start} 至 {data.coverage_end}，共 {num(data.trading_days)} 个交易日。历史源的 ST 和停牌字段不完整，因此单独展示，不与 2015 年后的清洗口径拼接。</p><SimpleTable rows={rows} columns={[["n", "组合规模"], ["max_drawdown", "最大回撤"], ["longest", "最长已完成水下期"], ["p95", "水下期 P95"], ["over_year", "超过一年比例"], ["episodes", "已完成区间数"]]} /><p className="panel-note">最长水下期统计已完成区间，右删失区间单独计数。完整逐日净值和事件明细保存在仓库外。</p></Panel>;
+  const latest = data.coverage_by_year.at(-1);
+  return <Panel title="2008–2014 年微盘历史补充" tag="独立历史口径"><p className="panel-note">这段日频重建覆盖 {data.coverage_start} 至 {data.coverage_end}，共 {num(data.trading_days)} 个交易日。每年都有价格和市值记录，2014 年有效价格行 {num(latest?.valid_adj_close ?? 0)}，但历史源的 ST 和停牌资格字段不完整，因此单独展示，不与 2015 年后的清洗口径拼接。</p><SimpleTable rows={rows} columns={[["n", "组合规模"], ["max_drawdown", "最大回撤"], ["longest", "最长已完成水下期"], ["p95", "水下期 P95"], ["over_year", "超过一年比例"], ["episodes", "已完成区间数"]]} /><p className="panel-note">最长已完成水下期只表示已经回到前高的区间。样本末仍未回本的 {num(data.series["400"]?.right_censored_episode_count ?? 0)} 个区间单独计为右删失，不能把它当成最终恢复时长。完整逐日净值和事件明细保存在仓库外。</p></Panel>;
 }
 
 export function SmallcapTurnoverSection() {

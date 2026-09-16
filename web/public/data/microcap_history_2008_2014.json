@@ -23,7 +23,9 @@
         "1260": 0.0
       },
       "completed_episode_count": 104,
-      "right_censored_episode_count": 1
+      "right_censored_episode_count": 1,
+      "episode_count": 105,
+      "longest_observed_underwater_sessions": 420
     },
     "100": {
       "max_drawdown": -0.6181410293587178,
@@ -41,7 +43,9 @@
         "1260": 0.0
       },
       "completed_episode_count": 102,
-      "right_censored_episode_count": 1
+      "right_censored_episode_count": 1,
+      "episode_count": 103,
+      "longest_observed_underwater_sessions": 282
     },
     "200": {
       "max_drawdown": -0.6316354079012289,
@@ -59,7 +63,9 @@
         "1260": 0.0
       },
       "completed_episode_count": 89,
-      "right_censored_episode_count": 1
+      "right_censored_episode_count": 1,
+      "episode_count": 90,
+      "longest_observed_underwater_sessions": 442
     },
     "400": {
       "max_drawdown": -0.6572047751693624,
@@ -77,7 +83,9 @@
         "1260": 0.0
       },
       "completed_episode_count": 73,
-      "right_censored_episode_count": 1
+      "right_censored_episode_count": 1,
+      "episode_count": 74,
+      "longest_observed_underwater_sessions": 506
     },
     "800": {
       "max_drawdown": -0.6876726215473723,
@@ -95,12 +103,77 @@
         "1260": 0.0
       },
       "completed_episode_count": 48,
-      "right_censored_episode_count": 1
+      "right_censored_episode_count": 1,
+      "episode_count": 49,
+      "longest_observed_underwater_sessions": 611
     }
   },
   "caveats": [
     "历史区间缺少与2015年以后完全一致的ST和停牌字段。",
     "这是规则重建的描述性序列，不代表Wind官方指数或可成交策略净值。",
     "最长水下期只统计已完成区间，当前右删失区间单独计数。"
+  ],
+  "coverage_by_year": [
+    {
+      "calendar_year": 2008,
+      "rows": 360807,
+      "positive_cap": 360807,
+      "valid_adj_close": 360807,
+      "eligible_rows": 334823,
+      "suspended_rows": 0
+    },
+    {
+      "calendar_year": 2009,
+      "rows": 375770,
+      "positive_cap": 375770,
+      "valid_adj_close": 375770,
+      "eligible_rows": 347617,
+      "suspended_rows": 0
+    },
+    {
+      "calendar_year": 2010,
+      "rows": 432129,
+      "positive_cap": 432129,
+      "valid_adj_close": 432129,
+      "eligible_rows": 402012,
+      "suspended_rows": 0
+    },
+    {
+      "calendar_year": 2011,
+      "rows": 512176,
+      "positive_cap": 512176,
+      "valid_adj_close": 512176,
+      "eligible_rows": 482423,
+      "suspended_rows": 0
+    },
+    {
+      "calendar_year": 2012,
+      "rows": 566389,
+      "positive_cap": 566389,
+      "valid_adj_close": 566389,
+      "eligible_rows": 541178,
+      "suspended_rows": 0
+    },
+    {
+      "calendar_year": 2013,
+      "rows": 564814,
+      "positive_cap": 564814,
+      "valid_adj_close": 564814,
+      "eligible_rows": 550859,
+      "suspended_rows": 0
+    },
+    {
+      "calendar_year": 2014,
+      "rows": 570677,
+      "positive_cap": 570677,
+      "valid_adj_close": 570677,
+      "eligible_rows": 561251,
+      "suspended_rows": 0
+    }
+  ],
+  "audit_notes": [
+    "每个 N 的汇总来自 return_unknown_flat 情景。该情景把已分类的缺价按前值持平处理。",
+    "最长已完成水下期只包含已经回到前高的区间。样本末仍低于前高的区间计为右删失，不能据此断言最终恢复时间。",
+    "2008–2014 各年都有价格和市值记录，但历史源的 ST 与停牌资格字段不完整，年度 eligible_rows 只用于覆盖审计。"
   ]
 }
