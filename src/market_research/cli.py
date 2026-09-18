@@ -27,6 +27,7 @@ from .indexes import (
 )
 from .reports import build_liquidity_report, write_report_bundle
 from .microcap import write_microcap_snapshot
+from .microcap_repair import classify_missing_holdings, load_missing_holdings_from_parquet, load_parquet_frame, summarize_repair_variants
 from .output_paths import resolve_output_root
 from .smallcap_turnover import DEFAULT_RANK_COUNTS, build_smallcap_turnover_stats
 from .smallcap_turnover_audit import build_overlap_audit
@@ -60,6 +61,8 @@ def _build_parser() -> argparse.ArgumentParser:
     smallcap_turnover_audit.add_argument("--config", required=True)
     microcap = report_subparsers.add_parser("microcap")
     microcap.add_argument("--config", required=True)
+    microcap_repair = report_subparsers.add_parser("microcap-repair")
+    microcap_repair.add_argument("--config", required=True)
     indices = report_subparsers.add_parser("indices")
     indices.add_argument("--config", required=True)
     cashflow = report_subparsers.add_parser("cashflow")
@@ -334,6 +337,66 @@ def main(argv: list[str] | None = None) -> int:
             )
             + "\n",
             encoding="utf-8",
+        )
+        return 0
+    if args.command == "report" and args.report_command == "microcap-repair":
+        config = _load_config(Path(args.config))
+        sources = config.get("sources", {})
+        repair = config.get("microcap_repair", {})
+        if not isinstance(sources, dict) or not sources.get("a_share_root"):
+            raise RuntimeError("A-share source is required for microcap repair report")
+        if not isinstance(repair, dict):
+            repair = {}
+        a_share_root = Path(str(sources["a_share_root"]))
+        if not a_share_root.exists():
+            raise RuntimeError("configured A-share source does not exist")
+        missing = load_missing_holdings_from_parquet(
+            a_share_root,
+            constituent_count=int(repair.get("constituent_count", 400)),
+            start_date=str(repair["start_date"]) if repair.get("start_date") else None,
+            end_date=str(repair["end_date"]) if repair.get("end_date") else config.get("as_of") or None,
+        )
+        reconstruction = reconstruct_smallest_cap_index_from_parquet(
+            a_share_root,
+            constituent_count=int(repair.get("constituent_count", 400)),
+            start_date=str(repair["start_date"]) if repair.get("start_date") else None,
+            end_date=str(repair["end_date"]) if repair.get("end_date") else config.get("as_of") or None,
+        )
+        instruments = load_parquet_frame(repair.get("instruments_root"))
+        st_events = load_parquet_frame(repair.get("st_root"))
+        suspend_events = load_parquet_frame(repair.get("suspend_root"))
+        classified = classify_missing_holdings(missing, instruments, st_events, suspend_events)
+        output_root = resolve_output_root(config, subdir="microcap_repair")
+        output_root.mkdir(parents=True, exist_ok=True)
+        classified.to_csv(output_root / "microcap_missing_classification.csv", index=False)
+        reconstruction.to_csv(output_root / "microcap_repair_daily.csv", index=False)
+        class_counts = classified["classification"].value_counts().to_dict() if not classified.empty else {}
+        evidence_counts = {
+            "suspension": int(classified["has_suspension_evidence"].sum()) if not classified.empty else 0,
+            "st": int(classified["has_st_event_evidence"].sum()) if not classified.empty else 0,
+            "delist": int(classified["has_delist_evidence"].sum()) if not classified.empty else 0,
+            "unclassified": int((classified["classification"] == "unclassified_gap").sum()) if not classified.empty else 0,
+        }
+        summary = {
+            "quality_status": "exploration",
+            "not_for_primary_nav": True,
+            "generated_at_utc": datetime.now(timezone.utc).isoformat(),
+            "source": str(a_share_root),
+            "coverage_start": str(reconstruction["date"].min()) if not reconstruction.empty else None,
+            "coverage_end": str(reconstruction["date"].max()) if not reconstruction.empty else None,
+            "selected_count": int(repair.get("constituent_count", 400)),
+            "missing_holdings": int(len(classified)),
+            "classification_counts": class_counts,
+            "evidence_counts": evidence_counts,
+            "variants": summarize_repair_variants(reconstruction, classified),
+            "caveats": [
+                "Strict reconstruction remains the primary result; repair outputs are sensitivities only.",
+                "Only explicit suspend_d, ST, or delist evidence is classified; unresolved gaps are not filled.",
+                "Delist evidence is reported separately and has no fabricated liquidation price.",
+            ],
+        }
+        (output_root / "microcap_repair_summary.json").write_text(
+            json.dumps(summary, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8"
         )
         return 0
     if args.command == "report" and args.report_command == "barra":

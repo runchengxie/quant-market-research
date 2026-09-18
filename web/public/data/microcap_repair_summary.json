@@ -1,0 +1,27 @@
+{
+  "quality_status": "exploration",
+  "not_for_primary_nav": true,
+  "generated_at_utc": "2026-09-18T09:58:00Z",
+  "source": "Tushare A-share daily-clean, suspend_d and stock_st evidence audit",
+  "coverage_start": "2015-01-05",
+  "coverage_end": "2026-09-16",
+  "selected_count": 400,
+  "missing_holdings": 2122,
+  "evidence_counts": {
+    "suspension": 1848,
+    "suspension_and_st": 210,
+    "unclassified": 274,
+    "delist": 0
+  },
+  "variants": [
+    {"name": "strict", "observations": 1846, "final_nav": 10.7020020600, "cumulative_return": 9.7020020600, "max_drawdown": -0.3095612113},
+    {"name": "partial", "observations": 2846, "final_nav": 112.6479625162, "cumulative_return": 111.6479625162, "max_drawdown": -0.5127186139},
+    {"name": "carry_all_missing", "observations": 2846, "final_nav": 112.4694063546, "cumulative_return": 111.4694063546, "max_drawdown": -0.4986276406},
+    {"name": "carry_evidence_only", "observations": 2733, "final_nav": 131.4469622866, "cumulative_return": 130.4469622866, "max_drawdown": -0.4986276406}
+  ],
+  "caveats": [
+    "strict 是唯一主口径；其余均为敏感性，不用于替换网页主曲线。",
+    "carry_evidence_only 只对有明确 suspend_d 证据的缺失按 0 收益处理。",
+    "退市没有可验证的日期和清算价格，因此不做隐含填值。"
+  ]
+}

@@ -14,6 +14,7 @@
   "privacy": "Derived snapshot only; raw market data and local paths are excluded.",
   "included_snapshots": {
     "index_research_files": 22,
+    "microcap_repair_files": 1,
     "smallcap_turnover_files": 1,
     "raw_data_published": false
   },
@@ -32,6 +33,18 @@
       "quality_status": "incomplete",
       "caveats": [
         "成员资格、退市、停牌和交易限制仍需外部审计"
+      ]
+    },
+    "microcap_repair": {
+      "generated_at": "2026-09-18T17:58:00+08:00",
+      "coverage_start": "2015-01-05",
+      "coverage_end": "2026-09-16",
+      "source": "Tushare daily-clean + suspend_d + stock_st evidence audit",
+      "quality_status": "exploration",
+      "caveats": [
+        "仅为缺失价格分类和收益敏感性审计，不替换严格主净值。",
+        "1,848 条缺失持仓有停牌证据（其中 210 条同时有 ST 证据），274 条仍未分类；没有可靠退市日期证据。",
+        "严格、partial、carry-all-missing 和 carry-evidence-only 必须分开阅读。"
       ]
     },
     "turnover": {
@@ -110,7 +123,8 @@
     "checked_at": "2026-09-18T15:35:19.472826+08:00",
     "source_coverage_end": "2026-09-17",
     "refreshed_snapshots": [
-      "turnover"
+      "turnover",
+      "microcap_repair"
     ],
     "blocked_snapshots": {
       "microcap": "部分选中股票缺少下一交易日价格，净值重建按质量闸门未发布新结果"
