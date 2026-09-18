@@ -23,3 +23,25 @@
   --font-heading: "Noto Serif SC", serif;
   --font-mono: "DM Mono", monospace;
 }
+
+[data-bs-theme="dark"],
+[data-theme="dark"] {
+  color-scheme: dark;
+  --paper: #15191e;
+  --surface: #1b2128;
+  --surface-strong: #20272f;
+  --ink: #edf0f2;
+  --ink-soft: #c4cad0;
+  --muted: #9aa4ae;
+  --muted-2: #87919b;
+  --rule: #3b424a;
+  --rule-soft: #30363d;
+  --accent: #e28a70;
+  --accent-strong: #f09b7d;
+  --accent-soft: #2d2524;
+  --chart-grid: #2c343d;
+  --chart-axis: #9aa4ae;
+  --chart-label: #c4cad0;
+  --chart-tooltip: #0b0f13;
+  --table-hover: #242c34;
+}
