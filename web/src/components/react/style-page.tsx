@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { asNumber, formatNumber as num, formatPercent as pct } from "../../lib/format";
-import { withBase } from "../../lib/routes";
 import { Stat, Panel, SectionHeading, ResearchCard, BarChart, ControlBar, Choice, StyleSubTabs, ThemeHeading, SimpleTable, SortableTable, Loading, useJson, useCsv, SizeDiagnosticPanel } from "./research-shared";
 import type { Row, StyleScope, BarraSummary, HistoricalFactor, CorrelationMatrix } from "./research-shared";
 
-export function StyleFactorStudyIntro() {
-  const docsHref = withBase("/docs/research/factors/barra-factor-dictionary/", import.meta.env?.BASE_URL ?? "/");
-  return <section className="featured-study study-intro" aria-label="18-year style factor study framing"><div><span className="section-kicker">Featured Quant Research · Barra-style 风格归因</span><h2>18 年 A 股风格因子动态：收益、稳定性与市场阶段</h2><p>通过历史分组收益、年度变化、因子相关性和市值诊断，读者可以了解各类风格因子在不同市场阶段的表现。当前定义和口径见 <a href={docsHref}>Barra 风格因子字典</a>。IC、样本外验证和统计显著性仍待补充。</p></div></section>;
-}
 function CurrentFactorDefinitionPanel() {
   return <Panel title="当前核心因子字典" tag="原始特征 · 处理方式 · 聚合边界"><p className="panel-note">这里列的是当前机器可读字典中的核心定义。单指标因子先完成缺失值处理、方向统一和截面标准化，再用于分组。复合质量因子由四个质量子因子等权组成，ROA 目前只用于敏感性检查。历史页面中的 19 个因子是旧版研究快照，不能直接与这里的核心定义混用。</p><SimpleTable rows={CURRENT_FACTOR_DETAILS} columns={[["family", "家族"], ["factor", "因子"], ["descriptor", "原始特征"], ["aggregation", "处理和聚合"], ["direction", "高分含义"], ["boundary", "边界"]]} /></Panel>;
 }
 export function StylePage({ scope }: { scope: StyleScope }) {
-  return <><StyleSubTabs scope={scope}/>{scope === "barra" ? <><StyleFactorStudyIntro/><CurrentFactorDefinitionPanel/><BarraPage/></> : <IndicesPage/>}</>;
+  return <><StyleSubTabs scope={scope}/>{scope === "barra" ? <><CurrentFactorDefinitionPanel/><BarraPage/></> : <IndicesPage/>}</>;
 }
 
 export function IndicesPage() {

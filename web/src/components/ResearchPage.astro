@@ -1,6 +1,7 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
 import FreshnessStrip from "./FreshnessStrip.astro";
+import ResearchContext from "./research/ResearchContext.astro";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -31,10 +32,6 @@ const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/m
   </section>
   <p class="fine-print"><span class="section-kicker">阅读边界</span><br />{boundary}</p>
   <FreshnessStrip snapshot={manifest.snapshots?.[snapshotKey] ?? {}} />
-  <section class="report-context" aria-label="研究摘要">
-    <div><span class="section-kicker">研究问题</span><p>{question}</p></div>
-    <div><span class="section-kicker">证据状态</span><p><span class="evidence-status">{evidence}</span></p></div>
-    <div><span class="section-kicker">下一步</span><p>{nextStep}</p></div>
-  </section>
+  <ResearchContext question={question} evidence={evidence} nextStep={nextStep} />
   <slot />
 </SiteLayout>

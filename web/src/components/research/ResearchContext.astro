@@ -1,0 +1,15 @@
+---
+interface Props {
+  question: string;
+  evidence: string;
+  nextStep: string;
+}
+
+const { question, evidence, nextStep } = Astro.props;
+---
+
+<section class="report-context" aria-label="研究摘要">
+  <div><span class="section-kicker">研究问题</span><p>{question}</p></div>
+  <div><span class="section-kicker">证据状态</span><p><span class="evidence-status">{evidence}</span></p></div>
+  <div><span class="section-kicker">下一步</span><p>{nextStep}</p></div>
+</section>
