@@ -13,7 +13,8 @@
     "e2e": "playwright test",
     "serve:preview": "node scripts/serve-static.mjs dist",
     "test": "node --import tsx --test src/*.test.mjs",
-    "preview": "astro preview"
+    "preview": "astro preview",
+    "build:pages": "node scripts/build-pages.mjs"
   },
   "dependencies": {
     "echarts": "^6.1.0",
