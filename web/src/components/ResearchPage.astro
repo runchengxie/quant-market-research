@@ -1,14 +1,14 @@
 ---
 import SiteLayout from "../layouts/SiteLayout.astro";
-import { ResearchRoute, type ResearchRouteKey } from "./react/ResearchRoutes";
 import FreshnessStrip from "./FreshnessStrip.astro";
+import ResearchContext from "./research/ResearchContext.astro";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
 interface Props {
   title: string;
   description: string;
-  route: ResearchRouteKey;
+  snapshotKey: "cashflow" | "microcap" | "barra" | "indices" | "liquidity";
   activeRoute: string;
   kicker: string;
   introduction: string;
@@ -18,9 +18,8 @@ interface Props {
   nextStep?: string;
 }
 
-const { title, description, route, activeRoute, kicker, introduction, boundary, evidence = "描述性研究", question = "这项研究正在回答什么问题？", nextStep = "补充数据核验和可执行性测试。" } = Astro.props;
+const { title, description, snapshotKey, activeRoute, kicker, introduction, boundary, evidence = "描述性研究", question = "这项研究正在回答什么问题？", nextStep = "补充数据核验和可执行性测试。" } = Astro.props;
 const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
-const snapshotKey = route === "crossMarketLiquidity" ? "liquidity" : route === "microcap" || route === "microcapRecovery" ? "microcap" : route === "styleFactors" ? "barra" : route === "indices" ? "indices" : route === "cashflow" || route === "cashflowRecovery" ? "cashflow" : "liquidity";
 ---
 
 <SiteLayout title={title} description={description} activeRoute={activeRoute}>
@@ -33,10 +32,6 @@ const snapshotKey = route === "crossMarketLiquidity" ? "liquidity" : route === "
   </section>
   <p class="fine-print"><span class="section-kicker">阅读边界</span><br />{boundary}</p>
   <FreshnessStrip snapshot={manifest.snapshots?.[snapshotKey] ?? {}} />
-  <section class="report-context" aria-label="研究摘要">
-    <div><span class="section-kicker">研究问题</span><p>{question}</p></div>
-    <div><span class="section-kicker">证据状态</span><p><span class="evidence-status">{evidence}</span></p></div>
-    <div><span class="section-kicker">下一步</span><p>{nextStep}</p></div>
-  </section>
-  <ResearchRoute client:load route={route} />
+  <ResearchContext question={question} evidence={evidence} nextStep={nextStep} />
+  <slot />
 </SiteLayout>

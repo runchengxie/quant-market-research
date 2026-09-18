@@ -1,4 +1,7 @@
 ---
 import ResearchPage from "../../../components/ResearchPage.astro";
+import { CashflowPage } from "../../../components/react/cashflow-page";
 ---
-<ResearchPage title="现金流历史研究" description="现金流指数与股票组合的历史收益、回撤和复刻核验。" route="cashflow" activeRoute="cashflow" kicker="指数与股票组合" introduction="观察现金流风格指数及本地复刻组合的历史表现，区分价格收益与全收益，并记录数据口径和未完成的核验。" boundary="供应商指数结果与自行复刻结果分开呈现。历史表现不能代表未来，也不等同于可实现的账户收益。" evidence="复刻核验中" question="现金流指标与相关指数的长期收益和回撤，是否能在统一口径下复现？" nextStep="核对指数规则、成分股时点和价格与全收益口径。" />
+<ResearchPage title="现金流历史研究" description="现金流指数与股票组合的历史收益、回撤和复刻核验。" snapshotKey="cashflow" activeRoute="cashflow" kicker="指数与股票组合" introduction="观察现金流风格指数及本地复刻组合的历史表现，区分价格收益与全收益，并记录数据口径和未完成的核验。" boundary="供应商指数结果与自行复刻结果分开呈现。历史表现不能代表未来，也不等同于可实现的账户收益。" evidence="复刻核验中" question="现金流指标与相关指数的长期收益和回撤，是否能在统一口径下复现？" nextStep="核对指数规则、成分股时点和价格与全收益口径。">
+  <CashflowPage client:visible />
+</ResearchPage>

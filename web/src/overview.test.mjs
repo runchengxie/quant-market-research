@@ -27,7 +27,7 @@ test('missing evidence does not retain dated conclusions or imply validation', (
   const html = renderToStaticMarkup(createElement(OverviewContent, {recovery: null, barra: null}));
   assert.doesNotMatch(html, /1,073|308|2026-09-04|2026-08-14/);
   assert.match(html, /数据暂不可用/);
-  assert.match(html, /仍需验证/);
+  assert.match(html, /查看现金流专题/);
 });
 
 test('overview does not present blocked groups as checked', () => {

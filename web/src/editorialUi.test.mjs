@@ -4,7 +4,6 @@ import { readFileSync } from "node:fs";
 
 const [source, overview, routes, pages] = await Promise.all([
   Promise.all([
-    "./components/react/ResearchRoutes.tsx",
     "./components/react/research-shared.tsx",
     "./components/react/microcap-page.tsx",
     "./components/react/style-page.tsx",
@@ -40,11 +39,12 @@ test("微盘页面保留旧版研究阅读顺序和图表组件", () => {
   assert.match(charts, /UnderwaterChart/);
 });
 
-test("研究路由按主题动态加载页面模块", () => {
-  assert.match(source, /import\("\.\/microcap-page"\)/);
-  assert.match(source, /import\("\.\/style-page"\)/);
-  assert.match(source, /import\("\.\/cashflow-page"\)/);
-  assert.match(source, /import\("\.\/liquidity-page"\)/);
+test("Astro 页面直接挂载研究组件，不保留 React 二次路由", () => {
+  assert.doesNotMatch(source, /ResearchRoute|ResearchRoutes/);
+  assert.match(site, /CashflowPage/);
+  assert.match(site, /MicrocapPage/);
+  assert.match(site, /StylePage/);
+  assert.match(site, /LiquidityPage/);
 });
 
 test("研究总览使用三个研究域和小微盘子主题", () => {
@@ -75,7 +75,7 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
 test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
   assert.match(site, /18 年 A 股风格因子动态：收益、稳定性与市场阶段/);
   assert.match(site, /读者可以了解各类风格因子在不同市场阶段的表现/);
-  assert.match(site, /Barra-style/);
+  assert.match(site, /Barra 风格因子字典/);
   assert.match(site, /IC、样本外验证和统计显著性仍待补充/);
 });
 

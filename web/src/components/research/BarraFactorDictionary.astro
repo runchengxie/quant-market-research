@@ -1,0 +1,19 @@
+---
+---
+
+<section class="panel"><div class="panel-title"><h3>当前核心因子字典</h3><span class="tag warm">原始特征 · 处理方式 · 聚合边界</span></div>
+<p class="panel-note">这里列的是当前机器可读字典中的核心定义。单指标因子先完成缺失值处理、方向统一和截面标准化，再用于分组。复合质量因子由四个质量子因子等权组成，ROA 目前只用于敏感性检查。历史页面中的 19 个因子是旧版研究快照，不能直接与这里的核心定义混用。</p>
+<div class="table-scroll"><table><thead><tr><th>家族</th><th>因子</th><th>原始特征</th><th>处理和聚合</th><th>高分含义</th><th>边界</th></tr></thead><tbody>
+<tr><td>规模</td><td><code>size</code>（规模）</td><td><code>daily_basic.total_mv</code> → <code>log_market_cap</code></td><td>总市值取自然对数</td><td>小市值</td><td>总市值代理，不是完整商业 Barra 模型</td></tr>
+<tr><td>价值</td><td><code>book_to_price</code>（账面市值比）</td><td><code>daily_basic.pb</code> → <code>1 / PB</code></td><td>PB 缺失或为零时不生成</td><td>账面市值比较高</td><td>不含其他账面资产调整</td></tr>
+<tr><td>价值</td><td><code>earnings_yield</code>（盈利收益率）</td><td><code>daily_basic.pe_ttm</code> → <code>1 / PE_TTM</code></td><td>只保留正 PE</td><td>盈利收益率较高</td><td>亏损公司的价值信息未纳入</td></tr>
+<tr><td>动量</td><td><code>short_term_momentum_21d</code>（短期动量）</td><td><code>daily.close</code> → 排除形成日的 21 日收益</td><td>按形成日前已完成的价格计算</td><td>近期涨幅较高</td><td>更接近短期动量或反转代理</td></tr>
+<tr><td>波动率</td><td><code>total_volatility_21d</code>（总波动率）</td><td><code>daily.close</code> → 21 日收益标准差</td><td>使用总收益波动率</td><td>波动率较低</td><td>尚未剥离市场和行业波动</td></tr>
+<tr><td>流动性 · 交易活跃度</td><td><code>turnover_1d</code>、20 日和 60 日平均换手率</td><td><code>daily.turnover_rate</code></td><td>使用形成日值或形成日前滚动均值</td><td>交易活跃度较低</td><td>窗口不同，研究含义不同</td></tr>
+<tr><td>流动性 · 非流动性</td><td><code>amihud_20d</code>（Amihud 非流动性）</td><td><code>abs(return) / amount</code> → 20 日滞后均值</td><td>收益率绝对值除以成交额后取均值</td><td>价格冲击较小</td><td>混合波动、信息冲击和成交额单位</td></tr>
+<tr><td>质量</td><td><code>profitability</code>（盈利能力）</td><td><code>fundamental.roe</code>，ROA 只作敏感性版本</td><td>截面缩尾后计算标准分</td><td>盈利能力较强</td><td>ROE 受财务杠杆影响</td></tr>
+<tr><td>质量</td><td><code>leverage</code>（杠杆）</td><td><code>fundamental.debt_to_assets</code></td><td>缩尾、标准化并统一为低杠杆方向</td><td>资产负债率较低</td><td>与复合质量同时归因会重复计入</td></tr>
+<tr><td>质量</td><td><code>earnings_quality</code>（盈利质量）</td><td>经营现金流 / 净利润</td><td>计算比值，缩尾后标准化</td><td>现金流对利润支持较强</td><td>需要继续核验点时口径</td></tr>
+<tr><td>质量</td><td><code>earnings_variability</code>（盈利稳定性）</td><td><code>fundamental.netprofit_yoy</code> → 连续 8 季度波动率</td><td>滚动标准差后取负值</td><td>盈利波动较小</td><td>利润接近零时同比增长率可能不稳定</td></tr>
+<tr><td>质量</td><td><code>quality</code>（复合质量）</td><td>四个质量子因子</td><td>对当期可用项等权平均</td><td>综合质量较高</td><td>归因时与子因子二选一</td></tr>
+</tbody></table></div></section>
