@@ -1,4 +1,7 @@
 ---
 import ResearchPage from "../../../../components/ResearchPage.astro";
+import { MicrocapPage } from "../../../../components/react/microcap-page";
 ---
-<ResearchPage title="跨市场小微盘流动性" description="比较多个市场小市值股票的成交规模与数据覆盖。" route="crossMarketLiquidity" activeRoute="liquidity" kicker="跨市场流动性" introduction="按市值分组比较小市值股票的成交额，并展示数据覆盖、统计区间和不同市场间的口径差异。" boundary="成交额只是流动性的观察指标，不能直接代表策略容量。下单规模、停牌、涨跌停和市场冲击仍会影响实际成交。" evidence="探索性比较" question="小市值股票的流动性差异是否具有跨市场的一致性？" nextStep="统一币种、交易日和市值分组，再加入成本与容量情景。" />
+<ResearchPage title="跨市场小微盘流动性" description="比较多个市场小市值股票的成交规模与数据覆盖。" snapshotKey="liquidity" activeRoute="liquidity" kicker="跨市场流动性" introduction="按市值分组比较小市值股票的成交额，并展示数据覆盖、统计区间和不同市场间的口径差异。" boundary="成交额只是流动性的观察指标，不能直接代表策略容量。下单规模、停牌、涨跌停和市场冲击仍会影响实际成交。" evidence="探索性比较" question="小市值股票的流动性差异是否具有跨市场的一致性？" nextStep="统一币种、交易日和市值分组，再加入成本与容量情景。">
+  <MicrocapPage client:load initialScope="cross-market" />
+</ResearchPage>

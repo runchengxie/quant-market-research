@@ -115,5 +115,3 @@ export function SortableTable({ rows, columns, percentColumns = [], searchPlaceh
   return <><div className="table-controls"><input aria-label={searchPlaceholder} placeholder={searchPlaceholder} value={query} onChange={(event) => setQuery(event.target.value)}/><span>{visible.length} / {rows.length} 条</span></div><div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key}><button className="table-sort" onClick={() => choose(key)}>{label} {sortKey === key ? (direction === "desc" ? "↓" : "↑") : "↕"}</button></th>)}</tr></thead><tbody>{visible.slice(0, 50).map((row, index) => <tr key={`${index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{percentColumns.includes(key) ? pct(asNumber(row[key])) : row[key] === "" || row[key] == null ? "未提供" : displayValue(key, row[key])}</td>)}</tr>)}</tbody></table></div></>;
 }
 export function Loading() { return <p className="loading">正在加载研究数据……</p>; }
-
-export type ResearchRouteKey = "cashflow" | "cashflowRecovery" | "microcap" | "microcapRecovery" | "crossMarketLiquidity" | "indices" | "styleFactors" | "liquidity";
