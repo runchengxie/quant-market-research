@@ -32,11 +32,18 @@ def reconstruct_smallest_cap_index(
         selected["next_date"].eq(selected["next_market_date"])
         & selected["next_adj_close"].gt(0)
     )
+    selected["no_next_row"] = selected["next_date"].isna()
+    selected["gap_next_row"] = (
+        selected["next_date"].notna()
+        & selected["next_date"].ne(selected["next_market_date"])
+    )
     result = (
         selected.groupby(["date", "next_market_date"], as_index=False)
         .agg(
             selected_count=("symbol", "size"),
             priced_count=("valid_next", "sum"),
+            no_next_row_count=("no_next_row", "sum"),
+            gap_next_row_count=("gap_next_row", "sum"),
         )
     )
     return _calculate_returns(selected, result)
@@ -106,10 +113,17 @@ def reconstruct_smallest_cap_index_from_parquet(
                ) THEN AVG(next_adj_close / adj_close - 1) FILTER (
                    WHERE next_stock_date = next_trade_date AND next_adj_close > 0
                ) END AS return,
+               AVG(next_adj_close / adj_close - 1) FILTER (
+                   WHERE next_stock_date = next_trade_date AND next_adj_close > 0
+               ) AS partial_return,
+               AVG(CASE WHEN next_stock_date = next_trade_date AND next_adj_close > 0
+                   THEN next_adj_close / adj_close - 1 ELSE 0 END) AS carry_return,
                COUNT(*) AS selected_count,
                COUNT(*) FILTER (
                    WHERE next_stock_date = next_trade_date AND next_adj_close > 0
-               ) AS priced_count
+               ) AS priced_count,
+               COUNT(*) FILTER (WHERE next_stock_date IS NULL) AS no_next_row_count,
+               COUNT(*) FILTER (WHERE next_stock_date > next_trade_date) AS gap_next_row_count
         FROM selected
         GROUP BY trade_date
         HAVING MAX(next_trade_date) IS NOT NULL
@@ -120,6 +134,8 @@ def reconstruct_smallest_cap_index_from_parquet(
         result = connection.execute(query, parameters).fetchdf()
         if not result.empty:
             result["date"] = pd.to_datetime(result["date"]).dt.date
+            result["missing_count"] = result["selected_count"] - result["priced_count"]
+            result["missing_ratio"] = result["missing_count"] / result["selected_count"]
         return result
     finally:
         connection.close()
@@ -128,9 +144,18 @@ def reconstruct_smallest_cap_index_from_parquet(
 def _calculate_returns(selected: pd.DataFrame, result: pd.DataFrame) -> pd.DataFrame:
     valid = selected.loc[selected["valid_next"]].copy()
     valid["daily_return"] = valid["next_adj_close"] / valid["adj_close"] - 1
-    returns = valid.groupby("date")["daily_return"].mean().rename("return")
-    result = result.merge(returns, left_on="date", right_index=True, how="left")
+    partial_returns = valid.groupby("date")["daily_return"].mean().rename("partial_return")
+    carry_returns = selected.assign(
+        daily_return=selected["next_adj_close"].div(selected["adj_close"]).sub(1).where(
+            selected["valid_next"], 0.0
+        )
+    ).groupby("date")["daily_return"].mean().rename("carry_return")
+    result = result.merge(partial_returns, left_on="date", right_index=True, how="left")
+    result = result.merge(carry_returns, left_on="date", right_index=True, how="left")
+    result["return"] = result["partial_return"]
     result.loc[result["priced_count"].ne(result["selected_count"]), "return"] = float("nan")
+    result["missing_count"] = result["selected_count"] - result["priced_count"]
+    result["missing_ratio"] = result["missing_count"] / result["selected_count"]
     return result.sort_values("date").reset_index(drop=True)
 
 
