@@ -29,7 +29,7 @@
       "generated_at": "2026-09-12T00:00:00+08:00",
       "coverage_start": "2015-01-05",
       "coverage_end": "2026-09-03",
-      "source": "Tushare-derived rule reconstruction",
+      "source": "Tushare A 股日行情规则重建",
       "quality_status": "incomplete",
       "caveats": [
         "成员资格、退市、停牌和交易限制仍需外部审计"
@@ -39,11 +39,11 @@
       "generated_at": "2026-09-18T17:58:00+08:00",
       "coverage_start": "2015-01-05",
       "coverage_end": "2026-09-16",
-      "source": "Tushare daily-clean + suspend_d + stock_st evidence audit",
+      "source": "Tushare A 股清洗日行情、停牌记录和 ST 状态审计",
       "quality_status": "exploration",
       "caveats": [
         "仅为缺失价格分类和收益敏感性审计，不替换严格主净值。",
-        "1,848 条缺失持仓有停牌证据（其中 210 条同时有 ST 证据），274 条仍未分类；没有可靠退市日期证据。",
+        "1,848 条缺失持仓有停牌证据，其中 210 条同时有 ST 证据。另有 274 条仍未分类。当前没有可靠退市日期证据。",
         "严格、partial、carry-all-missing 和 carry-evidence-only 必须分开阅读。"
       ]
     },
@@ -51,7 +51,7 @@
       "generated_at": "2026-09-18T15:35:19.472826+08:00",
       "coverage_start": "2015-01-05",
       "coverage_end": "2026-09-17",
-      "source": "Tushare A-share daily-clean + daily_basic",
+      "source": "Tushare A 股清洗日行情和估值数据",
       "quality_status": "derived",
       "caveats": [
         "2015 年起清洗口径已更新至最近完成交易日 2026-09-17。",
@@ -75,7 +75,7 @@
       "source": "Barra-style historical factor result package",
       "quality_status": "derived",
       "caveats": [
-        "不是商业 Barra 复刻；PIT 财务数据和样本外验证仍不完整"
+        "这是 Barra 风格的历史复刻，PIT 财务数据和样本外验证仍不完整"
       ]
     },
     "cashflow": {
@@ -92,7 +92,7 @@
       "source": "index catalog and representative ETF snapshot",
       "quality_status": "derived",
       "caveats": [
-        "指数为价格回报；ETF 含费用和跟踪误差影响"
+        "指数为价格回报。ETF 还会受到费用和跟踪误差影响"
       ]
     },
     "liquidity": {
@@ -114,7 +114,7 @@
         }
       },
       "caveats": [
-        "各市场数据不同步；日本尚未发布可比分组"
+        "各市场数据日期不同。日本尚未发布可比分组"
       ]
     }
   },
