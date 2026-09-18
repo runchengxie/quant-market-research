@@ -207,3 +207,39 @@ tr:hover td { background: var(--table-hover); }
 .chart-tooltip { border-color: var(--rule); background: var(--chart-tooltip); color: var(--surface-strong); }
 .theme-toggle { display: block; margin: 12px 0 0 auto; border: 1px solid var(--rule); padding: 6px 9px; color: var(--muted); background: transparent; cursor: pointer; font: 10px var(--font-mono); }
 .theme-toggle:hover, .theme-toggle:focus-visible { border-color: var(--accent-strong); color: var(--accent); outline: none; }
+
+/* 首页把首屏留给研究入口，状态信息保持可见但不抢主标题的层级。 */
+.site-header { position: sticky; top: 0; z-index: 10; backdrop-filter: blur(12px); }
+.site-masthead { padding: 26px 0 18px; }
+h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
+.site-deck { font-size: 15px; }
+.site-meta { min-width: 220px; }
+.site-nav { gap: 18px; }
+.site-nav a { padding: 10px 0 12px; }
+.site-main { padding-top: 44px; }
+.freshness-strip { margin: 14px 0 24px; padding: 10px 14px; }
+.featured-study { margin: 24px 0 34px; padding: 24px; }
+.featured-study h2 { max-width: 700px; font-size: clamp(23px, 2.8vw, 35px); }
+.featured-facts { display: flex; flex-wrap: wrap; gap: 18px 28px; margin-top: 20px; color: var(--muted); font: 11px var(--font-mono); }
+.featured-facts span { display: flex; gap: 6px; align-items: baseline; }
+.featured-facts strong { color: var(--ink); font-size: 16px; font-weight: 600; }
+.research-library { margin-top: 28px; }
+.evidence-grid { gap: 14px; margin-top: 22px; }
+.evidence-card { padding: 20px; }
+.evidence-card h3 { margin: 16px 0 10px; font-size: 22px; }
+.evidence-conclusion { font-size: 15px; line-height: 1.7; }
+.evidence-card dl { margin-bottom: 18px; }
+.overview-evidence-grid .evidence-card dt:nth-of-type(2), .overview-evidence-grid .evidence-card dd:nth-of-type(2) { display: none; }
+.fine-print { margin-top: 30px; }
+@media (max-width: 800px) {
+  .site-header { position: relative; }
+  .site-masthead { padding: 24px 0 16px; }
+  .site-meta { min-width: 0; }
+  .featured-facts { gap: 10px 18px; }
+}
+@media (max-width: 480px) {
+  .site-masthead { padding-top: 20px; }
+  .site-main { padding-top: 34px; }
+  .site-nav { padding-bottom: 2px; }
+  .featured-study { padding: 20px; }
+}
