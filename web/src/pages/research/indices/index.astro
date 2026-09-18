@@ -3,5 +3,5 @@ import ResearchPage from "../../../components/ResearchPage.astro";
 import { StylePage } from "../../../components/react/style-page";
 ---
 <ResearchPage title="指数与 ETF 历史表现" description="A股指数与ETF代理序列的历史收益和口径说明。" snapshotKey="indices" activeRoute="style" kicker="市场长期风格研究" introduction="查看 A 股指数与 ETF 代理序列的历史表现、数据覆盖和样本边界。不同来源与回报口径会单独标注。" boundary="指数和 ETF 结果用于描述市场走势，不构成可投资组合的回测，也不能直接推断未来表现。" evidence="市场描述性研究" question="不同市场板块和 ETF 代理在不同时间范围内的收益、波动和回撤如何？" nextStep="增加统一时间范围、风险指标和 ETF 跟踪误差比较。">
-  <StylePage client:load scope="indices" />
+  <StylePage client:visible scope="indices" />
 </ResearchPage>

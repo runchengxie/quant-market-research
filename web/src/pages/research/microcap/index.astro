@@ -3,5 +3,5 @@ import ResearchPage from "../../../components/ResearchPage.astro";
 import { MicrocapPage } from "../../../components/react/microcap-page";
 ---
 <ResearchPage title="A 股微盘历史研究" description="A 股微盘参考指数与最小市值股票组合的收益、回撤和数据限制。" snapshotKey="microcap" activeRoute="microcap" kicker="小微盘历史研究" introduction="这页先说明实验怎么做，再展示收益、回撤、成交额和缺失价格审计。你可以先看严格口径，再查看其他处理方式带来的差异。" boundary="参考指数、自建组合和不同市场样本分开展示。部分历史持仓缺少下一交易日价格，页面会说明缺口范围和处理方式。" evidence="规则重建与数据审计" question="按固定规则选出的最小市值股票，长期收益和风险是什么样？数据缺口会改变多少结果？" nextStep="继续补充退市价格和实际交易成本，完善组合能否执行的判断。">
-  <MicrocapPage client:load initialScope="a-share" />
+  <MicrocapPage client:visible initialScope="a-share" />
 </ResearchPage>

@@ -3,5 +3,5 @@ import ResearchPage from "../../../components/ResearchPage.astro";
 import { LiquidityPage } from "../../../components/react/liquidity-page";
 ---
 <ResearchPage title="跨市场流动性" description="不同市场股票成交规模的统计概览、分组比较与研究边界。" snapshotKey="liquidity" activeRoute="liquidity" kicker="市场流动性观察" introduction="按股票市值分组比较成交额，查看各市场最近可用数据及覆盖情况。" boundary="汇总成交额无法替代订单簿深度、成交冲击和实际交易成本测算。不同市场的数据时间与币种口径应分别核对。" evidence="覆盖检查中" question="不同市场的小市值股票，成交规模和数据覆盖差异有多大？" nextStep="补充成交冲击、停牌和实际下单约束，估计可交易容量。">
-  <LiquidityPage client:load />
+  <LiquidityPage client:visible />
 </ResearchPage>

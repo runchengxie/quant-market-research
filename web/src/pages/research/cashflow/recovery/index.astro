@@ -3,5 +3,5 @@ import ResearchPage from "../../../../components/ResearchPage.astro";
 import { CashflowPage } from "../../../../components/react/cashflow-page";
 ---
 <ResearchPage title="现金流回撤与回本时间" description="现金流指数历史回撤区间、最长水下时间与回本记录。" snapshotKey="cashflow" activeRoute="cashflow" kicker="现金流历史研究 · 回撤与回本" introduction="按每次前高记录跌至谷底、重新回到前高所需的时间，并区分已经回本与样本结束时仍未回本的区间。" boundary="价格回报与税前全收益使用各自的序列。尚未回本的区间属于右删失观察，不能当作已完成回本时间。">
-  <CashflowPage client:load />
+  <CashflowPage client:visible />
 </ResearchPage>
