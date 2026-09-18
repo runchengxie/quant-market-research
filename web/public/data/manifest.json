@@ -2,7 +2,8 @@
   "generated_at": "2026-09-12T00:00:00+08:00",
   "sources": [
     "market-research A-share rule reconstruction",
-    "smallcap turnover clean, historical and overlap-audit summaries"
+    "smallcap turnover clean, historical and overlap-audit summaries",
+    "reviewed public research snapshots"
   ],
   "markets": {
     "a_share": "published",
@@ -15,5 +16,70 @@
     "index_research_files": 22,
     "smallcap_turnover_files": 1,
     "raw_data_published": false
+  },
+  "snapshots": {
+    "overview": {
+      "generated_at": "2026-09-12T00:00:00+08:00",
+      "coverage_end": "2026-09-07",
+      "source": "reviewed public research snapshots",
+      "quality_status": "derived"
+    },
+    "microcap": {
+      "generated_at": "2026-09-12T00:00:00+08:00",
+      "coverage_start": "2015-01-05",
+      "coverage_end": "2026-09-03",
+      "source": "Tushare-derived rule reconstruction",
+      "quality_status": "incomplete",
+      "caveats": ["成员资格、退市、停牌和交易限制仍需外部审计"]
+    },
+    "turnover": {
+      "generated_at": "2026-09-16",
+      "coverage_start": "2015-01-05",
+      "coverage_end": "2026-09-07",
+      "source": "reviewed smallcap turnover summaries",
+      "quality_status": "derived",
+      "caveats": ["长期历史口径的 ST 和停牌资格不完整"]
+    },
+    "low_turnover": {
+      "generated_at": "2026-09-16",
+      "coverage_start": "2019-05",
+      "coverage_end": "2026-06",
+      "source": "reviewed exploratory turnover snapshot",
+      "quality_status": "exploration",
+      "caveats": ["尚未完成独立样本、成本和容量验证"]
+    },
+    "barra": {
+      "generated_at": "2026-09-07",
+      "coverage_start": "2008-01-02",
+      "coverage_end": "2026-09-04",
+      "source": "Barra-style historical factor result package",
+      "quality_status": "derived",
+      "caveats": ["不是商业 Barra 复刻；PIT 财务数据和样本外验证仍不完整"]
+    },
+    "cashflow": {
+      "generated_at": "2026-09-09",
+      "source": "cashflow index recovery snapshot",
+      "quality_status": "incomplete",
+      "caveats": ["官方规则与本地成分股复刻仍需核对"]
+    },
+    "indices": {
+      "generated_at": "2026-09-12T00:00:00+08:00",
+      "coverage_end": "2026-09-07",
+      "source": "index catalog and representative ETF snapshot",
+      "quality_status": "derived",
+      "caveats": ["指数为价格回报；ETF 含费用和跟踪误差影响"]
+    },
+    "liquidity": {
+      "generated_at": "2026-09-12T00:00:00+08:00",
+      "source": "cross-market liquidity summary",
+      "quality_status": "incomplete",
+      "markets": {
+        "us": {"as_of": "2026-05-26"},
+        "hk": {"as_of": "2025-10-03"},
+        "a_share": {"as_of": "2026-09-07"},
+        "jp": {"as_of": null}
+      },
+      "caveats": ["各市场数据不同步；日本尚未发布可比分组"]
+    }
   }
 }

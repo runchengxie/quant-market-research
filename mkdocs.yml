@@ -16,6 +16,7 @@ theme:
 exclude_docs: |
   **
   !/index.md
+  !/research-closeout-status.md
   !/research/factors/low-turnover.md
   !/research/factors/microcap.md
   !/research/factors/smallcap-turnover-history.md
@@ -31,6 +32,7 @@ exclude_docs: |
 
 nav:
   - 研究说明: index.md
+  - 研究收口状态: research-closeout-status.md
   - 因子研究:
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md

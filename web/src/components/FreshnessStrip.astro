@@ -1,0 +1,21 @@
+---
+interface Props {
+  snapshot: { generated_at?: string; as_of?: string; coverage_start?: string; coverage_end?: string; source?: string; quality_status?: string; markets?: Record<string, { as_of?: string | null }> };
+  label?: string;
+}
+const { snapshot, label = "数据新鲜度" } = Astro.props;
+const date = (value?: string | null) => value ? value.slice(0, 10) : "日期待补";
+const range = snapshot.coverage_start && snapshot.coverage_end
+  ? `${snapshot.coverage_start} 至 ${snapshot.coverage_end}`
+  : `截至 ${date(snapshot.as_of ?? snapshot.coverage_end)}`;
+const status = snapshot.quality_status ?? "pending";
+const marketDates = Object.entries(snapshot.markets ?? {}).map(([market, value]) => `${market} ${date(value.as_of)}`).join(" · ");
+---
+
+<aside class={`freshness-strip status-${status}`} aria-label={label}>
+  <span class="section-kicker">{label}</span>
+  <strong>{range}</strong>
+  <span class="freshness-status">{status}</span>
+  <span class="freshness-source">来源：{snapshot.source ?? "待补"}；快照生成于 {date(snapshot.generated_at)}</span>
+  {marketDates && <span class="freshness-markets">各市场：{marketDates}</span>}
+</aside>
