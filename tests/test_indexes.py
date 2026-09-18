@@ -88,3 +88,18 @@ def test_missing_selected_price_blocks_instead_of_reweighting(tmp_path, engine):
     assert pd.isna(result.iloc[0]["return"])
     with pytest.raises(ValueError, match="missing"):
         build_nav(result)
+
+
+def test_missing_selected_price_exposes_repair_sensitivities(tmp_path):
+    from market_research.indexes import reconstruct_smallest_cap_index
+
+    panel = _panel().drop(index=3)  # B has no next-day quote; A rises 10%.
+    result = reconstruct_smallest_cap_index(panel, constituent_count=2)
+
+    first = result.iloc[0]
+    assert first["missing_count"] == 1
+    assert first["missing_ratio"] == pytest.approx(0.5)
+    assert first["no_next_row_count"] == 0
+    assert first["gap_next_row_count"] == 1
+    assert first["partial_return"] == pytest.approx(0.1)
+    assert first["carry_return"] == pytest.approx(0.05)
