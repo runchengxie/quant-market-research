@@ -35,7 +35,7 @@ export function StylePage({ scope }: { scope: StyleScope }) {
       <StyleSubTabs scope={scope} />
       {scope === "barra" ? (
         <>
-          <BarraPage />
+          <BarraPage includeNarrative={false} />
         </>
       ) : (
         <IndicesPage />
@@ -325,7 +325,7 @@ const FACTOR_DEFINITIONS: Row[] = [
   },
 ];
 
-export function BarraPage() {
+export function BarraPage({ includeNarrative = true }: { includeNarrative?: boolean }) {
   const { data: summary, error: summaryError } = useJson<BarraSummary>(
     "barra/barra_summary.json",
   );
@@ -422,6 +422,7 @@ export function BarraPage() {
   );
   return (
     <>
+      {includeNarrative && <>
       <ThemeHeading
         kicker="历史研究档案 · Barra 风格因子"
         title="A 股风格因子的长期历史表现"
@@ -512,6 +513,7 @@ export function BarraPage() {
           ]}
         />
       </Panel>
+      </>}
       <Panel title="19 个因子表现总览" tag="历史合成序列（账户收益未验证）">
         <SortableTable
           rows={factorRows}
@@ -563,14 +565,14 @@ export function BarraPage() {
         />
       </Panel>
       <SizeDiagnosticPanel rows={quantileRows} dailyCurve={quantileCurve} />
-      <div className="fine-print">
+      {includeNarrative && <div className="fine-print">
         <span className="section-kicker">研究限制</span>
         <p>
           历史研究使用每日行情、估值和事后重建的财务数据。财务数据未完整保留当时可见的版本（
           <code>PIT</code>
           ），即使按公告日对齐，仍可能混入后续修订。各因子的样本区间不同，比较时需注意样本长度。每日收益可能存在时间相关性，夏普比率、年化收益、回撤和正收益比例均描述合成序列。尚未检验统计显著性、用自助法估计不确定性，或校正同时检验多个因子带来的偏差。历史计算将持仓期缺失收益记为零，退市时的最终价值尚未完整处理。手续费、可交易规模、涨跌停、停牌和成交限制也需另行核查。
         </p>
-      </div>
+      </div>}
     </>
   );
 }

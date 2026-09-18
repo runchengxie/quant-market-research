@@ -3,6 +3,7 @@ import ResearchPage from "../../../components/ResearchPage.astro";
 import { StylePage } from "../../../components/react/style-page";
 import { withBase } from "../../../lib/routes";
 import BarraFactorDictionary from "../../../components/research/BarraFactorDictionary.astro";
+import BarraNarrative from "../../../components/research/BarraNarrative.astro";
 ---
 <ResearchPage title="18 年 A 股风格因子研究" description="观察长期风格因子收益、年度表现、市场阶段与相关性。" snapshotKey="barra" activeRoute="style" kicker="长期风格研究 · 经验观察" introduction="汇总风格因子历史收益、阶段变化和因子间相关性，帮助识别哪些结果值得继续验证。" boundary="现有结果以历史分组与合成序列为主，IC、样本外检验和统计显著性仍需补充。Barra 历史结果不能直接解释为可交易收益。" evidence="历史经验研究" question="不同风格因子在 18 年 A 股历史中如何变化，收益之间有多少重合？" nextStep="统一 descriptor、style factor 和 family 层级，拆分 Quality、Momentum、Volatility 与 Liquidity。">
   <section class="featured-study study-intro" aria-label="重点研究：18 年 A 股风格因子">
@@ -13,5 +14,6 @@ import BarraFactorDictionary from "../../../components/research/BarraFactorDicti
     </div>
   </section>
   <BarraFactorDictionary />
+  <BarraNarrative />
   <StylePage client:visible scope="barra" />
 </ResearchPage>
