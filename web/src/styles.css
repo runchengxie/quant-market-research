@@ -1,4 +1,12 @@
 @import "../../docs/assets/theme-tokens.css";
+.freshness-strip { display: grid; grid-template-columns: auto auto 1fr; gap: 8px 16px; align-items: center; margin: 22px 0 32px; border: 1px solid #d8d0c3; border-left: 3px solid #dba58f; padding: 13px 16px; background: #f8f5ef; }
+.freshness-strip strong { font: 500 12px var(--font-mono); color: #252525; }
+.freshness-status { justify-self: start; border: 1px solid #dba58f; padding: 4px 7px; color: #b64d33; font: 10px var(--font-mono); }
+.freshness-source, .freshness-markets { grid-column: 1 / -1; color: #81796e; font: 10px/1.6 var(--font-mono); }
+.status-verified { border-left-color: #79a883; }
+.status-pending { border-left-color: #d8c58a; }
+[data-theme="dark"] .freshness-strip { background: var(--surface); border-color: var(--rule); }
+@media (max-width: 800px) { .freshness-strip { grid-template-columns: 1fr; gap: 7px; } .freshness-status { justify-self: start; } }
 
 :root { color-scheme: light; font-family: var(--font-body); color: var(--ink); background: var(--paper); font-synthesis: none; }
 [data-theme="dark"] { color-scheme: dark; --paper: #15191e; --surface: #1b2128; --surface-strong: #20272f; --ink: #edf0f2; --ink-soft: #c4cad0; --muted: #9aa4ae; --muted-2: #87919b; --rule: #3b424a; --rule-soft: #30363d; --accent: #e28a70; --accent-strong: #f09b7d; --accent-soft: #2d2524; --chart-grid: #2c343d; --chart-axis: #9aa4ae; --chart-label: #c4cad0; --chart-tooltip: #0b0f13; --table-hover: #242c34; }
