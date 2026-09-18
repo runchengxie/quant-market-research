@@ -1,3 +1,4 @@
+import json
 from pathlib import Path
 
 import yaml
@@ -20,9 +21,7 @@ def test_dictionary_has_expected_families_and_unique_factor_ids() -> None:
     }
 
     factor_ids = [
-        factor["id"]
-        for family in families.values()
-        for factor in family.get("factors", [])
+        factor["id"] for family in families.values() for factor in family.get("factors", [])
     ]
     assert len(factor_ids) == len(set(factor_ids))
 
@@ -45,3 +44,15 @@ def test_dictionary_documents_known_method_boundaries() -> None:
     assert "不应直接称为标准中期 Barra 动量" in text
     assert "尚未剥离市场和行业波动" in text
     assert "归因回归时应在复合质量和其子因子之间二选一" in text
+
+
+def test_historical_snapshot_documents_all_nineteen_factors() -> None:
+    summary_path = ROOT / "web/public/data/barra/historical_factor_summary.json"
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    text = (ROOT / "docs/research/factors/barra-factor-dictionary.md").read_text(encoding="utf-8")
+    factor_ids = [item["factor"] for item in summary]
+    assert len(factor_ids) == 19
+    assert "## 历史 19 因子快照清单" in text
+    assert "历史快照" in text and "当前核心字典" in text
+    for factor_id in factor_ids:
+        assert f"| `{factor_id}` |" in text
