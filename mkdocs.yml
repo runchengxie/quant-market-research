@@ -32,8 +32,8 @@ exclude_docs: |
 
 nav:
   - 研究说明: index.md
-  - 研究收口状态: research-closeout-status.md
   - 因子研究:
+      - 研究收口状态: research-closeout-status.md
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md
       - 小市值成交活跃度补充: research/factors/smallcap-turnover-history.md

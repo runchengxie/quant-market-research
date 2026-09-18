@@ -68,7 +68,7 @@
       {%- block extrahead %} {% endblock %}
     </head>
 
-    <body{% if page and page.is_homepage %} class="homepage"{% endif %}>
+    <body class="{% if page and page.is_homepage %}homepage {% endif %}{% if page and page.file and page.file.src_uri == 'research-closeout-status.md' %}closeout-page{% endif %}">
         <div class="navbar fixed-top navbar-expand-lg navbar-{% if config.theme.nav_style == "light" %}light{% else %}dark{% endif %} bg-{{ config.theme.nav_style }}">
             <div class="container">
 
@@ -170,29 +170,29 @@
                       {%- endblock %}
                       {%- if config.theme.user_color_mode_toggle %}
                             <li class="nav-item dropdown">
-                              <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="Toggle theme" class="nav-link dropdown-toggle">
+                                <button id="theme-menu" aria-expanded="false" data-bs-toggle="dropdown" data-bs-display="static" aria-label="切换主题" class="nav-link dropdown-toggle">
                                 <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
-                                <span class="d-lg-none ms-2">Toggle theme</span>
+                                  <span class="d-lg-none ms-2">切换主题</span>
                               </button>
                               <ul class="dropdown-menu dropdown-menu-end">
                                 <li>
                                   <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="light" aria-pressed="{% if config.theme.color_mode == 'light' %}true{% else %}false{% endif %}">
                                     <i class="fa-solid fa-sun fa-fw"></i>
-                                    <span class="ms-2">Light</span>
+                                    <span class="ms-2">浅色</span>
                                     <i class="fa-solid fa-check ms-auto{% if config.theme.color_mode != 'light' %} d-none{% endif %}"></i>
                                   </button>
                                 </li>
                                 <li>
                                   <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="dark" aria-pressed="{% if config.theme.color_mode == 'dark' %}true{% else %}false{% endif %}">
                                     <i class="fa-solid fa-moon fa-fw"></i>
-                                    <span class="ms-2">Dark</span>
+                                    <span class="ms-2">深色</span>
                                     <i class="fa-solid fa-check ms-auto{% if config.theme.color_mode != 'dark' %} d-none{% endif %}"></i>
                                   </button>
                                 </li>
                                 <li>
                                   <button class="dropdown-item d-flex align-items-center" data-bs-theme-value="auto" aria-pressed="{% if config.theme.color_mode == 'auto' %}true{% else %}false{% endif %}">
                                     <i class="fa-solid fa-circle-half-stroke fa-fw"></i>
-                                    <span class="ms-2">Auto</span>
+                                    <span class="ms-2">跟随系统</span>
                                     <i class="fa-solid fa-check ms-auto{% if config.theme.color_mode != 'auto' %} d-none{% endif %}"></i>
                                   </button>
                                 </li>
