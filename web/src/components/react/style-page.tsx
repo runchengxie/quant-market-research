@@ -29,35 +29,12 @@ import type {
   CorrelationMatrix,
 } from "./research-shared";
 
-function CurrentFactorDefinitionPanel() {
-  return (
-    <Panel title="当前核心因子字典" tag="原始特征 · 处理方式 · 聚合边界">
-      <p className="panel-note">
-        这里列的是当前机器可读字典中的核心定义。单指标因子先完成缺失值处理、方向统一和截面标准化，再用于分组。复合质量因子由四个质量子因子等权组成，ROA
-        目前只用于敏感性检查。历史页面中的 19
-        个因子是旧版研究快照，不能直接与这里的核心定义混用。
-      </p>
-      <SimpleTable
-        rows={CURRENT_FACTOR_DETAILS}
-        columns={[
-          ["family", "家族"],
-          ["factor", "因子"],
-          ["descriptor", "原始特征"],
-          ["aggregation", "处理和聚合"],
-          ["direction", "高分含义"],
-          ["boundary", "边界"],
-        ]}
-      />
-    </Panel>
-  );
-}
 export function StylePage({ scope }: { scope: StyleScope }) {
   return (
     <>
       <StyleSubTabs scope={scope} />
       {scope === "barra" ? (
         <>
-          <CurrentFactorDefinitionPanel />
           <BarraPage />
         </>
       ) : (
@@ -345,112 +322,6 @@ const FACTOR_DEFINITIONS: Row[] = [
     name: "市销率价值",
     direction: "低市销率减高市销率",
     method: "滚动市销率倒数",
-  },
-];
-const CURRENT_FACTOR_DETAILS: Row[] = [
-  {
-    family: "规模",
-    factor: "size（规模）",
-    descriptor: "`daily_basic.total_mv` → `log_market_cap`",
-    aggregation: "总市值取自然对数，形成日可见的规模分数",
-    direction: "小市值",
-    boundary: "总市值代理，不是完整商业 Barra 规模模型",
-  },
-  {
-    family: "价值",
-    factor: "book_to_price（账面市值比）",
-    descriptor: "`daily_basic.pb` → `1 / PB`",
-    aggregation: "PB 缺失或为零时不生成",
-    direction: "账面市值比较高",
-    boundary: "不含其他账面资产调整",
-  },
-  {
-    family: "价值",
-    factor: "earnings_yield（盈利收益率）",
-    descriptor: "`daily_basic.pe_ttm` → `1 / PE_TTM`",
-    aggregation: "只保留正 PE，亏损公司没有分数",
-    direction: "盈利收益率较高",
-    boundary: "亏损公司的价值信息未纳入",
-  },
-  {
-    family: "动量",
-    factor: "short_term_momentum_21d（短期动量）",
-    descriptor: "`daily.close` → 排除形成日的 21 日收益",
-    aggregation: "按形成日前已完成的价格计算",
-    direction: "近期涨幅较高",
-    boundary: "更接近短期动量或反转代理",
-  },
-  {
-    family: "波动率",
-    factor: "total_volatility_21d（总波动率）",
-    descriptor: "`daily.close` → 21 日收益标准差",
-    aggregation: "直接使用总收益波动率",
-    direction: "波动率较低",
-    boundary: "尚未剥离市场和行业波动",
-  },
-  {
-    family: "流动性 · 交易活跃度",
-    factor: "turnover_1d（单日换手率）",
-    descriptor: "`daily.turnover_rate`",
-    aggregation: "直接使用形成日可见值",
-    direction: "换手率较低",
-    boundary: "只看单日窗口",
-  },
-  {
-    family: "流动性 · 交易活跃度",
-    factor: "turnover_20d / turnover_60d（平均换手率）",
-    descriptor: "`daily.turnover_rate` → 滞后 20 日或 60 日均值",
-    aggregation: "形成日前滚动均值",
-    direction: "交易活跃度较低",
-    boundary: "两个窗口反映不同期限",
-  },
-  {
-    family: "流动性 · 非流动性",
-    factor: "amihud_20d（Amihud 非流动性）",
-    descriptor: "`abs(return) / amount` → 20 日滞后均值",
-    aggregation: "收益率绝对值除以成交额后取均值",
-    direction: "价格冲击较小",
-    boundary: "同时混合波动、信息冲击和成交额单位",
-  },
-  {
-    family: "质量",
-    factor: "profitability（盈利能力）",
-    descriptor: "`fundamental.roe`，ROA 只作敏感性版本",
-    aggregation: "截面缩尾到 1% 至 99%，再计算标准分",
-    direction: "盈利能力较强",
-    boundary: "ROE 受财务杠杆影响",
-  },
-  {
-    family: "质量",
-    factor: "leverage（杠杆）",
-    descriptor: "`fundamental.debt_to_assets`",
-    aggregation: "截面缩尾后计算标准分，并统一为低杠杆方向",
-    direction: "资产负债率较低",
-    boundary: "与复合质量同时用于归因会重复计入",
-  },
-  {
-    family: "质量",
-    factor: "earnings_quality（盈利质量）",
-    descriptor: "经营现金流 / 净利润",
-    aggregation: "计算比值，缩尾后计算标准分",
-    direction: "现金流对利润支持较强",
-    boundary: "需要继续核验财务数据的点时口径",
-  },
-  {
-    family: "质量",
-    factor: "earnings_variability（盈利稳定性）",
-    descriptor: "`fundamental.netprofit_yoy` → 连续 8 季度波动率",
-    aggregation: "计算滚动标准差后取负值",
-    direction: "盈利波动较小",
-    boundary: "利润接近零时同比增长率可能不稳定",
-  },
-  {
-    family: "质量",
-    factor: "quality（复合质量）",
-    descriptor: "盈利能力、杠杆、盈利质量、盈利稳定性",
-    aggregation: "四个子因子等权，对当期可用项取平均",
-    direction: "综合质量较高",
-    boundary: "归因时与子因子二选一，避免重复解释",
   },
 ];
 
