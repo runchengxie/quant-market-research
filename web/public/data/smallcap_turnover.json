@@ -3,7 +3,7 @@
   "method": "按每日总市值选取最小 N 只股票，统计当日成交额分布；年度和月度值为交易日层面指标的聚合。",
   "clean": {
     "coverage_start": "2015-01-05",
-    "coverage_end": "2026-09-07",
+    "coverage_end": "2026-09-17",
     "quality_status": "verified",
     "rank_counts": [
       1,
@@ -634,56 +634,56 @@
       {
         "year": 2026,
         "rank_count": 1,
-        "turnover_median": 10539049,
-        "trading_days": 165,
+        "turnover_median": 10714282,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 1
       },
       {
         "year": 2026,
         "rank_count": 10,
-        "turnover_median": 9969857.89,
-        "trading_days": 165,
+        "turnover_median": 9881850.82,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 10
       },
       {
         "year": 2026,
         "rank_count": 50,
-        "turnover_median": 9672305.5,
-        "trading_days": 165,
+        "turnover_median": 9512692.545,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 50
       },
       {
         "year": 2026,
         "rank_count": 100,
-        "turnover_median": 11858698.5,
-        "trading_days": 165,
+        "turnover_median": 11627355,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 100
       },
       {
         "year": 2026,
         "rank_count": 200,
-        "turnover_median": 16736039.5,
-        "trading_days": 165,
+        "turnover_median": 16454588.585,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 200
       },
       {
         "year": 2026,
         "rank_count": 400,
-        "turnover_median": 31578351,
-        "trading_days": 165,
+        "turnover_median": 30917714.5,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 400
       },
       {
         "year": 2026,
         "rank_count": 1000,
-        "turnover_median": 43543406,
-        "trading_days": 165,
+        "turnover_median": 42515992,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 1000
       }
@@ -8532,56 +8532,56 @@
       {
         "month": "2026-09",
         "rank_count": 1,
-        "turnover_median": 7965438,
-        "trading_days": 5,
+        "turnover_median": 10260275,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 1
       },
       {
         "month": "2026-09",
         "rank_count": 10,
-        "turnover_median": 12915920.035,
-        "trading_days": 5,
+        "turnover_median": 8837025.265,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 10
       },
       {
         "month": "2026-09",
         "rank_count": 50,
-        "turnover_median": 15068975.745000001,
-        "trading_days": 5,
+        "turnover_median": 8994483.23,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 50
       },
       {
         "month": "2026-09",
         "rank_count": 100,
-        "turnover_median": 16190585.58,
-        "trading_days": 5,
+        "turnover_median": 10327219.595,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 100
       },
       {
         "month": "2026-09",
         "rank_count": 200,
-        "turnover_median": 21470173.855,
-        "trading_days": 5,
+        "turnover_median": 13396481.78,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 200
       },
       {
         "month": "2026-09",
         "rank_count": 400,
-        "turnover_median": 28294219,
-        "trading_days": 5,
+        "turnover_median": 22010558.25,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 400
       },
       {
         "month": "2026-09",
         "rank_count": 1000,
-        "turnover_median": 38239227,
-        "trading_days": 5,
+        "turnover_median": 33240953.06,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 1000
       }
@@ -8589,7 +8589,7 @@
   },
   "historical": {
     "coverage_start": "2008-01-02",
-    "coverage_end": "2026-08-21",
+    "coverage_end": "2026-09-17",
     "quality_status": "incomplete",
     "rank_counts": [
       1,
@@ -9612,56 +9612,56 @@
       {
         "year": 2026,
         "rank_count": 1,
-        "turnover_median": 11097920.5,
-        "trading_days": 154,
+        "turnover_median": 10629198.860000001,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 1
       },
       {
         "year": 2026,
         "rank_count": 10,
-        "turnover_median": 12166229.1575,
-        "trading_days": 154,
+        "turnover_median": 11558041.5,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 10
       },
       {
         "year": 2026,
         "rank_count": 50,
-        "turnover_median": 10116349.77,
-        "trading_days": 154,
+        "turnover_median": 10003827.5,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 50
       },
       {
         "year": 2026,
         "rank_count": 100,
-        "turnover_median": 12340936.67,
-        "trading_days": 154,
+        "turnover_median": 12227841,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 100
       },
       {
         "year": 2026,
         "rank_count": 200,
-        "turnover_median": 16567999.23,
-        "trading_days": 154,
+        "turnover_median": 15862401.055,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 200
       },
       {
         "year": 2026,
         "rank_count": 400,
-        "turnover_median": 29519531.5,
-        "trading_days": 154,
+        "turnover_median": 28486050,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 400
       },
       {
         "year": 2026,
         "rank_count": 1000,
-        "turnover_median": 42372986,
-        "trading_days": 154,
+        "turnover_median": 40188275.025,
+        "trading_days": 173,
         "median_coverage_ratio": 1,
         "min_selected_count": 1000
       }
@@ -22159,55 +22159,111 @@
         "month": "2026-08",
         "rank_count": 1,
         "turnover_median": 11229153,
-        "trading_days": 15,
+        "trading_days": 21,
         "median_coverage_ratio": 1,
         "min_selected_count": 1
       },
       {
         "month": "2026-08",
         "rank_count": 10,
-        "turnover_median": 12232339.09,
-        "trading_days": 15,
+        "turnover_median": 12135566.315000001,
+        "trading_days": 21,
         "median_coverage_ratio": 1,
         "min_selected_count": 10
       },
       {
         "month": "2026-08",
         "rank_count": 50,
-        "turnover_median": 9990081.115,
-        "trading_days": 15,
+        "turnover_median": 9753217.940000001,
+        "trading_days": 21,
         "median_coverage_ratio": 1,
         "min_selected_count": 50
       },
       {
         "month": "2026-08",
         "rank_count": 100,
-        "turnover_median": 10731098.535,
-        "trading_days": 15,
+        "turnover_median": 10427476.094999999,
+        "trading_days": 21,
         "median_coverage_ratio": 1,
         "min_selected_count": 100
       },
       {
         "month": "2026-08",
         "rank_count": 200,
-        "turnover_median": 13507774.510000002,
-        "trading_days": 15,
+        "turnover_median": 13175359.23,
+        "trading_days": 21,
         "median_coverage_ratio": 1,
         "min_selected_count": 200
       },
       {
         "month": "2026-08",
         "rank_count": 400,
-        "turnover_median": 21292678.384999998,
-        "trading_days": 15,
+        "turnover_median": 19951786.5,
+        "trading_days": 21,
         "median_coverage_ratio": 1,
         "min_selected_count": 400
       },
       {
         "month": "2026-08",
         "rank_count": 1000,
-        "turnover_median": 29912284.5,
-        "trading_days": 15,
+        "turnover_median": 29937677,
+        "trading_days": 21,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 1000
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 1,
+        "turnover_median": 7394780,
+        "trading_days": 13,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 1
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 10,
+        "turnover_median": 8516033.83,
+        "trading_days": 13,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 10
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 50,
+        "turnover_median": 8429537.360000001,
+        "trading_days": 13,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 50
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 100,
+        "turnover_median": 10415191.92,
+        "trading_days": 13,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 100
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 200,
+        "turnover_median": 13022514.085,
+        "trading_days": 13,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 200
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 400,
+        "turnover_median": 19924034.085,
+        "trading_days": 13,
+        "median_coverage_ratio": 1,
+        "min_selected_count": 400
+      },
+      {
+        "month": "2026-09",
+        "rank_count": 1000,
+        "turnover_median": 30575118.445,
+        "trading_days": 13,
         "median_coverage_ratio": 1,
         "min_selected_count": 1000
       }
@@ -22216,85 +22272,85 @@
   "overlap_audit": [
     {
       "rank_count": 1,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 4.848012134846304,
-      "p90_abs_relative_diff_turnover_median": 0.7368697106782972,
-      "within_5pct_ratio": 0.8330975954738331,
-      "within_10pct_ratio": 0.8362800565770863,
-      "within_25pct_ratio": 0.8483026874115983,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 4.822915918175673,
+      "p90_abs_relative_diff_turnover_median": 0.7458048365293362,
+      "within_5pct_ratio": 0.8299964875307341,
+      "within_10pct_ratio": 0.8331577098700387,
+      "within_25pct_ratio": 0.8454513523006674,
       "quality_note": "historical eligibility is incomplete"
     },
     {
       "rank_count": 10,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 0.17378967176421686,
-      "p90_abs_relative_diff_turnover_median": 0.3913408030734669,
-      "within_5pct_ratio": 0.5378359264497878,
-      "within_10pct_ratio": 0.6347241867043847,
-      "within_25pct_ratio": 0.8267326732673267,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 0.17364015672796956,
+      "p90_abs_relative_diff_turnover_median": 0.3915056697143385,
+      "within_5pct_ratio": 0.5367053038285915,
+      "within_10pct_ratio": 0.6336494555672638,
+      "within_25pct_ratio": 0.8268352651914296,
       "quality_note": "historical eligibility is incomplete"
     },
     {
       "rank_count": 50,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 0.05455547151841601,
-      "p90_abs_relative_diff_turnover_median": 0.1405416210561039,
-      "within_5pct_ratio": 0.6354314002828855,
-      "within_10pct_ratio": 0.8235502121640735,
-      "within_25pct_ratio": 0.9791371994342292,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 0.0545845494339578,
+      "p90_abs_relative_diff_turnover_median": 0.1405683883700247,
+      "within_5pct_ratio": 0.634703196347032,
+      "within_10pct_ratio": 0.8236740428521251,
+      "within_25pct_ratio": 0.9792764313312259,
       "quality_note": "historical eligibility is incomplete"
     },
     {
       "rank_count": 100,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 0.043034412525751506,
-      "p90_abs_relative_diff_turnover_median": 0.1039854155212154,
-      "within_5pct_ratio": 0.685997171145686,
-      "within_10pct_ratio": 0.8903818953323904,
-      "within_25pct_ratio": 0.995049504950495,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 0.04289725206593714,
+      "p90_abs_relative_diff_turnover_median": 0.10358001139026672,
+      "within_5pct_ratio": 0.6866877414822621,
+      "within_10pct_ratio": 0.8911134527572884,
+      "within_25pct_ratio": 0.9950825430277485,
       "quality_note": "historical eligibility is incomplete"
     },
     {
       "rank_count": 200,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 0.0349859431191407,
-      "p90_abs_relative_diff_turnover_median": 0.08381269443851089,
-      "within_5pct_ratio": 0.751060820367751,
-      "within_10pct_ratio": 0.9335219236209336,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 0.03494753061287166,
+      "p90_abs_relative_diff_turnover_median": 0.08369070766770417,
+      "within_5pct_ratio": 0.7509659290481209,
+      "within_10pct_ratio": 0.9339655778011943,
       "within_25pct_ratio": 1,
       "quality_note": "historical eligibility is incomplete"
     },
     {
       "rank_count": 400,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 0.03921686796565155,
-      "p90_abs_relative_diff_turnover_median": 0.08767755782025316,
-      "within_5pct_ratio": 0.7312588401697313,
-      "within_10pct_ratio": 0.9296322489391796,
-      "within_25pct_ratio": 0.9975247524752475,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 0.03976548143654061,
+      "p90_abs_relative_diff_turnover_median": 0.08896348172008157,
+      "within_5pct_ratio": 0.7267298911134528,
+      "within_10pct_ratio": 0.9262381454162276,
+      "within_25pct_ratio": 0.9975412715138743,
       "quality_note": "historical eligibility is incomplete"
     },
     {
       "rank_count": 1000,
-      "common_days": 2828,
+      "common_days": 2847,
       "common_start": "2015-01-05",
-      "common_end": "2026-08-21",
-      "mean_abs_relative_diff_turnover_median": 0.03905004807935368,
-      "p90_abs_relative_diff_turnover_median": 0.07637454192037682,
-      "within_5pct_ratio": 0.704031117397454,
-      "within_10pct_ratio": 0.9752475247524752,
+      "common_end": "2026-09-17",
+      "mean_abs_relative_diff_turnover_median": 0.039278471309840066,
+      "p90_abs_relative_diff_turnover_median": 0.07682566014045282,
+      "within_5pct_ratio": 0.6996838777660696,
+      "within_10pct_ratio": 0.9750614682121531,
       "within_25pct_ratio": 1,
       "quality_note": "historical eligibility is incomplete"
     }
