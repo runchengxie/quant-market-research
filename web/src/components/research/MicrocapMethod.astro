@@ -1,0 +1,15 @@
+---
+---
+
+<section class="section-heading">
+  <h3>这项实验怎么做</h3>
+  <p>先固定规则，再检查数据能不能支持这套规则。每一步都尽量使用当时已经知道的信息。</p>
+</section>
+<div class="research-grid">
+  <article class="research-card"><span class="section-kicker">第一步</span><h3>准备数据</h3><p>使用 Tushare（行情数据接口）的 A 股日线、估值和复权价格。另取停牌记录与 ST（特别处理股票）记录，用来核对没有报价的日期。行情数据目前覆盖到 2026 年 9 月 17 日。</p></article>
+  <article class="research-card"><span class="section-kicker">第二步</span><h3>选出股票</h3><p>在每个交易日收盘后，按总市值从小到大排序，选出最小的 400 只股票。剔除当日处于 ST、停牌状态，或价格、市值无效的股票。</p></article>
+  <article class="research-card"><span class="section-kicker">第三步</span><h3>计算收益</h3><p>组合在下一交易日收盘时成交，再持有到下一个交易日收盘。400 只股票等权计算组合收益。最后一个有行情的交易日没有下一交易日，因此不计算它的收益。</p></article>
+  <article class="research-card"><span class="section-kicker">第四步</span><h3>核对缺口</h3><p>如果选中的股票在下一交易日没有报价，就查看它之后何时恢复报价，以及这段时间是否有停牌或 ST 记录。查不到直接证据的缺口继续保留，避免把数据问题当成投资结果。</p></article>
+</div>
+<section class="panel"><div class="panel-title"><h3>三种收益口径怎么读</h3><span class="tag warm">主结果与敏感性</span></div><div class="table-scroll"><table><thead><tr><th>口径</th><th>计算方法</th><th>用途</th></tr></thead><tbody><tr><td>严格口径</td><td>所有选中股票都有下一交易日价格才计算这一天的收益</td><td>主结果</td></tr><tr><td>部分股票重算</td><td>只用有价格的股票计算，并重新分配权重</td><td>观察缺失价格对结果的上限影响</td></tr><tr><td>有证据的停牌按持平</td><td>只对有停牌记录的缺失按零收益处理，其他缺口仍不计算</td><td>停牌处理的敏感性</td></tr></tbody></table></div><p class="panel-note">网页上的严格口径仍是主结果。其他口径的有效交易日不同，不能直接拼成一条净值，也不能用来证明策略可以交易。</p></section>
+<section class="panel"><div class="panel-title"><h3>页面里的几个英文词</h3><span class="tag warm">首次出现时说明</span></div><div class="table-scroll"><table><thead><tr><th>名称</th><th>中文说明</th></tr></thead><tbody><tr><td><code>Tushare</code></td><td>提供行情和其他金融数据的接口</td></tr><tr><td><code>suspend_d</code></td><td>每日停牌记录，保留项目内部键值</td></tr><tr><td><code>stock_st</code></td><td>ST 状态记录，保留项目内部键值</td></tr><tr><td>ST</td><td>特别处理股票</td></tr><tr><td><code>PIT</code></td><td>点时数据，也就是当时已经可以获得的信息</td></tr><tr><td><code>NAV</code></td><td>净值</td></tr><tr><td><code>ETF</code></td><td>交易型开放式指数基金</td></tr></tbody></table></div></section>
