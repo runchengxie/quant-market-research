@@ -16,6 +16,19 @@ const shared = loaded.exports;
 const { aggregateSizeRows, summarizeSizePeriods, average, createElement: h, renderToStaticMarkup: render } = shared;
 const row = (date, bucket, value, extra = {}) => ({ formation_date: date, bucket, forward_return: value, ...extra });
 
+test('lazy chart wrappers preserve surrounding content while their module is loading', () => {
+  for (const [Component, props] of [
+    [shared.BarChart, {rows:[{bucket:'Q1',value:'0'}],labelKey:'bucket',valueKey:'value'}],
+    [shared.LineChart, {series:[{name:'sample',values:[0],color:'#123456'}],labels:['2025-01-01']}],
+  ]) {
+    let html;
+    assert.doesNotThrow(() => { html=render(h('section',null,h('h2',null,'Research remains visible'),h(Component,props))); });
+    assert.match(html, /Research remains visible/);
+    assert.match(html, /role="status"/);
+    assert.match(html, /图表/);
+  }
+});
+
 test('blank/nonfinite returns never contribute artificial zero observations', () => {
   const result = aggregateSizeRows([row('2025-01-01', 'Q1', ''), row('2025-01-02', 'Q1', ' '), row('2025-01-03', 'Q1', '0.2'), row('2025-01-04', 'Q2', 'Infinity')], 'month');
   assert.deepEqual(result, [{period: '2025-01', bucket: 'Q1', value: .2}]);

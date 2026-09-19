@@ -1,4 +1,4 @@
-import { lazy, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { publicDataUrl } from "../../lib/public-data";
 import { withBase } from "../../lib/routes";
 import { displayValue, formatNumber, formatPercent as pct } from "../../lib/format";
@@ -79,8 +79,8 @@ export function Panel({ title, tag, children }: { title: string; tag?: string; c
 export function SectionHeading({ title, text }: { title: string; text: string }) { return <div className="section-heading"><h3>{title}</h3><p>{text}</p></div>; }
 export function ResearchCard({ title, text }: { title: string; text: string }) { return <article className="research-card"><span className="section-kicker">阅读提示</span><h3>{title}</h3><p>{text}</p></article>; }
 
-export function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/>; }
-export function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <ResearchLineChart series={series} labels={labels}/>; }
+export function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <Suspense fallback={<ResourceState loading label="图表"/>}><ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/></Suspense>; }
+export function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <Suspense fallback={<ResourceState loading label="图表"/>}><ResearchLineChart series={series} labels={labels}/></Suspense>; }
 
 export function ControlBar({ children }: { children: React.ReactNode }) { return <div className="control-bar">{children}</div>; }
 export function Choice({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) { return <button className={`choice ${active ? "active" : ""}`} onClick={onClick}>{children}</button>; }
