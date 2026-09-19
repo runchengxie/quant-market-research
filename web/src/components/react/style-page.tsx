@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   asNumber,
   formatNumber as num,
@@ -7,20 +7,19 @@ import {
 import {
   Stat,
   Panel,
-  SectionHeading,
-  ResearchCard,
   BarChart,
   ControlBar,
   Choice,
   StyleSubTabs,
   ThemeHeading,
-  SimpleTable,
   SortableTable,
   Loading,
   useJson,
   useCsv,
   SizeDiagnosticPanel,
 } from "./research-shared";
+import { dailySizeCurve, comparableSizeRows, finiteNumber } from "../../lib/size-diagnostics";
+import { currentFactorImplementations, commonFactorProcessing, implementationSource } from "../../lib/factor-implementations";
 import type {
   Row,
   StyleScope,
@@ -469,275 +468,194 @@ const FACTOR_DETAILS: Record<string, FactorDetail> = {
   },
 };
 
+function DataNotice({ label, error, retry, empty = false }: { label: string; error?: string; retry?: () => void; empty?: boolean }) {
+  return <div className="data-notice" role={error ? "alert" : "status"}>
+    <strong>{label}：{error ? "加载失败" : empty ? "暂无可用数据" : "正在加载"}</strong>
+    <p>{error ? "其余研究内容仍可使用。请重试，或稍后再查看此数据。" : empty ? "未提供不等于零；不据此生成收益或结论。" : "正在读取公开派生快照。"}</p>
+    {error && retry && <button type="button" className="button-link" onClick={retry}>重试{label}</button>}
+  </div>;
+}
+
+function QualityDiagnostic() {
+  const { data: qualityComponents, error, retry } = useCsv("barra/quality_component_summary.csv");
+  const names: Record<string, string> = {
+    quality_profitability: "盈利能力 · ROE",
+    quality_leverage: "低杠杆 · Debt / Assets",
+    quality_earnings_quality: "盈利质量 · OCF / Net Profit",
+    quality_earnings_variability: "盈利稳定性 · 财务同比波动",
+  };
+  return <section className="quality-diagnostic" role="region" aria-label="Quality 子因子数据">
+    <h4>Quality 子因子诊断</h4>
+    <p className="panel-note">独立短样本诊断，按原说明主要覆盖 2020 年以后、前 800 只股票；原始生成记录尚未定位。它与 18 年历史复合因子的样本和版本不同，不能视为对历史收益的贡献分解。</p>
+    {!qualityComponents || !qualityComponents.length ? <DataNotice label="Quality 子因子" error={error} retry={retry} empty={!!qualityComponents} /> :
+      <SortableTable rows={qualityComponents.filter(row => row.factor.startsWith("quality_")).map(row => ({
+        ...row,
+        ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map(key => [key, Number.isFinite(finiteNumber(row[key])) ? String(finiteNumber(row[key]) / 100) : ""])),
+        sharpe: num(row.sharpe),
+        years: num(row.years),
+        factor: names[row.factor] ?? row.factor,
+      }))}
+        columns={[["factor", "子因子与主要特征"], ["days", "交易日"], ["years", "样本年数"], ["geometric_annual_ret", "几何年化"], ["annual_vol", "年化波动率"], ["sharpe", "夏普比率"], ["max_drawdown", "最大回撤"], ["hit_rate", "正收益比例"]]}
+        percentColumns={["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"]} />}
+    <div className="quality-method-grid">
+      <div><strong>01 · 盈利能力</strong><span>ROE，截面缩尾后标准化。ROA 只作敏感性版本。</span></div>
+      <div><strong>02 · 低杠杆</strong><span>Debt / Assets，缩尾与标准化后反向计分。</span></div>
+      <div><strong>03 · 盈利质量</strong><span>OCF / Net Profit，缩尾后标准化，仍需核验 PIT 可见时间。</span></div>
+      <div><strong>04 · 盈利稳定性</strong><span>现行实现对 8 个财务观测（至少 4 个）的净利润同比波动取负值，不保证为连续 8 季度。</span></div>
+    </div>
+  </section>;
+}
+
+function SizeSnapshot() {
+  const { data, error, retry } = useCsv("barra/barra_size_quantiles.csv");
+  const metadata = useJson<BarraSummary & { revision?: { input_vintage?: string; as_of?: string } }>("barra/barra_summary.json");
+  if (!data || !data.length) return <DataNotice label="市值诊断" error={error} retry={retry} empty={!!data} />;
+  const rows = data.map(row => ({ ...row, bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return }));
+  return <>
+    <p className="panel-note">独立十分组诊断，不用于复核上方历史五分组收益。修订结果先固定形成日成员，再报告后续缺失报价；完整样本筛选仍可能带来条件选择偏差，不代表可交易或无偏收益。</p>
+    {metadata.data?.revision ? <p className="size-revision-note">修订快照 · 输入版本 {metadata.data.revision.input_vintage} · 数据截至 {metadata.data.revision.as_of}。这不是原始输入版本的精确复现。缺失后续报价 {num(metadata.data.size_monotonicity?.missing_return_count)} 条，未填零，也未猜测退市终值。</p> : <DataNotice label="诊断版本说明" error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
+    <SizeDiagnosticPanel rows={rows} dailyCurve={dailySizeCurve(comparableSizeRows(rows))} />
+  </>;
+}
+
+function CorrelationPanel({ selectedFactor, onSelect }: { selectedFactor: string; onSelect: (id: string) => void }) {
+  const { data, error, retry } = useJson<CorrelationMatrix>("barra/factor_correlation.json");
+  const correlations = data?.[selectedFactor];
+  const related = correlations && typeof correlations === "object" ? Object.entries(correlations)
+    .filter(([id, value]) => id !== selectedFactor && Object.hasOwn(FACTOR_NAMES, id) && typeof value === "number" && Number.isFinite(value) && Math.abs(value) <= 1)
+    .sort(([, a], [, b]) => Math.abs(b) - Math.abs(a)).slice(0, 8) : [];
+  return <section role="region" aria-label="因子相关性" id="barra-correlations">
+    <Panel title="因子相关性" tag="日收益差 · 非因果关系">
+      <p className="panel-note">与{FACTOR_NAMES[selectedFactor]}相关程度最高的 8 个因子。正相关表示同向变化，负相关表示反向变化；点击名称切换观察对象。配对样本区间未完整提供，不应直接据此构建组合。</p>
+      {!related.length ? <DataNotice label="相关性" error={error} retry={retry} empty={!!data} /> :
+        <div className="correlation-list">
+          <div className="correlation-scale"><span>−1 · 负相关</span><span>0</span><span>正相关 · +1</span></div>
+          {related.map(([id, value]) => <button type="button" key={id} onClick={() => onSelect(id)} className="correlation-row" aria-label={`查看${FACTOR_NAMES[id]}，相关系数 ${value.toFixed(2)}`}>
+            <span className="correlation-name">{FACTOR_NAMES[id]}</span>
+            <span className="correlation-track" aria-hidden="true"><i className={value < 0 ? "negative" : "positive"} style={{ width: `${Math.abs(value) * 50}%`, left: value < 0 ? `${50 + value * 50}%` : "50%" }} /></span>
+            <strong>{value > 0 ? "+" : ""}{value.toFixed(2)}</strong>
+          </button>)}
+        </div>}
+    </Panel>
+  </section>;
+}
+
 export function BarraPage({ includeNarrative = true }: { includeNarrative?: boolean }) {
-  const { data: summary, error: summaryError } = useJson<BarraSummary>(
-    "barra/barra_summary.json",
-  );
-  const { data: quantiles, error: quantilesError } = useCsv(
-    "barra/barra_size_quantiles.csv",
-  );
-  const { data: factors } = useJson<HistoricalFactor[]>(
-    "barra/historical_factor_summary.json",
-  );
-  const { data: yearly } = useCsv("barra/factor_yearly.csv");
-  const { data: correlations } = useJson<CorrelationMatrix>(
-    "barra/factor_correlation.json",
-  );
-  const { data: qualityComponents } = useCsv(
-    "barra/quality_component_summary.csv",
-  );
+  const factorsResource = useJson<HistoricalFactor[]>("barra/historical_factor_summary.json");
+  const yearlyResource = useCsv("barra/factor_yearly.csv");
   const [selectedFactor, setSelectedFactor] = useState("size");
+  const [query, setQuery] = useState("");
+  const [family, setFamily] = useState("全部");
   const [showSizeDiagnostic, setShowSizeDiagnostic] = useState(false);
-  if (
-    !summary ||
-    !quantiles ||
-    !factors ||
-    !yearly ||
-    !correlations ||
-    !qualityComponents
-  )
-    return (
-      <>
-        <ThemeHeading
-          kicker="18 年 A 股风格因子研究"
-          title="18 年 A 股风格因子动态：收益、稳定性与市场阶段"
-          text="研究快照正在加载；研究问题是这些风格因子在不同 A 股市场阶段是否持续存在。"
-          asof="历史快照加载中"
-        />
-        <div className="callout status-panel">
-          <span className="section-kicker">研究状态</span>
-          <h3>历史研究快照正在加载</h3>
-          <p>
-            {summaryError || quantilesError
-              ? "网页数据不完整，请先生成并发布 Barra 历史派生文件。"
-              : "正在加载历史因子总览、逐年收益和相关性数据。"}
-          </p>
-        </div>
-      </>
-    );
-  const quantileRows = quantiles.map((row) => ({
-    bucket: row.bucket_label || row.bucket,
-    forward_return: row.mean_forward_return,
-    count: row.count,
-    formation_date: row.formation_date,
-  }));
-  const quantileCurve = Object.values(
-    quantileRows.reduce<Record<string, Row>>((result, row) => {
-      const current = result[row.bucket] ?? {
-        bucket: row.bucket,
-        forward_return: "0",
-        count: "0",
-      };
-      current.forward_return = String(
-        Number(current.forward_return) + Number(row.forward_return || 0),
-      );
-      current.count = String(Number(current.count) + 1);
-      result[row.bucket] = current;
-      return result;
-    }, {}),
-  ).map((row) => ({
-    bucket: row.bucket,
-    value: String(Number(row.forward_return) / Math.max(Number(row.count), 1)),
-  }));
-  const factorRows = factors.map((factor) => ({
-    factor: FACTOR_NAMES[factor.factor] ?? factor.factor,
-    coverage: `${factor.years} 年 · ${factor.days} 日`,
-    annual: String(factor.geometric_annual_ret / 100),
-    vol: String(factor.annual_vol / 100),
-    sharpe: String(factor.sharpe),
-    drawdown: String(factor.max_drawdown / 100),
-    hit: String(factor.hit_rate / 100),
-  }));
-  const selectedYearly = yearly
-    .filter((row) => row.factor === selectedFactor)
-    .map((row) => ({
-      year: row.year,
-      value: String(asNumber(row.annual_ret) / 100),
-    }));
-  const related = Object.entries(correlations[selectedFactor] ?? {})
-    .filter(([factor]) => factor !== selectedFactor)
-    .sort(([, left], [, right]) => Math.abs(right) - Math.abs(left))
-    .slice(0, 8)
-    .map(([factor, value]) => ({
-      factor: FACTOR_NAMES[factor] ?? factor,
-      correlation: String(value),
-    }));
-  const selectedFactorSummary = factors.find(
-    (factor) => factor.factor === selectedFactor,
-  );
-  const selectedFactorDefinition = FACTOR_DEFINITIONS.find(
-    (definition) => definition.factor === selectedFactor,
-  );
+  useEffect(() => {
+    const restore = () => {
+      const value = new URL(window.location.href).searchParams.get("factor");
+      setSelectedFactor(value && Object.hasOwn(FACTOR_NAMES, value) ? value : "size");
+    };
+    restore();
+    window.addEventListener("popstate", restore);
+    return () => window.removeEventListener("popstate", restore);
+  }, []);
+  const selectFactor = (id: string) => {
+    setSelectedFactor(id);
+    const url = new URL(window.location.href);
+    url.searchParams.set("factor", id);
+    window.history.replaceState(null, "", url);
+  };
+  const factors = Array.isArray(factorsResource.data) ? factorsResource.data.filter(row => row && Object.hasOwn(FACTOR_NAMES, row.factor)) : [];
+  const selectedFactorSummary = factors.find(row => row.factor === selectedFactor);
+  const selectedFactorDefinition = FACTOR_DEFINITIONS.find(row => row.factor === selectedFactor);
   const selectedFactorDetail = FACTOR_DETAILS[selectedFactor];
-  return (
-    <>
-      {includeNarrative && <>
-      <ThemeHeading
-        kicker="历史研究档案 · Barra 风格因子"
-        title="A 股风格因子的长期历史表现"
-        text="查看因子定义、长期表现、逐年收益、相关性和样本范围，最后补充独立计算的市值十分组研究。"
-        asof="历史样本 2008-01-02 至 2026-09-04"
-      />
-      <div className="callout research-status">
-        <span className="section-kicker">研究性质</span>
-        <h3>历史多空合成收益</h3>
-        <p>
-          每天用高分组收益减去低分组收益，再复合计算年化和逐年收益。所得数值仅代表合成序列，不能作为实际账户盈亏。本页研究分组收益差。Barra
-          风格分析还可用于解释风险来源，预测能力需要另行检验。
-        </p>
-      </div>
-      <SectionHeading
-        title="研究问题与方法"
-        text="了解分组方式、行业处理和样本范围，再阅读历史结果。"
-      />
-      <div className="research-grid">
-        <ResearchCard
-          title="研究对象"
-          text="研究 19 个 A 股风格因子。每个月末按当时构造的因子得分将股票分为五组，最高和最低的各 20% 分别等权建仓，固定份额持有至下个月末。每天用高分组收益减去低分组收益。财务数据是否在当时已可获取，尚未完整验证。"
-        />
-        <ResearchCard
-          title="行业处理"
-          text="按各历史日期对应的申万一级行业，先从因子值中减去本行业平均值，再进行全市场标准化。行业信息缺失的股票单列一组。这种处理后，多空两组的行业权重仍可能不同。"
-        />
-        <ResearchCard
-          title="样本口径"
-          text="大部分基础因子覆盖约 18.6 年。机构持仓、筹码和公募持仓类因子覆盖约 11 年或更短，资金流因子约 0.6 年。"
-        />
-      </div>
-      <div className="callout">
-        <span className="section-kicker">评分是否有效，交易能否实现</span>
-        <p>
-          判断因子评分是否有用，要看高分股票之后是否表现更好，以及收益是否随分组得分提高而上升。目前尚未提供得分与未来收益的相关性结果，还需要样本外验证和统计检验。下方将股票按市值分成十组，独立观察后续收益，与历史五分组研究采用不同分组，不能用于复核后者的多空收益。
-        </p>
-        <p>
-          实际交易还需逐期确认能否借到股票、借券费用和保证金要求，并计入交易成本与成交限制。这些条件尚未验证。
-        </p>
-        <details>
-          <summary>方法与术语</summary>
-          <p>
-            <code>IC</code> 衡量同一天各股票的因子得分与未来收益的相关性。
-            <code>rankIC</code>{" "}
-            比较两者的排名相关性。本页尚未提供这两项结果。样本外验证是用构造因子时未使用的数据检查结果。
-          </p>
-          <p>
-            市值因子（<code>size</code>
-            ）按大市值组减小市值组计算。下方十分组图中的 Q1 减 Q10
-            则是最小市值组减最大市值组，两处方向不同。
-          </p>
-        </details>
-      </div>
-      </>}
-      <Panel title="逐年合成收益与阶段表现" tag="按每日收益差复合计算">
-        <ControlBar>
-          <span className="control-label">因子</span>
-          {factors.map((factor) => (
-            <button
-              key={factor.factor}
-              type="button"
-              className={`choice ${selectedFactor === factor.factor ? "active" : ""}`}
-              aria-pressed={selectedFactor === factor.factor}
-              aria-controls="barra-factor-detail"
-              data-factor={factor.factor}
-              onClick={() => setSelectedFactor(factor.factor)}
-            >
-              {FACTOR_NAMES[factor.factor] ?? factor.factor}
-            </button>
-          ))}
-        </ControlBar>
-        <BarChart
-          rows={selectedYearly}
-          labelKey="year"
-          valueKey="value"
-          color="#1267d6"
-        />
-        <p className="panel-note">
-          {FACTOR_NAMES[selectedFactor] ?? selectedFactor}：覆盖{" "}
-          {selectedFactorSummary?.years ?? "未提供"} 年，合成收益的几何年化{" "}
-          {pct((selectedFactorSummary?.geometric_annual_ret ?? 0) / 100)}
-          ，数值沿用历史研究结果。年度收益仅按该年已有数据计算，数据不足一年的按实际区间展示。
-        </p>
+  const groupedFamily = (id: string) => {
+    const value = FACTOR_DETAILS[id]?.family ?? "其他";
+    return /持仓|筹码/.test(value) ? "持仓与筹码" : value.split(" / ")[0];
+  };
+  const familyOrder = ["规模", "价值", "质量", "成长", "动量", "波动率", "市场敏感度", "流动性", "持仓与筹码"];
+  const shown = factors.filter(row => (family === "全部" || groupedFamily(row.factor) === family) &&
+    `${row.factor} ${FACTOR_NAMES[row.factor]} ${groupedFamily(row.factor)}`.toLowerCase().includes(query.trim().toLowerCase()));
+  const selectedYearly = (yearlyResource.data ?? []).filter(row => row.factor === selectedFactor)
+    .sort((a, b) => Number(a.year) - Number(b.year))
+    .map(row => ({ year: row.year, value: Number.isFinite(finiteNumber(row.annual_ret)) ? String(finiteNumber(row.annual_ret) / 100) : "" }));
+  const percentage = (value: number | undefined) => pct(value == null || !Number.isFinite(value) ? NaN : value / 100);
+  const factorRows = factors.map(row => ({
+    factor: FACTOR_NAMES[row.factor], coverage: `${num(row.years)} 年 · ${num(row.days)} 日`,
+    annual: row.geometric_annual_ret == null ? "" : String(row.geometric_annual_ret / 100),
+    vol: row.annual_vol == null ? "" : String(row.annual_vol / 100),
+    sharpe: Number.isFinite(finiteNumber(row.sharpe)) ? String(Number(finiteNumber(row.sharpe).toFixed(2))) : "",
+    drawdown: row.max_drawdown == null ? "" : String(row.max_drawdown / 100),
+    hit: row.hit_rate == null ? "" : String(row.hit_rate / 100),
+  }));
+  return <div className="barra-explorer">
+    {includeNarrative && <ThemeHeading kicker="历史研究档案 · Barra 风格因子" title="A 股风格因子的长期历史表现" text="历史多空合成收益，不代表实际账户盈亏。" asof="各因子样本区间不同" />}
+    <nav className="section-nav" aria-label="本页目录">
+      <a href="#barra-annual">因子探索</a><a href="#barra-factor-detail">定义与计算</a><a href="#barra-overview">全部表现</a><a href="#barra-correlations">相关性</a>
+    </nav>
+    <section id="barra-annual" aria-label="年度因子探索">
+      <Panel title="逐年合成收益与阶段表现" tag="历史序列 · 公式待核验">
+        <div className="explorer-layout">
+          <aside className="factor-navigator" aria-label="因子选择">
+            <div className="factor-filter">
+              <label>搜索因子<input type="search" aria-label="搜索因子" placeholder="中文名称或英文代码" value={query} onChange={event => setQuery(event.target.value)} /></label>
+              <label>因子家族<select aria-label="因子家族" value={family} onChange={event => setFamily(event.target.value)}><option>全部</option>{familyOrder.map(value => <option key={value}>{value}</option>)}</select></label>
+              <span className="filter-count">{shown.length} / {factors.length} 个因子</span>
+            </div>
+            {!factors.length ? <DataNotice label="因子目录" error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
+              !shown.length ? <div className="filter-empty" role="status"><p>没有匹配的因子</p><button type="button" className="button-link" onClick={() => { setQuery(""); setFamily("全部"); }}>清除筛选</button></div> :
+              <div className="factor-groups">{familyOrder.map(group => {
+                const groupFactors = shown.filter(row => groupedFamily(row.factor) === group);
+                return groupFactors.length > 0 && <div className="factor-group" key={group}><span className="factor-group-label">{group}</span><div>{groupFactors.map(row => <button key={row.factor} type="button" className={`choice ${selectedFactor === row.factor ? "active" : ""}`} aria-pressed={selectedFactor === row.factor} aria-controls="barra-factor-detail" data-factor={row.factor} onClick={() => selectFactor(row.factor)}>{FACTOR_NAMES[row.factor]}</button>)}</div></div>;
+              })}</div>}
+          </aside>
+          <div className="factor-chart">
+            <div className="selected-heading"><div><span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span><h3>{FACTOR_NAMES[selectedFactor]}</h3></div><span className="chart-unit">年度合成收益 · %</span></div>
+            <section className="factor-stats" role="region" aria-label="所选因子关键指标">
+              <Stat label="几何年化" value={percentage(selectedFactorSummary?.geometric_annual_ret)} note="历史合成序列" />
+              <Stat label="最大回撤" value={percentage(selectedFactorSummary?.max_drawdown)} note="同一历史序列" />
+              <Stat label="样本年数" value={num(selectedFactorSummary?.years)} note={`${num(selectedFactorSummary?.days)} 个交易日`} />
+            </section>
+            {!selectedYearly.length ? <DataNotice label="年度收益" error={yearlyResource.error} retry={yearlyResource.retry} empty={!!yearlyResource.data} /> :
+              <><BarChart rows={selectedYearly} labelKey="year" valueKey="value" color="#2563a6" />
+                <details className="chart-data"><summary>查看年度数值</summary><SortableTable rows={selectedYearly} columns={[["year", "年份"], ["value", "年度合成收益"]]} percentColumns={["value"]} /></details></>}
+            <p className="panel-note">按每日多空收益差复合计算；不足一年的按已有区间展示。切换因子时样本可能不同，不宜直接排名判断优劣。</p>
+          </div>
+        </div>
       </Panel>
-      <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
-      <Panel title="因子定义、特征与计算方法" tag="随上方因子联动">
+    </section>
+    <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
+      <Panel title="因子定义、特征与计算方法" tag="随所选因子联动">
         <div className="factor-detail-grid">
           <div>
-            <span className="section-kicker">{selectedFactorDetail?.family ?? "历史因子"} · {selectedFactor}</span>
-            <h4>{FACTOR_NAMES[selectedFactor] ?? selectedFactor}</h4>
+            <span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span>
+            <h4>{FACTOR_NAMES[selectedFactor]}</h4>
             <dl className="factor-detail-list">
-              <div><dt>历史页面记录的多空方向</dt><dd>{selectedFactorDefinition?.direction ?? "历史方向未提供"}。此处沿用旧页面标签，原始得分方向仍待源代码核验。</dd></div>
-              <div><dt>包含什么特征</dt><dd>{selectedFactorDetail?.feature ?? "历史原始特征未完整保留"}</dd></div>
-              <div><dt>怎么计算</dt><dd>{selectedFactorDetail?.calculation ?? "历史计算口径未完整保留"}</dd></div>
-              <div><dt>当前核心字典对应关系</dt><dd>{selectedFactorDetail?.current ?? "当前核心字典没有完全对应的可重算定义。"}</dd></div>
+              <div><dt>是什么 · 包含什么特征</dt><dd>{selectedFactorDetail?.feature}</dd></div>
+              <div><dt>历史页面记录的多空方向</dt><dd>{selectedFactorDefinition?.direction ?? "未提供"}。此处沿用旧页面标签，原始得分方向待源代码核验。</dd></div>
+              <div><dt>怎么计算 · 已核查的现行实现</dt><dd>{currentFactorImplementations[selectedFactor]}</dd></div>
+              <div><dt>共同处理流程</dt><dd>{commonFactorProcessing}</dd></div>
+              <div><dt>当前核心字典对应关系</dt><dd>{selectedFactorDetail?.current}</dd></div>
             </dl>
           </div>
-          <div className="factor-detail-note">
-            <span className="section-kicker">可验证程度</span>
-            <p>{selectedFactorDetail?.verification ?? "历史 provenance 不完整。"}</p>
-            <p>上方收益来自历史分组与合成序列。名称相同不代表历史快照和当前核心 descriptor 是同一版本。缺少原始字段或计算脚本时，不用常见行业公式替代历史事实。</p>
-          </div>
+          <aside className="factor-detail-note">
+            <span className="section-kicker">验证状态 · 请与收益一起阅读</span>
+            <p>现行代码已核查：{implementationSource.project} · <code>{implementationSource.revision.slice(0, 7)}</code>（{implementationSource.inspected}）。</p>
+            <p>历史收益文件与原运行包一致，但历史生成提交尚未定位；包内一份元数据的校验值不一致。因此现行公式不能直接视为上方历史收益的原公式。</p>
+            <p>历史收益、历史原始公式、当前核心代理是三件不同的事。PIT、持仓缺失收益及可交易性仍需独立验证。</p>
+          </aside>
         </div>
-        {selectedFactor === "quality" && <>
-          <h4>Quality 子因子诊断</h4>
-          <p className="panel-note">当前 Quality 由盈利能力、低杠杆、盈利质量、盈利稳定性四项等权复合。下表把四项拆开看，基于当前可用 PIT 财务资产，主要覆盖 2020 年以后、前 800 只股票，用于诊断复合因子的内部来源，不替代 18 年历史结果。</p>
-          <SortableTable
-            rows={qualityComponents.filter((row) => row.factor.startsWith("quality_")).map((row) => ({
-              ...row,
-              ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map((key) => [key, row[key] === "" || row[key] == null ? "" : String(Number(row[key]) / 100)])),
-              factor: ({
-                quality_profitability: "盈利能力 · ROE",
-                quality_leverage: "低杠杆 · Debt / Assets",
-                quality_earnings_quality: "盈利质量 · OCF / Net Profit",
-                quality_earnings_variability: "盈利稳定性 · 8 季度净利润同比波动",
-              } as Record<string, string>)[row.factor] ?? row.factor,
-            }))}
-            columns={[["factor", "子因子与主要特征"], ["days", "交易日"], ["years", "样本年数"], ["geometric_annual_ret", "几何年化"], ["annual_vol", "年化波动率"], ["sharpe", "夏普比率"], ["max_drawdown", "最大回撤"], ["hit_rate", "正收益比例"]]}
-            percentColumns={["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"]}
-          />
-          <div className="quality-method-grid">
-            <div><strong>盈利能力</strong><span>ROE，截面缩尾后标准化。ROA 只作敏感性版本。</span></div>
-            <div><strong>低杠杆</strong><span>Debt / Assets，缩尾与标准化后反向计分。</span></div>
-            <div><strong>盈利质量</strong><span>OCF / Net Profit，缩尾后标准化，仍需继续核验 PIT 可见时间。</span></div>
-            <div><strong>盈利稳定性</strong><span>连续 8 季度净利润同比波动率取负值，波动越小得分越高。</span></div>
-          </div>
-        </>}
+        {selectedFactor === "quality" && <QualityDiagnostic />}
       </Panel>
-      </div>
-      <Panel title="19 个因子表现总览" tag="历史合成序列（账户收益未验证）">
-        <SortableTable
-          rows={factorRows}
-          columns={[
-            ["factor", "因子"],
-            ["coverage", "样本范围"],
-            ["annual", "合成收益的几何年化"],
-            ["vol", "年化波动率"],
-            ["sharpe", "夏普比率"],
-            ["drawdown", "最大回撤"],
-            ["hit", "日收益为正的比例"],
-          ]}
-          percentColumns={["annual", "vol", "drawdown", "hit"]}
-        />
+    </div>
+    <section id="barra-overview">
+      <Panel title="19 个因子表现总览" tag="可搜索 · 可排序">
+        <p className="panel-note">完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。</p>
+        {!factorRows.length ? <DataNotice label="因子总览" error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
+          <SortableTable rows={factorRows} columns={[["factor", "因子"], ["coverage", "样本范围"], ["annual", "几何年化"], ["vol", "年化波动率"], ["sharpe", "夏普比率"], ["drawdown", "最大回撤"], ["hit", "日收益为正比例"]]} percentColumns={["annual", "vol", "drawdown", "hit"]} />}
       </Panel>
-      <Panel title="因子相关性" tag="历史多空日收益差的相关性">
-        <SimpleTable
-          rows={related}
-          columns={[
-            ["factor", "因子"],
-            ["correlation", "相关系数"],
-          ]}
-        />
-      </Panel>
-      <details className="panel" onToggle={(event) => setShowSizeDiagnostic(event.currentTarget.open)}>
-        <summary>补充研究：市值十分组与稳定性诊断</summary>
-        {showSizeDiagnostic && <SizeDiagnosticPanel rows={quantileRows} dailyCurve={quantileCurve} />}
-      </details>
-      {includeNarrative && <div className="fine-print">
-        <span className="section-kicker">研究限制</span>
-        <p>
-          历史研究使用每日行情、估值和事后重建的财务数据。财务数据未完整保留当时可见的版本（
-          <code>PIT</code>
-          ），即使按公告日对齐，仍可能混入后续修订。各因子的样本区间不同，比较时需注意样本长度。每日收益可能存在时间相关性，夏普比率、年化收益、回撤和正收益比例均描述合成序列。尚未检验统计显著性、用自助法估计不确定性，或校正同时检验多个因子带来的偏差。历史计算将持仓期缺失收益记为零，退市时的最终价值尚未完整处理。手续费、可交易规模、涨跌停、停牌和成交限制也需另行核查。
-        </p>
-      </div>}
-    </>
-  );
+    </section>
+    <CorrelationPanel selectedFactor={selectedFactor} onSelect={id => { selectFactor(id); setFamily("全部"); setQuery(""); document.getElementById("barra-annual")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }} />
+    <details className="panel size-diagnostic" onToggle={event => setShowSizeDiagnostic(event.currentTarget.open)}>
+      <summary>补充研究：市值十分组与稳定性诊断</summary>
+      {showSizeDiagnostic && <SizeSnapshot />}
+    </details>
+  </div>;
 }

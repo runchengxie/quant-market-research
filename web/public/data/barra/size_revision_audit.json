@@ -1,0 +1,66 @@
+{
+  "schema_version": "barra-size-audit.v2",
+  "input_vintage": "2026-09-18",
+  "as_of": "2026-09-07",
+  "algorithm_revision": "470dfa9de7e1a825a06e47f1728e19239041709e",
+  "input_manifest_sha256": "3e481c76205ad425e5ae7e93baf480fd9eaf8e22cc6e52c28c8334d248e3ab66",
+  "generated_at": "2026-09-19",
+  "scope": "size diagnostic only; historical 19-factor series unchanged",
+  "raw_source_checks": [
+    {
+      "formation_date": "2015-01-07",
+      "target_date": "2015-01-08",
+      "members": 2139
+    },
+    {
+      "formation_date": "2020-03-02",
+      "target_date": "2020-03-03",
+      "members": 3488
+    },
+    {
+      "formation_date": "2026-09-04",
+      "target_date": "2026-09-07",
+      "members": 5318
+    }
+  ],
+  "rows": 28380,
+  "complete_group_rows": 21610,
+  "incomplete_group_rows": 6770,
+  "previous": {
+    "quantiles": 10,
+    "holding_period": 1,
+    "monotonicity_score": 0.8888888888888888,
+    "tail_spread": 0.0019937210463092953,
+    "coverage_start": "2015-01-05",
+    "coverage_end": "2026-09-04",
+    "formation_dates": 2838,
+    "eligible_rows": 10842926,
+    "excluded_rows": 16078
+  },
+  "revised": {
+    "status": "available",
+    "monotonicity_score": 0.6666666666666666,
+    "tail_spread": 0.0006707963983613142,
+    "observations": 631,
+    "formation_dates": 2838,
+    "excluded_formation_dates": 2207,
+    "quantiles": 10,
+    "direction": "descending",
+    "warnings": [
+      "missing_return_coverage",
+      "incomplete_quantile_dates"
+    ],
+    "holding_period": 1,
+    "tail_spread_definition": "small_minus_large",
+    "coverage_start": "2015-01-05",
+    "coverage_end": "2026-09-04",
+    "eligible_rows": 10853685,
+    "excluded_rows": 849995,
+    "observed_return_count": 10843141,
+    "missing_return_count": 10544,
+    "return_coverage": 0.9990285327057123,
+    "unavailable_target_rows": 5319,
+    "unavailable_target_dates": 1
+  },
+  "comparison_limit": "Input vintages and missing-return policies differ. Changes are not a pure algorithm-attribution experiment."
+}
