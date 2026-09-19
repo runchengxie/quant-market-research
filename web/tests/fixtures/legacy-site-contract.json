@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "routes": [
+    {
+      "route": "/",
+      "anchors": []
+    },
+    {
+      "route": "/research/cashflow/",
+      "anchors": []
+    },
+    {
+      "route": "/research/cashflow/recovery/",
+      "anchors": []
+    },
+    {
+      "route": "/research/microcap/",
+      "anchors": []
+    },
+    {
+      "route": "/research/microcap/cross-market-liquidity/",
+      "anchors": []
+    },
+    {
+      "route": "/research/indices/",
+      "anchors": []
+    },
+    {
+      "route": "/research/style-factors-18y/",
+      "anchors": [
+        {
+          "id": "barra-annual",
+          "text": "",
+          "level": 0
+        },
+        {
+          "id": "barra-factor-detail",
+          "text": "",
+          "level": 0
+        },
+        {
+          "id": "barra-overview",
+          "text": "",
+          "level": 0
+        },
+        {
+          "id": "barra-correlations",
+          "text": "",
+          "level": 0
+        }
+      ]
+    },
+    {
+      "route": "/research/liquidity/",
+      "anchors": []
+    },
+    {
+      "route": "/research/factors/low-turnover/",
+      "anchors": []
+    },
+    {
+      "route": "/docs/",
+      "anchors": [
+        {
+          "id": "quant-market-research",
+          "text": "Quant Market Research 研究说明¶",
+          "level": 1
+        },
+        {
+          "id": "_1",
+          "text": "因子研究¶",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "route": "/docs/research-closeout-status/",
+      "anchors": [
+        {
+          "id": "2026-09-18",
+          "text": "研究收口状态（2026-09-18）¶",
+          "level": 1
+        },
+        {
+          "id": "_1",
+          "text": "当前状态¶",
+          "level": 2
+        },
+        {
+          "id": "_2",
+          "text": "数据新鲜度规则¶",
+          "level": 2
+        },
+        {
+          "id": "_3",
+          "text": "可复现入口¶",
+          "level": 2
+        },
+        {
+          "id": "_4",
+          "text": "网页发布¶",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "route": "/docs/research/factors/low-turnover/",
+      "anchors": [
+        {
+          "id": "_1",
+          "text": "低换手：它可能反映哪些特征？¶",
+          "level": 1
+        },
+        {
+          "id": "2026-09-16",
+          "text": "最近一轮验证（截至 2026-09-16）¶",
+          "level": 2
+        },
+        {
+          "id": "_2",
+          "text": "已完成的窗口与执行对照¶",
+          "level": 3
+        },
+        {
+          "id": "_3",
+          "text": "先用一句话理解¶",
+          "level": 2
+        },
+        {
+          "id": "_4",
+          "text": "早期探索记录（收益口径与样本各不相同）¶",
+          "level": 2
+        },
+        {
+          "id": "_5",
+          "text": "最初的强结果对定义很敏感¶",
+          "level": 3
+        },
+        {
+          "id": "_6",
+          "text": "控制其它特征后，信号变弱¶",
+          "level": 3
+        },
+        {
+          "id": "_7",
+          "text": "在不同市值组内，低换手效果并不平均¶",
+          "level": 3
+        },
+        {
+          "id": "_8",
+          "text": "更像投资的检验，结果谨慎得多¶",
+          "level": 3
+        },
+        {
+          "id": "_9",
+          "text": "代理变量、复合信号和协同效应¶",
+          "level": 2
+        },
+        {
+          "id": "_10",
+          "text": "接下来怎么查¶",
+          "level": 2
+        },
+        {
+          "id": "_11",
+          "text": "数据出处与口径边界¶",
+          "level": 2
+        },
+        {
+          "id": "_12",
+          "text": "本轮产物核验¶",
+          "level": 3
+        },
+        {
+          "id": "_13",
+          "text": "统一账本的增量验证¶",
+          "level": 3
+        },
+        {
+          "id": "_14",
+          "text": "剔除最高换手组的对照¶",
+          "level": 3
+        },
+        {
+          "id": "_15",
+          "text": "长期换手水平与短期波动的区分¶",
+          "level": 3
+        }
+      ]
+    },
+    {
+      "route": "/docs/research/factors/microcap/",
+      "anchors": [
+        {
+          "id": "_1",
+          "text": "微盘股：收益证据与水下时间¶",
+          "level": 1
+        },
+        {
+          "id": "2026-09-18",
+          "text": "2026-09-18 缺失价格审计与数据新鲜度¶",
+          "level": 2
+        },
+        {
+          "id": "_2",
+          "text": "文中几个英文名称¶",
+          "level": 3
+        },
+        {
+          "id": "_3",
+          "text": "微盘股是什么¶",
+          "level": 2
+        },
+        {
+          "id": "_4",
+          "text": "先看风险：回撤与恢复¶",
+          "level": 2
+        },
+        {
+          "id": "2008",
+          "text": "为什么把 2008 年作为补充起点¶",
+          "level": 2
+        },
+        {
+          "id": "20082014",
+          "text": "2008–2014 年的回撤结果¶",
+          "level": 3
+        },
+        {
+          "id": "_5",
+          "text": "规则是怎样拼起来的¶",
+          "level": 2
+        },
+        {
+          "id": "_6",
+          "text": "数据检查告诉我们什么¶",
+          "level": 2
+        },
+        {
+          "id": "_7",
+          "text": "收益还不能怎么解释¶",
+          "level": 3
+        },
+        {
+          "id": "20132016",
+          "text": "2013–2016 年复权审计的当前边界¶",
+          "level": 2
+        },
+        {
+          "id": "_8",
+          "text": "下一轮研究顺序¶",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "route": "/docs/research/factors/smallcap-turnover-history/",
+      "anchors": [
+        {
+          "id": "20082014",
+          "text": "2008–2014 年小市值成交活跃度补充¶",
+          "level": 1
+        },
+        {
+          "id": "_1",
+          "text": "数据范围¶",
+          "level": 2
+        },
+        {
+          "id": "_2",
+          "text": "如何解读¶",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "route": "/docs/research/factors/barra-factor-dictionary/",
+      "anchors": [
+        {
+          "id": "barra",
+          "text": "Barra 风格因子字典¶",
+          "level": 1
+        },
+        {
+          "id": "_1",
+          "text": "三层结构¶",
+          "level": 2
+        },
+        {
+          "id": "_2",
+          "text": "当前实现¶",
+          "level": 2
+        },
+        {
+          "id": "_3",
+          "text": "每个因子具体包含什么¶",
+          "level": 2
+        },
+        {
+          "id": "_4",
+          "text": "因子如何用于分组和收益计算¶",
+          "level": 2
+        },
+        {
+          "id": "_5",
+          "text": "归类是否需要调整¶",
+          "level": 2
+        },
+        {
+          "id": "19",
+          "text": "历史 19 因子快照清单¶",
+          "level": 2
+        },
+        {
+          "id": "_6",
+          "text": "数据和时间口径¶",
+          "level": 2
+        },
+        {
+          "id": "barra_1",
+          "text": "与商业 Barra 的关系¶",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "route": "/docs/research/factors/barra-source-inventory/",
+      "anchors": [
+        {
+          "id": "barra",
+          "text": "Barra 风格研究资料清单¶",
+          "level": 1
+        },
+        {
+          "id": "_1",
+          "text": "可以整理到公开研究的资料¶",
+          "level": 2
+        },
+        {
+          "id": "_2",
+          "text": "继续留在内部仓库的资料¶",
+          "level": 2
+        },
+        {
+          "id": "_3",
+          "text": "当前公开页面的覆盖¶",
+          "level": 2
+        },
+        {
+          "id": "_4",
+          "text": "下一步整理顺序¶",
+          "level": 2
+        }
+      ]
+    },
+    {
+      "route": "/404.html",
+      "anchors": []
+    }
+  ]
+}
