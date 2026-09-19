@@ -36,6 +36,63 @@ test('blank/nonfinite returns never contribute artificial zero observations', ()
   assert.equal(aggregateSizeRows([row('2025-01-01', 'Q1', '0')], 'month')[0].value, 0);
 });
 
+test('comparable curves use only dates with all requested groups complete, not each buckets own dates', async () => {
+  const helpers=await import('./lib/size-diagnostics.ts');
+  assert.equal(typeof helpers.comparableSizeRows,'function');
+  const complete={requested_quantiles:'10',count:'5',observed_return_count:'5',missing_return_count:'0',return_coverage:'1'};
+  const fullDay=Array.from({length:10},(_,i)=>row('2025-03-01',`Q${i+1}`,i===0?'.2':i===9?'.1':'0',complete));
+  const rows=[row('2025-01-01','Q1','.9',complete),row('2025-02-01','Q10','.8',complete),...fullDay];
+  const saved=structuredClone(rows);
+  const comparable=helpers.comparableSizeRows(rows);
+  assert.deepEqual(comparable,fullDay);
+  assert.deepEqual(rows,saved);
+  for(const curve of [helpers.dailySizeCurve(comparable),helpers.sizeMonthlyCurve(comparable)]) {
+    assert.equal(curve[0].value,'0.2');
+    assert.equal(curve[9].value,'0.1');
+  }
+  // Generic independent-bucket aggregation remains backwards compatible.
+  assert.equal(helpers.dailySizeCurve(rows)[0].value,'0.55');
+});
+
+test('comparable dates reject duplicate, missing, unexpected and incomplete quantiles', async () => {
+  const helpers=await import('./lib/size-diagnostics.ts');
+  assert.equal(typeof helpers.comparableSizeRows,'function');
+  const good=[row('2025-01-01','Q1','0',{requested_quantiles:'2'}),row('2025-01-01','Q2','.2',{requested_quantiles:'2'})];
+  for(const bad of [
+    [...good,good[0]], good.slice(0,1),
+    [good[0],{...good[1],bucket:'Q3'}],
+    [good[0],{...good[1],forward_return:''}],
+    [good[0],{...good[1],return_coverage:'.8'}],
+    [good[0],{...good[1],requested_quantiles:'3'}],
+    [good[0],{...good[1],requested_quantiles:''}],
+  ]) assert.deepEqual(helpers.comparableSizeRows(bad),[]);
+  assert.deepEqual(helpers.comparableSizeRows(good),good);
+});
+
+test('legacy comparable dates require the entire observed bucket universe including missing-value buckets', async () => {
+  const helpers=await import('./lib/size-diagnostics.ts');
+  assert.equal(typeof helpers.comparableSizeRows,'function');
+  const rows=[row('2025-01-01','Q1','.9'),row('2025-01-02','Q10','.8'),row('2025-01-03','Q1','.2'),row('2025-01-03','Q10','.1')];
+  assert.deepEqual(helpers.comparableSizeRows(rows),rows.slice(2));
+  assert.deepEqual(helpers.comparableSizeRows([...rows,row('2025-01-04','Q5','')]),[]);
+  assert.deepEqual(helpers.comparableSizeRows([]),[]);
+});
+
+test('size panel reports comparable and excluded date counts while keeping full input rows in the table', () => {
+  const rows=[row('2025-01-01','Q1','.9'),row('2025-01-02','Q10','.8'),row('2025-01-03','Q1','.2'),row('2025-01-03','Q10','.1')];
+  const html=render(h(shared.SizeDiagnosticPanel,{rows,dailyCurve:[]}));
+  assert.match(html.replace(/<[^>]*>/g,''),/完整可比日期 1 \/ 3，排除 2/);
+  assert.equal((html.match(/<tbody><tr|<\/tr><tr/g) ?? []).length,4);
+});
+
+test('size panel explicitly marks an empty comparable set instead of showing unmatched curves', () => {
+  const rows=[row('2025-01-01','Q1','.9'),row('2025-01-02','Q10','.8')];
+  const html=render(h(shared.SizeDiagnosticPanel,{rows,dailyCurve:[{bucket:'Q1',value:'.9'},{bucket:'Q10',value:'.8'}]}));
+  assert.match(html.replace(/<[^>]*>/g,''),/完整可比日期 0 \/ 2，排除 2/);
+  assert.match(html,/暂无.*可比数据/);
+  assert.doesNotMatch(html,/research-chart|正在加载图表/);
+});
+
 test('periods and buckets sort chronologically and numerically without mutating rows', () => {
   const rows = [row('2025-02-01','Q10','.1'), row('2025-01-03','Q10','.2'), row('2025-01-02','Q2','.3'), row('2025-01-01','Q1','.4')];
   const saved = structuredClone(rows);
@@ -119,6 +176,16 @@ test('table missing percentages remain missing and real zero is displayed', () =
     const html = render(h(Component,{rows:[{value:' '},{value:''},{value:'0'}],columns:[['value','Return']],percentColumns:['value']}));
     assert.equal((html.match(/未提供/g) ?? []).length, 2);
     assert.equal((html.match(/0\.0%/g) ?? []).length, 1);
+  }
+});
+
+test('tables preserve caller-formatted thousands in days and count without converting missing values to zero', () => {
+  for (const Component of [shared.SimpleTable, shared.SortableTable]) {
+    const html=render(h(Component,{rows:[{days:'2,847',count:'12,345.5'},{days:'',count:' '},{days:'0',count:'0'}],columns:[['days','Days'],['count','Count']]}));
+    assert.match(html,/<td>2,847<\/td>/);
+    assert.match(html,/<td>12,345.5<\/td>/);
+    assert.equal((html.match(/<td>未提供<\/td>/g)??[]).length,2);
+    assert.equal((html.match(/<td>0<\/td>/g)??[]).length,2);
   }
 });
 

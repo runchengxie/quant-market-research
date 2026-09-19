@@ -49,6 +49,31 @@ export function hasCompleteSizeCoverage(row: SizeRow): boolean {
 const periodFor = (row: SizeRow, period: Period) => period === "month" ? row.formation_date.slice(0, 7) : stageForDate(row.formation_date);
 const usable = (row: SizeRow) => Boolean(row.formation_date && row.bucket) && hasCompleteSizeCoverage(row) && Number.isFinite(finiteNumber(row.forward_return));
 
+/** Keep one complete observation per bucket on dates shared by the whole curve. */
+export function comparableSizeRows(rows: SizeRow[]): SizeRow[] {
+  const declared = rows.filter(row => "requested_quantiles" in row);
+  const requested = new Set(declared.map(row => finiteNumber(row.requested_quantiles)).filter(value => Number.isInteger(value) && value >= 2));
+  // Different declared universes cannot produce one comparable curve.
+  if (declared.length && requested.size !== 1) return [];
+  const quantiles = requested.values().next().value;
+  const universe = new Set(rows.map(row => row.bucket).filter(Boolean));
+  const expected = quantiles === undefined ? universe : new Set(Array.from({length: Math.min(quantiles, rows.length + 1)}, (_, i) => `Q${i + 1}`));
+  if (!expected.size || (quantiles !== undefined && quantiles > rows.length)) return [];
+  const dates = new Map<string, SizeRow[]>();
+  for (const row of rows) {
+    if (!row.formation_date) continue;
+    const group = dates.get(row.formation_date) ?? [];
+    group.push(row);
+    dates.set(row.formation_date, group);
+  }
+  const completeDates = new Set([...dates].filter(([, group]) =>
+    group.length === expected.size && new Set(group.map(row => row.bucket)).size === expected.size &&
+    group.every(row => expected.has(row.bucket) && usable(row) &&
+      (quantiles === undefined || finiteNumber(row.requested_quantiles) === quantiles))
+  ).map(([date]) => date));
+  return rows.filter(row => completeDates.has(row.formation_date));
+}
+
 export function aggregateSizeRows(rows: SizeRow[], period: Period) {
   const groups = new Map<string, number[]>();
   for (const row of rows) {
