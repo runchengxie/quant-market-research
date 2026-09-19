@@ -17,6 +17,7 @@ const routes = [
   ["research/factors/low-turnover/index.html", "低换手因子：它保留了什么信息？"],
   ["research/index.html", "从研究问题进入数据与图表"],
   ["data-sources/index.html", "每份公开快照都有自己的日期和边界"],
+  ["search/index.html", "搜索研究、方法与因子定义"],
   ["docs/research-closeout-status/index.html", "研究收口状态"],
   ["docs/research/factors/low-turnover/index.html", "低换手：它可能反映哪些特征"],
   ["docs/research/factors/microcap/index.html", "微盘股：收益证据与水下时间"],
@@ -32,7 +33,7 @@ async function makeSite() {
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, `<html><h1>${marker}</h1></html>`);
   }
-  for (const file of ["404.html", "docs/index.html", "data/manifest.json", "data/research/recovery.json", ".nojekyll"]) {
+  for (const file of ["404.html", "docs/index.html", "search-index.json", "data/manifest.json", "data/research/recovery.json", ".nojekyll"]) {
     const destination = path.join(root, file);
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, file.endsWith(".html") ? "<html>Docs</html>" : "{}");
