@@ -12,7 +12,7 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
   const styleAvailable = typeof history?.coverage_end === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(history.coverage_end)
     && typeof history.factor_count === 'number' && Number.isInteger(history.factor_count) && history.factor_count > 0;
   return <>
-    <div className="theme-heading"><div><span className="section-kicker">研究总览</span><h2>从主要发现开始了解这些研究</h2><p>先浏览每项研究的结论和证据范围，再进入专题查看数据、图表与计算方法。</p></div><span className="asof">数据日期按专题分别标注</span></div>
+    <div className="theme-heading"><div><span className="section-kicker">研究总览</span><h1>从主要发现开始了解这些研究</h1><p>先浏览每项研究的结论和证据范围，再进入专题查看数据、图表与计算方法。</p></div><span className="asof">数据日期按专题分别标注</span></div>
     <section className="featured-study" aria-label="重点研究：18 年 A 股风格因子">
       <div>
         <span className="section-kicker">重点研究 · Barra 风格因子</span>

@@ -2,16 +2,15 @@
 import ThemeToggle from "./react/ThemeToggle";
 import { withBase } from "../lib/routes";
 
-interface Props { activeRoute: string }
+interface Props { activeRoute: string; section?: "overview" | "research" | "docs" | "data" }
 
-const { activeRoute } = Astro.props;
+const { activeRoute, section } = Astro.props;
+const resolvedSection = section ?? (activeRoute === "overview" ? "overview" : activeRoute === "docs" ? "docs" : activeRoute === "data" ? "data" : "research");
 const links = [
-  { id: "overview", label: "研究总览", href: "/" },
-  { id: "cashflow", label: "现金流", href: "/research/cashflow/" },
-  { id: "microcap", label: "微盘股", href: "/research/microcap/" },
-  { id: "style", label: "指数与风格", href: "/research/indices/" },
-  { id: "low-turnover", label: "低换手", href: "/research/factors/low-turnover/" },
-  { id: "liquidity", label: "流动性", href: "/research/liquidity/" },
+  { id: "overview", section: "overview", label: "研究总览", href: "/" },
+  { id: "research", section: "research", label: "研究专题", href: "/research/" },
+  { id: "docs", section: "docs", label: "方法与字典", href: "/docs/" },
+  { id: "data", section: "data", label: "数据与版本", href: "/data-sources/" },
 ];
 ---
 
@@ -19,7 +18,7 @@ const links = [
   <div class="site-masthead">
     <div>
       <span class="brand-kicker">历史市场研究 · 证据优先</span>
-      <h1>市场研究档案</h1>
+      <a class="site-brand" href={withBase("/", import.meta.env.BASE_URL)}>市场研究档案</a>
       <p class="site-deck">汇集历史市场研究，标明数据日期、研究进展和使用限制。</p>
     </div>
     <div class="site-meta">
@@ -28,7 +27,18 @@ const links = [
       <ThemeToggle client:load />
     </div>
   </div>
-  <nav class="site-nav" aria-label="研究主题">
-    {links.map((link) => <a class:list={{ active: activeRoute === link.id }} href={withBase(link.href, import.meta.env.BASE_URL)}>{link.label}</a>)}
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="展开主导航">菜单</button>
+  <nav id="primary-nav" class="site-nav" aria-label="主导航">
+    {links.map((link) => <a class:list={{ active: resolvedSection === link.section }} href={withBase(link.href, import.meta.env.BASE_URL)}>{link.label}</a>)}
   </nav>
 </header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
+  const nav = document.querySelector<HTMLElement>("#primary-nav");
+  if (toggle && nav) {
+    const close = () => { toggle.setAttribute("aria-expanded", "false"); nav.removeAttribute("data-open"); };
+    toggle.addEventListener("click", () => { const open = toggle.getAttribute("aria-expanded") !== "true"; toggle.setAttribute("aria-expanded", String(open)); if (open) nav.setAttribute("data-open", ""); else nav.removeAttribute("data-open"); });
+    nav.addEventListener("click", (event) => { if ((event.target as HTMLElement).matches("a")) close(); });
+    document.addEventListener("keydown", (event) => { if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { close(); toggle.focus(); } });
+  }
+</script>
