@@ -1,5 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import { fileURLToPath } from 'node:url';
+import { resolve } from 'node:path';
 import { resolveDocLink } from './content/rehype-public-docs.ts';
 import { readPublicDocuments } from './content/public-docs-loader.ts';
 
@@ -10,7 +12,8 @@ test('public markdown links keep the Pages base and encoded anchors', () => {
 });
 
 test('reader only opens the explicit public document allowlist', async () => {
-  const docs = await readPublicDocuments('/home/richard/.devspace/worktrees/quant-market-research-aee1f8d2');
+  const repoRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)));
+  const docs = await readPublicDocuments(repoRoot);
   assert.equal(docs.length, 7);
   assert.ok(docs.every((doc) => !doc.body.includes('INTERNAL_ONLY_SENTINEL')));
 });
