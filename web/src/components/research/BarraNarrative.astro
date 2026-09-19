@@ -38,39 +38,4 @@
   <p>IC 衡量因子分数与未来收益的线性相关性，Rank IC 衡量排序是否一致。IC 接近 0，表示分数高低与未来收益没有明显线性关系。研究中的 Q1 到 Q10 是从低分到高分的十分位组合，方向与部分 Barra 多空图表相反，阅读时要以图表标题和因子定义为准。</p>
 </section>
 
-<section class="section-block">
-  <div class="section-heading">
-    <span class="section-kicker">口径字典</span>
-    <h2>历史因子包含哪些特征</h2>
-  </div>
-  <div class="table-wrap">
-    <table class="data-table">
-      <thead>
-        <tr><th>因子</th><th>名称</th><th>方向</th><th>聚合或计算方式</th></tr>
-      </thead>
-      <tbody>
-        <tr><td><code>size</code></td><td>市值</td><td>大市值减小市值</td><td>总市值取自然对数，每月分组</td></tr>
-        <tr><td><code>value</code></td><td>价值</td><td>低市净率减高市净率</td><td>市净率倒数，每月分组</td></tr>
-        <tr><td><code>momentum</code></td><td>短期动量（21 日）</td><td>强势减弱势</td><td>排除形成日的 21 日收益，每月分组</td></tr>
-        <tr><td><code>quality</code></td><td>复合质量</td><td>高质量减低质量</td><td>盈利能力、低杠杆、盈利稳定性和现金流质量等权合成</td></tr>
-        <tr><td><code>earnings_yield</code></td><td>盈利收益率</td><td>低市盈率减高市盈率</td><td>滚动市盈率倒数</td></tr>
-        <tr><td><code>lowvol</code></td><td>总波动率（21 日）</td><td>低波动减高波动</td><td>最近 21 个收益观察值的总收益波动率</td></tr>
-        <tr><td><code>growth</code></td><td>成长</td><td>高增长减低增长</td><td>净利润同比和营业收入同比，按公告日对齐</td></tr>
-        <tr><td><code>leverage</code></td><td>低杠杆</td><td>低杠杆减高杠杆</td><td>资产负债率，按公告日对齐</td></tr>
-        <tr><td><code>beta</code></td><td>低贝塔</td><td>低贝塔减高贝塔</td><td>252 日滚动市场贝塔，至少需要 126 个交易日</td></tr>
-        <tr><td><code>liquidity</code></td><td>低换手（当前快照）</td><td>低换手减高换手</td><td>形成日单日换手率，长期低换手研究另有 20 日和 60 日口径</td></tr>
-        <tr><td><code>liquidity_flow</code></td><td>大单资金流</td><td>大单净买入较高减较低</td><td>大单净买入占比</td></tr>
-        <tr><td><code>chip_concentration</code></td><td>筹码集中度</td><td>集中度较高减较低</td><td>前十大流通股东持股占比</td></tr>
-        <tr><td><code>institution_holding</code></td><td>机构持仓</td><td>机构持仓较高减较低</td><td>前十大机构流通持股占比</td></tr>
-        <tr><td><code>fund_breadth</code></td><td>公募前十大重仓广度</td><td>重仓基金较多减较少</td><td>按月末可见的持仓记录，统计将股票列入前十大重仓的基金数量</td></tr>
-        <tr><td><code>fund_breadth_change</code></td><td>公募重仓广度变化</td><td>重仓覆盖增加减减少</td><td>前十大重仓基金数量相对上期变化</td></tr>
-        <tr><td><code>fund_ownership</code></td><td>公募重仓比例</td><td>重仓比例较高减较低</td><td>前十大重仓流通股持仓比例合计</td></tr>
-        <tr><td><code>fund_ownership_change</code></td><td>公募重仓比例变化</td><td>重仓比例增加减减少</td><td>前十大重仓流通股持仓比例相对上期变化</td></tr>
-        <tr><td><code>dividend_yield</code></td><td>股息率</td><td>高股息率减低股息率</td><td>过去 12 个月股息率</td></tr>
-        <tr><td><code>ps_value</code></td><td>市销率价值</td><td>低市销率减高市销率</td><td>滚动市销率倒数</td></tr>
-      </tbody>
-    </table>
-  </div>
-</section>
-
 <p class="fine-print"><span class="section-kicker">研究限制</span> 因子方向和组合口径已在页面中说明，但交易成本、停牌处理、涨跌停成交约束和完整的可交易性检查仍需进一步统一。部分基金、筹码和资金流数据覆盖期较短，相关结果只适合作为探索性证据。</p>
