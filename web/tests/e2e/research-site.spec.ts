@@ -16,6 +16,38 @@ test.beforeEach(async ({ page }) => {
   await page.route(/fonts\.(?:googleapis|gstatic)\.com/, (route) => route.abort());
 });
 
+test("research HTML preserves UTF-8 text before hydration", async ({ request }) => {
+  for (const [route] of routes) {
+    const response = await request.get(route || "./");
+    expect(response.ok()).toBeTruthy();
+    const bytes = await response.body();
+    expect(bytes.includes(0), `${route} contains NUL bytes`).toBe(false);
+    const html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    if (route === "research/style-factors-18y/") expect(html).toContain("同一历史序列");
+  }
+});
+
+test("Barra hydration preserves pagination ARIA references", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  page.on("console", (message) => {
+    if (message.type() === "error" && /React|hydrat|did not match/i.test(message.text())) errors.push(message.text());
+  });
+  await page.goto("research/style-factors-18y/");
+  await expect(page.locator("#barra-annual canvas")).toBeVisible();
+  await page.getByText("补充研究：市值十分组与稳定性诊断", { exact: true }).click();
+  const pagination = page.getByRole("navigation", { name: "表格分页" });
+  await expect(pagination.first()).toBeVisible();
+  for (const nav of await pagination.all()) {
+    const target = await nav.getAttribute("aria-describedby");
+    expect(target).toBeTruthy();
+    expect(await page.evaluate((id) => Array.from(document.querySelectorAll("[id]")).filter((element) => element.id === id).length, target)).toBe(1);
+  }
+  await pagination.first().getByRole("button", { name: "下一页", exact: true }).click();
+  await expect(pagination.first()).toContainText("第 2 /");
+  expect(errors).toEqual([]);
+});
+
 for (const [route, heading] of routes) {
   test(`${route || "overview"} opens directly and survives a refresh`, async ({ page }) => {
     await page.goto(route, { waitUntil: "domcontentloaded" });

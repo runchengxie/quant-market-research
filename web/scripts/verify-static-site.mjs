@@ -60,7 +60,16 @@ export function verifyStaticSite(distDirectory) {
   }
 
   for (const htmlFile of filesBelow(dist).filter((file) => file.endsWith(".html"))) {
-    const html = fs.readFileSync(htmlFile, "utf8");
+    const bytes = fs.readFileSync(htmlFile);
+    const relative = path.relative(dist, htmlFile);
+    if (bytes.includes(0)) errors.push(`${relative}: HTML contains NUL bytes`);
+    let html;
+    try {
+      html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
+    } catch {
+      errors.push(`${relative}: HTML is not valid UTF-8`);
+      continue;
+    }
     const references = [...html.matchAll(/(?:href|src|component-url|renderer-url)="([^"]+)"/g)].map((match) => match[1]);
     for (const reference of references) {
       const error = resolveLocalReference(reference, htmlFile, dist);

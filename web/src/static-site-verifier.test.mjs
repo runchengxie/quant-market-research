@@ -47,3 +47,19 @@ test("static site verifier reports missing routes and private material", async (
   assert.match(errors, /Missing route output: research\/microcap\/index\.html/);
   assert.match(errors, /forbidden local path or credential marker/);
 });
+
+test("static site verifier rejects NUL bytes in generated HTML", async (t) => {
+  const root = await makeSite();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.appendFile(path.join(root, "research/style-factors-18y/index.html"), "<small>同一\u0000\u0000历史序列</small>");
+  assert.match(verifyStaticSite(root).join("\n"), /research\/style-factors-18y\/index\.html: HTML contains NUL bytes/);
+});
+
+test("static site verifier rejects malformed UTF-8 but accepts multibyte text", async (t) => {
+  const root = await makeSite();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.appendFile(path.join(root, "docs/index.html"), "<p>完整中文、🧪与 café</p>");
+  assert.deepEqual(verifyStaticSite(root), []);
+  await fs.appendFile(path.join(root, "docs/index.html"), Buffer.from([0xe4, 0xb8]));
+  assert.match(verifyStaticSite(root).join("\n"), /docs\/index\.html: HTML is not valid UTF-8/);
+});
