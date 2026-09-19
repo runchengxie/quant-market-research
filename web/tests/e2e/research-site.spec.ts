@@ -104,6 +104,10 @@ for (const width of [1280, 390]) {
     await expect(page.locator("#barra-annual canvas")).toBeVisible();
     const buttons = page.locator("button[data-factor]");
     await expect(buttons).toHaveCount(19);
+    const workspace = page.locator('[aria-label="当前因子诊断工作区"]');
+    await expect(workspace).toBeVisible();
+    await expect(workspace.locator("#barra-annual")).toBeVisible();
+    await expect(workspace.locator("#barra-factor-detail")).toBeVisible();
     const detail = page.getByRole("region", { name: "所选因子详情" });
     for (let i = 0; i < 19; i++) {
       const button = buttons.nth(i);
@@ -114,6 +118,7 @@ for (const width of [1280, 390]) {
       await expect(detail).toContainText("历史页面记录的多空方向");
       await expect(detail).toContainText("怎么计算");
       await expect(detail.getByRole("heading", { name: "Quality 子因子诊断" })).toHaveCount(factor === "quality" ? 1 : 0);
+      await expect(workspace.locator(".workspace-context strong")).toHaveText(await button.textContent() ?? "");
     }
     await page.locator('button[data-factor="quality"]').click();
     const leverage = detail.getByRole("row").filter({ hasText: "低杠杆 · Debt / Assets" });
