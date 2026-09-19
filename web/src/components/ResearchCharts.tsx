@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { echarts, type EChartsOption } from "./echarts";
 import { readChartTheme } from "../theme";
+import { baseChartOptions } from "../lib/chart-presentation";
 
 type ChartRow = Record<string, string>;
 type Series = { name: string; values: Array<number | null>; color: string };
@@ -11,8 +12,9 @@ function Chart({ option, description = "研究数据图表，数值可在相邻�
     if (!ref.current) return;
     const chart = echarts.init(ref.current);
     const paint = () => {
-      chart.setOption(option, true);
       const theme = readChartTheme();
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      chart.setOption({ ...baseChartOptions(theme, reducedMotion), ...option }, true);
       const axis = { axisLabel: { color: theme.axis }, axisLine: { lineStyle: { color: theme.axis } }, splitLine: { lineStyle: { color: theme.grid } } };
       chart.setOption({ xAxis: axis, yAxis: axis, textStyle: { color: theme.label }, series: (Array.isArray(option.series) ? option.series : []).map(() => ({ label: { color: theme.label } })) });
     };
