@@ -1,4 +1,4 @@
-import { lazy, Suspense, useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { lazy, Suspense, useCallback, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
 import { publicDataUrl } from "../../lib/public-data";
 import { withBase } from "../../lib/routes";
 import { displayValue, formatNumber, formatPercent as pct } from "../../lib/format";
@@ -106,13 +106,33 @@ export function SortableTable({ rows, columns, percentColumns = [], searchPlaceh
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState(columns[0]?.[0] ?? "");
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
-  const visible = rows.filter((row) => Object.values(row).some((value) => String(value ?? "").toLowerCase().includes(query.toLowerCase()))).sort((left, right) => {
+  const [page, setPage] = useState(0);
+  const rangeId = useId();
+  useEffect(() => { setPage(0); }, [rows]);
+  const visible = useMemo(() => rows.filter((row) => Object.values(row).some((value) => String(value ?? "").toLowerCase().includes(query.toLowerCase()))).sort((left, right) => {
     const a = finiteNumber(left[sortKey]);
     const b = finiteNumber(right[sortKey]);
     const comparison = Number.isFinite(a) && Number.isFinite(b) ? a - b : String(left[sortKey] ?? "").localeCompare(String(right[sortKey] ?? ""), "zh-CN", { numeric: true });
     return direction === "desc" ? -comparison : comparison;
-  });
-  const choose = (key: string) => { if (key === sortKey) setDirection(direction === "desc" ? "asc" : "desc"); else { setSortKey(key); setDirection("desc"); } };
-  return <><div className="table-controls"><input aria-label={searchPlaceholder} placeholder={searchPlaceholder} value={query} onChange={(event) => setQuery(event.target.value)}/><span>{visible.length} / {rows.length} 条</span></div><div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key} scope="col" aria-sort={sortKey === key ? (direction === "desc" ? "descending" : "ascending") : "none"}><button type="button" className="table-sort" onClick={() => choose(key)}>{label} {sortKey === key ? (direction === "desc" ? "↓" : "↑") : "↕"}</button></th>)}</tr></thead><tbody>{visible.map((row, index) => <tr key={`${index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{tableValue(key, row[key], percentColumns.includes(key))}</td>)}</tr>)}</tbody></table></div></>;
+  }), [rows, query, sortKey, direction]);
+  const pages = Math.max(1, Math.ceil(visible.length / 50));
+  const currentPage = Math.min(page, pages - 1);
+  const start = currentPage * 50;
+  const end = Math.min(start + 50, visible.length);
+  const choose = (key: string) => { setPage(0); if (key === sortKey) setDirection(direction === "desc" ? "asc" : "desc"); else { setSortKey(key); setDirection("desc"); } };
+  return <>
+    <div className="table-controls">
+      <input aria-label={searchPlaceholder} placeholder={searchPlaceholder} value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }}/>
+      <span id={rangeId} role="status" aria-live="polite" aria-atomic="true">显示 {visible.length ? start + 1 : 0}–{end} / {visible.length} 条（共 {rows.length} 条）</span>
+    </div>
+    <div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key} scope="col" aria-sort={sortKey === key ? (direction === "desc" ? "descending" : "ascending") : "none"}><button type="button" className="table-sort" onClick={() => choose(key)}>{label} {sortKey === key ? (direction === "desc" ? "↓" : "↑") : "↕"}</button></th>)}</tr></thead><tbody>{visible.slice(start, end).map((row, index) => <tr key={`${start + index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{tableValue(key, row[key], percentColumns.includes(key))}</td>)}</tr>)}</tbody></table></div>
+    {pages > 1 && <nav className="table-controls" aria-label="表格分页" aria-describedby={rangeId}>
+      <button type="button" aria-label="第一页" disabled={currentPage === 0} onClick={() => setPage(0)}>第一页</button>
+      <button type="button" aria-label="上一页" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>上一页</button>
+      <span>第 {currentPage + 1} / {pages} 页，每页 50 条</span>
+      <button type="button" aria-label="下一页" disabled={currentPage === pages - 1} onClick={() => setPage(currentPage + 1)}>下一页</button>
+      <button type="button" aria-label="最后一页" disabled={currentPage === pages - 1} onClick={() => setPage(pages - 1)}>最后一页</button>
+    </nav>}
+  </>;
 }
 export function Loading() { return <p className="loading">正在加载研究数据……</p>; }

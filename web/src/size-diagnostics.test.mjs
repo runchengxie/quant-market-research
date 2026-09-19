@@ -122,11 +122,27 @@ test('table missing percentages remain missing and real zero is displayed', () =
   }
 });
 
-test('sortable tables expose sort direction and do not silently truncate records', () => {
+test('sortable tables expose sort direction, a bounded page, its range and navigation', () => {
   const html = render(h(shared.SortableTable,{rows:Array.from({length:55},(_,i)=>({value:String(i)})),columns:[['value','Value'],['other','Other']]}));
   assert.match(html, /aria-sort="descending"/);
   assert.match(html, /aria-sort="none"/);
-  assert.equal((html.match(/<tr/g) ?? []).length, 56);
+  assert.equal((html.match(/<tr/g) ?? []).length, 51);
+  assert.match(html.replace(/<[^>]*>/g,''), /1–50 \/ 55/);
+  assert.match(html, /aria-label="下一页"/);
+  assert.match(html, /aria-label="上一页"[^>]*disabled/);
+  assert.match(html, /aria-label="最后一页"/);
+});
+
+test('large tables render only 50 data rows and report all 28380 records', () => {
+  const html=render(h(shared.SortableTable,{rows:Array.from({length:28380},(_,i)=>({value:String(i)})),columns:[['value','Value']]}));
+  assert.equal((html.match(/<tr/g) ?? []).length,51);
+  assert.match(html.replace(/<[^>]*>/g,''), /1–50 \/ 28380/);
+});
+
+test('empty tables report a zero range without enabled navigation', () => {
+  const html=render(h(shared.SortableTable,{rows:[],columns:[['value','Value']]}));
+  assert.match(html.replace(/<[^>]*>/g,''), /0–0 \/ 0/);
+  assert.doesNotMatch(html, /aria-label="下一页"(?![^>]*disabled)/);
 });
 
 test('resource state distinguishes error, loading, empty and ready with labeled retry', () => {
