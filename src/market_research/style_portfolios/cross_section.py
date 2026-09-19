@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+from numbers import Integral
+
+import numpy as np
 import pandas as pd
 
 
@@ -11,59 +14,109 @@ def build_quantile_returns(
     date_column: str = "date",
     return_column: str = "adj_close",
 ) -> pd.DataFrame:
-    """Build lag-safe equal-weight factor quantile returns.
+    """Build formation-based, equal-weight factor quantile returns.
 
-    Factor values are ranked on formation date and returns start on the next
-    available panel date. This is deliberately a market-evidence primitive;
-    it does not calculate IC, decay, alpha scores, or strategy weights.
+    Order finite factors ascending, breaking ties by symbol; assign one-based
+    ranks using ceil(rank * quantiles / n), evaluated with integer arithmetic.
+    Sizes differ by at most one. If n < quantiles, some labels remain empty.
+    Signed factors are valid; formation and target prices must be finite and
+    positive. Eligibility flags apply only on the formation date.
+
+    The target is holding_period dates ahead in the global input calendar;
+    missing symbol quotes never move that target or change formation membership.
+    Dates without a global target are omitted. count includes every formation
+    member. Incomplete groups have null full-portfolio mean/median, with partial
+    estimates exposed only as observed_only_* alongside return coverage.
     """
-    if quantiles < 2 or holding_period < 1:
-        raise ValueError("quantiles must be >= 2 and holding_period must be positive")
+    if (
+        not isinstance(quantiles, Integral) or isinstance(quantiles, bool) or quantiles < 2
+        or not isinstance(holding_period, Integral) or isinstance(holding_period, bool)
+        or holding_period < 1
+    ):
+        raise ValueError("quantiles must be an integer >= 2 and holding_period a positive integer")
     required = {"symbol", date_column, factor_column, return_column}
     missing = required.difference(panel.columns)
     if missing:
         raise ValueError("missing panel columns: " + ", ".join(sorted(missing)))
-    frame = panel.copy()
-    frame[date_column] = pd.to_datetime(frame[date_column], errors="coerce")
-    frame[return_column] = pd.to_numeric(frame[return_column], errors="coerce")
-    frame[factor_column] = pd.to_numeric(frame[factor_column], errors="coerce")
-    frame = frame.sort_values(["symbol", date_column], kind="stable")
-    dates = sorted(frame[date_column].dropna().unique())
-    target_dates = {
+
+    # Internal names keep custom input columns independent of derived fields.
+    frame = pd.DataFrame({
+        "symbol": panel["symbol"].astype("string"),
+        "date": pd.to_datetime(panel[date_column], errors="coerce"),
+        "factor": pd.to_numeric(panel[factor_column], errors="coerce").astype(float),
+        "price": pd.to_numeric(panel[return_column], errors="coerce").astype(float),
+    })
+    if frame.duplicated(["symbol", "date"]).any():
+        raise ValueError("duplicate symbol/date rows in panel")
+    for column, default in (("is_tradable", True), ("is_st", False), ("is_suspended", False)):
+        # Missing explicit eligibility information is treated conservatively.
+        frame[column] = (
+            panel[column].fillna(column != "is_tradable").astype(bool)
+            if column in panel else default
+        )
+
+    dates = sorted(frame["date"].dropna().unique())
+    targets = {
         date: dates[i + holding_period]
         for i, date in enumerate(dates[:-holding_period])
     }
-    frame["future_date"] = frame.groupby("symbol")[date_column].shift(-holding_period)
-    frame["future_price"] = frame.groupby("symbol")[return_column].shift(-holding_period)
-    for column, default in (("is_tradable", True), ("is_st", False), ("is_suspended", False)):
-        if column not in frame:
-            frame[column] = default
-    eligible = frame.loc[
-        frame[date_column].notna()
-        & frame[factor_column].notna()
-        & frame[return_column].gt(0)
-        & frame["future_date"].eq(frame[date_column].map(target_dates))
-        & frame["future_price"].gt(0)
-        & frame["is_tradable"].astype(bool)
-        & ~frame["is_st"].astype(bool)
-        & ~frame["is_suspended"].astype(bool)
-    ].copy()
-    eligible["forward_return"] = eligible["future_price"] / eligible[return_column] - 1.0
-    eligible["bucket"] = (
-        eligible.groupby(date_column)[factor_column]
-        .rank(method="first", ascending=True, pct=True)
-        .mul(quantiles)
-        .clip(1, quantiles)
-        .astype(int)
+    frame["target_date"] = pd.to_datetime(frame["date"].map(targets))
+    formation_mask = (
+        frame["date"].notna()
+        & frame["symbol"].notna() & frame["symbol"].str.strip().ne("")
+        & np.isfinite(frame["factor"])
+        & np.isfinite(frame["price"]) & frame["price"].gt(0)
+        & frame["is_tradable"] & ~frame["is_st"] & ~frame["is_suspended"]
     )
+    eligible = frame.loc[formation_mask & frame["target_date"].notna()].copy()
+    eligible = eligible.sort_values(["date", "factor", "symbol"], kind="stable")
+    groups = eligible.groupby("date")
+    rank = groups.cumcount() + 1
+    size = groups["symbol"].transform("size")
+    eligible["bucket"] = ((rank * quantiles + size - 1) // size).astype(int)
+
+    quotes = frame[["symbol", "date", "price"]].rename(
+        columns={"date": "target_date", "price": "target_price"}
+    )
+    eligible = eligible.merge(quotes, on=["symbol", "target_date"], how="left", validate="many_to_one")
+    target_price = eligible["target_price"].where(
+        np.isfinite(eligible["target_price"]) & eligible["target_price"].gt(0)
+    )
+    with np.errstate(over="ignore", invalid="ignore", divide="ignore"):
+        forward_return = target_price / eligible["price"] - 1.0
+    eligible["forward_return"] = forward_return.where(np.isfinite(forward_return))
+
     result = (
-        eligible.groupby([date_column, "bucket"], as_index=False)
+        eligible.groupby(["date", "bucket"], as_index=False)
         .agg(
             mean_forward_return=("forward_return", "mean"),
             median_forward_return=("forward_return", "median"),
             count=("forward_return", "size"),
+            observed_return_count=("forward_return", "count"),
+            target_date=("target_date", "first"),
         )
-        .rename(columns={date_column: "formation_date"})
+        .rename(columns={"date": "formation_date"})
     )
     result["bucket_label"] = result["bucket"].map(lambda value: f"Q{value}")
-    return result.sort_values(["formation_date", "bucket"]).reset_index(drop=True)
+    result["missing_return_count"] = result["count"] - result["observed_return_count"]
+    result["return_coverage"] = result["observed_return_count"] / result["count"]
+    for statistic in ("mean", "median"):
+        column = f"{statistic}_forward_return"
+        result[column] = result[column].where(np.isfinite(result[column]))
+        result[f"observed_only_{column}"] = result[column]
+        result[column] = result[column].where(result["missing_return_count"].eq(0))
+    result["requested_quantiles"] = int(quantiles)
+    # Preserve the existing CSV column prefix for downstream readers.
+    original_columns = [
+        "formation_date", "bucket", "mean_forward_return", "median_forward_return",
+        "count", "bucket_label",
+    ]
+    result = result[original_columns + [c for c in result if c not in original_columns]]
+    result = result.sort_values(["formation_date", "bucket"]).reset_index(drop=True)
+    result.attrs["unavailable_target_rows"] = int(
+        (formation_mask & frame["target_date"].isna()).sum()
+    )
+    result.attrs["unavailable_target_dates"] = int(
+        frame.loc[frame["target_date"].isna(), "date"].nunique()
+    )
+    return result

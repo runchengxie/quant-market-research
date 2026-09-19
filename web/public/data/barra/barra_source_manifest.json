@@ -1,7 +1,24 @@
 {
   "canonical_project": "market-research",
   "historical_source": "style-factors/weekly-20260904",
-  "panel_source": "a_share_all_20150101_20260907_daily_clean",
+  "panel_source": "a_share_all_20150101_20260918_daily_clean",
   "raw_data_copied": false,
-  "factor_count_in_historical_source": 19
+  "factor_count_in_historical_source": 19,
+  "size_schema_version": "barra-size.v2",
+  "size_revision": {
+    "input_vintage": "2026-09-18",
+    "as_of": "2026-09-07",
+    "algorithm_revision": "470dfa9de7e1a825a06e47f1728e19239041709e",
+    "input_manifest_sha256": "3e481c76205ad425e5ae7e93baf480fd9eaf8e22cc6e52c28c8334d248e3ab66",
+    "generated_at": "2026-09-19",
+    "scope": "size diagnostic only; historical 19-factor series unchanged",
+    "comparison_limit": "Input vintages and missing-return policies differ. Changes are not a pure algorithm-attribution experiment."
+  },
+  "historical_integrity": {
+    "checked_receipts": 32,
+    "matching_receipts": 31,
+    "mismatch": "meta.json",
+    "published_numerical_files_match_run_package": true,
+    "exact_generating_revision_recovered": false
+  }
 }

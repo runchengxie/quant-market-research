@@ -1,7 +1,10 @@
-import { lazy, useEffect, useState } from "react";
-import { parseCsv, publicDataUrl } from "../../lib/public-data";
+import { lazy, Suspense, useCallback, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from "react";
+import { publicDataUrl } from "../../lib/public-data";
 import { withBase } from "../../lib/routes";
-import { asNumber, displayValue, formatPercent as pct } from "../../lib/format";
+import { displayValue, formatNumber, formatPercent as pct } from "../../lib/format";
+import { createResource, parseCsvResource, parseJsonResource } from "../../lib/research-resource";
+import { comparableSizeRows, dailySizeCurve, finiteNumber, sizeDateRange, sizeMonthlyCurve, summarizeSizePeriods } from "../../lib/size-diagnostics";
+export { average, aggregateSizeRows, stageForDate, summarizeSizePeriods } from "../../lib/size-diagnostics";
 const ResearchBarChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchBarChart })));
 const ResearchLineChart = lazy(() => import("../ResearchCharts").then((module) => ({ default: module.ResearchLineChart })));
 
@@ -18,7 +21,7 @@ export type LiquidityBucket = { label: string; count?: number; median_usd: numbe
 export type LiquidityPeriodMarket = { market: string; status: string; as_of?: string; coverage_start?: string; coverage_end?: string; sub_100m_count?: number; sub_100m_median_usd?: number; buckets: LiquidityBucket[] };
 export type LiquidityPeriod = { period: string; status: string; common_start?: string | null; common_end?: string | null; markets: LiquidityPeriodMarket[] };
 export type LiquiditySummary = { method: { roll_days: number; metric: string; currency: string; source_project: string }; markets: LiquidityPeriodMarket[]; periods?: LiquidityPeriod[]; caveats: string[] };
-export type BarraSummary = { source?: { coverage_start?: string; coverage_end?: string }; size_monotonicity?: { quantiles?: number; tail_spread?: number; monotonicity_score?: number; formation_dates?: number }; legacy_barra_result?: { factor_count?: number } };
+export type BarraSummary = { source?: { coverage_start?: string; coverage_end?: string }; size_monotonicity?: { status?: "available" | "unavailable"; quantiles?: number; requested_quantiles?: number; tail_spread?: number | null; monotonicity_score?: number | null; formation_dates?: number; observed_return_count?: number; missing_return_count?: number; return_coverage?: number | null }; legacy_barra_result?: { factor_count?: number } };
 export type HistoricalFactor = { factor: string; days: number; years: number; cumulative_ret: number; geometric_annual_ret: number; annual_vol: number; sharpe: number; max_drawdown: number; hit_rate: number };
 export type CorrelationMatrix = Record<string, Record<string, number>>;
 export type CashflowBasis = "all" | "price_return" | "gross_total_return";
@@ -26,57 +29,55 @@ export type DiagnosticView = "daily" | "monthly" | "stage";
 
 const DATA = publicDataUrl("", import.meta.env.BASE_URL);
 
-export function average(values: number[]) { return values.length ? values.reduce((sum, value) => sum + value, 0) / values.length : NaN; }
-export function stageForDate(date: string) {
-  const year = Number(date.slice(0, 4));
-  return year <= 2019 ? "2015–2019" : year <= 2024 ? "2020–2024" : "2025–当前";
-}
-export function aggregateSizeRows(rows: Row[], period: "month" | "stage") {
-  const groups = new Map<string, number[]>();
-  rows.forEach((row) => {
-    const value = Number(row.forward_return);
-    if (!Number.isFinite(value)) return;
-    const key = `${period === "month" ? row.formation_date.slice(0, 7) : stageForDate(row.formation_date)}|${row.bucket}`;
-    groups.set(key, [...(groups.get(key) ?? []), value]);
-  });
-  return [...groups.entries()].map(([key, values]) => {
-    const [periodLabel, bucket] = key.split("|");
-    return { period: periodLabel, bucket, value: average(values) };
-  });
-}
-export function summarizeSizePeriods(rows: Row[], period: "month" | "stage") {
-  const grouped = aggregateSizeRows(rows, period);
-  const periods = [...new Set(grouped.map((row) => row.period))];
-  return periods.map((periodLabel) => {
-    const values = grouped.filter((row) => row.period === periodLabel);
-    const q1 = values.find((row) => row.bucket === "Q1")?.value ?? NaN;
-    const q10 = values.find((row) => row.bucket === "Q10")?.value ?? NaN;
-    return { period: periodLabel, q1, q10, spread: q1 - q10, observations: values.length };
-  });
-}
-
-export function SizeDiagnosticPanel({ rows, dailyCurve }: { rows: Row[]; dailyCurve: Row[] }) {
+export function SizeDiagnosticPanel({ rows }: { rows: Row[]; dailyCurve: Row[] }) {
   const [view, setView] = useState<DiagnosticView>("monthly");
-  const monthly = aggregateSizeRows(rows, "month");
-  const monthlyCurve = [...new Set(monthly.map((row) => row.bucket))].map((bucket) => ({ bucket, value: String(average(monthly.filter((row) => row.bucket === bucket).map((row) => row.value))) }));
+  const comparable = comparableSizeRows(rows);
+  const completeDates = new Set(comparable.map(row => row.formation_date)).size;
+  const totalDates = new Set(rows.map(row => row.formation_date).filter(Boolean)).size;
+  const excluded = totalDates - completeDates;
+  const monthlyCurve = sizeMonthlyCurve(comparable);
   const stages = summarizeSizePeriods(rows, "stage");
-  const chartRows = view === "daily" ? dailyCurve : view === "monthly" ? monthlyCurve : stages.map((row) => ({ bucket: row.period, value: String(row.spread) }));
-  const formatter = (value: number) => `${(value * 100).toFixed(2)}%`;
-  return <><Panel title="补充研究：市值十分组" tag="当前样本的历史统计"><p className="panel-note">这部分用当前已清洗的 A 股每日数据重新计算，覆盖 {rows[0]?.formation_date ?? "未提供"} 至 {rows.at(-1)?.formation_date ?? "未提供"}。按市值分成十组，观察各组下一交易日的收益，并按月和阶段汇总，检查差异是否稳定。这些结果仅描述历史样本。</p><BarChart rows={dailyCurve} labelKey="bucket" valueKey="value" color="#b64d33" formatter={formatter}/><p className="panel-note">上图展示分组后下一交易日的平均收益。相邻交易日的结果可能相关，分组日期的数量不等于独立样本数。</p><SortableTable rows={rows} columns={[["formation_date", "分组日期"], ["bucket", "市值分组"], ["forward_return", "下一交易日收益"], ["count", "股票数"]]} percentColumns={["forward_return"]}/></Panel><Panel title="稳定性观察：按月与按阶段" tag="观察不同时间尺度"><p className="panel-note">月度结果先计算每月平均收益，再对各月等权平均。阶段图展示最小市值组（Q1）减最大市值组（Q10）的平均收益差。尚未校正时间相关性，也未用区块自助法估计置信区间或检验统计显著性。</p><ControlBar><span className="control-label">观察口径</span><Choice active={view === "daily"} onClick={() => setView("daily")}>按日分组</Choice><Choice active={view === "monthly"} onClick={() => setView("monthly")}>按月汇总</Choice><Choice active={view === "stage"} onClick={() => setView("stage")}>阶段收益差</Choice></ControlBar>{view === "stage" ? <><BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/><SimpleTable rows={stages.map((row) => ({ period: row.period, q1: formatter(row.q1), q10: formatter(row.q10), spread: formatter(row.spread), observations: String(row.observations) }))} columns={[["period", "阶段"], ["q1", "最小市值组平均收益"], ["q10", "最大市值组平均收益"], ["spread", "最小组减最大组"], ["observations", "分组数"]]} /></> : <BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/>}</Panel></>;
+  // Retain the dailyCurve prop contract, but derive both curves from one sample.
+  const daily = dailySizeCurve(comparable);
+  const chartRows = view === "daily" ? daily : view === "monthly" ? monthlyCurve : stages.map(row => ({ bucket: row.period, value: Number.isFinite(row.spread) ? String(row.spread) : "" }));
+  const dates = sizeDateRange(rows);
+  const formatter = (value: number) => Number.isFinite(value) ? `${(value * 100).toFixed(2)}%` : "未提供";
+  const coverageColumns = [["formation_count", "形成时股票数"], ["count", "形成时股票数（count）"], ["observed_return_count", "已观测收益数"], ["missing_return_count", "缺失收益数"], ["return_coverage", "收益覆盖率"], ["observed_count", "已观测股票数"], ["missing_count", "缺失股票数"], ["coverage_ratio", "观测覆盖率"]].filter(([key]) => rows.some(row => key in row));
+  return <>
+    <Panel title="补充研究：市值十分组" tag="当前样本的历史统计">
+      <p className="panel-note">当前快照的分组日期覆盖 {dates.start ?? "未提供"} 至 {dates.end ?? "未提供"}。按市值分成十组，观察各组下一交易日的收益，并按月和阶段汇总。这些结果仅描述历史样本；旧快照未提供完整覆盖字段时，覆盖质量仍待核实。</p>
+      <p className="panel-note">完整可比日期 {completeDates} / {totalDates}，排除 {excluded} 个分组日期。按日和按月曲线仅使用所有分组各有一条有效且覆盖完整记录的共同日期；旧快照按已出现的分组集合匹配，覆盖质量仍待核实。</p>
+      {completeDates ? <BarChart rows={daily} labelKey="bucket" valueKey="value" color="#b64d33" formatter={formatter}/> : <ResourceState empty label="所有分组共同日期的可比数据"/>}
+      <p className="panel-note">曲线展示共同日期的下一交易日平均收益。相邻交易日的结果可能相关，分组日期的数量不等于独立样本数。</p>
+      <SortableTable rows={rows} columns={[["formation_date", "分组日期"], ["bucket", "市值分组"], ["forward_return", "下一交易日收益"], ...coverageColumns]} percentColumns={["forward_return", "return_coverage", "coverage_ratio"]}/>
+    </Panel>
+    <Panel title="稳定性观察：按月与按阶段" tag="观察不同时间尺度">
+      <p className="panel-note">月度结果先在所有分组的共同日期上计算每月平均收益，再对各月等权平均。阶段（2015–2019、2020–2024、2025–当前）收益差仅使用 Q1 与 Q10 同时有有效收益的共同分组日期，剔除已知覆盖不完整的记录，不要求中间分组完整。尚未校正时间相关性，也未用区块自助法估计置信区间或检验统计显著性。</p>
+      <ControlBar><span className="control-label">观察口径</span><Choice active={view === "daily"} onClick={() => setView("daily")}>按日分组</Choice><Choice active={view === "monthly"} onClick={() => setView("monthly")}>按月汇总</Choice><Choice active={view === "stage"} onClick={() => setView("stage")}>阶段收益差</Choice></ControlBar>
+      {view === "stage" || completeDates > 0 ? <BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/> : <ResourceState empty label="所有分组共同日期的可比数据"/>}
+      {view === "stage" && <SimpleTable rows={stages.map(row => ({ period: row.period, q1: formatter(row.q1), q10: formatter(row.q10), spread: formatter(row.spread), pairedDates: String(row.pairedDates) }))} columns={[["period", "阶段"], ["q1", "共同日期最小组平均收益"], ["q10", "共同日期最大组平均收益"], ["spread", "最小组减最大组"], ["pairedDates", "共同分组日期数"]]}/>}
+    </Panel>
+  </>;
 }
 
-export function useJson<T>(path: string) {
-  const [data, setData] = useState<T | null>(null);
-  const [error, setError] = useState("");
-  useEffect(() => { let active = true; fetch(`${DATA}/${path}`).then((response) => { if (!response.ok) throw new Error(`${path}（${response.status}）`); return response.json() as Promise<T>; }).then((value) => { if (active) setData(value); }).catch((reason: Error) => { if (active) setError(reason.message); }); return () => { active = false; }; }, [path]);
-  return { data, error };
+function useResource<T>(path: string | null, parse: (text: string) => T) {
+  const resource = useMemo(() => createResource(path === null ? null : `${DATA}/${path}`, parse), [path, parse]);
+  const current = useRef(resource);
+  // Update only after commit, so a discarded render cannot redirect retries.
+  useEffect(() => { current.current = resource; resource.load(); return resource.cancel; }, [resource]);
+  const retry = useCallback(() => current.current.load(), []);
+  const snapshot = useSyncExternalStore(resource.subscribe, resource.getSnapshot, resource.getServerSnapshot);
+  return { ...snapshot, retry };
 }
 
-export function useCsv(path: string) {
-  const [data, setData] = useState<Row[] | null>(null);
-  const [error, setError] = useState("");
-  useEffect(() => { let active = true; fetch(`${DATA}/${path}`).then((response) => { if (!response.ok) throw new Error(`${path}（${response.status}）`); return response.text(); }).then((text) => { if (active) setData(parseCsv(text)); }).catch((reason: Error) => { if (active) setError(reason.message); }); return () => { active = false; }; }, [path]);
-  return { data, error };
+export function useJson<T>(path: string | null) { return useResource<T>(path, parseJsonResource<T>); }
+export function useCsv(path: string | null) { return useResource<Row[]>(path, parseCsvResource); }
+
+export function ResourceState({ error = "", loading = false, empty = false, retry, label = "研究数据" }: { error?: string; loading?: boolean; empty?: boolean; retry?: () => void; label?: string }) {
+  if (error) return <div role="alert"><p>{label}加载失败：{error}</p>{retry && <button type="button" aria-label={`重试加载${label}`} onClick={retry}>重试</button>}</div>;
+  if (loading) return <p className="loading" role="status">正在加载{label}……</p>;
+  if (empty) return <p role="status">暂无{label}可展示。</p>;
+  return null;
 }
 
 export function Stat({ label, value, note, accent = false }: { label: string; value: string; note: string; accent?: boolean }) { return <article className={`stat ${accent ? "accent" : ""}`}><span>{label}</span><strong>{value}</strong><small>{note}</small></article>; }
@@ -84,8 +85,8 @@ export function Panel({ title, tag, children }: { title: string; tag?: string; c
 export function SectionHeading({ title, text }: { title: string; text: string }) { return <div className="section-heading"><h3>{title}</h3><p>{text}</p></div>; }
 export function ResearchCard({ title, text }: { title: string; text: string }) { return <article className="research-card"><span className="section-kicker">阅读提示</span><h3>{title}</h3><p>{text}</p></article>; }
 
-export function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/>; }
-export function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <ResearchLineChart series={series} labels={labels}/>; }
+export function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <Suspense fallback={<ResourceState loading label="图表"/>}><ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/></Suspense>; }
+export function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <Suspense fallback={<ResourceState loading label="图表"/>}><ResearchLineChart series={series} labels={labels}/></Suspense>; }
 
 export function ControlBar({ children }: { children: React.ReactNode }) { return <div className="control-bar">{children}</div>; }
 export function Choice({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) { return <button className={`choice ${active ? "active" : ""}`} onClick={onClick}>{children}</button>; }
@@ -100,18 +101,47 @@ export function formatTurnover(value: number) {
 }
 
 export function ThemeHeading({ kicker, title, text, asof }: { kicker: string; title: string; text: string; asof: string }) { return <header className="theme-heading"><div><span className="section-kicker">{kicker}</span><h2>{title}</h2><p>{text}</p></div><span className="asof">{asof}</span></header>; }
-export function SimpleTable({ rows, columns, percentColumns = [] }: { rows: Row[]; columns: string[][]; percentColumns?: string[] }) { return <div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key}>{label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{percentColumns.includes(key) ? pct(asNumber(row[key])) : row[key] === "" || row[key] == null ? "未提供" : displayValue(key, row[key])}</td>)}</tr>)}</tbody></table></div>; }
+function tableValue(key: string, value: string | undefined, percent: boolean) {
+  if (value == null || !String(value).trim()) return "未提供";
+  if (percent) return pct(finiteNumber(value));
+  if (/(?:^|_)(?:count|observations|days|years)$/.test(key)) {
+    const numeric = /^[+-]?\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(value.trim()) ? value.replace(/,/g, "") : value;
+    return formatNumber(finiteNumber(numeric));
+  }
+  return displayValue(key, value);
+}
+export function SimpleTable({ rows, columns, percentColumns = [] }: { rows: Row[]; columns: string[][]; percentColumns?: string[] }) { return <div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key} scope="col">{label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{tableValue(key, row[key], percentColumns.includes(key))}</td>)}</tr>)}</tbody></table></div>; }
 export function SortableTable({ rows, columns, percentColumns = [], searchPlaceholder = "搜索表格内容" }: { rows: Row[]; columns: string[][]; percentColumns?: string[]; searchPlaceholder?: string }) {
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState(columns[0]?.[0] ?? "");
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
-  const visible = rows.filter((row) => Object.values(row).some((value) => value.toLowerCase().includes(query.toLowerCase()))).sort((left, right) => {
-    const a = asNumber(left[sortKey]);
-    const b = asNumber(right[sortKey]);
-    const comparison = Number.isFinite(a) && Number.isFinite(b) ? a - b : String(left[sortKey] ?? "").localeCompare(String(right[sortKey] ?? ""));
+  const [page, setPage] = useState(0);
+  const rangeId = useId();
+  useEffect(() => { setPage(0); }, [rows]);
+  const visible = useMemo(() => rows.filter((row) => Object.values(row).some((value) => String(value ?? "").toLowerCase().includes(query.toLowerCase()))).sort((left, right) => {
+    const a = finiteNumber(left[sortKey]);
+    const b = finiteNumber(right[sortKey]);
+    const comparison = Number.isFinite(a) && Number.isFinite(b) ? a - b : String(left[sortKey] ?? "").localeCompare(String(right[sortKey] ?? ""), "zh-CN", { numeric: true });
     return direction === "desc" ? -comparison : comparison;
-  });
-  const choose = (key: string) => { if (key === sortKey) setDirection(direction === "desc" ? "asc" : "desc"); else { setSortKey(key); setDirection("desc"); } };
-  return <><div className="table-controls"><input aria-label={searchPlaceholder} placeholder={searchPlaceholder} value={query} onChange={(event) => setQuery(event.target.value)}/><span>{visible.length} / {rows.length} 条</span></div><div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key}><button className="table-sort" onClick={() => choose(key)}>{label} {sortKey === key ? (direction === "desc" ? "↓" : "↑") : "↕"}</button></th>)}</tr></thead><tbody>{visible.slice(0, 50).map((row, index) => <tr key={`${index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{percentColumns.includes(key) ? pct(asNumber(row[key])) : row[key] === "" || row[key] == null ? "未提供" : displayValue(key, row[key])}</td>)}</tr>)}</tbody></table></div></>;
+  }), [rows, query, sortKey, direction]);
+  const pages = Math.max(1, Math.ceil(visible.length / 50));
+  const currentPage = Math.min(page, pages - 1);
+  const start = currentPage * 50;
+  const end = Math.min(start + 50, visible.length);
+  const choose = (key: string) => { setPage(0); if (key === sortKey) setDirection(direction === "desc" ? "asc" : "desc"); else { setSortKey(key); setDirection("desc"); } };
+  return <>
+    <div className="table-controls">
+      <input aria-label={searchPlaceholder} placeholder={searchPlaceholder} value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }}/>
+      <span id={rangeId} role="status" aria-live="polite" aria-atomic="true">显示 {visible.length ? start + 1 : 0}–{end} / {visible.length} 条（共 {rows.length} 条）</span>
+    </div>
+    <div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key} scope="col" aria-sort={sortKey === key ? (direction === "desc" ? "descending" : "ascending") : "none"}><button type="button" className="table-sort" onClick={() => choose(key)}>{label} {sortKey === key ? (direction === "desc" ? "↓" : "↑") : "↕"}</button></th>)}</tr></thead><tbody>{visible.slice(start, end).map((row, index) => <tr key={`${start + index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{tableValue(key, row[key], percentColumns.includes(key))}</td>)}</tr>)}</tbody></table></div>
+    {pages > 1 && <nav className="table-controls" aria-label="表格分页" aria-describedby={rangeId}>
+      <button type="button" aria-label="第一页" disabled={currentPage === 0} onClick={() => setPage(0)}>第一页</button>
+      <button type="button" aria-label="上一页" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>上一页</button>
+      <span>第 {currentPage + 1} / {pages} 页，每页 50 条</span>
+      <button type="button" aria-label="下一页" disabled={currentPage === pages - 1} onClick={() => setPage(currentPage + 1)}>下一页</button>
+      <button type="button" aria-label="最后一页" disabled={currentPage === pages - 1} onClick={() => setPage(pages - 1)}>最后一页</button>
+    </nav>}
+  </>;
 }
 export function Loading() { return <p className="loading">正在加载研究数据……</p>; }

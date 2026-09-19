@@ -69,7 +69,7 @@ for (const width of [1280, 390]) {
   test(`Barra explorer switches all 19 factors at width ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("research/style-factors-18y/");
-    await page.locator("astro-island[component-export='StylePage']").scrollIntoViewIfNeeded();
+    await expect(page.locator("#barra-annual canvas")).toBeVisible();
     const buttons = page.locator("button[data-factor]");
     await expect(buttons).toHaveCount(19);
     const detail = page.getByRole("region", { name: "所选因子详情" });

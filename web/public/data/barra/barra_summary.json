@@ -1,27 +1,41 @@
 {
   "analysis": "size factor cross-sectional forward-return monotonicity",
   "source": {
-    "source": "Tushare A-share daily-clean",
+    "source": "Tushare A-share daily-clean DuckDB scan",
     "as_of": "2026-09-07",
     "currency": "CNY",
-    "universe_filter": "positive amount/market cap; non-ST; non-suspended",
+    "universe_filter": "all dated quotes retained for holding marks; formation eligibility: finite positive amount/market cap; known non-ST/non-suspended",
     "fx_method": "native currency",
     "feature_lag": 1,
     "coverage_start": "2015-01-05",
     "coverage_end": "2026-09-07",
     "calendar_mode": "observed_daily",
-    "quality_status": "verified"
+    "quality_status": "derived"
   },
   "size_monotonicity": {
+    "status": "available",
+    "monotonicity_score": 0.6666666666666666,
+    "tail_spread": 0.0006707963983613142,
+    "observations": 631,
+    "formation_dates": 2838,
+    "excluded_formation_dates": 2207,
     "quantiles": 10,
+    "direction": "descending",
+    "warnings": [
+      "missing_return_coverage",
+      "incomplete_quantile_dates"
+    ],
     "holding_period": 1,
-    "monotonicity_score": 0.8888888888888888,
-    "tail_spread": 0.0019937210463092953,
+    "tail_spread_definition": "small_minus_large",
     "coverage_start": "2015-01-05",
     "coverage_end": "2026-09-04",
-    "formation_dates": 2838,
-    "eligible_rows": 10842926,
-    "excluded_rows": 16078
+    "eligible_rows": 10853685,
+    "excluded_rows": 849995,
+    "observed_return_count": 10843141,
+    "missing_return_count": 10544,
+    "return_coverage": 0.9990285327057123,
+    "unavailable_target_rows": 5319,
+    "unavailable_target_dates": 1
   },
   "legacy_barra_result": {
     "source_root": "style-factors/weekly-20260904",
@@ -65,5 +79,21 @@
       "max_drawdown": -98.92,
       "hit_rate": 40.6
     }
-  }
+  },
+  "schema_version": "barra-size.v2",
+  "revision": {
+    "input_vintage": "2026-09-18",
+    "as_of": "2026-09-07",
+    "algorithm_revision": "470dfa9de7e1a825a06e47f1728e19239041709e",
+    "input_manifest_sha256": "3e481c76205ad425e5ae7e93baf480fd9eaf8e22cc6e52c28c8334d248e3ab66",
+    "generated_at": "2026-09-19",
+    "scope": "size diagnostic only; historical 19-factor series unchanged",
+    "comparison_limit": "Input vintages and missing-return policies differ. Changes are not a pure algorithm-attribution experiment."
+  },
+  "limitations": [
+    "Complete-case diagnostics condition on availability; exclusion counts must be read with results.",
+    "Not a reconstruction of the original September 7 input vintage.",
+    "No delisting terminal values, transaction costs or tradability validation are imputed.",
+    "Calendar consists of dates present in supplied data; whole-market missing dates are not independently recovered."
+  ]
 }
