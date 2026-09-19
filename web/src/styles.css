@@ -284,6 +284,12 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
 .research-workbench .panel-title h3 { font: 650 19px/1.45 var(--font-body); }
 .research-workbench .tag { font: 11px/1.5 var(--font-body); border-radius: 4px; color: var(--muted); border-color: var(--rule); white-space: nowrap; }
 .research-workbench .panel-note { font-size: 13px; line-height: 1.8; }
+.factor-diagnostic-workspace { margin: 20px 0 28px; border: 1px solid var(--rule); border-radius: 12px; background: var(--surface); overflow: hidden; }
+.workspace-context { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 14px; padding: 15px 26px; border-bottom: 1px solid var(--rule-soft); background: var(--accent-soft); }
+.workspace-context strong { color: var(--ink); font-size: 16px; }
+.workspace-context > span:last-child { color: var(--muted); font-size: 12px; }
+.research-workbench .factor-diagnostic-workspace > #barra-annual .panel, .research-workbench .factor-diagnostic-workspace > #barra-factor-detail .panel { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+.research-workbench .factor-diagnostic-workspace > #barra-annual .panel { border-bottom: 1px solid var(--rule-soft); }
 .explorer-layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 28px; }
 .factor-navigator { padding-right: 24px; border-right: 1px solid var(--rule-soft); }
 .factor-filter { display: grid; gap: 12px; }

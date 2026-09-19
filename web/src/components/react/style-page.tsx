@@ -596,7 +596,13 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     <nav className="section-nav" aria-label="本页目录">
       <a href="#barra-annual">因子探索</a><a href="#barra-factor-detail">定义与计算</a><a href="#barra-overview">全部表现</a><a href="#barra-correlations">相关性</a>
     </nav>
-    <section id="barra-annual" aria-label="年度因子探索">
+    <section className="factor-diagnostic-workspace" aria-label="当前因子诊断工作区">
+      <div className="workspace-context">
+        <span className="section-kicker">当前因子诊断</span>
+        <strong>{FACTOR_NAMES[selectedFactor]}</strong>
+        <span>切换因子后，历史收益、阶段指标、定义和计算方法同步更新</span>
+      </div>
+      <section id="barra-annual" aria-label="年度因子探索">
       <Panel title="逐年合成收益与阶段表现" tag="历史序列 · 公式待核验">
         <div className="explorer-layout">
           <aside className="factor-navigator" aria-label="因子选择">
@@ -626,8 +632,8 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           </div>
         </div>
       </Panel>
-    </section>
-    <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
+      </section>
+      <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
       <Panel title="因子定义、特征与计算方法" tag="随所选因子联动">
         <div className="factor-detail-grid">
           <div>
@@ -650,7 +656,8 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
         </div>
         {selectedFactor === "quality" && <QualityDiagnostic />}
       </Panel>
-    </div>
+      </div>
+    </section>
     <section id="barra-overview">
       <Panel title="19 个因子表现总览" tag="可搜索 · 可排序">
         <p className="panel-note">完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。</p>
