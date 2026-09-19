@@ -199,10 +199,10 @@ const FACTOR_NAMES: Record<string, string> = {
   growth: "成长",
   institution_holding: "机构持仓",
   leverage: "低杠杆",
-  liquidity: "低换手（当前快照）",
-  liquidity_flow: "大单资金流",
-  lowvol: "总波动率（21日）",
-  momentum: "短期动量（21日）",
+  liquidity: "流动性（历史）",
+  liquidity_flow: "交易流（历史）",
+  lowvol: "低波动（历史）",
+  momentum: "动量（历史）",
   ps_value: "市销率价值",
   quality: "复合质量",
   size: "市值",
@@ -325,15 +325,148 @@ const FACTOR_DEFINITIONS: Row[] = [
   },
 ];
 
-const CORE_FACTOR_STATUS: Record<string, string> = {
-  size: "当前核心字典：log_market_cap；总市值对数，小市值方向。",
-  value: "当前核心字典拆分为 book_to_price 和 earnings_yield；历史 value 是合成快照。",
-  momentum: "当前核心字典：short_term_momentum_21d；历史 momentum 口径未完全确认。",
-  quality: "当前核心字典：profitability、leverage、earnings_quality、earnings_variability 等权复合。",
-  earnings_yield: "当前核心字典：正 PE 的 1 / PE_TTM；历史口径未完全确认。",
-  lowvol: "当前核心字典：total_volatility_21d；总波动率，尚未市场/行业中性化。",
-  leverage: "当前核心字典：debt_to_assets；历史口径未完全确认。",
-  liquidity: "当前核心字典拆分为 turnover_1d/20d/60d 与 amihud_20d。",
+type FactorDetail = {
+  family: string;
+  feature: string;
+  calculation: string;
+  current: string;
+  verification: string;
+};
+
+const FACTOR_DETAILS: Record<string, FactorDetail> = {
+  size: {
+    family: "规模",
+    feature: "历史命名对应股票市值规模。当前核心 descriptor 使用 daily_basic.total_mv。",
+    calculation: "历史收益序列的原始 descriptor 没有随来源包提交。当前可重算版本对总市值取自然对数形成 log_market_cap，再做截面处理。",
+    current: "log_market_cap。当前核心字典以小市值为高分方向，因此与历史页面的大市值减小市值收益方向相反。",
+    verification: "当前代理定义可验证；历史收益序列的原始公式未完整保留。",
+  },
+  value: {
+    family: "价值",
+    feature: "历史 value 是价值风格合成快照，具体由哪些估值指标组成没有完整留档。",
+    calculation: "历史原始 descriptor 和权重未确认。当前核心字典把价值拆成 book_to_price（1 / PB）与 earnings_yield（1 / PE_TTM，仅正 PE）两个独立因子。",
+    current: "当前研究分别保留账面市值比与盈利收益率，不再把历史 value 当成一个可直接重算的单指标。",
+    verification: "历史组成未确认；当前两个价值 descriptor 可验证。",
+  },
+  momentum: {
+    family: "动量",
+    feature: "历史命名表示价格动量风格，但形成窗口与是否跳过近期收益没有完整保留。",
+    calculation: "历史公式未确认。当前核心代理 short_term_momentum_21d 使用形成日前 21 个交易日收益，并排除形成日价格。",
+    current: "short_term_momentum_21d，更接近短期价格行为代理，不能直接视为历史 momentum 的同版本实现。",
+    verification: "当前 21 日代理可验证；历史窗口与处理未确认。",
+  },
+  quality: {
+    family: "质量",
+    feature: "历史质量因子为复合风格。当前核心版本由盈利能力、低杠杆、盈利质量、盈利稳定性四个子因子组成。",
+    calculation: "历史复合权重未完整保留。当前版本先分别缩尾、统一方向并标准化四个子因子，再对当期可用项等权平均。",
+    current: "profitability + leverage + earnings_quality + earnings_variability。ROA 只用于敏感性检查，不进入主复合因子。",
+    verification: "当前四子因子版本可验证；18 年历史收益尚未用该版本重跑。",
+  },
+  earnings_yield: {
+    family: "价值",
+    feature: "历史命名表示盈利收益率风格，通常与市盈率倒数相关。",
+    calculation: "历史字段与缺失规则未确认。当前核心版本只对正 PE_TTM 计算 1 / PE_TTM，亏损公司不生成该分数。",
+    current: "earnings_yield = 1 / PE_TTM（PE_TTM > 0）。",
+    verification: "当前公式可验证；不能自动认定与历史版本完全一致。",
+  },
+  lowvol: {
+    family: "波动率",
+    feature: "历史命名表示低历史波动股票相对高波动股票的风格收益。",
+    calculation: "历史窗口、基准调整和中性化方式未确认。当前核心代理 total_volatility_21d 使用最近 21 个收益观察值的标准差。",
+    current: "total_volatility_21d，当前仅为总收益波动率，尚未剥离市场和行业波动。",
+    verification: "当前 21 日代理可验证；历史窗口未确认。",
+  },
+  growth: {
+    family: "成长",
+    feature: "历史命名表示公司成长风格，可能来自盈利、收入或资产扩张类指标。",
+    calculation: "来源包没有保留历史组成字段、权重与公式，因此不把净利润同比、营收同比等常见做法写成既定事实。",
+    current: "当前核心 descriptor 字典没有与历史 growth 一一对应的可重算定义。",
+    verification: "仅历史收益序列可验证；原始特征与公式未确认。",
+  },
+  leverage: {
+    family: "质量",
+    feature: "历史命名表示杠杆水平风格。",
+    calculation: "历史具体财务字段未确认。当前核心版本使用 fundamental.debt_to_assets，经缩尾、标准化后统一为低杠杆高分方向。",
+    current: "debt_to_assets 的反向标准化得分，同时也是当前 Quality 的四个子因子之一。",
+    verification: "当前定义可验证；历史字段与处理未确认。",
+  },
+  beta: {
+    family: "市场敏感度",
+    feature: "历史命名表示股票收益对市场收益的敏感度。",
+    calculation: "历史基准指数、估计窗口、最少观测数及是否使用加权回归均未随来源包保留。",
+    current: "当前核心 descriptor 字典没有与这条历史 beta 收益序列一一对应的重算定义。",
+    verification: "仅历史收益序列可验证；不能把 252 日窗口写成已证实历史公式。",
+  },
+  liquidity: {
+    family: "流动性",
+    feature: "历史 liquidity 可能反映换手、交易摩擦或价格冲击，但原始组成未保留。",
+    calculation: "当前核心字典拆成 turnover_1d、turnover_20d、turnover_60d 与 amihud_20d，分别描述交易活跃度和单位成交额价格冲击。",
+    current: "换手率使用形成日值或滞后均值；Amihud 为 abs(return) / amount 的 20 日滞后均值。",
+    verification: "当前四个流动性 descriptor 可验证；历史 liquidity 的具体合成方式未确认。",
+  },
+  liquidity_flow: {
+    family: "流动性 / 交易流",
+    feature: "历史命名指向流动性资金流或交易流变化。",
+    calculation: "原始字段、是否使用大单净买入、归一化方式与形成窗口均未随来源包保留。",
+    current: "当前核心 descriptor 字典没有与该历史因子一一对应的重算定义。",
+    verification: "只有约 0.6 年历史收益摘要；原始公式未确认。",
+  },
+  chip_concentration: {
+    family: "持仓 / 筹码",
+    feature: "历史命名表示股东或筹码集中程度。",
+    calculation: "具体持股来源、是否仅统计前十大流通股东、集中度公式及披露滞后均未完整留档。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；底层持仓公式未确认。",
+  },
+  institution_holding: {
+    family: "持仓",
+    feature: "历史命名表示机构投资者持仓水平。",
+    calculation: "机构范围、持股字段、汇总方法和披露可见日未完整保留。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；机构口径和 PIT 处理未确认。",
+  },
+  fund_breadth: {
+    family: "基金持仓",
+    feature: "历史命名表示持有某股票的基金覆盖广度。",
+    calculation: "基金集合、是否限定前十大重仓、覆盖计数规则与披露可见日未完整保留。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；覆盖定义未确认。",
+  },
+  fund_breadth_change: {
+    family: "基金持仓",
+    feature: "历史命名表示基金持仓覆盖面的变化。",
+    calculation: "基金集合、广度定义、变化窗口与披露可见日未完整保留。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；变化公式未确认。",
+  },
+  fund_ownership: {
+    family: "基金持仓",
+    feature: "历史命名表示公募基金对股票的持股水平。",
+    calculation: "基金集合、持股比例分母、是否限定前十大重仓以及披露可见日未完整保留。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；持股比例公式未确认。",
+  },
+  fund_ownership_change: {
+    family: "基金持仓",
+    feature: "历史命名表示公募基金持股水平的变化。",
+    calculation: "基金集合、持股比例分母、变化窗口与披露可见日未完整保留。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；变化公式未确认。",
+  },
+  dividend_yield: {
+    family: "价值 / 收益",
+    feature: "历史命名表示股息收益率暴露。",
+    calculation: "股息字段、滚动窗口、复权和形成日处理未随来源包保留，因此不把过去 12 个月写成已验证历史公式。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；底层股息口径未确认。",
+  },
+  ps_value: {
+    family: "价值",
+    feature: "名称表明该历史风格与 Price-to-Sales 估值相关。",
+    calculation: "历史销售字段、是否取 1 / PS、负值与缺失处理未完整保留。",
+    current: "当前核心 descriptor 字典没有对应的可重算定义。",
+    verification: "历史收益摘要可验证；具体公式未确认。",
+  },
 };
 
 export function BarraPage({ includeNarrative = true }: { includeNarrative?: boolean }) {
@@ -354,6 +487,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     "barra/quality_component_summary.csv",
   );
   const [selectedFactor, setSelectedFactor] = useState("size");
+  const [showSizeDiagnostic, setShowSizeDiagnostic] = useState(false);
   if (
     !summary ||
     !quantiles ||
@@ -434,6 +568,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const selectedFactorDefinition = FACTOR_DEFINITIONS.find(
     (definition) => definition.factor === selectedFactor,
   );
+  const selectedFactorDetail = FACTOR_DETAILS[selectedFactor];
   return (
     <>
       {includeNarrative && <>
@@ -496,13 +631,17 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
         <ControlBar>
           <span className="control-label">因子</span>
           {factors.map((factor) => (
-            <Choice
+            <button
               key={factor.factor}
-              active={selectedFactor === factor.factor}
+              type="button"
+              className={`choice ${selectedFactor === factor.factor ? "active" : ""}`}
+              aria-pressed={selectedFactor === factor.factor}
+              aria-controls="barra-factor-detail"
+              data-factor={factor.factor}
               onClick={() => setSelectedFactor(factor.factor)}
             >
               {FACTOR_NAMES[factor.factor] ?? factor.factor}
-            </Choice>
+            </button>
           ))}
         </ControlBar>
         <BarChart
@@ -518,32 +657,51 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           ，数值沿用历史研究结果。年度收益仅按该年已有数据计算，数据不足一年的按实际区间展示。
         </p>
       </Panel>
-      <Panel title="因子详情与计算方法" tag="点击上方因子查看">
+      <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
+      <Panel title="因子定义、特征与计算方法" tag="随上方因子联动">
         <div className="factor-detail-grid">
           <div>
-            <span className="section-kicker">当前选择</span>
-            <h4>{selectedFactorDefinition?.name ?? selectedFactor}</h4>
+            <span className="section-kicker">{selectedFactorDetail?.family ?? "历史因子"} · {selectedFactor}</span>
+            <h4>{FACTOR_NAMES[selectedFactor] ?? selectedFactor}</h4>
             <dl className="factor-detail-list">
-              <div><dt>因子定义与方向</dt><dd>{selectedFactorDefinition?.direction ?? "历史方向未提供"}</dd></div>
-              <div><dt>原始特征与计算方法</dt><dd>{selectedFactorDefinition?.method ?? "历史计算口径未完整保留"}</dd></div>
-              <div><dt>当前核心因子字典</dt><dd>{CORE_FACTOR_STATUS[selectedFactor] ?? "历史快照因子；当前核心字典没有完全对应的可重算定义。"}</dd></div>
+              <div><dt>历史页面记录的多空方向</dt><dd>{selectedFactorDefinition?.direction ?? "历史方向未提供"}。此处沿用旧页面标签，原始得分方向仍待源代码核验。</dd></div>
+              <div><dt>包含什么特征</dt><dd>{selectedFactorDetail?.feature ?? "历史原始特征未完整保留"}</dd></div>
+              <div><dt>怎么计算</dt><dd>{selectedFactorDetail?.calculation ?? "历史计算口径未完整保留"}</dd></div>
+              <div><dt>当前核心字典对应关系</dt><dd>{selectedFactorDetail?.current ?? "当前核心字典没有完全对应的可重算定义。"}</dd></div>
             </dl>
           </div>
           <div className="factor-detail-note">
-            <span className="section-kicker">历史边界</span>
-            <p>上方收益来自历史分组与合成序列。因子名称相同不代表历史快照和当前核心 descriptor 是同一版本；缺少原始 descriptor 或点时字段时，不把推断公式当成已验证口径。</p>
+            <span className="section-kicker">可验证程度</span>
+            <p>{selectedFactorDetail?.verification ?? "历史 provenance 不完整。"}</p>
+            <p>上方收益来自历史分组与合成序列。名称相同不代表历史快照和当前核心 descriptor 是同一版本。缺少原始字段或计算脚本时，不用常见行业公式替代历史事实。</p>
           </div>
         </div>
         {selectedFactor === "quality" && <>
-          <h4>Quality 子因子快速诊断</h4>
-          <p className="panel-note">基于当前可用 PIT 财务资产，主要覆盖 2020 年以后、前 800 只股票；用于解释复合质量组成，不替代 18 年历史结果。</p>
+          <h4>Quality 子因子诊断</h4>
+          <p className="panel-note">当前 Quality 由盈利能力、低杠杆、盈利质量、盈利稳定性四项等权复合。下表把四项拆开看，基于当前可用 PIT 财务资产，主要覆盖 2020 年以后、前 800 只股票，用于诊断复合因子的内部来源，不替代 18 年历史结果。</p>
           <SortableTable
-            rows={qualityComponents.filter((row) => row.factor.startsWith("quality_"))}
-            columns={[["factor", "子因子"], ["days", "交易日"], ["years", "样本年数"], ["geometric_annual_ret", "几何年化"], ["annual_vol", "年化波动率"], ["sharpe", "夏普比率"], ["max_drawdown", "最大回撤"], ["hit_rate", "正收益比例"]]}
+            rows={qualityComponents.filter((row) => row.factor.startsWith("quality_")).map((row) => ({
+              ...row,
+              ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map((key) => [key, row[key] === "" || row[key] == null ? "" : String(Number(row[key]) / 100)])),
+              factor: ({
+                quality_profitability: "盈利能力 · ROE",
+                quality_leverage: "低杠杆 · Debt / Assets",
+                quality_earnings_quality: "盈利质量 · OCF / Net Profit",
+                quality_earnings_variability: "盈利稳定性 · 8 季度净利润同比波动",
+              } as Record<string, string>)[row.factor] ?? row.factor,
+            }))}
+            columns={[["factor", "子因子与主要特征"], ["days", "交易日"], ["years", "样本年数"], ["geometric_annual_ret", "几何年化"], ["annual_vol", "年化波动率"], ["sharpe", "夏普比率"], ["max_drawdown", "最大回撤"], ["hit_rate", "正收益比例"]]}
             percentColumns={["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"]}
           />
+          <div className="quality-method-grid">
+            <div><strong>盈利能力</strong><span>ROE，截面缩尾后标准化。ROA 只作敏感性版本。</span></div>
+            <div><strong>低杠杆</strong><span>Debt / Assets，缩尾与标准化后反向计分。</span></div>
+            <div><strong>盈利质量</strong><span>OCF / Net Profit，缩尾后标准化，仍需继续核验 PIT 可见时间。</span></div>
+            <div><strong>盈利稳定性</strong><span>连续 8 季度净利润同比波动率取负值，波动越小得分越高。</span></div>
+          </div>
         </>}
       </Panel>
+      </div>
       <Panel title="19 个因子表现总览" tag="历史合成序列（账户收益未验证）">
         <SortableTable
           rows={factorRows}
@@ -568,7 +726,10 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           ]}
         />
       </Panel>
-      <SizeDiagnosticPanel rows={quantileRows} dailyCurve={quantileCurve} />
+      <details className="panel" onToggle={(event) => setShowSizeDiagnostic(event.currentTarget.open)}>
+        <summary>补充研究：市值十分组与稳定性诊断</summary>
+        {showSizeDiagnostic && <SizeDiagnosticPanel rows={quantileRows} dailyCurve={quantileCurve} />}
+      </details>
       {includeNarrative && <div className="fine-print">
         <span className="section-kicker">研究限制</span>
         <p>

@@ -81,9 +81,11 @@ test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
 
 test("Barra 图表选择因子后展示对应详情", () => {
   assert.match(source, /selectedFactorDefinition/);
-  assert.match(source, /因子详情与计算方法/);
+  assert.match(source, /因子定义、特征与计算方法/);
+  assert.match(source, /包含什么特征/);
+  assert.match(source, /怎么计算/);
   assert.match(source, /qualityComponents\.filter/);
-  assert.match(source, /当前核心因子字典/);
+  assert.match(source, /当前核心字典对应关系/);
 });
 
 test("研究页面使用读者导向的入口和文案", () => {
