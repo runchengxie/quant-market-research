@@ -1,0 +1,15 @@
+---
+import { factorHref } from '../lib/factor-links';
+interface Props { target: string; label: string; base: string; hash?: string }
+const { target, label, base, hash } = Astro.props;
+const href = factorHref(target, null, base, hash);
+---
+<a class="button-link factor-context-link" href={href} data-factor-context-target={href}>{label}</a>
+<script>
+  document.querySelectorAll<HTMLAnchorElement>('[data-factor-context-target]').forEach((link) => {
+    const url = new URL(link.href, window.location.href);
+    const factor = new URL(window.location.href).searchParams.get('factor');
+    if (factor && /^[a-z_]+$/.test(factor)) url.searchParams.set('factor', factor);
+    link.href = url.toString();
+  });
+</script>

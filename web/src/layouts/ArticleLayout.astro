@@ -1,12 +1,14 @@
 ---
 import SiteLayout from './SiteLayout.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-const { meta, html, headings = [] } = Astro.props as { meta: { title: string; summary: string }; html: string; headings: Array<{ depth: number; slug: string; text: string }> };
+import FactorContextLink from '../components/FactorContextLink.astro';
+const { meta, html, headings = [] } = Astro.props as { meta: { id: string; title: string; summary: string }; html: string; headings: Array<{ depth: number; slug: string; text: string }> };
 ---
 <SiteLayout title={meta.title} description={meta.summary} section="docs">
   <Breadcrumbs items={[{ label: '方法与字典', href: '/quant-market-research/docs/' }, { label: meta.title }]} />
   <article class="article-body public-article">
     <div class="article-content" set:html={html}></div>
+    {meta.id === 'barra-factor-dictionary' && <p><FactorContextLink target="/research/style-factors-18y/" label="回到因子图表" base="/quant-market-research" /></p>}
     {headings.length > 2 && <aside class="article-toc" aria-label="本文目录"><strong>本文目录</strong><ol>{headings.filter((heading) => heading.depth > 1).map((heading) => <li><a href={`#${heading.slug}`}>{heading.text}</a></li>)}</ol></aside>}
   </article>
 </SiteLayout>
