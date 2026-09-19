@@ -3,8 +3,9 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-import numpy as np
 import pandas as pd
+
+from .style_portfolios import analyze_tail_monotonicity, build_quantile_returns
 
 
 def load_barra_summary(path: Path) -> dict[str, object]:
@@ -56,70 +57,42 @@ def summarize_barra_factor_file(path: Path) -> dict[str, object]:
 def analyze_size_monotonicity(
     panel: pd.DataFrame, quantiles: int = 10, holding_period: int = 1
 ) -> tuple[pd.DataFrame, dict[str, object]]:
-    if quantiles < 2:
-        raise ValueError("quantiles must be at least 2")
-    if holding_period < 1:
-        raise ValueError("holding_period must be positive")
+    """Size evidence with positive caps and shared formation/coverage semantics.
+
+    Monotonicity expects returns to decrease as size grows. tail_spread retains
+    the historical small-minus-large sign. Unavailable metrics are None.
+    """
     required = {"symbol", "date", "adj_close", "market_cap"}
     missing = required.difference(panel.columns)
     if missing:
         raise ValueError("missing panel columns: " + ",".join(sorted(missing)))
 
     frame = panel.copy()
-    frame["date"] = pd.to_datetime(frame["date"], errors="coerce")
-    frame["adj_close"] = pd.to_numeric(frame["adj_close"], errors="coerce")
-    frame["market_cap"] = pd.to_numeric(frame["market_cap"], errors="coerce")
-    for column in ("is_st", "is_suspended", "is_tradable"):
-        if column not in frame:
-            frame[column] = False if column != "is_tradable" else True
-    dates = sorted(frame["date"].dropna().unique())
-    future_dates = {date: dates[index + holding_period] for index, date in enumerate(dates[:-holding_period])}
-    frame = frame.sort_values(["symbol", "date"], kind="stable")
-    frame["future_date"] = frame.groupby("symbol")["date"].shift(-holding_period)
-    frame["future_adj_close"] = frame.groupby("symbol")["adj_close"].shift(-holding_period)
-    frame["expected_future_date"] = frame["date"].map(future_dates)
-    eligible = frame.loc[
-        frame["date"].notna()
-        & frame["market_cap"].gt(0)
-        & frame["adj_close"].gt(0)
-        & frame["is_tradable"].astype(bool)
-        & ~frame["is_st"].astype(bool)
-        & ~frame["is_suspended"].astype(bool)
-        & frame["future_date"].eq(frame["expected_future_date"])
-        & frame["future_adj_close"].gt(0)
-    ].copy()
-    eligible["forward_return"] = eligible["future_adj_close"] / eligible["adj_close"] - 1
-    eligible["bucket"] = (
-        eligible.groupby("date")["market_cap"]
-        .rank(method="first", ascending=True, pct=True)
-        .mul(quantiles)
-        .apply(lambda value: min(quantiles, max(1, int(np.ceil(value)))))
-    )
-    result = (
-        eligible.groupby(["date", "bucket"], as_index=False)
-        .agg(
-            mean_forward_return=("forward_return", "mean"),
-            median_forward_return=("forward_return", "median"),
-            count=("forward_return", "size"),
-        )
-        .rename(columns={"date": "formation_date"})
-    )
-    result["bucket"] = result["bucket"].astype(int)
-    result["bucket_label"] = result["bucket"].map(lambda bucket: f"Q{bucket}")
-    curve = result.groupby("bucket")["mean_forward_return"].mean().sort_index()
-    adjacent = curve.diff().dropna()
-    score = float((adjacent <= 0).mean()) if not adjacent.empty else 0.0
-    summary = {
-        "quantiles": quantiles,
-        "holding_period": holding_period,
-        "monotonicity_score": score,
-        "tail_spread": float(curve.iloc[0] - curve.iloc[-1]) if len(curve) >= 2 else 0.0,
+    caps = pd.to_numeric(frame["market_cap"], errors="coerce")
+    frame["market_cap"] = caps.where(caps.gt(0))
+    result = build_quantile_returns(frame, "market_cap", quantiles, holding_period)
+    summary = analyze_tail_monotonicity(result, direction="descending")
+    # Generic diagnostics use first-minus-last in the requested bucket order;
+    # Barra has always reported small-minus-large, regardless of expected slope.
+    if summary["tail_spread"] is not None:
+        summary["tail_spread"] = -summary["tail_spread"]
+    eligible_rows = int(result["count"].sum())
+    observed_rows = int(result["observed_return_count"].sum())
+    summary.update({
+        "quantiles": int(quantiles),
+        "holding_period": int(holding_period),
+        "tail_spread_definition": "small_minus_large",
         "coverage_start": result["formation_date"].min().date().isoformat() if not result.empty else None,
         "coverage_end": result["formation_date"].max().date().isoformat() if not result.empty else None,
         "formation_dates": int(result["formation_date"].nunique()),
-        "eligible_rows": int(len(eligible)),
-        "excluded_rows": int(len(frame) - len(eligible)),
-    }
+        "eligible_rows": eligible_rows,
+        "excluded_rows": int(len(frame) - eligible_rows),
+        "observed_return_count": observed_rows,
+        "missing_return_count": eligible_rows - observed_rows,
+        "return_coverage": observed_rows / eligible_rows if eligible_rows else None,
+        "unavailable_target_rows": result.attrs["unavailable_target_rows"],
+        "unavailable_target_dates": result.attrs["unavailable_target_dates"],
+    })
     return result.sort_values(["bucket", "formation_date"]).reset_index(drop=True), summary
 
 
