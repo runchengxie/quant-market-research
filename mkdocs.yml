@@ -1,7 +1,7 @@
 site_name: Quant Market Research | 研究说明
 site_url: https://runchengxie.github.io/quant-market-research/docs/
 docs_dir: docs
-site_dir: web/dist/docs
+site_dir: .build/mkdocs-reference
 use_directory_urls: true
 strict: true
 theme:

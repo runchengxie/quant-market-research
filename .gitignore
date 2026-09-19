@@ -6,6 +6,7 @@ web/.astro/
 web/dist/
 web/test-results/
 web/playwright-report/
+.build/
 __pycache__/
 .pytest_cache/
 .ruff_cache/

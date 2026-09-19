@@ -1,0 +1,9 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import { publicDocs } from '../../content/public-registry';
+import { withBase } from '../../lib/routes';
+---
+<SiteLayout title="方法与字典" description="研究方法、因子定义、数据来源与收尾状态。" section="docs">
+  <section class="theme-heading"><div><span class="section-kicker">方法与字典</span><h1 id="quant-market-research">图表告诉你发生了什么，文档告诉你如何理解</h1><h2 id="_1">公开说明</h2><p>公开说明与研究页面共享同一套导航、主题和阅读边界；维护计划和内部运行手册不在公开内容中。</p></div></section>
+  <div class="research-grid directory-grid">{publicDocs.map((doc) => <a class="research-card" href={withBase(doc.route, import.meta.env.BASE_URL)}><span class="section-kicker">公开说明</span><h2>{doc.title}</h2><p>{doc.summary}</p><b>阅读说明 →</b></a>)}</div>
+</SiteLayout>

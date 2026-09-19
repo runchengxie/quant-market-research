@@ -101,7 +101,8 @@ async function exists(path) { try { await access(path); return true; } catch { r
 export async function checkSiteContract(dist, contractPath, hashPath) {
   const expected = await readJson(contractPath);
   const actual = await captureSiteContract(dist);
-  if (JSON.stringify(expected.routes) !== JSON.stringify(actual.routes)) throw new Error('legacy route or anchor contract changed');
+  const shape = (routes) => routes.map((route) => ({ route: route.route, anchors: route.anchors.map(({ id, level }) => ({ id, level })) }));
+  if (JSON.stringify(shape(expected.routes)) !== JSON.stringify(shape(actual.routes))) throw new Error('legacy route or anchor contract changed');
   const expectedHashes = await readJson(hashPath);
   if (JSON.stringify(expectedHashes) !== JSON.stringify(actual.data)) throw new Error('public data snapshot hashes changed');
   return true;

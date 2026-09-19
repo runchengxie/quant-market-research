@@ -20,8 +20,6 @@ export type FactorRecord = {
   verification: 'unverified' | 'source-inspected' | 'dictionary-defined';
 };
 
-const root = resolve(dirname(new URL(import.meta.url).pathname), '../../..');
-const yamlPath = resolve(root, 'studies/style_factors_18y/factor-descriptors.yml');
 const historyVersion = 'legacy-factor-summary-v1';
 const coreSource = 'studies/style_factors_18y/factor-descriptors.yml';
 
@@ -79,8 +77,9 @@ function coreRecords(version: string): FactorRecord[] {
   });
 }
 
-export async function readFactorRecords(): Promise<FactorRecord[]> {
-  const raw = await readFile(yamlPath, 'utf8');
+export async function readFactorRecords(repoRoot?: string): Promise<FactorRecord[]> {
+  const root = repoRoot ?? resolve(dirname(new URL(import.meta.url).pathname), '../../..');
+  const raw = await readFile(resolve(root, 'studies/style_factors_18y/factor-descriptors.yml'), 'utf8');
   const digest = createHash('sha256').update(raw).digest('hex').slice(0, 16);
   const inspectedVersion = `source-${implementationSource.revision}`;
   const coreVersion = `schema-1:${digest}`;
