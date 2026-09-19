@@ -243,3 +243,11 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
   .site-nav { padding-bottom: 2px; }
   .featured-study { padding: 20px; }
 }
+.factor-detail-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 24px; margin: 8px 0 24px; }
+.factor-detail-list { display: grid; gap: 12px; margin: 16px 0 0; }
+.factor-detail-list div { border-top: 1px solid var(--line); padding-top: 10px; }
+.factor-detail-list dt { color: var(--muted); font-size: 12px; margin-bottom: 4px; }
+.factor-detail-list dd { margin: 0; line-height: 1.65; }
+.factor-detail-note { background: var(--soft); border-radius: 10px; padding: 16px; align-self: start; }
+.factor-detail-note p { margin: 8px 0 0; color: var(--muted); line-height: 1.7; }
+@media (max-width: 800px) { .factor-detail-grid { grid-template-columns: 1fr; } }
