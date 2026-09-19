@@ -325,6 +325,17 @@ const FACTOR_DEFINITIONS: Row[] = [
   },
 ];
 
+const CORE_FACTOR_STATUS: Record<string, string> = {
+  size: "当前核心字典：log_market_cap；总市值对数，小市值方向。",
+  value: "当前核心字典拆分为 book_to_price 和 earnings_yield；历史 value 是合成快照。",
+  momentum: "当前核心字典：short_term_momentum_21d；历史 momentum 口径未完全确认。",
+  quality: "当前核心字典：profitability、leverage、earnings_quality、earnings_variability 等权复合。",
+  earnings_yield: "当前核心字典：正 PE 的 1 / PE_TTM；历史口径未完全确认。",
+  lowvol: "当前核心字典：total_volatility_21d；总波动率，尚未市场/行业中性化。",
+  leverage: "当前核心字典：debt_to_assets；历史口径未完全确认。",
+  liquidity: "当前核心字典拆分为 turnover_1d/20d/60d 与 amihud_20d。",
+};
+
 export function BarraPage({ includeNarrative = true }: { includeNarrative?: boolean }) {
   const { data: summary, error: summaryError } = useJson<BarraSummary>(
     "barra/barra_summary.json",
@@ -420,6 +431,9 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const selectedFactorSummary = factors.find(
     (factor) => factor.factor === selectedFactor,
   );
+  const selectedFactorDefinition = FACTOR_DEFINITIONS.find(
+    (definition) => definition.factor === selectedFactor,
+  );
   return (
     <>
       {includeNarrative && <>
@@ -477,58 +491,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           </p>
         </details>
       </div>
-      <Panel title="因子定义与方向" tag="历史研究方法">
-        <SimpleTable
-          rows={FACTOR_DEFINITIONS}
-          columns={[
-            ["name", "因子"],
-            ["direction", "高分组减低分组"],
-            ["method", "构造方法"],
-          ]}
-        />
-      </Panel>
-      <Panel title="Quality 子因子快速诊断" tag="2020–2026 · PIT 前 800 股票">
-        {" "}
-        <p className="panel-note">
-          这是基于当前可用 PIT 财务资产的快速诊断，覆盖 2020 年以后，主要使用前
-          800 只股票。它用于查看复合质量的组成，不替代 18 年历史结果。
-        </p>
-        <SortableTable
-          rows={qualityComponents}
-          columns={[
-            ["factor", "子因子"],
-            ["days", "交易日"],
-            ["years", "样本年数"],
-            ["geometric_annual_ret", "几何年化"],
-            ["annual_vol", "年化波动率"],
-            ["sharpe", "夏普比率"],
-            ["max_drawdown", "最大回撤"],
-            ["hit_rate", "正收益比例"],
-          ]}
-          percentColumns={[
-            "geometric_annual_ret",
-            "annual_vol",
-            "max_drawdown",
-            "hit_rate",
-          ]}
-        />
-      </Panel>
       </>}
-      <Panel title="19 个因子表现总览" tag="历史合成序列（账户收益未验证）">
-        <SortableTable
-          rows={factorRows}
-          columns={[
-            ["factor", "因子"],
-            ["coverage", "样本范围"],
-            ["annual", "合成收益的几何年化"],
-            ["vol", "年化波动率"],
-            ["sharpe", "夏普比率"],
-            ["drawdown", "最大回撤"],
-            ["hit", "日收益为正的比例"],
-          ]}
-          percentColumns={["annual", "vol", "drawdown", "hit"]}
-        />
-      </Panel>
       <Panel title="逐年合成收益与阶段表现" tag="按每日收益差复合计算">
         <ControlBar>
           <span className="control-label">因子</span>
@@ -554,6 +517,47 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           {pct((selectedFactorSummary?.geometric_annual_ret ?? 0) / 100)}
           ，数值沿用历史研究结果。年度收益仅按该年已有数据计算，数据不足一年的按实际区间展示。
         </p>
+      </Panel>
+      <Panel title="因子详情与计算方法" tag="点击上方因子查看">
+        <div className="factor-detail-grid">
+          <div>
+            <span className="section-kicker">当前选择</span>
+            <h4>{selectedFactorDefinition?.name ?? selectedFactor}</h4>
+            <dl className="factor-detail-list">
+              <div><dt>因子定义与方向</dt><dd>{selectedFactorDefinition?.direction ?? "历史方向未提供"}</dd></div>
+              <div><dt>原始特征与计算方法</dt><dd>{selectedFactorDefinition?.method ?? "历史计算口径未完整保留"}</dd></div>
+              <div><dt>当前核心因子字典</dt><dd>{CORE_FACTOR_STATUS[selectedFactor] ?? "历史快照因子；当前核心字典没有完全对应的可重算定义。"}</dd></div>
+            </dl>
+          </div>
+          <div className="factor-detail-note">
+            <span className="section-kicker">历史边界</span>
+            <p>上方收益来自历史分组与合成序列。因子名称相同不代表历史快照和当前核心 descriptor 是同一版本；缺少原始 descriptor 或点时字段时，不把推断公式当成已验证口径。</p>
+          </div>
+        </div>
+        {selectedFactor === "quality" && <>
+          <h4>Quality 子因子快速诊断</h4>
+          <p className="panel-note">基于当前可用 PIT 财务资产，主要覆盖 2020 年以后、前 800 只股票；用于解释复合质量组成，不替代 18 年历史结果。</p>
+          <SortableTable
+            rows={qualityComponents.filter((row) => row.factor.startsWith("quality_"))}
+            columns={[["factor", "子因子"], ["days", "交易日"], ["years", "样本年数"], ["geometric_annual_ret", "几何年化"], ["annual_vol", "年化波动率"], ["sharpe", "夏普比率"], ["max_drawdown", "最大回撤"], ["hit_rate", "正收益比例"]]}
+            percentColumns={["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"]}
+          />
+        </>}
+      </Panel>
+      <Panel title="19 个因子表现总览" tag="历史合成序列（账户收益未验证）">
+        <SortableTable
+          rows={factorRows}
+          columns={[
+            ["factor", "因子"],
+            ["coverage", "样本范围"],
+            ["annual", "合成收益的几何年化"],
+            ["vol", "年化波动率"],
+            ["sharpe", "夏普比率"],
+            ["drawdown", "最大回撤"],
+            ["hit", "日收益为正的比例"],
+          ]}
+          percentColumns={["annual", "vol", "drawdown", "hit"]}
+        />
       </Panel>
       <Panel title="因子相关性" tag="历史多空日收益差的相关性">
         <SimpleTable
