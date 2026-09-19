@@ -72,8 +72,9 @@ def test_engines_agree_and_default_filters_ineligible_rows(tmp_path, retain):
 @pytest.mark.parametrize("missing", ["is_st", "is_suspended", "amount", "total_mv"])
 def test_absent_eligibility_fields_retain_marks_but_never_enable_formation(tmp_path, engine, missing):
     write_source(tmp_path, source_rows().drop(columns=missing))
-    panel, _ = build_a_share_panel(tmp_path, use_duckdb=engine, retain_ineligible_quotes=True)
+    panel, metadata = build_a_share_panel(tmp_path, use_duckdb=engine, retain_ineligible_quotes=True)
     assert len(panel) == 6
+    assert metadata.quality_status == "incomplete"
     assert not panel["is_tradable"].any()
     assert panel["adj_close"].tolist() == [10, 11, 12, 10, 11, 12]
     rows, summary = analyze_size_monotonicity(panel, quantiles=2)
@@ -160,3 +161,46 @@ def test_barra_cli_opts_into_retention_and_reports_observed_return(tmp_path, mon
     calls.clear()
     assert cli.main(["report", "smallcap-turnover", "--config", str(config)]) == 0
     assert calls == [{"use_duckdb": engine}]
+
+
+@pytest.mark.parametrize("engine", [False, True], ids=["pandas", "duckdb"])
+@pytest.mark.parametrize("case, expected", [
+    ("complete", "derived"),
+    ("known_st_holding_quote", "derived"),
+    ("unknown_st", "incomplete"),
+    ("unknown_suspension", "incomplete"),
+    ("unknown_amount", "incomplete"),
+    ("invalid_cap", "incomplete"),
+    ("all_st", "incomplete"),
+    ("all_zero_amount", "incomplete"),
+])
+def test_retained_metadata_distinguishes_derived_from_incomplete(tmp_path, engine, case, expected):
+    frame = source_rows()
+    if case == "known_st_holding_quote":
+        frame.loc[1, "is_st"] = True
+    elif case == "unknown_st":
+        frame.loc[1, "is_st"] = pd.NA
+    elif case == "unknown_suspension":
+        frame.loc[1, "is_suspended"] = pd.NA
+    elif case == "unknown_amount":
+        frame.loc[1, "amount"] = np.nan
+    elif case == "invalid_cap":
+        frame.loc[1, "total_mv"] = np.inf
+    elif case == "all_st":
+        frame["is_st"] = True
+    elif case == "all_zero_amount":
+        frame["amount"] = 0.0
+    write_source(tmp_path, frame)
+    panel, metadata = build_a_share_panel(tmp_path, use_duckdb=engine, retain_ineligible_quotes=True)
+    assert len(panel) == 6
+    assert metadata.quality_status == expected
+    if case in {"all_st", "all_zero_amount"}:
+        assert not panel.is_tradable.any()
+        assert analyze_size_monotonicity(panel, quantiles=2)[1]["status"] == "unavailable"
+
+
+@pytest.mark.parametrize("engine", [False, True])
+def test_default_loader_keeps_legacy_metadata_status(tmp_path, engine):
+    write_source(tmp_path, source_rows())
+    _, metadata = build_a_share_panel(tmp_path, use_duckdb=engine)
+    assert metadata.quality_status == "verified"

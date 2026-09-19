@@ -133,6 +133,18 @@ def _metadata(
 ) -> PanelMetadata:
     start = str(panel["date"].min()) if not panel.empty else None
     end = str(panel["date"].max()) if not panel.empty else None
+    quality_status = "verified" if not panel.empty else "incomplete"
+    if retain_ineligible_quotes:
+        # Retaining quotes is not source validation. Known ineligible holding
+        # rows are fine, but unknown eligibility evidence must remain visible.
+        eligibility_known = (
+            not panel.empty
+            and panel[["is_st", "is_suspended"]].notna().to_numpy().all()
+            and np.isfinite(panel[["turnover", "market_cap"]].to_numpy()).all()
+        )
+        quality_status = (
+            "derived" if eligibility_known and panel["is_tradable"].any() else "incomplete"
+        )
     return PanelMetadata(
         source=source,
         as_of=as_of or end or "",
@@ -147,5 +159,5 @@ def _metadata(
         coverage_start=start,
         coverage_end=end,
         calendar_mode="observed_daily",
-        quality_status="verified" if not panel.empty else "incomplete",
+        quality_status=quality_status,
     )
