@@ -166,6 +166,11 @@ export function SmallcapTurnoverSection() {
     new Map(rows.map((row) => [labelOf(row), row.turnover_median]));
   const cleanByPeriod = byPeriod(cleanRows);
   const historicalByPeriod = byPeriod(historicalRows);
+  const chartRows: Row[] = labels.map((label) => ({
+    period: label,
+    clean: cleanByPeriod.has(label) ? formatTurnover(cleanByPeriod.get(label)!) : "N/A",
+    historical: historicalByPeriod.has(label) ? formatTurnover(historicalByPeriod.get(label)!) : "N/A",
+  }));
   const latestClean = cleanRows.at(-1);
   const latestHistorical = historicalRows.at(-1);
   const periodLabel = granularity === "annual" ? "年度" : "月度";
@@ -270,6 +275,10 @@ export function SmallcapTurnoverSection() {
             },
           ]}
         />
+        <details className="chart-data-details">
+          <summary>查看图表数据</summary>
+          <SimpleTable rows={chartRows} columns={[["period", periodLabel], ["clean", "2015+ 清洗口径"], ["historical", "2008+ 历史口径"]]} />
+        </details>
         <p className="panel-note">
           {diagnosticNote} 单位为人民币成交额。网页只发布{periodLabel}
           汇总，完整日频明细仍保留在仓库外的研究输出目录。

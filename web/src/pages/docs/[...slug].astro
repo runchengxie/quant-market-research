@@ -19,7 +19,7 @@ const documents = await readPublicDocuments(repoRoot);
 const document = documents.find((item) => item.meta.id === id);
 if (!document) throw new Error(`public document not found: ${id}`);
 const records = await readFactorRecords(repoRoot);
-const processor = await createMarkdownProcessor({ rehypePlugins: [publicDocsTransform] });
+const processor = await createMarkdownProcessor({ rehypePlugins: [[publicDocsTransform, import.meta.env.BASE_URL]] });
 const rendered = await processor.render(expandPublicFragments(document.body, records), { fileURL: new URL(`../../../../${document.meta.source}`, import.meta.url) });
 const legacyIds = legacyAnchorMap[document.meta.source] ?? [];
 let headingIndex = 0;

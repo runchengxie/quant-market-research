@@ -14,12 +14,12 @@ export function resolveDocLink(source: string, href: string, base: string): stri
   return `${basePath(base, match.route)}${fragment ? `#${fragment}` : ''}`;
 }
 
-export function publicDocsTransform() {
+export function publicDocsTransform(base = '/quant-market-research') {
   return (tree: any, file: any) => {
     const source = String(file.path ?? '').replaceAll('\\', '/').split('/docs/').pop() ? `docs/${String(file.path).replaceAll('\\', '/').split('/docs/').pop()}` : 'docs/index.md';
     const walk = (node: any) => {
       if (!node || typeof node !== 'object') return;
-      if (node.type === 'element' && node.tagName === 'a' && typeof node.properties?.href === 'string') node.properties.href = resolveDocLink(source, node.properties.href, '/quant-market-research');
+      if (node.type === 'element' && node.tagName === 'a' && typeof node.properties?.href === 'string') node.properties.href = resolveDocLink(source, node.properties.href, base);
       for (const child of node.children ?? []) walk(child);
     };
     walk(tree);

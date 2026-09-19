@@ -37,8 +37,8 @@ const links = [
   const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
   const nav = document.querySelector<HTMLElement>("#primary-nav");
   if (toggle && nav) {
-    const close = () => { toggle.setAttribute("aria-expanded", "false"); nav.removeAttribute("data-open"); };
-    toggle.addEventListener("click", () => { const open = toggle.getAttribute("aria-expanded") !== "true"; toggle.setAttribute("aria-expanded", String(open)); if (open) nav.setAttribute("data-open", ""); else nav.removeAttribute("data-open"); });
+    const close = () => { toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "展开主导航"); nav.removeAttribute("data-open"); };
+    toggle.addEventListener("click", () => { const open = toggle.getAttribute("aria-expanded") !== "true"; toggle.setAttribute("aria-expanded", String(open)); toggle.setAttribute("aria-label", open ? "收起主导航" : "展开主导航"); if (open) nav.setAttribute("data-open", ""); else nav.removeAttribute("data-open"); });
     nav.addEventListener("click", (event) => { if ((event.target as HTMLElement).matches("a")) close(); });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { close(); toggle.focus(); } });
   }

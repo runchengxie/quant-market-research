@@ -19,3 +19,5 @@ Additional checks: seven public documents, research/data/search directories, Bar
 Known non-blocking item: Astro/Rolldown reports a pre-existing large-chunk warning during the static build; the build remains successful and the large research data is still lazy-loaded from public snapshots.
 
 The Barra workbench no longer overrides the site-wide light/dark palette. It keeps its denser information layout and chart semantics, while inheriting the same paper/surface/ink/accent tokens as the home, research, and documentation pages.
+
+Independent read-only review completed after task 9. No Critical findings. The reviewer identified two Important findings and three Minor findings; all were addressed before integration: freshness text now uses semantic dark-mode tokens, the microcap line chart now exposes a complete expandable data table, direct `npm run build` now writes `.nojekyll`, search/document links use `BASE_URL`, and the mobile navigation updates its accessible label when expanded. The follow-up targeted suites passed after these fixes.

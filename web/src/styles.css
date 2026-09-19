@@ -1,8 +1,8 @@
 @import "../../docs/assets/theme-tokens.css";
 .freshness-strip { display: grid; grid-template-columns: auto auto 1fr; gap: 8px 16px; align-items: center; margin: 22px 0 32px; border: 1px solid #d8d0c3; border-left: 3px solid #dba58f; padding: 13px 16px; background: #f8f5ef; }
-.freshness-strip strong { font: 500 12px var(--font-mono); color: #252525; }
+.freshness-strip strong { font: 500 12px var(--font-mono); color: var(--ink); }
 .freshness-status { justify-self: start; border: 1px solid #dba58f; padding: 4px 7px; color: #b64d33; font: 10px var(--font-mono); }
-.freshness-source, .freshness-markets { grid-column: 1 / -1; color: #81796e; font: 10px/1.6 var(--font-mono); }
+.freshness-source, .freshness-markets { grid-column: 1 / -1; color: var(--muted); font: 10px/1.6 var(--font-mono); }
 .status-verified { border-left-color: #79a883; }
 .status-pending { border-left-color: #d8c58a; }
 [data-theme="dark"] .freshness-strip { background: var(--surface); border-color: var(--rule); }

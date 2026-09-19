@@ -8,6 +8,7 @@
     "check": "astro check",
     "snapshot": "node scripts/build-public-snapshot.mjs",
     "build": "astro check && astro build",
+    "postbuild": "node scripts/write-nojekyll.mjs",
     "verify:static": "node scripts/verify-static-site.mjs dist",
     "report:bundle": "node scripts/report-bundle-size.mjs dist",
     "e2e": "playwright test",

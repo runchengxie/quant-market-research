@@ -13,7 +13,7 @@ test('one heading and a compact shared navigation', async ({ page }) => {
 test('mobile navigation can be closed with Escape', async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto('./');
-  const toggle = page.getByRole('button', { name: '展开主导航' });
+  const toggle = page.locator('.nav-toggle');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await page.keyboard.press('Escape');
