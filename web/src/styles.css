@@ -367,6 +367,9 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
 .chart-frame-meta { display: flex; flex-wrap: wrap; gap: 12px 18px; color: var(--muted); font: 11px/1.6 var(--font-mono); }
 .chart-frame-meta a { color: var(--accent); }
 .chart-frame-values { margin-top: 12px; color: var(--muted); }
+.topic-nav { display: flex; flex-wrap: wrap; gap: 8px 16px; align-items: center; margin: 24px 0; padding: 10px 0; border-block: 1px solid var(--rule); }
+.topic-nav span { color: var(--muted); font-size: 12px; font-weight: 600; }
+.topic-nav a { color: var(--accent); font-size: 13px; }
 @media (max-width: 800px) {
   .nav-toggle { display: block; margin: 0 auto 10px; }
   .site-nav { display: none; }
