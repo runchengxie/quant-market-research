@@ -72,7 +72,7 @@ jobs:
           test -s web/dist/docs/research/factors/low-turnover/index.html
           test -s web/dist/search/index.html
           test -s web/dist/search-index.json
-          test -s web/dist/.nojekyll
+          test -e web/dist/.nojekyll
 
       - name: Scan public output for local paths and secrets
         run: |
