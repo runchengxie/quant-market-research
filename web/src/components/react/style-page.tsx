@@ -199,10 +199,10 @@ const FACTOR_NAMES: Record<string, string> = {
   growth: "成长",
   institution_holding: "机构持仓",
   leverage: "低杠杆",
-  liquidity: "低换手（当前快照）",
-  liquidity_flow: "大单资金流",
-  lowvol: "总波动率（21日）",
-  momentum: "短期动量（21日）",
+  liquidity: "流动性（历史）",
+  liquidity_flow: "交易流（历史）",
+  lowvol: "低波动（历史）",
+  momentum: "动量（历史）",
   ps_value: "市销率价值",
   quality: "复合质量",
   size: "市值",
@@ -487,6 +487,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     "barra/quality_component_summary.csv",
   );
   const [selectedFactor, setSelectedFactor] = useState("size");
+  const [showSizeDiagnostic, setShowSizeDiagnostic] = useState(false);
   if (
     !summary ||
     !quantiles ||
@@ -630,13 +631,17 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
         <ControlBar>
           <span className="control-label">因子</span>
           {factors.map((factor) => (
-            <Choice
+            <button
               key={factor.factor}
-              active={selectedFactor === factor.factor}
+              type="button"
+              className={`choice ${selectedFactor === factor.factor ? "active" : ""}`}
+              aria-pressed={selectedFactor === factor.factor}
+              aria-controls="barra-factor-detail"
+              data-factor={factor.factor}
               onClick={() => setSelectedFactor(factor.factor)}
             >
               {FACTOR_NAMES[factor.factor] ?? factor.factor}
-            </Choice>
+            </button>
           ))}
         </ControlBar>
         <BarChart
@@ -652,13 +657,14 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           ，数值沿用历史研究结果。年度收益仅按该年已有数据计算，数据不足一年的按实际区间展示。
         </p>
       </Panel>
+      <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
       <Panel title="因子定义、特征与计算方法" tag="随上方因子联动">
         <div className="factor-detail-grid">
           <div>
             <span className="section-kicker">{selectedFactorDetail?.family ?? "历史因子"} · {selectedFactor}</span>
-            <h4>{selectedFactorDefinition?.name ?? selectedFactor}</h4>
+            <h4>{FACTOR_NAMES[selectedFactor] ?? selectedFactor}</h4>
             <dl className="factor-detail-list">
-              <div><dt>多空方向</dt><dd>{selectedFactorDefinition?.direction ?? "历史方向未提供"}</dd></div>
+              <div><dt>历史页面记录的多空方向</dt><dd>{selectedFactorDefinition?.direction ?? "历史方向未提供"}。此处沿用旧页面标签，原始得分方向仍待源代码核验。</dd></div>
               <div><dt>包含什么特征</dt><dd>{selectedFactorDetail?.feature ?? "历史原始特征未完整保留"}</dd></div>
               <div><dt>怎么计算</dt><dd>{selectedFactorDetail?.calculation ?? "历史计算口径未完整保留"}</dd></div>
               <div><dt>当前核心字典对应关系</dt><dd>{selectedFactorDetail?.current ?? "当前核心字典没有完全对应的可重算定义。"}</dd></div>
@@ -676,6 +682,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           <SortableTable
             rows={qualityComponents.filter((row) => row.factor.startsWith("quality_")).map((row) => ({
               ...row,
+              ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map((key) => [key, row[key] === "" || row[key] == null ? "" : String(Number(row[key]) / 100)])),
               factor: ({
                 quality_profitability: "盈利能力 · ROE",
                 quality_leverage: "低杠杆 · Debt / Assets",
@@ -694,6 +701,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           </div>
         </>}
       </Panel>
+      </div>
       <Panel title="19 个因子表现总览" tag="历史合成序列（账户收益未验证）">
         <SortableTable
           rows={factorRows}
@@ -718,7 +726,10 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
           ]}
         />
       </Panel>
-      <SizeDiagnosticPanel rows={quantileRows} dailyCurve={quantileCurve} />
+      <details className="panel" onToggle={(event) => setShowSizeDiagnostic(event.currentTarget.open)}>
+        <summary>补充研究：市值十分组与稳定性诊断</summary>
+        {showSizeDiagnostic && <SizeDiagnosticPanel rows={quantileRows} dailyCurve={quantileCurve} />}
+      </details>
       {includeNarrative && <div className="fine-print">
         <span className="section-kicker">研究限制</span>
         <p>
