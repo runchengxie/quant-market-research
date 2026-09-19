@@ -2,6 +2,7 @@ from __future__ import annotations
 
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 
 from ..contracts import PanelMetadata, normalize_panel
@@ -12,59 +13,36 @@ def build_a_share_panel(
     as_of: str | None = None,
     fx_rate: float | None = None,
     use_duckdb: bool = False,
+    *,
+    retain_ineligible_quotes: bool = False,
 ) -> tuple[pd.DataFrame, PanelMetadata]:
+    """Load formation-eligible rows, optionally retaining holding-date quotes.
+
+    Retention keeps all dated observations without inventing or filling prices.
+    is_tradable records formation eligibility: finite positive amount/cap and
+    known non-ST/non-suspended status. Unknown status remains null in its flag
+    and never grants eligibility. Holding-price consumers may still use genuine
+    quotes from rows that are ineligible for a new formation.
+    """
     root = Path(data_root)
     if use_duckdb and root.is_dir():
-        return _build_a_share_with_duckdb(root, as_of, fx_rate)
+        return _build_a_share_with_duckdb(root, as_of, fx_rate, retain_ineligible_quotes)
     rows: list[pd.DataFrame] = []
     sources = [root] if root.is_file() else sorted(root.rglob("*.parquet"))
     for source in sources:
         frame = pd.read_parquet(source)
-        required = {"trade_date", "amount", "total_mv", "is_st", "is_suspended"}
-        if not required.issubset(frame.columns):
-            continue
-        frame["date"] = pd.to_datetime(frame["trade_date"], errors="coerce").dt.date
-        frame["amount"] = pd.to_numeric(frame["amount"], errors="coerce")
-        frame["total_mv"] = pd.to_numeric(frame["total_mv"], errors="coerce")
-        frame["close"] = pd.to_numeric(frame.get("close"), errors="coerce")
-        frame["adj_close"] = pd.to_numeric(frame.get("adj_close"), errors="coerce")
-        frame["vol"] = pd.to_numeric(frame.get("vol"), errors="coerce")
-        eligible = frame.loc[
-            frame["date"].notna()
-            & (frame["amount"] > 0)
-            & (frame["total_mv"] > 0)
-            & ~frame["is_st"].astype(bool)
-            & ~frame["is_suspended"].astype(bool)
-        ].copy()
-        if as_of is not None:
-            eligible = eligible.loc[eligible["date"] <= pd.Timestamp(as_of).date()]
-        if eligible.empty:
-            continue
-        rows.append(
-            pd.DataFrame(
-                {
-                    "market": "a_share",
-                    "symbol": source.stem,
-                    "date": eligible["date"],
-                    "close": eligible["close"],
-                    "adj_close": eligible["adj_close"],
-                    "volume": eligible["vol"],
-                    "turnover": eligible["amount"] * 1_000,
-                    "market_cap": eligible["total_mv"] * 10_000,
-                    "currency": "CNY",
-                    "is_tradable": True,
-                    "is_suspended": False,
-                    "source": str(source),
-                }
-            )
-        )
+        prepared = _prepare_quotes(frame, str(source), source.stem, as_of, retain_ineligible_quotes)
+        if not prepared.empty:
+            rows.append(prepared)
     panel = pd.concat(rows, ignore_index=True) if rows else _empty_panel()
-    metadata = _metadata(panel, "Tushare A-share daily-clean", as_of, "CNY", fx_rate)
+    metadata = _metadata(
+        panel, "Tushare A-share daily-clean", as_of, "CNY", fx_rate, retain_ineligible_quotes
+    )
     return normalize_panel(panel, metadata)
 
 
 def _build_a_share_with_duckdb(
-    root: Path, as_of: str | None, fx_rate: float | None
+    root: Path, as_of: str | None, fx_rate: float | None, retain_ineligible_quotes: bool
 ) -> tuple[pd.DataFrame, PanelMetadata]:
     try:
         import duckdb
@@ -72,30 +50,59 @@ def _build_a_share_with_duckdb(
         raise RuntimeError("DuckDB is required for use_duckdb=True") from exc
     pattern = str(root / "**" / "*.parquet")
     query = """
-        SELECT ts_code, trade_date, close, adj_close, vol, amount, total_mv,
-               is_st, is_suspended
-        FROM read_parquet(?, union_by_name=true)
+        SELECT filename,
+               COLUMNS('^(ts_code|trade_date|close|adj_close|vol|amount|total_mv|is_st|is_suspended)$')
+        FROM read_parquet(?, union_by_name=true, filename=true)
     """
-    frame = duckdb.connect().execute(query, [pattern]).fetchdf()
+    with duckdb.connect() as connection:
+        frame = connection.execute(query, [pattern]).fetchdf()
+    fallback_symbols = frame["filename"].map(lambda filename: Path(filename).stem)
+    panel = _prepare_quotes(frame, str(root), fallback_symbols, as_of, retain_ineligible_quotes)
+    metadata = _metadata(
+        panel, "Tushare A-share daily-clean DuckDB scan", as_of, "CNY", fx_rate,
+        retain_ineligible_quotes,
+    )
+    return normalize_panel(panel, metadata)
+
+
+def _prepare_quotes(
+    frame: pd.DataFrame,
+    source: str,
+    fallback_symbols: str | pd.Series,
+    as_of: str | None,
+    retain_ineligible_quotes: bool,
+) -> pd.DataFrame:
+    if "trade_date" not in frame:
+        return _empty_panel()
+    frame = frame.copy()
     frame["date"] = pd.to_datetime(frame["trade_date"], errors="coerce").dt.date
+    for column in ("amount", "total_mv", "close", "adj_close", "vol"):
+        values = frame.get(column, pd.Series(np.nan, index=frame.index))
+        frame[column] = pd.to_numeric(values, errors="coerce").astype(float)
+    for column in ("is_st", "is_suspended"):
+        values = frame.get(column, pd.Series(pd.NA, index=frame.index))
+        frame[column] = values.astype("string").str.strip().str.lower().map({
+            "true": True, "false": False, "1": True, "0": False,
+            "1.0": True, "0.0": False,
+        }).astype("boolean")
+    symbols = frame.get("ts_code", pd.Series(pd.NA, index=frame.index)).astype("string")
+    symbols = symbols.str.strip()
+    frame["symbol"] = symbols.where(symbols.notna() & symbols.ne(""), fallback_symbols)
+    frame["is_tradable"] = (
+        np.isfinite(frame["amount"]) & frame["amount"].gt(0)
+        & np.isfinite(frame["total_mv"]) & frame["total_mv"].gt(0)
+        & frame["is_st"].eq(False) & frame["is_suspended"].eq(False)
+    ).fillna(False).astype(bool)
+    selected = frame["date"].notna()
     if as_of is not None:
-        frame = frame.loc[frame["date"] <= pd.Timestamp(as_of).date()]
-    frame["amount"] = pd.to_numeric(frame["amount"], errors="coerce")
-    frame["total_mv"] = pd.to_numeric(frame["total_mv"], errors="coerce")
-    frame["close"] = pd.to_numeric(frame["close"], errors="coerce")
-    frame["adj_close"] = pd.to_numeric(frame["adj_close"], errors="coerce")
-    frame["vol"] = pd.to_numeric(frame["vol"], errors="coerce")
-    eligible = frame.loc[
-        frame["date"].notna()
-        & (frame["amount"] > 0)
-        & (frame["total_mv"] > 0)
-        & ~frame["is_st"].astype(bool)
-        & ~frame["is_suspended"].astype(bool)
-    ].copy()
-    panel = pd.DataFrame(
+        selected &= frame["date"] <= pd.Timestamp(as_of).date()
+    if not retain_ineligible_quotes:
+        selected &= frame["is_tradable"]
+    eligible = frame.loc[selected]
+    return pd.DataFrame(
         {
             "market": "a_share",
-            "symbol": eligible["ts_code"].astype(str),
+            "symbol": eligible["symbol"],
             "date": eligible["date"],
             "close": eligible["close"],
             "adj_close": eligible["adj_close"],
@@ -103,32 +110,38 @@ def _build_a_share_with_duckdb(
             "turnover": eligible["amount"] * 1_000,
             "market_cap": eligible["total_mv"] * 10_000,
             "currency": "CNY",
-            "is_tradable": True,
-            "is_suspended": False,
-            "source": str(root),
+            "is_tradable": eligible["is_tradable"],
+            "is_st": eligible["is_st"],
+            "is_suspended": eligible["is_suspended"],
+            "source": source,
         }
     )
-    metadata = _metadata(panel, "Tushare A-share daily-clean DuckDB scan", as_of, "CNY", fx_rate)
-    return normalize_panel(panel, metadata)
 
 
 def _empty_panel() -> pd.DataFrame:
     return pd.DataFrame(
         columns=[
-            "market", "symbol", "date", "close", "volume", "turnover", "market_cap",
-            "currency", "is_tradable", "is_suspended", "source",
+            "market", "symbol", "date", "close", "adj_close", "volume", "turnover", "market_cap",
+            "currency", "is_tradable", "is_st", "is_suspended", "source",
         ]
     )
 
 
-def _metadata(panel: pd.DataFrame, source: str, as_of: str | None, currency: str, fx_rate: float | None) -> PanelMetadata:
+def _metadata(
+    panel: pd.DataFrame, source: str, as_of: str | None, currency: str,
+    fx_rate: float | None, retain_ineligible_quotes: bool = False,
+) -> PanelMetadata:
     start = str(panel["date"].min()) if not panel.empty else None
     end = str(panel["date"].max()) if not panel.empty else None
     return PanelMetadata(
         source=source,
         as_of=as_of or end or "",
         currency=currency,
-        universe_filter="positive amount/market cap; non-ST; non-suspended",
+        universe_filter=(
+            "all dated quotes retained for holding marks; formation eligibility: "
+            "finite positive amount/market cap; known non-ST/non-suspended"
+            if retain_ineligible_quotes else "positive amount/market cap; non-ST; non-suspended"
+        ),
         fx_method="native currency" if fx_rate is None else f"reference FX rate {fx_rate:g}",
         feature_lag=1,
         coverage_start=start,

@@ -88,7 +88,9 @@ def normalize_panel(frame: pd.DataFrame, metadata: PanelMetadata) -> tuple[pd.Da
     issues = validate_panel(result)
     if issues:
         raise ValueError("invalid panel: " + ",".join(issues))
-    result = result.loc[:, list(CANONICAL_COLUMNS)].sort_values(
+    # Keep the canonical prefix while preserving eligibility/audit extensions.
+    columns = list(CANONICAL_COLUMNS) + [c for c in result if c not in CANONICAL_COLUMNS]
+    result = result.loc[:, columns].sort_values(
         ["market", "symbol", "date"], kind="stable"
     ).reset_index(drop=True)
     return result, metadata

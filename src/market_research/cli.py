@@ -416,6 +416,7 @@ def main(argv: list[str] | None = None) -> int:
             a_share_root,
             config.get("as_of") or None,
             use_duckdb=bool(config.get("use_duckdb", False)),
+            retain_ineligible_quotes=True,
         )
         quantile_rows, size_summary = analyze_size_monotonicity(
             panel,
