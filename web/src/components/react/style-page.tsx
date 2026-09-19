@@ -20,6 +20,7 @@ import {
 } from "./research-shared";
 import { dailySizeCurve, comparableSizeRows, finiteNumber } from "../../lib/size-diagnostics";
 import { currentFactorImplementations, commonFactorProcessing, implementationSource } from "../../lib/factor-implementations";
+import { FACTOR_NAMES, FACTOR_DEFINITIONS, FACTOR_DETAILS } from "../../content/factors";
 import type {
   Row,
   StyleScope,
@@ -186,7 +187,7 @@ export function IndicesPage() {
   );
 }
 
-const FACTOR_NAMES: Record<string, string> = {
+const LEGACY_FACTOR_NAMES: Record<string, string> = {
   beta: "低贝塔",
   chip_concentration: "筹码集中度",
   dividend_yield: "股息率",
@@ -207,7 +208,7 @@ const FACTOR_NAMES: Record<string, string> = {
   size: "市值",
   value: "价值",
 };
-const FACTOR_DEFINITIONS: Row[] = [
+const LEGACY_FACTOR_DEFINITIONS: Row[] = [
   {
     factor: "size",
     name: "市值",
@@ -332,7 +333,7 @@ type FactorDetail = {
   verification: string;
 };
 
-const FACTOR_DETAILS: Record<string, FactorDetail> = {
+const LEGACY_FACTOR_DETAILS: Record<string, FactorDetail> = {
   size: {
     family: "规模",
     feature: "历史命名对应股票市值规模。当前核心 descriptor 使用 daily_basic.total_mv。",
@@ -467,6 +468,11 @@ const FACTOR_DETAILS: Record<string, FactorDetail> = {
     verification: "历史收益摘要可验证；具体公式未确认。",
   },
 };
+
+// Kept beside the migration boundary for one release so old imports can be audited safely.
+void LEGACY_FACTOR_NAMES;
+void LEGACY_FACTOR_DEFINITIONS;
+void LEGACY_FACTOR_DETAILS;
 
 function DataNotice({ label, error, retry, empty = false }: { label: string; error?: string; retry?: () => void; empty?: boolean }) {
   return <div className="data-notice" role={error ? "alert" : "status"}>

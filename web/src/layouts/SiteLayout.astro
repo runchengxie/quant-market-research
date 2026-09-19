@@ -7,10 +7,11 @@ interface Props {
   title: string;
   description: string;
   activeRoute?: string;
+  section?: "overview" | "research" | "docs" | "data";
   workbench?: boolean;
 }
 
-const { title, description, activeRoute = "overview", workbench = false } = Astro.props;
+const { title, description, activeRoute = "overview", section, workbench = false } = Astro.props;
 const pageTitle = `${title} · Quant Market Research`;
 ---
 
@@ -37,8 +38,9 @@ const pageTitle = `${title} · Quant Market Research`;
   </head>
   <body>
     <div class:list={["app", { "research-workbench": workbench }]}>
-      <SiteHeader activeRoute={activeRoute} />
-      <main class="site-main"><slot /></main>
+      <SiteHeader activeRoute={activeRoute} section={section} />
+      <a class="skip-link" href="#main-content">跳到正文</a>
+      <main id="main-content" class="site-main"><slot /></main>
       <SiteFooter />
     </div>
   </body>

@@ -51,9 +51,9 @@ test("Barra hydration preserves pagination ARIA references", async ({ page }) =>
 for (const [route, heading] of routes) {
   test(`${route || "overview"} opens directly and survives a refresh`, async ({ page }) => {
     await page.goto(route, { waitUntil: "domcontentloaded" });
-    await expect(page.locator("main h2").first()).toContainText(heading);
+    await expect(page.getByRole("heading", { name: heading, exact: true }).first()).toBeVisible();
     await page.reload({ waitUntil: "domcontentloaded" });
-    await expect(page.locator("main h2").first()).toContainText(heading);
+    await expect(page.getByRole("heading", { name: heading, exact: true }).first()).toBeVisible();
   }
   );
 }
@@ -61,7 +61,7 @@ for (const [route, heading] of routes) {
 test("legacy hash links redirect to the new research URL", async ({ page }) => {
   await page.goto("#microcap");
   await expect(page).toHaveURL(/\/research\/microcap\/$/);
-  await expect(page.locator("main h2").first()).toContainText("A 股微盘历史研究");
+  await expect(page.getByRole("heading", { name: "A 股微盘历史研究", exact: true }).first()).toBeVisible();
 });
 
 test("low-turnover report links to its full methodology", async ({ page }) => {

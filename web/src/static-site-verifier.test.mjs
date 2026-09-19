@@ -15,6 +15,15 @@ const routes = [
   ["research/style-factors-18y/index.html", "18 年 A 股风格因子研究"],
   ["research/liquidity/index.html", "跨市场流动性"],
   ["research/factors/low-turnover/index.html", "低换手因子：它保留了什么信息？"],
+  ["research/index.html", "从研究问题进入数据与图表"],
+  ["data-sources/index.html", "每份公开快照都有自己的日期和边界"],
+  ["search/index.html", "搜索研究、方法与因子定义"],
+  ["docs/research-closeout-status/index.html", "研究收口状态"],
+  ["docs/research/factors/low-turnover/index.html", "低换手：它可能反映哪些特征"],
+  ["docs/research/factors/microcap/index.html", "微盘股：收益证据与水下时间"],
+  ["docs/research/factors/smallcap-turnover-history/index.html", "小市值成交活跃度补充"],
+  ["docs/research/factors/barra-factor-dictionary/index.html", "Barra 风格因子字典"],
+  ["docs/research/factors/barra-source-inventory/index.html", "Barra 风格研究资料清单"],
 ];
 
 async function makeSite() {
@@ -24,7 +33,7 @@ async function makeSite() {
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, `<html><h1>${marker}</h1></html>`);
   }
-  for (const file of ["404.html", "docs/index.html", "docs/assets/docs.css", "docs/assets/theme-tokens.css", "data/manifest.json", "data/research/recovery.json", ".nojekyll"]) {
+  for (const file of ["404.html", "docs/index.html", "search-index.json", "data/manifest.json", "data/research/recovery.json", ".nojekyll"]) {
     const destination = path.join(root, file);
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, file.endsWith(".html") ? "<html>Docs</html>" : "{}");

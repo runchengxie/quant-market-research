@@ -1,0 +1,8 @@
+---
+import SiteLayout from '../../layouts/SiteLayout.astro';
+import SearchResults from '../../components/react/SearchResults';
+---
+<SiteLayout title="搜索" description="搜索公开研究、方法与因子定义。" section="docs">
+  <section class="theme-heading"><div><span class="section-kicker">公开内容搜索</span><h1>搜索研究、方法与因子定义</h1><p>搜索只覆盖公开注册表、七篇说明文档和版本化因子记录，不读取内部规格或原始数据。</p></div></section>
+  <SearchResults client:load base={import.meta.env.BASE_URL} />
+</SiteLayout>

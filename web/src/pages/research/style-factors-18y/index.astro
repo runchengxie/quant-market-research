@@ -1,15 +1,15 @@
 ---
 import ResearchPage from "../../../components/ResearchPage.astro";
 import { StylePage } from "../../../components/react/style-page";
-import { withBase } from "../../../lib/routes";
 import BarraNarrative from "../../../components/research/BarraNarrative.astro";
+import FactorContextLink from "../../../components/FactorContextLink.astro";
 ---
 <ResearchPage compact title="18 年 A 股风格因子研究" description="探索 19 个风格因子的年度收益、特征定义与验证边界。" snapshotKey="barra" activeRoute="style" kicker="长期风格研究 · FACTOR EXPLORER" introduction="选择一个因子，先看历史表现，再了解它衡量什么、如何计算。" boundary="历史多空合成收益，不代表实际账户盈亏。各因子样本不同；原始公式、PIT 与可交易性仍需核验。" evidence="历史经验研究" question="不同风格因子在 A 股历史中如何变化，收益之间有多少重合？" nextStep="核验历史生成链路，并按修正后的形成日分组与缺失收益政策重算可追溯结果。">
   <StylePage client:load scope="barra" />
+  <p class="method-link" data-document-title="Barra 风格因子字典"><FactorContextLink target="/docs/research/factors/barra-factor-dictionary/" label="阅读完整因子定义" base={import.meta.env.BASE_URL} /></p>
   <details class="panel methodology-section">
     <summary>研究问题与方法：样本范围、计算口径与解释边界</summary>
     <p>18 年 A 股风格因子动态：收益、稳定性与市场阶段。读者可以了解各类风格因子在不同市场阶段的表现；IC、样本外验证和统计显著性仍待补充。</p>
-    <p><a class="button-link" href={withBase("/docs/research/factors/barra-factor-dictionary/", import.meta.env.BASE_URL)}>阅读 Barra 风格因子字典 ↗</a></p>
     <BarraNarrative />
   </details>
 </ResearchPage>

@@ -2,19 +2,21 @@
 import SiteLayout from "../../../../layouts/SiteLayout.astro";
 import { withBase } from "../../../../lib/routes";
 import LowTurnoverExecutionEvidence from "../../../../components/LowTurnoverExecutionEvidence";
+import TopicNav from "../../../../components/TopicNav.astro";
 const base = import.meta.env.BASE_URL ?? "/";
 const docsUrl = withBase("/docs/research/factors/low-turnover/", base);
 ---
 <SiteLayout title="低换手因子研究" description="低换手因子的历史关系、归因证据、可交易性和下一步验证。" activeRoute="low-turnover">
-  <article class="research-report">
-    <header class="theme-heading"><div><span class="section-kicker">因子与风格 · 探索性研究</span><h2>低换手因子：它保留了什么信息？</h2><p>这份报告把历史现象、因子归因和组合执行放在同一条阅读路径中。核心问题是：低换手在控制规模、波动和流动性特征后，是否还带来稳定的增量信息。</p></div><span class="evidence-status exploratory">证据状态 · 探索性</span></header>
+  <TopicNav sections={[{ id: "topic-content", label: "研究内容", available: true }, { id: "research-method", label: "数据与方法", available: true }]} />
+  <article id="topic-content" class="research-report">
+    <header class="theme-heading"><div><span class="section-kicker">因子与风格 · 探索性研究</span><h1>低换手因子：它保留了什么信息？</h1><p>这份报告把历史现象、因子归因和组合执行放在同一条阅读路径中。核心问题是：低换手在控制规模、波动和流动性特征后，是否还带来稳定的增量信息。</p></div><span class="evidence-status exploratory">证据状态 · 探索性</span></header>
     <section class="report-section report-conclusion"><span class="section-kicker">先看结论</span><h3>低换手仍有历史条件相关性，但还不能当作已确认的独立溢价。</h3><p>在 2019 年 5 月至 2026 年 6 月的共同样本中，低换手减高换手的月均差值约为 1.38%。控制规模后没有消失，加入低波动后收窄到约 0.86%，加入现有控制变量后约为 1.21%。联合截面回归显示，低换手得分每高一个标准差，下一期收益条件均值平均高约 0.60 个百分点。</p><p>这些结果说明低换手有助于区分历史上的后续收益。它们同时可能混合了低波动、交易活跃度、流动性风险和高换手股票的反转表现。一个月的前瞻持有期和当前组合成本结果，还不足以证明可以稳定交易。</p></section>
     <section class="stat-grid report-stats"><article class="stat accent"><span>共同样本</span><strong>86 个月</strong><small>2019-05 至 2026-06</small></article><article class="stat"><span>原始低减高</span><strong>+1.38%</strong><small>月均收益差</small></article><article class="stat"><span>加入低波动</span><strong>+0.86%</strong><small>月均收益差</small></article><article class="stat"><span>联合回归</span><strong>+0.60%</strong><small>每个标准差的条件均值</small></article><article class="stat"><span>前瞻样本</span><strong>1 个月</strong><small>尚不能判断长期重复性</small></article></section>
     <section class="report-section"><span class="section-kicker">关键数字</span><h3>控制变量会改变差值的大小</h3><div class="report-bars" aria-label="不同控制阶段的月均低换手减高换手收益差"><div class="report-bar"><span>原始信号</span><i style="--bar-width: 100%"></i><strong>1.38%</strong></div><div class="report-bar"><span>控制规模</span><i style="--bar-width: 100%"></i><strong>1.63%</strong></div><div class="report-bar"><span>加入低波动</span><i style="--bar-width: 53%"></i><strong>0.86%</strong></div><div class="report-bar"><span>加入现有控制</span><i style="--bar-width: 74%"></i><strong>1.21%</strong></div></div></section>
     <section class="report-section"><span class="section-kicker">怎么理解这个因子</span><h3>低换手更像一个信息集合</h3><div class="research-grid"><article class="research-card"><h3>低波动</h3><p>低换手与低波动的历史收益序列相关性较高。控制低波动后差值明显收窄，说明两者有一部分共同信息。</p></article><article class="research-card"><h3>交易活跃度</h3><p>换手率、成交额和 Amihud 指标描述交易环境的不同侧面。控制它们后，排序信息会变化，也可能把低换手的构成部分一起控制掉。</p></article><article class="research-card"><h3>高换手反转</h3><p>早期结果中，高换手端表现较差。收益可能主要来自避开拥挤和投机交易，而不是最低换手端持续上涨。</p></article></div></section>
     <section class="report-section"><span class="section-kicker">证据边界</span><h3>当前结果需要按三个问题阅读</h3><ol class="report-list"><li><strong>样本是什么。</strong> 最新共同样本包含正市盈率股票，不能直接代表全部 A 股。</li><li><strong>形成时知道什么。</strong> 分组前删除未来缺价股票会改变组合名单，组合检验必须先固定形成日名单和权重。</li><li><strong>能不能成交。</strong> 低换手组合的理论多空收益明显高于扣成本多头结果，停牌、涨跌停、成交额和冲击成本需要统一账本验证。</li></ol></section>
     <section class="report-section report-next"><span class="section-kicker">下一步</span><h3>先验证增量价值，再扩展机制解释</h3><p>固定同一股票池、同一份额账本和成本设定，比较基准组合、剔除最高换手组和偏向低换手组。随后把 1 日、20 日和 60 日换手拆开，区分长期低换手与短期异常放量。所有前瞻检验在持有期开始前登记代码版本、输入快照、名单、权重和评价指标。</p></section>
-    <LowTurnoverExecutionEvidence client:load />
+    <span id="research-method" class="anchor-target"></span><LowTurnoverExecutionEvidence client:load />
     <nav class="report-links" aria-label="低换手研究资料"><a class="button-link" href={docsUrl}>阅读完整方法说明 ↗</a><a class="button-link secondary" href={withBase("/research/style-factors-18y/", base)}>查看 18 年风格因子 ↗</a></nav>
   </article>
 </SiteLayout>

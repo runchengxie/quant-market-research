@@ -1,0 +1,12 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { publicPages } from "../../content/public-registry";
+import { withBase } from "../../lib/routes";
+const pages = publicPages.filter((page) => page.section === "research" && page.topic);
+---
+<SiteLayout title="研究专题" description="按研究问题浏览公开研究专题。" section="research">
+  <section class="theme-heading"><div><span class="section-kicker">研究专题</span><h1>从研究问题进入数据与图表</h1><p>每个专题先展示主要发现，再说明覆盖日期、数据口径、计算方法与尚未完成的核验。</p></div></section>
+  <div class="research-grid directory-grid">
+    {pages.map((page) => <a class="research-card" href={withBase(page.route, import.meta.env.BASE_URL)}><span class="section-kicker">{page.topic}</span><h2>{page.title}</h2><p>{page.summary}</p><b>进入专题 →</b></a>)}
+  </div>
+</SiteLayout>

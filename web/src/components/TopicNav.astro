@@ -1,0 +1,6 @@
+---
+import { visibleSections, type TopicSection } from '../lib/topic-sections';
+const { sections } = Astro.props as { sections: readonly TopicSection[] };
+const visible = visibleSections(sections);
+---
+{visible.length > 1 && <nav class="topic-nav" aria-label="本页目录"><span>本页目录</span>{visible.map((section) => <a href={`#${section.id}`}>{section.label}</a>)}</nav>}

@@ -1,0 +1,29 @@
+---
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { readPublicDocuments } from '../../content/public-docs-loader';
+import { expandPublicFragments } from '../../content/public-fragments.server';
+import { readFactorRecords } from '../../content/factor-records.server';
+import { publicDocs } from '../../content/public-registry';
+import { publicDocsTransform } from '../../content/rehype-public-docs';
+import { legacyAnchorMap } from '../../content/legacy-anchor-map';
+import { resolve } from 'node:path';
+
+export async function getStaticPaths() {
+  return publicDocs.map((doc) => ({ params: { slug: doc.slug || undefined }, props: { id: doc.id } }));
+}
+
+const { id } = Astro.props;
+const repoRoot = resolve(process.cwd(), '..');
+const documents = await readPublicDocuments(repoRoot);
+const document = documents.find((item) => item.meta.id === id);
+if (!document) throw new Error(`public document not found: ${id}`);
+const records = await readFactorRecords(repoRoot);
+const processor = await createMarkdownProcessor({ rehypePlugins: [[publicDocsTransform, import.meta.env.BASE_URL]] });
+const rendered = await processor.render(expandPublicFragments(document.body, records), { fileURL: new URL(`../../../../${document.meta.source}`, import.meta.url) });
+const legacyIds = legacyAnchorMap[document.meta.source] ?? [];
+let headingIndex = 0;
+const html = rendered.code.replace(/(<h[1-6]\b[^>]*\bid=")[^"]+("[^>]*>)/g, (whole, prefix, suffix) => legacyIds[headingIndex++] ? `${prefix}${legacyIds[headingIndex - 1]}${suffix}` : whole);
+const headings = rendered.metadata.headings.map((heading, index) => legacyIds[index] ? { ...heading, slug: legacyIds[index] } : heading);
+---
+<ArticleLayout meta={document.meta} html={html} headings={headings} />

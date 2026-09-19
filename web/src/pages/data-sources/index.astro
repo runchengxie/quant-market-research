@@ -1,0 +1,12 @@
+---
+import SiteLayout from "../../layouts/SiteLayout.astro";
+import { readFile } from "node:fs/promises";
+import { resolve } from "node:path";
+import { snapshotCards } from "../../lib/data-catalog";
+const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
+const cards = snapshotCards(manifest);
+---
+<SiteLayout title="数据与版本" description="公开数据快照、覆盖日期和生成版本。" section="data">
+  <section class="theme-heading"><div><span class="section-kicker">数据与版本</span><h1>每份公开快照都有自己的日期和边界</h1><p>生成日期不等于数据覆盖结束日期。缺少日期保持为未提供，不用构建时间补齐。</p></div></section>
+  <div class="data-catalog">{cards.map((card) => <article class="panel data-card"><div class="panel-title"><h2>{card.id}</h2><span class={`status-badge ${card.status}`}>{card.status}</span></div><p>{card.source}</p><dl><div><dt>生成</dt><dd>{card.generatedAt ?? "未提供"}</dd></div><div><dt>覆盖</dt><dd>{card.coverageStart ?? "未提供"} — {card.coverageEnd ?? "未提供"}</dd></div></dl>{card.caveats.length > 0 && <ul>{card.caveats.map((caveat) => <li>{caveat}</li>)}</ul>}</article>)}</div>
+</SiteLayout>
