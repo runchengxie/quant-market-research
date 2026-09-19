@@ -65,15 +65,14 @@ jobs:
           npx playwright install --with-deps chromium
           npm run e2e
 
-      - name: Verify public documentation assets
+      - name: Verify public documentation and static artifacts
         run: |
-          test -s web/dist/docs/css/base.css
-          test -s web/dist/docs/css/bootstrap.min.css
-          test -s web/dist/docs/js/base.js
-          test -s web/dist/docs/img/favicon.ico
-          test -s web/dist/docs/webfonts/fa-solid-900.woff2
-          test -s web/dist/docs/search/main.js
-          test -s web/dist/docs/assets/docs.css
+          test -s web/dist/docs/index.html
+          test -s web/dist/docs/research/factors/barra-factor-dictionary/index.html
+          test -s web/dist/docs/research/factors/low-turnover/index.html
+          test -s web/dist/search/index.html
+          test -s web/dist/search-index.json
+          test -s web/dist/.nojekyll
 
       - name: Scan public output for local paths and secrets
         run: |
