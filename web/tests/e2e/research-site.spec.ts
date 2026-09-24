@@ -74,8 +74,32 @@ test("PB/ROE topic links to the reviewed evidence and discloses its scope", asyn
   await page.goto("research/");
   await page.getByRole("link", { name: /PB 与 ROE 历史对照/ }).click();
   await expect(page.locator(".theme-heading p")).toContainText("数据截至 2026-08-31");
-  await expect(page.getByText("不是严格纯 PB 组合", { exact: false })).toBeVisible();
+  await expect(page.getByText("不能当作严格纯 PB 组合", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: /阅读完整数据与方法/ })).toHaveAttribute("href", /\/docs\/research\/factors\/pb-roe\//);
+});
+
+test("PB/ROE charts separate the shared pool from the quality audit", async ({ page }) => {
+  await page.goto("research/factors/pb-roe/");
+  const ranking = page.locator('figure[aria-labelledby="ranking-chart-title"]');
+  const quality = page.locator('figure[aria-labelledby="quality-chart-title"]');
+  await expect(ranking.locator(".evidence-chart-row")).toHaveCount(5);
+  await expect(ranking).toContainText("12.05%");
+  await expect(ranking).toContainText("46.74%");
+  await expect(quality.locator(".evidence-chart-row")).toHaveCount(2);
+  await expect(quality).toContainText("48.26%");
+  await expect(page.locator('figure[aria-labelledby="universe-chart-title"]')).toContainText("658,311");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();
+});
+
+test("low-turnover charts show uncertainty and snapshot-driven execution limits", async ({ page }) => {
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("research/factors/low-turnover/");
+  const controls = page.locator('figure[aria-labelledby="control-chart-title"]');
+  await expect(controls.locator(".interval-row")).toHaveCount(4);
+  await expect(controls).toContainText("0.57–1.18%");
+  await expect(page.locator('figure[aria-labelledby="capacity-chart-title"]')).toBeVisible();
+  await expect(page.locator('figure[aria-labelledby="window-chart-title"] .evidence-chart-row')).toHaveCount(3);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();
 });
 
 test("microcap research loads its public data and theme control works", async ({ page }) => {

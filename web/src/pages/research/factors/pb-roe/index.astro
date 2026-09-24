@@ -2,15 +2,37 @@
 import SiteLayout from "../../../../layouts/SiteLayout.astro";
 import TopicNav from "../../../../components/TopicNav.astro";
 import { withBase } from "../../../../lib/routes";
+
 const base = import.meta.env.BASE_URL ?? "/";
+const rankings = [
+  { label: "仅用 PB 排序", annual: 12.05, excess: 7.25, drawdown: 46.74, ratio: 0.66 },
+  { label: "PB + 静态 ROE", annual: 9.06, excess: 4.27, drawdown: 45.40, ratio: 0.42 },
+  { label: "PB + ROE 变化", annual: 11.59, excess: 6.80, drawdown: 46.98, ratio: 0.65 },
+  { label: "质量调整 PB 残差", annual: 12.01, excess: 7.21, drawdown: 47.26, ratio: 0.67 },
+  { label: "PB 残差 + ROE 变化", annual: 11.66, excess: 6.87, drawdown: 47.02, ratio: 0.65 },
+];
+const quality = [
+  { label: "三项条件关闭", annual: 7.56, excess: 2.69, drawdown: 44.60, ratio: 0.19 },
+  { label: "三项条件开启", annual: 12.40, excess: 7.53, drawdown: 48.26, ratio: 0.69 },
+];
 ---
 <SiteLayout title="PB 与 ROE 历史对照" description="PB 与 ROE 的历史配对结果、候选池审计和证据边界。" section="research">
-  <TopicNav sections={[{ id: "topic-content", label: "主要发现", available: true }, { id: "research-method", label: "数据与限制", available: true }]} />
-  <article id="topic-content" class="research-report">
+  <TopicNav sections={[{ id: "topic-content", label: "主要发现", available: true }, { id: "ranking-evidence", label: "同池排序", available: true }, { id: "quality-evidence", label: "候选池审计", available: true }, { id: "research-method", label: "数据与限制", available: true }]} />
+  <article id="topic-content" class="research-report pbroe-report">
     <header class="theme-heading"><div><span class="section-kicker">因子与风格 · 历史实验</span><h1>PB 与 ROE：历史对照与证据边界</h1><p>把估值排序、盈利能力条件与候选池变化分开阅读。以下是已核对源结果的公开汇总，数据截至 2026-08-31。</p></div><span class="evidence-status exploratory">证据状态 · 探索性</span></header>
     <section class="report-section report-conclusion"><span class="section-kicker">先看发现</span><h3>在同一候选池内，加入静态 ROE 没有改善这组历史排序。</h3><p>2010-01-29 至 2026-08-31 的月末面板上，50 只股票组合的 PB 排序年化收益为 12.05%，PB 加静态 ROE 为 9.06%；对应信息比率分别为 0.66 和 0.42。ROE 变化与质量变量调整后的 PB 残差也未显示明确增量。这是特定定义与样本下的观察，不能推断 ROE 普遍无效。</p></section>
     <section class="stat-grid report-stats"><article class="stat accent"><span>PB 排序</span><strong>12.05%</strong><small>同池历史年化收益</small></article><article class="stat"><span>PB + 静态 ROE</span><strong>9.06%</strong><small>同池历史年化收益</small></article><article class="stat"><span>质量条件审计</span><strong>+46,803</strong><small>去掉 ROE 非空要求后新增股票月记录</small></article></section>
-    <section class="report-section"><span class="section-kicker">如何比较</span><h3>先固定候选池，再比较排序</h3><p>五种排序共用候选池、日频近似执行器、费用规则及中证全指全收益基准。表中“PB 排序”只表示排名时仅使用 PB；基础资格仍要求 ROE 可计算，因而不是严格纯 PB 组合。五种排序的完整收益、超额、回撤和信息比率见方法页。</p><p>单独的质量审计取消了 ROE 非空要求，候选股票月记录从 611,508 增至 658,311。三项质量条件同时开关时，历史年化收益从 7.56% 变为 12.40%，最大回撤也从 44.60% 加深至 48.26%。这个实验同时改变多项条件，不能把差异归因于某一个过滤项，也不能与同池排序结果直接拼接。</p></section>
+
+    <section id="ranking-evidence" class="report-section"><span class="section-kicker">同池排序对照</span><h3>五种排序，四项指标一起看</h3><p>下图只比较同一候选池、50 只股票、相同费用和日频近似执行规则下的五种排序。柱长代表组合年化收益；年化超额相对于中证全指全收益，回撤为组合净值的历史最大回撤。每行的数值都直接标出，柱长不表示预测区间。</p>
+      <figure class="evidence-figure" aria-labelledby="ranking-chart-title"><figcaption id="ranking-chart-title">五种排序的历史年化收益与风险 · 2010-01-29 至 2026-08-31</figcaption><div class="evidence-chart-head"><span>排序方式</span><span>组合年化收益 · 0–14%</span><span>年化超额 / 信息比率 / 最大回撤</span></div><div class="evidence-chart-rows">{rankings.map((row) => <div class="evidence-chart-row"><span class="evidence-chart-label">{row.label}</span><div class="evidence-chart-measure"><div class="evidence-bar-track"><span class:list={["evidence-bar-fill", { muted: row.label !== "仅用 PB 排序" }]} style={`width: ${row.annual / 14 * 100}%`}></span></div><strong>{row.annual.toFixed(2)}%</strong></div><small>超额 {row.excess.toFixed(2)}% <span aria-hidden="true">·</span> IR {row.ratio.toFixed(2)} <span aria-hidden="true">·</span> 回撤 {row.drawdown.toFixed(2)}%</small></div>)}</div><p class="evidence-figure-note">“仅用 PB 排序”仅指排序信号；基础资格仍要求 ROE 可计算，不能当作严格纯 PB 组合。</p></figure>
+    </section>
+
+    <section id="quality-evidence" class="report-section"><span class="section-kicker">不同候选池的审计</span><h3>ROE 缺失与质量条件会改变样本</h3><p>取消 ROE 非空资格后，合格股票月记录由 611,508 增至 658,311，新增 46,803 条，占扩大后样本的 7.11%。这里的股票月记录数不等于独立股票数量，也不等于组合持仓数量。</p>
+      <figure class="evidence-figure" aria-labelledby="universe-chart-title"><figcaption id="universe-chart-title">ROE 可用性对候选股票月记录数的影响</figcaption><div class="evidence-chart-rows"><div class="evidence-chart-row"><span class="evidence-chart-label">要求 ROE 非空</span><div class="evidence-chart-measure"><div class="evidence-bar-track"><span class="evidence-bar-fill muted" style="width: 92.89%"></span></div><strong>611,508</strong></div><small>原基础资格</small></div><div class="evidence-chart-row"><span class="evidence-chart-label">允许 ROE 缺失</span><div class="evidence-chart-measure"><div class="evidence-bar-track"><span class="evidence-bar-fill" style="width: 100%"></span></div><strong>658,311</strong></div><small>扩大后候选池 · +7.11%</small></div></div></figure>
+      <p>在扩大后的候选范围内，另一项实验同时开关商誉、杠杆和营收三项质量条件。下图中的收益与回撤属于该实验，不能和上面的五种同池排序直接相减或解释为单项条件的贡献。</p>
+      <figure class="evidence-figure" aria-labelledby="quality-chart-title"><figcaption id="quality-chart-title">三项质量条件同时开关的历史结果</figcaption><div class="evidence-chart-head"><span>质量条件</span><span>组合年化收益 · 0–14%</span><span>年化超额 / 信息比率 / 最大回撤</span></div><div class="evidence-chart-rows">{quality.map((row) => <div class="evidence-chart-row"><span class="evidence-chart-label">{row.label}</span><div class="evidence-chart-measure"><div class="evidence-bar-track"><span class:list={["evidence-bar-fill", { muted: row.label.includes("关闭") }]} style={`width: ${row.annual / 14 * 100}%`}></span></div><strong>{row.annual.toFixed(2)}%</strong></div><small>超额 {row.excess.toFixed(2)}% <span aria-hidden="true">·</span> IR {row.ratio.toFixed(2)} <span aria-hidden="true">·</span> 回撤 {row.drawdown.toFixed(2)}%</small></div>)}</div><p class="evidence-figure-note">条件开启时收益更高，最大回撤也从 44.60% 加深至 48.26%；三项条件同时变化，不能作单变量因果解释。</p></figure>
+    </section>
+
     <section id="research-method" class="report-section report-next"><span class="section-kicker">数据与限制</span><h3>结果已经核对，完整实验仍需独立复现</h3><p>数据截至 2026-08-31；公开汇总已对照私有源项目的结果 CSV、运行清单及审计记录。源代码、原始数据和完整产物未公开，本站没有独立重跑完整历史。财报公告可见时间尚未逐份独立核查；历史区间已参与研究探索，不能视作严格样本外。收盘价近似执行尚未覆盖完整冲击成本与真实成交回放。</p><p>这些结果只用于描述历史研究，不支持直接替换生产策略或据此交易。</p></section>
     <nav class="report-links" aria-label="PB 与 ROE 研究资料"><a class="button-link" href={withBase("/docs/research/factors/pb-roe/", base)}>阅读完整数据与方法 ↗</a><a class="button-link secondary" href={withBase("/research/style-factors-18y/", base)}>查看风格因子研究 ↗</a></nav>
   </article>
