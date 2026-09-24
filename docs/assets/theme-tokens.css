@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Serif+SC:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@500;600;700&display=swap');
 
 :root {
   color-scheme: light;
@@ -19,9 +19,9 @@
   --chart-label: #514b43;
   --chart-tooltip: #252525;
   --table-hover: #f0e9df;
-  --font-body: Manrope, "Noto Sans SC", sans-serif;
-  --font-heading: "Noto Serif SC", serif;
-  --font-mono: "DM Mono", monospace;
+  --font-body: Manrope, "Noto Sans SC", "Source Han Sans CN", "PingFang SC", sans-serif;
+  --font-heading: "Noto Serif SC", "Source Han Serif CN", "Songti SC", serif;
+  --font-mono: "DM Mono", "Noto Sans SC", "Source Han Sans CN", monospace;
 }
 
 [data-bs-theme="dark"],

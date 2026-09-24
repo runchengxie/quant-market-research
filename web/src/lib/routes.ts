@@ -8,6 +8,7 @@ export const PUBLIC_ROUTES = {
   styleFactors: "/research/style-factors-18y/",
   liquidity: "/research/liquidity/",
   lowTurnover: "/research/factors/low-turnover/",
+  pbRoe: "/research/factors/pb-roe/",
 } as const;
 
 export const LEGACY_HASH_ROUTES: Record<string, string> = {

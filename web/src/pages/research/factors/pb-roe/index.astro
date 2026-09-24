@@ -1,0 +1,17 @@
+---
+import SiteLayout from "../../../../layouts/SiteLayout.astro";
+import TopicNav from "../../../../components/TopicNav.astro";
+import { withBase } from "../../../../lib/routes";
+const base = import.meta.env.BASE_URL ?? "/";
+---
+<SiteLayout title="PB 与 ROE 历史对照" description="PB 与 ROE 的历史配对结果、候选池审计和证据边界。" section="research">
+  <TopicNav sections={[{ id: "topic-content", label: "主要发现", available: true }, { id: "research-method", label: "数据与限制", available: true }]} />
+  <article id="topic-content" class="research-report">
+    <header class="theme-heading"><div><span class="section-kicker">因子与风格 · 历史实验</span><h1>PB 与 ROE：历史对照与证据边界</h1><p>把估值排序、盈利能力条件与候选池变化分开阅读。以下是已核对源结果的公开汇总，数据截至 2026-08-31。</p></div><span class="evidence-status exploratory">证据状态 · 探索性</span></header>
+    <section class="report-section report-conclusion"><span class="section-kicker">先看发现</span><h3>在同一候选池内，加入静态 ROE 没有改善这组历史排序。</h3><p>2010-01-29 至 2026-08-31 的月末面板上，50 只股票组合的 PB 排序年化收益为 12.05%，PB 加静态 ROE 为 9.06%；对应信息比率分别为 0.66 和 0.42。ROE 变化与质量变量调整后的 PB 残差也未显示明确增量。这是特定定义与样本下的观察，不能推断 ROE 普遍无效。</p></section>
+    <section class="stat-grid report-stats"><article class="stat accent"><span>PB 排序</span><strong>12.05%</strong><small>同池历史年化收益</small></article><article class="stat"><span>PB + 静态 ROE</span><strong>9.06%</strong><small>同池历史年化收益</small></article><article class="stat"><span>质量条件审计</span><strong>+46,803</strong><small>去掉 ROE 非空要求后新增股票月记录</small></article></section>
+    <section class="report-section"><span class="section-kicker">如何比较</span><h3>先固定候选池，再比较排序</h3><p>五种排序共用候选池、日频近似执行器、费用规则及中证全指全收益基准。表中“PB 排序”只表示排名时仅使用 PB；基础资格仍要求 ROE 可计算，因而不是严格纯 PB 组合。五种排序的完整收益、超额、回撤和信息比率见方法页。</p><p>单独的质量审计取消了 ROE 非空要求，候选股票月记录从 611,508 增至 658,311。三项质量条件同时开关时，历史年化收益从 7.56% 变为 12.40%，最大回撤也从 44.60% 加深至 48.26%。这个实验同时改变多项条件，不能把差异归因于某一个过滤项，也不能与同池排序结果直接拼接。</p></section>
+    <section id="research-method" class="report-section report-next"><span class="section-kicker">数据与限制</span><h3>结果已经核对，完整实验仍需独立复现</h3><p>数据截至 2026-08-31；公开汇总已对照私有源项目的结果 CSV、运行清单及审计记录。源代码、原始数据和完整产物未公开，本站没有独立重跑完整历史。财报公告可见时间尚未逐份独立核查；历史区间已参与研究探索，不能视作严格样本外。收盘价近似执行尚未覆盖完整冲击成本与真实成交回放。</p><p>这些结果只用于描述历史研究，不支持直接替换生产策略或据此交易。</p></section>
+    <nav class="report-links" aria-label="PB 与 ROE 研究资料"><a class="button-link" href={withBase("/docs/research/factors/pb-roe/", base)}>阅读完整数据与方法 ↗</a><a class="button-link secondary" href={withBase("/research/style-factors-18y/", base)}>查看风格因子研究 ↗</a></nav>
+  </article>
+</SiteLayout>

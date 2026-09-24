@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-for (const route of ['research/cashflow/', 'research/cashflow/recovery/', 'research/microcap/', 'research/microcap/cross-market-liquidity/', 'research/indices/', 'research/liquidity/', 'research/factors/low-turnover/']) {
+for (const route of ['research/cashflow/', 'research/cashflow/recovery/', 'research/microcap/', 'research/microcap/cross-market-liquidity/', 'research/indices/', 'research/liquidity/', 'research/factors/low-turnover/', 'research/factors/pb-roe/']) {
   test(`${route} has a single readable heading and topic navigation`, async ({ page }) => {
     await page.goto(route);
     await expect(page.locator('main h1')).toHaveCount(1);

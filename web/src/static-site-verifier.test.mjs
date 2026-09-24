@@ -15,6 +15,7 @@ const routes = [
   ["research/style-factors-18y/index.html", "18 年 A 股风格因子研究"],
   ["research/liquidity/index.html", "跨市场流动性"],
   ["research/factors/low-turnover/index.html", "低换手因子：它保留了什么信息？"],
+  ["research/factors/pb-roe/index.html", "PB 与 ROE：历史对照与证据边界"],
   ["research/index.html", "从研究问题进入数据与图表"],
   ["data-sources/index.html", "每份公开快照都有自己的日期和边界"],
   ["search/index.html", "搜索研究、方法与因子定义"],

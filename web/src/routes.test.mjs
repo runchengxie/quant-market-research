@@ -13,6 +13,7 @@ test("public routes and legacy hashes preserve every existing research entry", (
     "/research/style-factors-18y/",
     "/research/liquidity/",
     "/research/factors/low-turnover/",
+    "/research/factors/pb-roe/",
   ]);
 
   for (const hash of ["", "#overview", "#cashflow", "#cashflow-recovery", "#microcap", "#microcap-recovery", "#cross-market", "#style", "#style-factors-18y", "#indices", "#liquidity", "#low-turnover"]) {
