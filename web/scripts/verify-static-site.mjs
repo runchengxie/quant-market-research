@@ -19,6 +19,7 @@ const routes = [
   ["search/index.html", "搜索研究、方法与因子定义"],
   ["docs/research-closeout-status/index.html", "研究收口状态"],
   ["docs/research/factors/low-turnover/index.html", "低换手：它可能反映哪些特征"],
+  ["docs/research/factors/pb-roe/index.html", "PB 与 ROE：怎样比较估值和盈利能力"],
   ["docs/research/factors/microcap/index.html", "微盘股：收益证据与水下时间"],
   ["docs/research/factors/smallcap-turnover-history/index.html", "小市值成交活跃度补充"],
   ["docs/research/factors/barra-factor-dictionary/index.html", "Barra 风格因子字典"],

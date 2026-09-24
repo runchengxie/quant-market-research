@@ -6,6 +6,7 @@
 
 ## 因子研究
 
+- [PB 与 ROE：怎样比较估值和盈利能力](research/factors/pb-roe.md)：说明联合比较的点时数据、共同股票池和收益口径要求。
 - [低换手：它可能反映哪些特征](research/factors/low-turnover.md)：介绍代理变量、逐步归因、组内排序、可交易性和下一轮检验。
 - [微盘股：收益证据与水下时间](research/factors/microcap.md)：介绍最小市值组合的回撤、长期未创新高、早年数据限制和审计路线。
 - [2008–2014 年小市值成交活跃度补充](research/factors/smallcap-turnover-history.md)：记录早年 Tushare 日频成交额统计和数据边界。

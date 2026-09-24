@@ -18,6 +18,7 @@ exclude_docs: |
   !/index.md
   !/research-closeout-status.md
   !/research/factors/low-turnover.md
+  !/research/factors/pb-roe.md
   !/research/factors/microcap.md
   !/research/factors/smallcap-turnover-history.md
   !/research/factors/barra-factor-dictionary.md
@@ -34,6 +35,7 @@ nav:
   - 研究说明: index.md
   - 因子研究:
       - 研究收口状态: research-closeout-status.md
+      - PB 与 ROE: research/factors/pb-roe.md
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md
       - 小市值成交活跃度补充: research/factors/smallcap-turnover-history.md
