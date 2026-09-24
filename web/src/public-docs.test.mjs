@@ -14,6 +14,6 @@ test('public markdown links keep the Pages base and encoded anchors', () => {
 test('reader only opens the explicit public document allowlist', async () => {
   const repoRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)));
   const docs = await readPublicDocuments(repoRoot);
-  assert.equal(docs.length, 7);
+  assert.equal(docs.length, 8);
   assert.ok(docs.every((doc) => !doc.body.includes('INTERNAL_ONLY_SENTINEL')));
 });
