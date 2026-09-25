@@ -4,6 +4,14 @@ import pandas as pd
 import pytest
 
 
+@pytest.fixture(autouse=True)
+def dated_st_manifest(tmp_path: Path):
+    (tmp_path / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
+
+
 def test_a_share_adapter_converts_units_and_filters(tmp_path: Path):
     from market_research.markets.a_share import build_a_share_panel
 

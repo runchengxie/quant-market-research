@@ -25,6 +25,10 @@ def write_source(root, frame):
     root.mkdir(exist_ok=True)
     # Partition filenames need not equal the security identifier.
     frame.to_parquet(root / "part-000.parquet", index=False)
+    (root / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
 
 
 @pytest.mark.parametrize("engine", [False, True], ids=["pandas", "duckdb"])
@@ -103,6 +107,10 @@ def test_retention_honors_as_of_and_never_fills_missing_price(tmp_path, engine):
 def test_symbols_fall_back_to_filename_only_without_ts_code(tmp_path, engine):
     frame = source_rows().loc[lambda x: x.ts_code.eq("000001.SZ")].drop(columns="ts_code")
     frame.to_parquet(tmp_path / "000001.SZ.parquet", index=False)
+    (tmp_path / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
     panel, _ = build_a_share_panel(tmp_path, use_duckdb=engine)
     assert panel.symbol.unique().tolist() == ["000001.SZ"]
 
@@ -110,6 +118,10 @@ def test_symbols_fall_back_to_filename_only_without_ts_code(tmp_path, engine):
 def test_pandas_uses_actual_security_code_even_for_single_file(tmp_path):
     source = tmp_path / "part-000.parquet"
     source_rows().to_parquet(source, index=False)
+    (tmp_path / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
     panel, _ = build_a_share_panel(source)
     assert set(panel.symbol) == {"000001.SZ", "000002.SZ"}
 
@@ -117,6 +129,10 @@ def test_pandas_uses_actual_security_code_even_for_single_file(tmp_path):
 def test_normalize_preserves_extra_columns_flags_and_attrs(tmp_path):
     # Use one security so the original loader can supply valid canonical data.
     source_rows().iloc[:3].to_parquet(tmp_path / "000001.SZ.parquet", index=False)
+    (tmp_path / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
     panel, metadata = build_a_share_panel(tmp_path)
     panel["is_st"] = pd.Series([False, True, pd.NA], dtype="boolean")
     panel["formation_audit"] = ["known", "known", "unknown"]
@@ -204,3 +220,16 @@ def test_default_loader_keeps_legacy_metadata_status(tmp_path, engine):
     write_source(tmp_path, source_rows())
     _, metadata = build_a_share_panel(tmp_path, use_duckdb=engine)
     assert metadata.quality_status == "verified"
+
+
+@pytest.mark.parametrize("engine", [False, True])
+def test_missing_st_lineage_is_not_verified(tmp_path, engine):
+    write_source(tmp_path, source_rows())
+    (tmp_path / "manifest.yml").unlink()
+    with pytest.raises(ValueError, match="dated ST history"):
+        build_a_share_panel(tmp_path, use_duckdb=engine)
+    retained, _ = build_a_share_panel(
+        tmp_path, use_duckdb=engine, retain_ineligible_quotes=True
+    )
+    assert not retained["is_tradable"].any()
+    assert retained["is_st"].isna().all()

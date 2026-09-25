@@ -4,6 +4,13 @@ import json
 import pandas as pd
 
 
+def _dated_st_manifest(root: Path) -> None:
+    (root / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
+
+
 def test_cli_help_returns_success():
     from market_research.cli import main
 
@@ -22,6 +29,7 @@ def test_barra_report_writes_summary_and_size_quantiles(tmp_path: Path):
 
     source = tmp_path / "a_share"
     source.mkdir()
+    _dated_st_manifest(source)
     for code, prices, cap in [("000001.SZ", [10, 11], 1), ("000002.SZ", [20, 21], 2)]:
         pd.DataFrame(
             {
@@ -59,6 +67,7 @@ def test_barra_risk_input_report_writes_pit_panels(tmp_path: Path):
 
     source = tmp_path / "a_share"
     source.mkdir()
+    _dated_st_manifest(source)
     for code, prices, cap in [
         ("000001.SZ", [10, 11, 12], 1),
         ("000002.SZ", [20, 18, 21], 2),
@@ -98,6 +107,7 @@ def test_smallcap_turnover_report_writes_daily_stats_and_summary(tmp_path: Path)
 
     source = tmp_path / "a_share"
     source.mkdir()
+    _dated_st_manifest(source)
     for code, cap in [("000001.SZ", 1), ("000002.SZ", 2), ("000003.SZ", 3)]:
         pd.DataFrame(
             {

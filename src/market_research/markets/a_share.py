@@ -4,6 +4,7 @@ from pathlib import Path
 
 import numpy as np
 import pandas as pd
+import yaml
 
 from ..contracts import PanelMetadata, normalize_panel
 
@@ -25,24 +26,33 @@ def build_a_share_panel(
     quotes from rows that are ineligible for a new formation.
     """
     root = Path(data_root)
+    dated_st_source = _has_dated_st_source(root)
+    if not dated_st_source and not retain_ineligible_quotes:
+        raise ValueError("A-share formation requires validated dated ST history in manifest.yml")
     if use_duckdb and root.is_dir():
-        return _build_a_share_with_duckdb(root, as_of, fx_rate, retain_ineligible_quotes)
+        return _build_a_share_with_duckdb(
+            root, as_of, fx_rate, retain_ineligible_quotes, dated_st_source
+        )
     rows: list[pd.DataFrame] = []
     sources = [root] if root.is_file() else sorted(root.rglob("*.parquet"))
     for source in sources:
         frame = pd.read_parquet(source)
-        prepared = _prepare_quotes(frame, str(source), source.stem, as_of, retain_ineligible_quotes)
+        prepared = _prepare_quotes(
+            frame, str(source), source.stem, as_of, retain_ineligible_quotes, dated_st_source
+        )
         if not prepared.empty:
             rows.append(prepared)
     panel = pd.concat(rows, ignore_index=True) if rows else _empty_panel()
     metadata = _metadata(
-        panel, "Tushare A-share daily-clean", as_of, "CNY", fx_rate, retain_ineligible_quotes
+        panel, "Tushare A-share daily-clean", as_of, "CNY", fx_rate,
+        retain_ineligible_quotes, dated_st_source,
     )
     return normalize_panel(panel, metadata)
 
 
 def _build_a_share_with_duckdb(
-    root: Path, as_of: str | None, fx_rate: float | None, retain_ineligible_quotes: bool
+    root: Path, as_of: str | None, fx_rate: float | None,
+    retain_ineligible_quotes: bool, dated_st_source: bool,
 ) -> tuple[pd.DataFrame, PanelMetadata]:
     try:
         import duckdb
@@ -57,10 +67,13 @@ def _build_a_share_with_duckdb(
     with duckdb.connect() as connection:
         frame = connection.execute(query, [pattern]).fetchdf()
     fallback_symbols = frame["filename"].map(lambda filename: Path(filename).stem)
-    panel = _prepare_quotes(frame, str(root), fallback_symbols, as_of, retain_ineligible_quotes)
+    panel = _prepare_quotes(
+        frame, str(root), fallback_symbols, as_of, retain_ineligible_quotes,
+        dated_st_source,
+    )
     metadata = _metadata(
         panel, "Tushare A-share daily-clean DuckDB scan", as_of, "CNY", fx_rate,
-        retain_ineligible_quotes,
+        retain_ineligible_quotes, dated_st_source,
     )
     return normalize_panel(panel, metadata)
 
@@ -71,6 +84,7 @@ def _prepare_quotes(
     fallback_symbols: str | pd.Series,
     as_of: str | None,
     retain_ineligible_quotes: bool,
+    dated_st_source: bool,
 ) -> pd.DataFrame:
     if "trade_date" not in frame:
         return _empty_panel()
@@ -85,6 +99,8 @@ def _prepare_quotes(
             "true": True, "false": False, "1": True, "0": False,
             "1.0": True, "0.0": False,
         }).astype("boolean")
+    if not dated_st_source:
+        frame["is_st"] = pd.Series(pd.NA, index=frame.index, dtype="boolean")
     symbols = frame.get("ts_code", pd.Series(pd.NA, index=frame.index)).astype("string")
     symbols = symbols.str.strip()
     frame["symbol"] = symbols.where(symbols.notna() & symbols.ne(""), fallback_symbols)
@@ -127,13 +143,26 @@ def _empty_panel() -> pd.DataFrame:
     )
 
 
+def _has_dated_st_source(root: Path) -> bool:
+    directory = root.parent if root.is_file() else root
+    for candidate in (directory / "manifest.yml", directory.parent / "manifest.yml"):
+        if not candidate.is_file():
+            continue
+        manifest = yaml.safe_load(candidate.read_text(encoding="utf-8"))
+        if isinstance(manifest, dict):
+            inputs = manifest.get("inputs")
+            return isinstance(inputs, dict) and bool(inputs.get("st_history_file"))
+    return False
+
+
 def _metadata(
     panel: pd.DataFrame, source: str, as_of: str | None, currency: str,
     fx_rate: float | None, retain_ineligible_quotes: bool = False,
+    dated_st_source: bool = False,
 ) -> PanelMetadata:
     start = str(panel["date"].min()) if not panel.empty else None
     end = str(panel["date"].max()) if not panel.empty else None
-    quality_status = "verified" if not panel.empty else "incomplete"
+    quality_status = "verified" if not panel.empty and dated_st_source else "incomplete"
     if retain_ineligible_quotes:
         # Retaining quotes is not source validation. Known ineligible holding
         # rows are fine, but unknown eligibility evidence must remain visible.
@@ -143,7 +172,8 @@ def _metadata(
             and np.isfinite(panel[["turnover", "market_cap"]].to_numpy()).all()
         )
         quality_status = (
-            "derived" if eligibility_known and panel["is_tradable"].any() else "incomplete"
+            "derived" if dated_st_source and eligibility_known and panel["is_tradable"].any()
+            else "incomplete"
         )
     return PanelMetadata(
         source=source,
