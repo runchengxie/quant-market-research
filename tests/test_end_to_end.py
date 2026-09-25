@@ -3,11 +3,19 @@ from pathlib import Path
 import pandas as pd
 
 
+def _dated_st_manifest(root: Path) -> None:
+    (root / "manifest.yml").write_text(
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        encoding="utf-8",
+    )
+
+
 def test_liquidity_report_command_writes_bundle_for_configured_sources(tmp_path: Path):
     from market_research.cli import main
 
     a_share = tmp_path / "a_share"
     a_share.mkdir()
+    _dated_st_manifest(a_share)
     pd.DataFrame(
         {"trade_date": ["2026-01-01"], "amount": [1000.0], "total_mv": [5000.0], "is_st": [False], "is_suspended": [False]}
     ).to_parquet(a_share / "000001.SZ.parquet")
@@ -38,6 +46,7 @@ def test_microcap_report_command_writes_reconstruction_outputs(tmp_path: Path):
 
     a_share = tmp_path / "a_share"
     a_share.mkdir()
+    _dated_st_manifest(a_share)
     pd.DataFrame(
         {
             "trade_date": ["2026-01-01", "2026-01-02"],

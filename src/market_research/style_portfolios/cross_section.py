@@ -38,6 +38,11 @@ def build_quantile_returns(
     missing = required.difference(panel.columns)
     if missing:
         raise ValueError("missing panel columns: " + ", ".join(sorted(missing)))
+    if "market" in panel.columns and panel["market"].astype("string").str.lower().eq("a_share").any():
+        eligibility = {"is_tradable", "is_st", "is_suspended"}
+        absent = eligibility.difference(panel.columns)
+        if absent:
+            raise ValueError("A-share eligibility columns are required: " + ", ".join(sorted(absent)))
 
     # Internal names keep custom input columns independent of derived fields.
     frame = pd.DataFrame({
@@ -49,7 +54,7 @@ def build_quantile_returns(
     if frame.duplicated(["symbol", "date"]).any():
         raise ValueError("duplicate symbol/date rows in panel")
     for column, default in (("is_tradable", True), ("is_st", False), ("is_suspended", False)):
-        # Missing explicit eligibility information is treated conservatively.
+        # Null flags are ineligible; non-A-share generic panels may omit flags.
         frame[column] = (
             panel[column].fillna(column != "is_tradable").astype(bool)
             if column in panel else default

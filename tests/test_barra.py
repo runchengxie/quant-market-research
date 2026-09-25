@@ -65,6 +65,7 @@ def _panel() -> pd.DataFrame:
                     "date": date,
                     "adj_close": price,
                     "market_cap": float(i + 1),
+                    "is_st": False,
                     "is_suspended": False,
                     "is_tradable": True,
                 }

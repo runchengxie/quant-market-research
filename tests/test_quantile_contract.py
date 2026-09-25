@@ -23,6 +23,19 @@ def panel(n=10, periods=2):
     ])
 
 
+def test_a_share_formation_requires_explicit_eligibility_evidence():
+    frame = panel(4)
+    frame["market"] = "a_share"
+    with pytest.raises(ValueError, match="eligibility"):
+        build_quantile_returns(frame, "market_cap", quantiles=2)
+
+    frame["is_tradable"] = True
+    frame["is_st"] = False
+    frame["is_suspended"] = False
+    result = build_quantile_returns(frame, "market_cap", quantiles=2)
+    assert result["count"].sum() == 4
+
+
 def build(frame, entrypoint, quantiles=5, holding_period=1):
     if entrypoint == "barra":
         return analyze_size_monotonicity(frame, quantiles, holding_period)[0]
