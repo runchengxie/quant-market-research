@@ -27,3 +27,11 @@ uv run market-research --help
 - [文档首页](docs/index.md)：按主题查找研究和数据说明
 - [本地运行手册](docs/runbook-local.md)：配置数据、运行报告和网页检查
 - [兼容与职责说明](docs/compatibility.md)：查看仓库职责和迁移边界
+
+## 目录说明
+
+- `src/market_research/`：可复用的 Python 研究代码和命令行实现，包括研究计算模块。
+- `scripts/`：独立维护和数据整理脚本。
+- `studies/`：各项研究的配置、方法说明、复核记录和 notebook，不存放 Python 包代码。
+- `web/`：独立的 Astro 网站应用，有自己的源码、脚本、测试和依赖。
+- `docs/`：运行手册、数据说明和研究方法文档。
