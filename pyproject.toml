@@ -17,6 +17,7 @@ dependencies = [
 dev = ["pytest>=8", "ruff>=0.15.20,<0.16"]
 duckdb = ["duckdb>=1.1"]
 formal = [
+    "quant-backtest-runtime @ git+https://github.com/runchengxie/quant-backtest-runtime.git@c0dafefa2539fd3e0023daef9fd0fd8385c183c9 ; python_version >= '3.12'",
     "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@70073b9e3566125f00b74d094b9d5a9f08e51c49 ; python_version >= '3.12'",
     "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@70073b9e3566125f00b74d094b9d5a9f08e51c49#subdirectory=packages/research-contracts ; python_version >= '3.12'",
 ]
