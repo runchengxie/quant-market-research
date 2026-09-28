@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from dataclasses import asdict
 import hashlib
 import json
 from pathlib import Path
@@ -211,8 +212,8 @@ def run_diagnostic(
             encoding="utf-8",
         )
         raise
-    from portfolio_backtester.backends import SequencedExecutionBackend, SequencedExecutionRequest
     from portfolio_backtester.execution_sim import ExecutionSimConfig
+    from market_research.runtime_jobs import publish_verified_frames, run_sequenced_job
 
     config = ExecutionSimConfig(
         enabled=True, portfolio_value=1_000_000.0, participation_rate=0.05,
@@ -220,15 +221,12 @@ def run_diagnostic(
         buy_max_days=5, sell_max_days=10, enforce_t1=True,
         enforce_price_limits=True, limit_up_col="limit_up", limit_down_col="limit_down",
     )
-    result = SequencedExecutionBackend().run(SequencedExecutionRequest(
-        positions=positions, pricing=pricing, decision_clocks=clocks, config=config,
-        price_col="adj_close", tradable_col="tradable", limit_up_col="limit_up",
-        limit_down_col="limit_down", transaction_cost_bps=5.0,
-        price_basis="daily_clean.adjusted_close_proxy",
-    ))
     output_dir.mkdir(parents=True, exist_ok=True)
-    for name, frame in result.frames().items():
-        frame.to_parquet(output_dir / f"{name}.parquet", index=False)
+    result_dir, receipt = run_sequenced_job(
+        output_dir / ".runtime", "microcap", positions, pricing, clocks, asdict(config),
+        transaction_cost_bps=5.0,
+    )
+    publish_verified_frames(result_dir, output_dir)
     (output_dir / "decision_clocks.json").write_text(
         json.dumps(clocks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
@@ -238,7 +236,11 @@ def run_diagnostic(
     report: dict[str, object] = {
         "evidence_tier": "diagnostic", "constituent_count": constituent_count,
         "start": start, "end": end, "decision_count": len(clocks),
-        "terminal_nav": float(result.daily_ledger.nav.iloc[-1] / config.portfolio_value),
+        "terminal_nav": float(
+            pd.read_parquet(output_dir / "daily_ledger.parquet").nav.iloc[-1]
+            / config.portfolio_value
+        ),
+        "runtime_job_id": receipt["job_id"],
         "reason": "input release times, raw corporate actions and delisting cash settlement are unverified",
         "audit": audit,
         "source_sha256": {

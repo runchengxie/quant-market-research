@@ -572,6 +572,7 @@ duckdb = [
     { name = "duckdb" },
 ]
 formal = [
+    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12'" },
     { name = "quant-platform", marker = "python_full_version >= '3.12'" },
     { name = "research-contracts", marker = "python_full_version >= '3.12'" },
 ]
@@ -587,6 +588,7 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=17" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pyyaml", specifier = ">=6.0" },
+    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=c0dafefa2539fd3e0023daef9fd0fd8385c183c9" },
     { name = "quant-platform", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?rev=70073b9e3566125f00b74d094b9d5a9f08e51c49" },
     { name = "research-contracts", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=70073b9e3566125f00b74d094b9d5a9f08e51c49" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.15.20,<0.16" },
@@ -1167,6 +1169,14 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/eb/2e/79c822141bfd05a853236b504869ebc6b70159afc570e1d5a20641782eaa/pyyaml_env_tag-1.1.tar.gz", hash = "sha256:2eb38b75a2d21ee0475d6d97ec19c63287a7e140231e4214969d0eac923cd7ff", size = 5737, upload-time = "2025-05-13T15:24:01.64Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/04/11/432f32f8097b03e3cd5fe57e88efb685d964e2e5178a48ed61e841f7fdce/pyyaml_env_tag-1.1-py3-none-any.whl", hash = "sha256:17109e1a528561e32f026364712fee1264bc2ea6715120891174ed1b980d2e04", size = 4722, upload-time = "2025-05-13T15:23:59.629Z" },
+]
+
+[[package]]
+name = "quant-backtest-runtime"
+version = "0.1.0"
+source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=c0dafefa2539fd3e0023daef9fd0fd8385c183c9#c0dafefa2539fd3e0023daef9fd0fd8385c183c9" }
+dependencies = [
+    { name = "quant-platform" },
 ]
 
 [[package]]
