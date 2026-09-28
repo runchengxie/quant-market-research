@@ -83,12 +83,30 @@ def load_limit_rows(asset: Path, days: list[str]) -> pd.DataFrame:
     return result
 
 
+def delisting_watch_keys(namechange: pd.DataFrame, days: list[str]) -> set[tuple[str, str]]:
+    """Find delisting-period records effective and announced before each decision."""
+    required = {"ts_code", "change_reason", "start_date", "end_date", "ann_date"}
+    if missing := required - set(namechange):
+        raise ValueError(f"namechange asset is missing {sorted(missing)}")
+    events = namechange.loc[namechange.change_reason.eq("退市整理期")].copy()
+    for column in ("start_date", "end_date", "ann_date"):
+        events[column] = events[column].fillna("99999999").astype(str)
+    keys = set()
+    for day in days:
+        active = events.loc[
+            events.start_date.le(day) & events.end_date.ge(day) & events.ann_date.lt(day)
+        ]
+        keys.update((day, symbol) for symbol in active.ts_code.astype(str))
+    return keys
+
+
 def build_replay_inputs(
     panel: pd.DataFrame,
     limits: pd.DataFrame,
     suspensions: pd.DataFrame,
     *,
     constituent_count: int,
+    namechange: pd.DataFrame | None = None,
 ) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, dict[str, str]], dict[str, int]]:
     """Build targets and price marks, refusing unknown status and price gaps."""
     if missing := PANEL_COLUMNS - set(panel):
@@ -103,10 +121,15 @@ def build_replay_inputs(
     days = sorted(source.trade_date.unique().tolist())
     if len(days) < 3:
         raise ValueError("at least three market sessions are required")
+    watch_keys = delisting_watch_keys(namechange, days) if namechange is not None else set()
+    watched = pd.Series(
+        [(day, symbol) in watch_keys for day, symbol in zip(source.trade_date, source.ts_code, strict=True)],
+        index=source.index,
+    )
     listed = source.list_date.notna() & source.list_date.astype(str).le(source.trade_date)
     delisted = source.delist_date.notna() & source.delist_date.astype(str).le(source.trade_date)
     eligible = (
-        listed & ~delisted & source.is_st.eq(False).fillna(False)
+        listed & ~delisted & ~watched & source.is_st.eq(False).fillna(False)
         & source.is_suspended.eq(False).fillna(False)
         & source.total_mv.gt(0) & source.amount.gt(0)
         & source.close.gt(0) & source.adj_close.gt(0)
@@ -191,6 +214,7 @@ def build_replay_inputs(
 
 def run_diagnostic(
     *, daily_asset: Path, limit_asset: Path, instruments: Path, suspensions: Path,
+    namechange_asset: Path,
     output_dir: Path, start: str, end: str, constituent_count: int = 400,
 ) -> dict[str, object]:
     if output_dir.exists() and any(output_dir.iterdir()):
@@ -200,8 +224,9 @@ def run_diagnostic(
         days = sorted(panel.trade_date.astype(str).unique().tolist())
         limits = load_limit_rows(limit_asset, days)
         events = pd.read_parquet(suspensions, columns=["ts_code", "trade_date", "suspend_type"])
+        namechange = pd.read_parquet(namechange_asset)
         positions, pricing, clocks, audit = build_replay_inputs(
-            panel, limits, events, constituent_count=constituent_count
+            panel, limits, events, constituent_count=constituent_count, namechange=namechange
         )
     except (ValueError, FileNotFoundError) as error:
         output_dir.mkdir(parents=True, exist_ok=True)
@@ -232,7 +257,7 @@ def run_diagnostic(
     )
     sources = {"daily_manifest": daily_asset / "manifest.yml",
                "limit_manifest": limit_asset / "manifest.yml", "instruments": instruments,
-               "suspensions": suspensions}
+               "suspensions": suspensions, "namechange": namechange_asset}
     report: dict[str, object] = {
         "evidence_tier": "diagnostic", "constituent_count": constituent_count,
         "start": start, "end": end, "decision_count": len(clocks),
@@ -259,6 +284,7 @@ def main() -> None:
     parser.add_argument("--limit-asset", type=Path, required=True)
     parser.add_argument("--instruments", type=Path, required=True)
     parser.add_argument("--suspensions", type=Path, required=True)
+    parser.add_argument("--namechange-asset", type=Path, required=True)
     parser.add_argument("--output-dir", type=Path, required=True)
     parser.add_argument("--start", required=True)
     parser.add_argument("--end", required=True)
@@ -267,6 +293,7 @@ def main() -> None:
     print(json.dumps(run_diagnostic(
         daily_asset=args.daily_asset, limit_asset=args.limit_asset,
         instruments=args.instruments, suspensions=args.suspensions,
+        namechange_asset=args.namechange_asset,
         output_dir=args.output_dir, start=args.start, end=args.end,
         constituent_count=args.constituent_count,
     ), ensure_ascii=False, indent=2))
