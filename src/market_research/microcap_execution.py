@@ -176,10 +176,10 @@ def build_replay_inputs(
     active = source.loc[source.apply(
         lambda row: row.trade_date >= first_selected[row.ts_code], axis=1
     )].copy()
-    if active.delist_date.notna().any():
-        delists = active.loc[active.delist_date.astype(str).le(days[-1]), "ts_code"]
-        if not delists.empty:
-            raise ValueError(f"selected names require delisting settlement: {delists.iloc[0]}")
+    delist_dates = (
+        source.loc[source.delist_date.notna(), ["ts_code", "delist_date"]]
+        .drop_duplicates("ts_code").set_index("ts_code").delist_date.astype(str).to_dict()
+    )
 
     event_keys = set()
     if not suspensions.empty:
@@ -195,6 +195,7 @@ def build_replay_inputs(
         )
     known = active.set_index(["trade_date", "ts_code"])
     synthetic = []
+    delist_carry_rows = 0
     for symbol, first in first_selected.items():
         previous = None
         for day in (date for date in days if date >= first):
@@ -204,11 +205,14 @@ def build_replay_inputs(
                 if pd.notna(value) and float(value) > 0:
                     previous = float(value)
                 continue
-            if key not in event_keys or previous is None:
+            delisted = day >= delist_dates.get(symbol, "99999999")
+            if previous is None or (not delisted and key not in event_keys):
                 raise ValueError(f"unexplained daily price gap for {symbol} on {day}")
+            delist_carry_rows += int(delisted)
             synthetic.append({
                 "trade_date": day, "ts_code": symbol, "close": None,
-                "adj_close": previous, "amount": 0.0, "is_suspended": True,
+                "adj_close": previous, "amount": 0.0, "is_suspended": not delisted,
+                "delist_date": delist_dates.get(symbol),
             })
     prices = pd.concat([active, pd.DataFrame(synthetic)], ignore_index=True)
     limit_rows = limits[["trade_date", "ts_code", "up_limit", "down_limit"]].copy()
@@ -219,7 +223,8 @@ def build_replay_inputs(
     for column in ("close", "adj_close", "amount", "up_limit", "down_limit"):
         prices[column] = pd.to_numeric(prices[column], errors="coerce")
     suspended = prices.is_suspended.eq(True).fillna(False)
-    required = ~suspended
+    delisted = prices.delist_date.notna() & prices.delist_date.astype(str).le(prices.trade_date)
+    required = ~(suspended | delisted)
     if prices.loc[required, ["close", "adj_close", "amount", "up_limit", "down_limit"]].isna().any().any():
         raise ValueError("active pricing has unknown prices, liquidity or price limits")
     if prices.loc[required, "adj_close"].le(0).any():
@@ -231,7 +236,8 @@ def build_replay_inputs(
         ["trade_date", "symbol", "adj_close", "amount", "tradable", "limit_up", "limit_down"]
     ]
     return positions, pricing, clocks, {
-        "confirmed_suspension_carry_rows": len(synthetic),
+        "confirmed_suspension_carry_rows": len(synthetic) - delist_carry_rows,
+        "post_delist_nontradable_carry_rows": delist_carry_rows,
         "historical_name_excluded_rows": int((~name_eligible).sum()) if namechange is not None else 0,
     }
 
@@ -261,7 +267,7 @@ def run_diagnostic(
             encoding="utf-8",
         )
         raise
-    from portfolio_backtester.execution_sim import ExecutionSimConfig
+    from portfolio_backtester.execution_sim import ExecutionSimConfig, audit_delisting_exits
     from market_research.runtime_jobs import publish_verified_frames, run_sequenced_job
 
     config = ExecutionSimConfig(
@@ -275,6 +281,24 @@ def run_diagnostic(
         output_dir / ".runtime", "microcap", positions, pricing, clocks, asdict(config),
         transaction_cost_bps=5.0,
     )
+    selected = set(positions.symbol)
+    delist_dates = {
+        str(row.ts_code): str(row.delist_date)
+        for row in panel.loc[panel.ts_code.isin(selected) & panel.delist_date.notna(),
+                             ["ts_code", "delist_date"]].drop_duplicates("ts_code").itertuples()
+    }
+    try:
+        exit_audit = audit_delisting_exits(
+            pd.read_parquet(result_dir / "fills.parquet"), pricing, delist_dates,
+            price_col="adj_close",
+        )
+    except ValueError as error:
+        (output_dir / "summary.json").write_text(
+            json.dumps({"evidence_tier": "blocked", "start": start, "end": end,
+                        "constituent_count": constituent_count, "reason": str(error)},
+                       ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+        )
+        raise
     publish_verified_frames(result_dir, output_dir)
     (output_dir / "decision_clocks.json").write_text(
         json.dumps(clocks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
@@ -292,6 +316,7 @@ def run_diagnostic(
         "runtime_job_id": receipt["job_id"],
         "reason": "input release times, raw corporate actions and delisting cash settlement are unverified",
         "audit": audit,
+        "delisting_exit_audit": exit_audit.to_dict("records"),
         "source_sha256": {
             name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in sources.items()
         },

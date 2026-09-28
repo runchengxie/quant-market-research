@@ -57,6 +57,19 @@ def test_unexplained_missing_quote_refuses_replay() -> None:
         build_replay_inputs(panel, limits, pd.DataFrame(), constituent_count=1)
 
 
+def test_post_delist_mark_is_nontradable_and_separate_from_suspension() -> None:
+    panel, limits, events = _inputs()
+    panel = panel.loc[~(panel.ts_code.eq("B.SZ") & panel.trade_date.eq("20250106"))].copy()
+    panel.loc[panel.ts_code.eq("B.SZ"), "delist_date"] = "20250106"
+    _, pricing, _, audit = build_replay_inputs(panel, limits, events, constituent_count=1)
+    mark = pricing.loc[pricing.symbol.eq("B.SZ") & pricing.trade_date.eq("20250106")]
+    assert len(mark) == 1
+    assert mark.iloc[0].adj_close == 20.0
+    assert not bool(mark.iloc[0].tradable)
+    assert audit["post_delist_nontradable_carry_rows"] == 1
+    assert audit["confirmed_suspension_carry_rows"] == 1
+
+
 def test_unknown_limit_refuses_replay() -> None:
     panel, limits, events = _inputs()
     limits.loc[limits.ts_code.eq("A.SZ") & limits.trade_date.eq("20250103"), "up_limit"] = None

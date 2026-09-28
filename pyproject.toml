@@ -17,9 +17,9 @@ dependencies = [
 dev = ["pytest>=8", "ruff>=0.15.20,<0.16"]
 duckdb = ["duckdb>=1.1"]
 formal = [
-    "quant-backtest-runtime @ git+https://github.com/runchengxie/quant-backtest-runtime.git@c0dafefa2539fd3e0023daef9fd0fd8385c183c9 ; python_version >= '3.12'",
-    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@70073b9e3566125f00b74d094b9d5a9f08e51c49 ; python_version >= '3.12'",
-    "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@70073b9e3566125f00b74d094b9d5a9f08e51c49#subdirectory=packages/research-contracts ; python_version >= '3.12'",
+    "quant-backtest-runtime @ git+https://github.com/runchengxie/quant-backtest-runtime.git@50a883d3eeb5787af6e966da54c31bde2da7f992 ; python_version >= '3.12'",
+    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83 ; python_version >= '3.12'",
+    "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83#subdirectory=packages/research-contracts ; python_version >= '3.12'",
 ]
 yahoo = ["yfinance>=1.0"]
 docs = ["mkdocs>=1.6,<2"]
