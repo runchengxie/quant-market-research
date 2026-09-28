@@ -588,9 +588,9 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=17" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=c0dafefa2539fd3e0023daef9fd0fd8385c183c9" },
-    { name = "quant-platform", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?rev=70073b9e3566125f00b74d094b9d5a9f08e51c49" },
-    { name = "research-contracts", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=70073b9e3566125f00b74d094b9d5a9f08e51c49" },
+    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=50a883d3eeb5787af6e966da54c31bde2da7f992" },
+    { name = "quant-platform", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?rev=5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83" },
+    { name = "research-contracts", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.15.20,<0.16" },
     { name = "yfinance", marker = "extra == 'yahoo'", specifier = ">=1.0" },
 ]
@@ -1174,7 +1174,7 @@ wheels = [
 [[package]]
 name = "quant-backtest-runtime"
 version = "0.1.0"
-source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=c0dafefa2539fd3e0023daef9fd0fd8385c183c9#c0dafefa2539fd3e0023daef9fd0fd8385c183c9" }
+source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=50a883d3eeb5787af6e966da54c31bde2da7f992#50a883d3eeb5787af6e966da54c31bde2da7f992" }
 dependencies = [
     { name = "quant-platform" },
 ]
@@ -1182,7 +1182,7 @@ dependencies = [
 [[package]]
 name = "quant-platform"
 version = "0.0.1"
-source = { git = "https://github.com/runchengxie/quant-platform.git?rev=70073b9e3566125f00b74d094b9d5a9f08e51c49#70073b9e3566125f00b74d094b9d5a9f08e51c49" }
+source = { git = "https://github.com/runchengxie/quant-platform.git?rev=5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83#5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83" }
 dependencies = [
     { name = "duckdb" },
     { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" } },
@@ -1211,7 +1211,7 @@ wheels = [
 [[package]]
 name = "research-contracts"
 version = "0.1.0"
-source = { git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=70073b9e3566125f00b74d094b9d5a9f08e51c49#70073b9e3566125f00b74d094b9d5a9f08e51c49" }
+source = { git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83#5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83" }
 
 [[package]]
 name = "ruff"
