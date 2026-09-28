@@ -10,7 +10,7 @@ import duckdb
 import pandas as pd
 
 from market_research.underwater import build_underwater_episodes, summarize_underwater
-from market_research.microcap_history import build_daily_portfolio_returns
+from market_research.microcap_history import build_daily_portfolio_returns, latest_clean_daily_asset
 
 
 def main() -> None:
@@ -19,13 +19,17 @@ def main() -> None:
     parser.add_argument("--output", type=Path, required=True, help="external directory for research outputs")
     parser.add_argument("--start", default="2008-01-02")
     parser.add_argument("--end", default="2026-09-14")
+    parser.add_argument("--clean-asset", type=Path, help="published daily_clean asset override")
     args = parser.parse_args()
     data_root = args.data_root.expanduser()
     a = data_root / "assets/tushare/a_share"
     historical_daily = a / "daily/a_share_all_20080102_20260821_union_daily/data/**/*.parquet"
     historical_basic = a / "daily_basic/a_share_all_20080102_20260821_union_daily_basic/data/**/*.parquet"
     historical_adj = a / "adj_factor/a_share_all_20080101_20141231_adj_factor/data/**/*.parquet"
-    clean_daily = a / "daily/a_share_all_20150101_20260914_daily_clean/data/*.parquet"
+    clean_asset = args.clean_asset or latest_clean_daily_asset(a)
+    if not (clean_asset / "manifest.yml").is_file():
+        raise SystemExit(f"clean daily asset has no manifest: {clean_asset}")
+    clean_daily = clean_asset / "data/*.parquet"
     status = data_root / "staging/tushare_constraints_20260802/st_intervals_reconstructed.parquet"
     suspensions = data_root / "staging/tushare_constraints_20260802/suspend_d.parquet"
     instruments = a / "instruments/a_share_all_instruments_latest.parquet"

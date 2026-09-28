@@ -8,8 +8,17 @@ export function resolveDocLink(source: string, href: string, base: string): stri
   const [rawPath, fragment] = href.split('#', 2);
   const target = rawPath || source;
   const sourceDir = source.slice(0, source.lastIndexOf('/') + 1);
-  const normalized = target.startsWith('/') ? target.slice(1) : `${sourceDir}${target}`;
-  const match = publicDocs.find((doc) => doc.source === normalized.replace(/\.md$/, '.md'));
+  const candidate = target.startsWith('/') ? target.slice(1) : `${sourceDir}${target}`;
+  const parts: string[] = [];
+  for (const part of candidate.split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') {
+      if (!parts.length) throw new Error(`public document link outside allowlist: ${href}`);
+      parts.pop();
+    } else parts.push(part);
+  }
+  const normalized = parts.join('/');
+  const match = publicDocs.find((doc) => doc.source === normalized);
   if (!match) throw new Error(`public document link outside allowlist: ${href}`);
   return `${basePath(base, match.route)}${fragment ? `#${fragment}` : ''}`;
 }

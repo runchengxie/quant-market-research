@@ -20,6 +20,7 @@ exclude_docs: |
   !/research/factors/low-turnover.md
   !/research/factors/pb-roe.md
   !/research/factors/microcap.md
+  !/research/experiments/microcap-execution-diagnostic-20260928.md
   !/research/factors/smallcap-turnover-history.md
   !/research/factors/barra-factor-dictionary.md
   !/research/factors/barra-source-inventory.md
@@ -38,6 +39,7 @@ nav:
       - PB 与 ROE: research/factors/pb-roe.md
       - 低换手: research/factors/low-turnover.md
       - 微盘股: research/factors/microcap.md
+      - 微盘执行诊断: research/experiments/microcap-execution-diagnostic-20260928.md
       - 小市值成交活跃度补充: research/factors/smallcap-turnover-history.md
       - Barra 风格因子字典: research/factors/barra-factor-dictionary.md
       - Barra 研究资料清单: research/factors/barra-source-inventory.md

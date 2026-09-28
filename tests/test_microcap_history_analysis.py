@@ -3,6 +3,20 @@ import pandas as pd
 import pytest
 
 
+def test_latest_clean_daily_asset_ignores_incomplete_staging(tmp_path):
+    from market_research.microcap_history import latest_clean_daily_asset
+
+    root = tmp_path / "a_share" / "daily"
+    stable = root / "a_share_all_20150101_20260917_daily_clean"
+    (stable / "data").mkdir(parents=True)
+    (stable / "manifest.yml").write_text("asset: test\n", encoding="utf-8")
+    (stable / "data" / "one.parquet").touch()
+    newer = root / "a_share_all_20150101_20260928_daily_clean"
+    (newer / "data").mkdir(parents=True)
+    (newer / "data" / "one.parquet").touch()
+    assert latest_clean_daily_asset(root.parent) == stable
+
+
 def test_size_portfolio_returns_keep_stale_suspensions_and_bound_unknown_marks():
     from market_research.microcap_history import build_daily_portfolio_returns
 

@@ -1,0 +1,22 @@
+# 微盘组合公共执行模拟诊断（2026-09-28）
+
+本研究新增 `microcap-execution-diagnostic`。它从仓库外的清洗日线按当日收盘后的总市值、ST、停牌和上市状态生成最小 N 只目标，逐日绑定独立决策时钟，次一交易日提交订单到 quant-platform 的公共执行模拟器。模拟启用 5% 成交额参与率、T+1、每日涨跌停阻断、未成交留现金及每次成交 5 个基点的简化成本。价格采用清洗日线的 `adj_close` 复权代理。结果包括目标、订单、成交、每日现金和净值账本，均保存在仓库外。
+
+示例命令需要 Python 3.12 或更新版本，且输出目录为空：
+
+```bash
+uv sync --extra duckdb --extra formal
+uv run --extra duckdb --extra formal microcap-execution-diagnostic \
+  --daily-asset /path/to/published/daily_clean \
+  --limit-asset /path/to/published/limit_status \
+  --instruments /path/to/instrument_snapshot.parquet \
+  --suspensions /path/to/suspend_d.parquet \
+  --output-dir /path/to/empty-external-output \
+  --start 20250102 --end 20250127 --constituent-count 400
+```
+
+2025-01-02 至 2025-01-27 的 N=400 诊断共有 17 次决策，终值为 1.0640597259，5 条日度缺价有明确停牌记录并使用最近已知价格保持估值。使用已发布的清洗日线、每日涨跌停资产和 2026-09-09 的外部证券快照。该证券快照目前仍在市场数据平台的 staging 目录，不能视为已发布的生产资产。结果 `summary.json` 的 SHA-256 为 `52afdfd42fc46499884782258377f66a4dd792fd789c90fc35d799e5fd85f21c`。
+
+扩展至 2025-03-31 时，已选股票 `600225.SH` 在 2025-03-06 退市，数据没有可核实的现金结算事件。入口拒绝生成完整季度净值，并写入 `blocked` 收据。遇到无法解释的日线缺口、缺涨跌停价、证券资格不足或重复键也会停止。历史纸面序列的加载器已改为选择有清单的最新稳定 `daily_clean` 资产，避免使用已经不存在的固定目录。
+
+这组数字不能与原纸面净值直接比较。原序列按形成日构造、下一交易日收盘执行、再下一交易日计价的独立区间计算，新的执行模拟持续持仓并有现金、未成交和成本。两者都没有每项输入的真实可用时间，复权价格也不能替代完整公司行动账本。2008 至 2014 年的历史 ST、停牌和资格数据仍不完整。该输出仅诊断执行机制，不标为正式可投资收益。要发布完整长期业绩，仍需逐股核对公司行动和退市现金结算，并补齐可审计的点时输入。

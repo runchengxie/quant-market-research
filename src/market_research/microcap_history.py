@@ -1,6 +1,19 @@
 from __future__ import annotations
 
+from pathlib import Path
+
 import pandas as pd
+
+
+def latest_clean_daily_asset(a_share_root: Path) -> Path:
+    """Select the latest published clean asset, ignoring incomplete staging dirs."""
+    candidates = sorted(
+        path for path in (a_share_root / "daily").glob("a_share_all_*_daily_clean")
+        if (path / "manifest.yml").is_file() and any((path / "data").glob("*.parquet"))
+    )
+    if not candidates:
+        raise FileNotFoundError("no published daily_clean asset is available")
+    return candidates[-1]
 
 
 def build_daily_portfolio_returns(connection, *, constituent_counts=(50, 100, 200, 400, 800)) -> pd.DataFrame:
