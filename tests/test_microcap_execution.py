@@ -5,7 +5,9 @@ import json
 import pandas as pd
 import pytest
 
-from market_research.microcap_execution import build_replay_inputs, decision_clock, run_diagnostic
+from market_research.microcap_execution import (
+    build_replay_inputs, decision_clock, delisting_watch_keys, run_diagnostic,
+)
 
 
 def _inputs() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
@@ -72,12 +74,31 @@ def test_ineligible_and_duplicate_input_refuses_replay() -> None:
     assert positions.iloc[0].symbol == "A.SZ"
 
 
+def test_delisting_watch_excludes_only_known_effective_events() -> None:
+    panel, limits, events = _inputs()
+    namechange = pd.DataFrame([
+        {"ts_code": "B.SZ", "change_reason": "退市整理期", "start_date": "20250102",
+         "end_date": "20250106", "ann_date": "20250101"},
+        {"ts_code": "A.SZ", "change_reason": "退市整理期", "start_date": "20250102",
+         "end_date": "20250106", "ann_date": "20250103"},
+    ])
+    assert delisting_watch_keys(namechange, ["20250102"]) == {("20250102", "B.SZ")}
+    positions, _, _, _ = build_replay_inputs(
+        panel, limits, events, constituent_count=1, namechange=namechange,
+    )
+    assert positions.iloc[0].symbol == "A.SZ"
+    with pytest.raises(ValueError, match="only 0 eligible"):
+        build_replay_inputs(panel, limits, events, constituent_count=1,
+                            namechange=namechange.assign(ann_date="20250101"))
+
+
 def test_missing_source_writes_blocked_receipt(tmp_path) -> None:
     output = tmp_path / "diagnostic"
     with pytest.raises(FileNotFoundError, match="no manifest"):
         run_diagnostic(
             daily_asset=tmp_path / "missing", limit_asset=tmp_path / "limits",
             instruments=tmp_path / "instruments.parquet", suspensions=tmp_path / "s.parquet",
+            namechange_asset=tmp_path / "namechange.parquet",
             output_dir=output, start="20250102", end="20250106", constituent_count=1,
         )
     receipt = json.loads((output / "summary.json").read_text(encoding="utf-8"))
