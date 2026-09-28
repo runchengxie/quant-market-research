@@ -16,11 +16,16 @@ dependencies = [
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.15.20,<0.16"]
 duckdb = ["duckdb>=1.1"]
+formal = [
+    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@70073b9e3566125f00b74d094b9d5a9f08e51c49 ; python_version >= '3.12'",
+    "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@70073b9e3566125f00b74d094b9d5a9f08e51c49#subdirectory=packages/research-contracts ; python_version >= '3.12'",
+]
 yahoo = ["yfinance>=1.0"]
 docs = ["mkdocs>=1.6,<2"]
 
 [project.scripts]
 market-research = "market_research.cli:main"
+microcap-execution-diagnostic = "market_research.microcap_execution:main"
 
 [tool.setuptools.packages.find]
 where = ["src"]

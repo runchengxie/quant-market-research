@@ -1,0 +1,274 @@
+"""Diagnostic small-cap execution replay with explicit data-quality boundaries."""
+
+from __future__ import annotations
+
+import argparse
+import hashlib
+import json
+from pathlib import Path
+
+import pandas as pd
+
+
+PANEL_COLUMNS = {
+    "ts_code", "trade_date", "close", "adj_close", "total_mv", "amount",
+    "is_st", "is_suspended", "list_date", "delist_date",
+}
+
+
+def _iso(day: str) -> str:
+    if len(day) != 8 or not day.isdigit():
+        raise ValueError("dates must use YYYYMMDD")
+    return f"{day[:4]}-{day[4:6]}-{day[6:]}"
+
+
+def decision_clock(day: str, entry: str, valuation: str) -> dict[str, str]:
+    decision, next_session, last = _iso(day), _iso(entry), _iso(valuation)
+    return {
+        "schema_version": "research.clock.v1",
+        "timezone": "Asia/Shanghai",
+        "information_cutoff_at": f"{decision}T20:00:00+08:00",
+        "signal_at": f"{decision}T20:01:00+08:00",
+        "decision_at": f"{decision}T20:02:00+08:00",
+        "earliest_order_at": f"{next_session}T09:30:00+08:00",
+        "execution_window_start_at": f"{next_session}T09:30:00+08:00",
+        "execution_window_end_at": f"{next_session}T15:00:00+08:00",
+        "valuation_at": f"{last}T16:00:00+08:00",
+        "timing_policy_id": "microcap.modeled_after_close_next_session.v1",
+        "trading_calendar_ref": "microcap.daily_clean_sessions",
+    }
+
+
+def load_clean_panel(asset: Path, instruments: Path, start: str, end: str) -> pd.DataFrame:
+    """Read only the requested sessions from the published per-symbol clean asset."""
+    import duckdb
+
+    files = str(asset / "data" / "*.parquet")
+    if not (asset / "manifest.yml").is_file():
+        raise FileNotFoundError(f"clean daily asset has no manifest: {asset}")
+    if not instruments.is_file():
+        raise FileNotFoundError(f"instrument snapshot is missing: {instruments}")
+    connection = duckdb.connect()
+    try:
+        panel = connection.execute(
+            """SELECT ts_code, trade_date, close, adj_close, total_mv, amount,
+                      is_st, is_suspended, list_date
+               FROM read_parquet(?) WHERE trade_date BETWEEN ? AND ?""",
+            [files, start, end],
+        ).fetchdf()
+    finally:
+        connection.close()
+    basic = pd.read_parquet(instruments, columns=["ts_code", "delist_date"])
+    if basic.ts_code.duplicated().any():
+        raise ValueError("instrument snapshot has duplicate symbols")
+    return panel.merge(basic, on="ts_code", how="left", validate="many_to_one")
+
+
+def load_limit_rows(asset: Path, days: list[str]) -> pd.DataFrame:
+    if not (asset / "manifest.yml").is_file():
+        raise FileNotFoundError(f"limit asset has no manifest: {asset}")
+    frames = []
+    for day in days:
+        files = sorted((asset / "data" / f"trade_date={day}").glob("*.parquet"))
+        if not files:
+            raise FileNotFoundError(f"limit asset has no partition for {day}")
+        frames.extend(
+            pd.read_parquet(path, columns=["ts_code", "trade_date", "up_limit", "down_limit"])
+            for path in files
+        )
+    result = pd.concat(frames, ignore_index=True)
+    if result.duplicated(["trade_date", "ts_code"]).any():
+        raise ValueError("limit asset has duplicate symbol/date keys")
+    return result
+
+
+def build_replay_inputs(
+    panel: pd.DataFrame,
+    limits: pd.DataFrame,
+    suspensions: pd.DataFrame,
+    *,
+    constituent_count: int,
+) -> tuple[pd.DataFrame, pd.DataFrame, dict[str, dict[str, str]], dict[str, int]]:
+    """Build targets and price marks, refusing unknown status and price gaps."""
+    if missing := PANEL_COLUMNS - set(panel):
+        raise ValueError(f"clean panel is missing {sorted(missing)}")
+    if constituent_count <= 0:
+        raise ValueError("constituent_count must be positive")
+    source = panel.copy()
+    source["trade_date"] = source.trade_date.astype(str)
+    source["ts_code"] = source.ts_code.astype(str)
+    if source.duplicated(["trade_date", "ts_code"]).any():
+        raise ValueError("clean panel has duplicate symbol/date keys")
+    days = sorted(source.trade_date.unique().tolist())
+    if len(days) < 3:
+        raise ValueError("at least three market sessions are required")
+    listed = source.list_date.notna() & source.list_date.astype(str).le(source.trade_date)
+    delisted = source.delist_date.notna() & source.delist_date.astype(str).le(source.trade_date)
+    eligible = (
+        listed & ~delisted & source.is_st.eq(False).fillna(False)
+        & source.is_suspended.eq(False).fillna(False)
+        & source.total_mv.gt(0) & source.amount.gt(0)
+        & source.close.gt(0) & source.adj_close.gt(0)
+    )
+    candidates = source.loc[eligible].sort_values(["trade_date", "total_mv", "ts_code"])
+    rows: list[dict[str, object]] = []
+    clocks: dict[str, dict[str, str]] = {}
+    for index, day in enumerate(days[:-1]):
+        selected = candidates.loc[candidates.trade_date.eq(day)].head(constituent_count)
+        if len(selected) != constituent_count:
+            raise ValueError(f"{day} has only {len(selected)} eligible names")
+        entry = days[index + 1]
+        clocks[day] = decision_clock(day, entry, days[-1])
+        rows.extend(
+            {"rebalance_date": day, "entry_date": entry,
+             "symbol": symbol, "weight": 1.0 / constituent_count}
+            for symbol in selected.ts_code
+        )
+    positions = pd.DataFrame(rows)
+    first_selected = positions.groupby("symbol").rebalance_date.min().to_dict()
+    selected_symbols = set(first_selected)
+    source = source.loc[source.ts_code.isin(selected_symbols)].copy()
+    active = source.loc[source.apply(
+        lambda row: row.trade_date >= first_selected[row.ts_code], axis=1
+    )].copy()
+    if active.delist_date.notna().any():
+        delists = active.loc[active.delist_date.astype(str).le(days[-1]), "ts_code"]
+        if not delists.empty:
+            raise ValueError(f"selected names require delisting settlement: {delists.iloc[0]}")
+
+    event_keys = set()
+    if not suspensions.empty:
+        required = {"ts_code", "trade_date", "suspend_type"}
+        if missing := required - set(suspensions):
+            raise ValueError(f"suspension events are missing {sorted(missing)}")
+        event_keys = set(
+            zip(
+                suspensions.loc[suspensions.suspend_type.eq("S"), "trade_date"].astype(str),
+                suspensions.loc[suspensions.suspend_type.eq("S"), "ts_code"].astype(str),
+                strict=True,
+            )
+        )
+    known = active.set_index(["trade_date", "ts_code"])
+    synthetic = []
+    for symbol, first in first_selected.items():
+        previous = None
+        for day in (date for date in days if date >= first):
+            key = (day, symbol)
+            if key in known.index:
+                value = known.loc[key, "adj_close"]
+                if pd.notna(value) and float(value) > 0:
+                    previous = float(value)
+                continue
+            if key not in event_keys or previous is None:
+                raise ValueError(f"unexplained daily price gap for {symbol} on {day}")
+            synthetic.append({
+                "trade_date": day, "ts_code": symbol, "close": None,
+                "adj_close": previous, "amount": 0.0, "is_suspended": True,
+            })
+    prices = pd.concat([active, pd.DataFrame(synthetic)], ignore_index=True)
+    limit_rows = limits[["trade_date", "ts_code", "up_limit", "down_limit"]].copy()
+    limit_rows["trade_date"] = limit_rows.trade_date.astype(str)
+    if limit_rows.duplicated(["trade_date", "ts_code"]).any():
+        raise ValueError("limit input has duplicate symbol/date keys")
+    prices = prices.merge(limit_rows, on=["trade_date", "ts_code"], how="left", validate="one_to_one")
+    for column in ("close", "adj_close", "amount", "up_limit", "down_limit"):
+        prices[column] = pd.to_numeric(prices[column], errors="coerce")
+    suspended = prices.is_suspended.eq(True).fillna(False)
+    required = ~suspended
+    if prices.loc[required, ["close", "adj_close", "amount", "up_limit", "down_limit"]].isna().any().any():
+        raise ValueError("active pricing has unknown prices, liquidity or price limits")
+    if prices.loc[required, "adj_close"].le(0).any():
+        raise ValueError("active pricing has nonpositive adjusted marks")
+    prices["limit_up"] = required & prices.close.ge(prices.up_limit - 0.005)
+    prices["limit_down"] = required & prices.close.le(prices.down_limit + 0.005)
+    prices["tradable"] = required & prices.amount.gt(0)
+    pricing = prices.rename(columns={"ts_code": "symbol"})[
+        ["trade_date", "symbol", "adj_close", "amount", "tradable", "limit_up", "limit_down"]
+    ]
+    return positions, pricing, clocks, {"confirmed_suspension_carry_rows": len(synthetic)}
+
+
+def run_diagnostic(
+    *, daily_asset: Path, limit_asset: Path, instruments: Path, suspensions: Path,
+    output_dir: Path, start: str, end: str, constituent_count: int = 400,
+) -> dict[str, object]:
+    if output_dir.exists() and any(output_dir.iterdir()):
+        raise FileExistsError(f"output directory is not empty: {output_dir}")
+    try:
+        panel = load_clean_panel(daily_asset, instruments, start, end)
+        days = sorted(panel.trade_date.astype(str).unique().tolist())
+        limits = load_limit_rows(limit_asset, days)
+        events = pd.read_parquet(suspensions, columns=["ts_code", "trade_date", "suspend_type"])
+        positions, pricing, clocks, audit = build_replay_inputs(
+            panel, limits, events, constituent_count=constituent_count
+        )
+    except (ValueError, FileNotFoundError) as error:
+        output_dir.mkdir(parents=True, exist_ok=True)
+        (output_dir / "summary.json").write_text(
+            json.dumps({"evidence_tier": "blocked", "start": start, "end": end,
+                        "constituent_count": constituent_count, "reason": str(error)},
+                       ensure_ascii=False, indent=2) + "\n",
+            encoding="utf-8",
+        )
+        raise
+    from portfolio_backtester.backends import SequencedExecutionBackend, SequencedExecutionRequest
+    from portfolio_backtester.execution_sim import ExecutionSimConfig
+
+    config = ExecutionSimConfig(
+        enabled=True, portfolio_value=1_000_000.0, participation_rate=0.05,
+        liquidity_cols=("amount",), liquidity_notional_multiplier=1000.0,
+        buy_max_days=5, sell_max_days=10, enforce_t1=True,
+        enforce_price_limits=True, limit_up_col="limit_up", limit_down_col="limit_down",
+    )
+    result = SequencedExecutionBackend().run(SequencedExecutionRequest(
+        positions=positions, pricing=pricing, decision_clocks=clocks, config=config,
+        price_col="adj_close", tradable_col="tradable", limit_up_col="limit_up",
+        limit_down_col="limit_down", transaction_cost_bps=5.0,
+        price_basis="daily_clean.adjusted_close_proxy",
+    ))
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for name, frame in result.frames().items():
+        frame.to_parquet(output_dir / f"{name}.parquet", index=False)
+    (output_dir / "decision_clocks.json").write_text(
+        json.dumps(clocks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    sources = {"daily_manifest": daily_asset / "manifest.yml",
+               "limit_manifest": limit_asset / "manifest.yml", "instruments": instruments,
+               "suspensions": suspensions}
+    report: dict[str, object] = {
+        "evidence_tier": "diagnostic", "constituent_count": constituent_count,
+        "start": start, "end": end, "decision_count": len(clocks),
+        "terminal_nav": float(result.daily_ledger.nav.iloc[-1] / config.portfolio_value),
+        "reason": "input release times, raw corporate actions and delisting cash settlement are unverified",
+        "audit": audit,
+        "source_sha256": {
+            name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in sources.items()
+        },
+    }
+    (output_dir / "summary.json").write_text(
+        json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    return report
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(description="Microcap public execution engine diagnostic")
+    parser.add_argument("--daily-asset", type=Path, required=True)
+    parser.add_argument("--limit-asset", type=Path, required=True)
+    parser.add_argument("--instruments", type=Path, required=True)
+    parser.add_argument("--suspensions", type=Path, required=True)
+    parser.add_argument("--output-dir", type=Path, required=True)
+    parser.add_argument("--start", required=True)
+    parser.add_argument("--end", required=True)
+    parser.add_argument("--constituent-count", type=int, default=400)
+    args = parser.parse_args()
+    print(json.dumps(run_diagnostic(
+        daily_asset=args.daily_asset, limit_asset=args.limit_asset,
+        instruments=args.instruments, suspensions=args.suspensions,
+        output_dir=args.output_dir, start=args.start, end=args.end,
+        constituent_count=args.constituent_count,
+    ), ensure_ascii=False, indent=2))
+
+
+if __name__ == "__main__":
+    main()
