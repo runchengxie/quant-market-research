@@ -6,7 +6,7 @@ import pandas as pd
 import pytest
 
 from market_research.microcap_execution import (
-    build_replay_inputs, decision_clock, historical_name_mask, run_diagnostic,
+    build_replay_inputs, decision_clock, historical_name_mask, load_clean_panel, run_diagnostic,
 )
 
 
@@ -112,3 +112,13 @@ def test_missing_source_writes_blocked_receipt(tmp_path) -> None:
     receipt = json.loads((output / "summary.json").read_text(encoding="utf-8"))
     assert receipt["evidence_tier"] == "blocked"
     assert "no manifest" in receipt["reason"]
+
+
+def test_clean_panel_requires_dated_st_lineage(tmp_path) -> None:
+    asset = tmp_path / "daily"
+    asset.mkdir()
+    instruments = tmp_path / "instruments.parquet"
+    instruments.touch()
+    (asset / "manifest.yml").write_text("status: completed\ninputs: {}\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="dated ST source lineage"):
+        load_clean_panel(asset, instruments, "20250102", "20250106")

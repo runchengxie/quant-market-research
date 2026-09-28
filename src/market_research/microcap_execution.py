@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 import pandas as pd
+import yaml
 
 
 PANEL_COLUMNS = {
@@ -45,8 +46,22 @@ def load_clean_panel(asset: Path, instruments: Path, start: str, end: str) -> pd
     import duckdb
 
     files = str(asset / "data" / "*.parquet")
-    if not (asset / "manifest.yml").is_file():
+    manifest_path = asset / "manifest.yml"
+    if not manifest_path.is_file():
         raise FileNotFoundError(f"clean daily asset has no manifest: {asset}")
+    manifest = yaml.safe_load(manifest_path.read_text(encoding="utf-8"))
+    if not isinstance(manifest, dict) or manifest.get("status") != "completed":
+        raise ValueError(f"clean daily asset has no completed manifest: {asset}")
+    st_source = (manifest.get("inputs") or {}).get("st_history_file")
+    if not st_source:
+        raise ValueError("clean daily asset has no dated ST source lineage")
+    st_path = Path(st_source)
+    receipt_path = st_path.with_suffix(".receipt.json")
+    if not st_path.is_file() or not receipt_path.is_file():
+        raise FileNotFoundError(f"published ST history or receipt is missing: {st_path}")
+    st_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    if st_receipt.get("quality_status") != "complete":
+        raise ValueError("published ST history is not quality complete")
     if not instruments.is_file():
         raise FileNotFoundError(f"instrument snapshot is missing: {instruments}")
     connection = duckdb.connect()
