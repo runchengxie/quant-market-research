@@ -83,21 +83,28 @@ def load_limit_rows(asset: Path, days: list[str]) -> pd.DataFrame:
     return result
 
 
-def delisting_watch_keys(namechange: pd.DataFrame, days: list[str]) -> set[tuple[str, str]]:
-    """Find delisting-period records effective and announced before each decision."""
-    required = {"ts_code", "change_reason", "start_date", "end_date", "ann_date"}
+def historical_name_mask(namechange: pd.DataFrame, source: pd.DataFrame) -> pd.Series:
+    """Require a known, non-ST name outside the delisting period at each decision."""
+    required = {"ts_code", "name", "change_reason", "start_date", "end_date", "ann_date"}
     if missing := required - set(namechange):
         raise ValueError(f"namechange asset is missing {sorted(missing)}")
-    events = namechange.loc[namechange.change_reason.eq("退市整理期")].copy()
+    events = namechange[list(required)].copy()
     for column in ("start_date", "end_date", "ann_date"):
         events[column] = events[column].fillna("99999999").astype(str)
-    keys = set()
-    for day in days:
+    eligible = pd.Series(False, index=source.index)
+    for day, rows in source.groupby("trade_date", sort=False):
         active = events.loc[
             events.start_date.le(day) & events.end_date.ge(day) & events.ann_date.lt(day)
         ]
-        keys.update((day, symbol) for symbol in active.ts_code.astype(str))
-    return keys
+        active = active.sort_values(["ts_code", "start_date", "ann_date"]).drop_duplicates(
+            "ts_code", keep="last"
+        )
+        allowed = active.loc[
+            ~active.name.str.contains("ST", na=True)
+            & ~active.change_reason.eq("退市整理期"), "ts_code"
+        ]
+        eligible.loc[rows.index] = rows.ts_code.isin(allowed).to_numpy()
+    return eligible
 
 
 def build_replay_inputs(
@@ -121,15 +128,14 @@ def build_replay_inputs(
     days = sorted(source.trade_date.unique().tolist())
     if len(days) < 3:
         raise ValueError("at least three market sessions are required")
-    watch_keys = delisting_watch_keys(namechange, days) if namechange is not None else set()
-    watched = pd.Series(
-        [(day, symbol) in watch_keys for day, symbol in zip(source.trade_date, source.ts_code, strict=True)],
-        index=source.index,
+    name_eligible = (
+        historical_name_mask(namechange, source)
+        if namechange is not None else pd.Series(True, index=source.index)
     )
     listed = source.list_date.notna() & source.list_date.astype(str).le(source.trade_date)
     delisted = source.delist_date.notna() & source.delist_date.astype(str).le(source.trade_date)
     eligible = (
-        listed & ~delisted & ~watched & source.is_st.eq(False).fillna(False)
+        listed & ~delisted & name_eligible & source.is_st.eq(False).fillna(False)
         & source.is_suspended.eq(False).fillna(False)
         & source.total_mv.gt(0) & source.amount.gt(0)
         & source.close.gt(0) & source.adj_close.gt(0)
@@ -209,7 +215,10 @@ def build_replay_inputs(
     pricing = prices.rename(columns={"ts_code": "symbol"})[
         ["trade_date", "symbol", "adj_close", "amount", "tradable", "limit_up", "limit_down"]
     ]
-    return positions, pricing, clocks, {"confirmed_suspension_carry_rows": len(synthetic)}
+    return positions, pricing, clocks, {
+        "confirmed_suspension_carry_rows": len(synthetic),
+        "historical_name_excluded_rows": int((~name_eligible).sum()) if namechange is not None else 0,
+    }
 
 
 def run_diagnostic(
