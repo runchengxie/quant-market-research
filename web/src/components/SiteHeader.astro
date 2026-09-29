@@ -7,38 +7,39 @@ interface Props { activeRoute: string; section?: "overview" | "research" | "docs
 const { activeRoute, section } = Astro.props;
 const resolvedSection = section ?? (activeRoute === "overview" ? "overview" : activeRoute === "docs" ? "docs" : activeRoute === "data" ? "data" : "research");
 const links = [
-  { id: "overview", section: "overview", label: "研究总览", href: "/" },
-  { id: "research", section: "research", label: "研究专题", href: "/research/" },
-  { id: "docs", section: "docs", label: "方法与字典", href: "/docs/" },
-  { id: "data", section: "data", label: "数据与版本", href: "/data-sources/" },
-  { id: "search", section: "docs", label: "搜索", href: "/search/" },
+  { id: "overview", section: "overview", en: "Research overview", zh: "研究总览", href: "/" },
+  { id: "research", section: "research", en: "Research topics", zh: "研究专题", href: "/research/" },
+  { id: "docs", section: "docs", en: "Methods & dictionary", zh: "方法与字典", href: "/docs/" },
+  { id: "data", section: "data", en: "Data & versions", zh: "数据与版本", href: "/data-sources/" },
+  { id: "search", section: "docs", en: "Search", zh: "搜索", href: "/search/" },
 ];
 ---
 
 <header class="site-header">
   <div class="site-masthead">
     <div>
-      <span class="brand-kicker">历史市场研究 · 证据优先</span>
-      <a class="site-brand" href={withBase("/", import.meta.env.BASE_URL)}>市场研究档案</a>
-      <p class="site-deck">汇集历史市场研究，标明数据日期、研究进展和使用限制。</p>
+      <span class="brand-kicker" data-locale-text data-en="Historical market research · evidence first" data-zh="历史市场研究 · 证据优先">Historical market research · evidence first</span>
+      <a class="site-brand" href={withBase("/", import.meta.env.BASE_URL)} data-locale-text data-en="Quant Market Research Archive" data-zh="市场研究档案">Quant Market Research Archive</a>
+      <p class="site-deck" data-locale-text data-en="A public archive of historical market research, with dates, progress, and limitations made explicit." data-zh="汇集历史市场研究，标明数据日期、研究进展和使用限制。">A public archive of historical market research, with dates, progress, and limitations made explicit.</p>
     </div>
     <div class="site-meta">
-      <span>公开研究 · 数据日期见下方</span>
-      <strong>汇总结果 · 仅描述历史</strong>
+      <span data-locale-text data-en="Public research · see dates below" data-zh="公开研究 · 数据日期见下方">Public research · see dates below</span>
+      <strong data-locale-text data-en="Aggregate results · historical description only" data-zh="汇总结果 · 仅描述历史">Aggregate results · historical description only</strong>
       <ThemeToggle client:load />
     </div>
   </div>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="展开主导航">菜单</button>
-  <nav id="primary-nav" class="site-nav" aria-label="主导航">
-    {links.map((link) => <a class:list={{ active: resolvedSection === link.section }} href={withBase(link.href, import.meta.env.BASE_URL)}>{link.label}</a>)}
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">Menu</button>
+  <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
+    {links.map((link) => <a class:list={{ active: resolvedSection === link.section }} href={withBase(link.href, import.meta.env.BASE_URL)}><span data-locale-text data-en={link.en} data-zh={link.zh}>{link.en}</span></a>)}
+    <button class="locale-toggle" type="button" data-locale-toggle>中文</button>
   </nav>
 </header>
 <script>
   const toggle = document.querySelector<HTMLButtonElement>(".nav-toggle");
   const nav = document.querySelector<HTMLElement>("#primary-nav");
   if (toggle && nav) {
-    const close = () => { toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", "展开主导航"); nav.removeAttribute("data-open"); };
-    toggle.addEventListener("click", () => { const open = toggle.getAttribute("aria-expanded") !== "true"; toggle.setAttribute("aria-expanded", String(open)); toggle.setAttribute("aria-label", open ? "收起主导航" : "展开主导航"); if (open) nav.setAttribute("data-open", ""); else nav.removeAttribute("data-open"); });
+    const close = () => { toggle.setAttribute("aria-expanded", "false"); toggle.setAttribute("aria-label", document.documentElement.lang === "en-US" ? "Open navigation" : "展开主导航"); nav.removeAttribute("data-open"); };
+    toggle.addEventListener("click", () => { const open = toggle.getAttribute("aria-expanded") !== "true"; toggle.setAttribute("aria-expanded", String(open)); toggle.setAttribute("aria-label", open ? (document.documentElement.lang === "en-US" ? "Close navigation" : "收起主导航") : (document.documentElement.lang === "en-US" ? "Open navigation" : "展开主导航")); if (open) nav.setAttribute("data-open", ""); else nav.removeAttribute("data-open"); });
     nav.addEventListener("click", (event) => { if ((event.target as HTMLElement).matches("a")) close(); });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") { close(); toggle.focus(); } });
   }

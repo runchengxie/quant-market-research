@@ -16,7 +16,7 @@ const pageTitle = `${title} · Quant Market Research`;
 ---
 
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en-US">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -39,9 +39,32 @@ const pageTitle = `${title} · Quant Market Research`;
   <body>
     <div class:list={["app", { "research-workbench": workbench }]}>
       <SiteHeader activeRoute={activeRoute} section={section} />
-      <a class="skip-link" href="#main-content">跳到正文</a>
+      <a class="skip-link" href="#main-content" data-locale-text data-en="Skip to content" data-zh="跳到正文">Skip to content</a>
       <main id="main-content" class="site-main"><slot /></main>
       <SiteFooter />
     </div>
   </body>
+  <script is:inline>
+    (() => {
+      const storageKey = "quant-market-research-locale";
+      const stored = localStorage.getItem(storageKey);
+      const locale = stored === "zh-CN" ? "zh-CN" : "en-US";
+      document.documentElement.lang = locale;
+      document.documentElement.dataset.locale = locale;
+      document.querySelectorAll("[data-locale-text]").forEach((node) => {
+        const value = node.getAttribute(locale === "en-US" ? "data-en" : "data-zh");
+        if (value) node.textContent = value;
+      });
+      const toggle = document.querySelector("[data-locale-toggle]");
+      if (toggle) {
+        toggle.textContent = locale === "en-US" ? "中文" : "English";
+        toggle.setAttribute("aria-label", locale === "en-US" ? "Switch to Chinese" : "切换到英文");
+        toggle.addEventListener("click", () => {
+          const next = document.documentElement.lang === "en-US" ? "zh-CN" : "en-US";
+          localStorage.setItem(storageKey, next);
+          window.location.reload();
+        });
+      }
+    })();
+  </script>
 </html>
