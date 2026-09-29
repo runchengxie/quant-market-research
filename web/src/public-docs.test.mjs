@@ -15,6 +15,13 @@ test('public markdown links keep the Pages base and encoded anchors', () => {
 test('reader only opens the explicit public document allowlist', async () => {
   const repoRoot = resolve(fileURLToPath(new URL('../..', import.meta.url)));
   const docs = await readPublicDocuments(repoRoot);
-  assert.equal(docs.length, 9);
+  assert.equal(docs.length, 18);
   assert.ok(docs.every((doc) => !doc.body.includes('INTERNAL_ONLY_SENTINEL')));
+});
+
+test('reader resolves published Chinese companion pages to their MkDocs locale paths', () => {
+  assert.equal(
+    resolveDocLink('docs/index.md', 'index.zh-CN.md', '/quant-market-research'),
+    '/quant-market-research/docs/index.zh-CN/',
+  );
 });

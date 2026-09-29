@@ -1,4 +1,4 @@
-site_name: Quant Market Research | 研究说明
+site_name: Quant Market Research
 site_url: https://runchengxie.github.io/quant-market-research/docs/
 docs_dir: docs
 site_dir: .build/mkdocs-reference
@@ -7,7 +7,7 @@ strict: true
 theme:
   name: mkdocs
   custom_dir: docs/overrides
-  locale: zh
+  locale: en
   features:
     - navigation.top
 
@@ -16,14 +16,23 @@ theme:
 exclude_docs: |
   **
   !/index.md
+  !/index.zh-CN.md
   !/research-closeout-status.md
+  !/research-closeout-status.zh-CN.md
   !/research/factors/low-turnover.md
+  !/research/factors/low-turnover.zh-CN.md
   !/research/factors/pb-roe.md
+  !/research/factors/pb-roe.zh-CN.md
   !/research/factors/microcap.md
+  !/research/factors/microcap.zh-CN.md
   !/research/experiments/microcap-execution-diagnostic-20260928.md
+  !/research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md
   !/research/factors/smallcap-turnover-history.md
+  !/research/factors/smallcap-turnover-history.zh-CN.md
   !/research/factors/barra-factor-dictionary.md
+  !/research/factors/barra-factor-dictionary.zh-CN.md
   !/research/factors/barra-source-inventory.md
+  !/research/factors/barra-source-inventory.zh-CN.md
   !/css/**
   !/js/**
   !/img/**
@@ -33,16 +42,16 @@ exclude_docs: |
   !/assets/docs.css
 
 nav:
-  - 研究说明: index.md
-  - 因子研究:
-      - 研究收口状态: research-closeout-status.md
-      - PB 与 ROE: research/factors/pb-roe.md
-      - 低换手: research/factors/low-turnover.md
-      - 微盘股: research/factors/microcap.md
-      - 微盘执行诊断: research/experiments/microcap-execution-diagnostic-20260928.md
-      - 小市值成交活跃度补充: research/factors/smallcap-turnover-history.md
-      - Barra 风格因子字典: research/factors/barra-factor-dictionary.md
-      - Barra 研究资料清单: research/factors/barra-source-inventory.md
+  - Research overview: index.md
+  - Factor research:
+      - Research closeout status: research-closeout-status.md
+      - PB and ROE: research/factors/pb-roe.md
+      - Low turnover: research/factors/low-turnover.md
+      - Microcap: research/factors/microcap.md
+      - Microcap execution diagnostic: research/experiments/microcap-execution-diagnostic-20260928.md
+      - Small-cap turnover history: research/factors/smallcap-turnover-history.md
+      - Barra factor dictionary: research/factors/barra-factor-dictionary.md
+      - Barra source inventory: research/factors/barra-source-inventory.md
 extra:
   public_site_url: https://runchengxie.github.io/quant-market-research/
 

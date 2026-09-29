@@ -2,8 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { publicDocs, publicPages, validateRegistry } from './content/public-registry.ts';
 
-test('only nine reviewed documents are admissible', () => {
-  assert.equal(publicDocs.length, 9);
+test('the reviewed English and Chinese documents are admissible', () => {
+  assert.equal(publicDocs.length, 18);
   assert.equal(publicDocs.filter((d) => d.route === '/docs/').length, 1);
   assert.ok(publicDocs.every((d) => !/superpowers|runbooks/.test(d.source)));
   assert.doesNotThrow(() => validateRegistry(publicPages, publicDocs));

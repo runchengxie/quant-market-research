@@ -1,123 +1,35 @@
-# Barra 风格因子字典
+# Barra factor dictionary
 
-这份字典把研究里的原始指标、风格因子和报告层因子家族分开记录。它描述当前公开研究的实现口径，方便复核和后续版本升级，不代表对商业 Barra 模型的完整复刻。
+[中文页面](barra-factor-dictionary.zh-CN.md)
 
-机器可读版本位于 `studies/style_factors_18y/factor-descriptors.yml`。
+This dictionary separates raw research metrics, style factors, and report-level factor families. It documents the public research implementation and is not a complete reproduction of a commercial Barra model.
 
-## 三层结构
+The machine-readable descriptors are maintained in `studies/style_factors_18y/factor-descriptors.yml`. The public pages show only reviewed derived results; implementation details and source ownership remain linked to the relevant research and platform repositories.
 
-原始指标（descriptor）是直接从行情或基本面数据计算出的变量，例如 ROE、PB 和 21 日收益率。风格因子是用于分组和归因的研究变量，例如盈利能力、杠杆和短期动量。因子家族用于报告和汇总，例如把盈利能力、杠杆、盈利质量和盈利稳定性归入质量家族。
+## Historical 19-factor snapshot
 
-归因分析应优先使用风格因子层。家族适合做展示和汇总，原始指标用于解释一个风格因子具体由什么构成。
+The historical snapshot contains 19 factor identifiers. These are reviewed historical results, not 19 fully reconstructable commercial Barra factors. The current core dictionary and the historical source package have different provenance boundaries.
 
-## 当前实现
+| Factor ID | Evidence boundary |
+| --- | --- |
+| `liquidity` | Historical Barra-style snapshot; source definition remains bounded |
+| `growth` | Historical Barra-style snapshot; source definition remains bounded |
+| `value` | Historical Barra-style snapshot; source definition remains bounded |
+| `ps_value` | Historical Barra-style snapshot; source definition remains bounded |
+| `lowvol` | Historical Barra-style snapshot; source definition remains bounded |
+| `dividend_yield` | Historical Barra-style snapshot; source definition remains bounded |
+| `institution_holding` | Historical Barra-style snapshot; source definition remains bounded |
+| `earnings_yield` | Historical Barra-style snapshot; source definition remains bounded |
+| `quality` | Historical Barra-style snapshot; source definition remains bounded |
+| `leverage` | Historical Barra-style snapshot; source definition remains bounded |
+| `chip_concentration` | Historical Barra-style snapshot; source definition remains bounded |
+| `fund_breadth_change` | Historical Barra-style snapshot; source definition remains bounded |
+| `fund_ownership_change` | Historical Barra-style snapshot; source definition remains bounded |
+| `fund_ownership` | Historical Barra-style snapshot; source definition remains bounded |
+| `beta` | Historical Barra-style snapshot; source definition remains bounded |
+| `fund_breadth` | Historical Barra-style snapshot; source definition remains bounded |
+| `momentum` | Historical Barra-style snapshot; source definition remains bounded |
+| `size` | Historical Barra-style snapshot; source definition remains bounded |
+| `liquidity_flow` | Historical Barra-style snapshot; source definition remains bounded |
 
-| 因子家族 | 风格因子 | 当前主要指标 | 当前解释边界 |
-| --- | --- | --- | --- |
-| 规模 | 规模 | `log_market_cap` | 总市值口径，尚未实现完整 Barra 市值模型 |
-| 价值 | 账面市值比 | `1 / PB` | PB 缺失或为零时无法生成 |
-| 价值 | 盈利收益率 | `1 / PE_TTM`（仅正 PE） | 亏损公司被排除 |
-| 动量 | 短期动量（21 日） | 21 日收益，排除形成日 | 更接近短期动量或反转代理 |
-| 波动率 | 总波动率（21 日） | 21 日收益标准差 | 尚未剥离市场和行业波动 |
-| 流动性 | 单日、20 日、60 日换手率 | 换手率及其滞后均值 | 不同窗口代表不同研究问题 |
-| 流动性 | Amihud 非流动性（20 日） | `abs(return) / amount` 的滞后均值 | 同时混合波动和信息冲击 |
-| 质量 | 盈利能力 | ROE（ROA 为敏感性版本） | ROE 会受到财务杠杆影响 |
-| 质量 | 杠杆 | Debt / Assets 的反向得分 | 可与复合质量重复，归因时需避免同时使用 |
-| 质量 | 盈利质量 | OCF / Net Profit | 需要继续核验财务数据的 PIT 可见时间 |
-| 质量 | 盈利稳定性 | 过去 8 个季度净利润同比波动的反向值 | 利润接近零时增长率可能不稳定 |
-| 质量 | 复合质量 | 上述四个子因子等权 | 归因时不要与杠杆子因子同时回归 |
-
-## 每个因子具体包含什么
-
-下面按当前机器可读字典说明 descriptor、处理方式和最终方向。descriptor 可以理解为原始特征，因子是经过方向统一和横截面处理后用于分组的分数。
-
-| 因子 | 原始特征 | 处理和聚合 | 高分代表什么 |
-| --- | --- | --- | --- |
-| `size`（规模） | `daily_basic.total_mv`，总市值 | 取自然对数，形成日可见的规模分数 | 小市值 |
-| `book_to_price`（账面市值比） | `daily_basic.pb`，市净率 | 取 `1 / PB`，PB 缺失或为零时不生成 | 账面市值比较高 |
-| `earnings_yield`（盈利收益率） | `daily_basic.pe_ttm`，滚动市盈率 | 只对正 PE 取 `1 / PE_TTM`，亏损公司没有该分数 | 盈利收益率较高 |
-| `short_term_momentum_21d`（短期动量） | `daily.close`，收盘价 | 计算形成日前 21 个交易日的收益，排除形成日，避免把当天价格带入特征 | 近期涨幅较高 |
-| `total_volatility_21d`（总波动率） | `daily.close`，收盘价 | 计算最近 21 个收益观察值的标准差 | 波动率较低 |
-| `turnover_1d`（单日换手率） | `daily.turnover_rate` | 直接使用形成日可见的换手率 | 换手率较低 |
-| `turnover_20d`（20 日平均换手率） | `daily.turnover_rate` | 对形成日前的换手率取 20 日滞后均值 | 中短期交易活跃度较低 |
-| `turnover_60d`（60 日平均换手率） | `daily.turnover_rate` | 对形成日前的换手率取 60 日滞后均值 | 中期交易活跃度较低 |
-| `amihud_20d`（Amihud 非流动性） | 收益率和成交额 | 先计算 `abs(return) / amount`，再取形成日前 20 日均值 | 单位成交额带来的价格变化较小，交易冲击较低 |
-| `profitability`（盈利能力） | `fundamental.roe`，ROE | 截面缩尾到 1% 至 99%，再计算标准分。ROA 只作为敏感性版本 | 盈利能力较强 |
-| `leverage`（杠杆） | `fundamental.debt_to_assets`，资产负债率 | 截面缩尾到 1% 至 99%，再计算标准分并统一为低杠杆方向 | 资产负债率较低 |
-| `earnings_quality`（盈利质量） | 经营现金流和净利润 | 计算 `OCF / Net Profit`，缩尾后计算标准分 | 现金流对利润的支持较强 |
-| `earnings_variability`（盈利稳定性） | `fundamental.netprofit_yoy`，净利润同比 | 计算连续 8 个季度同比的波动率，再取负值 | 盈利波动较小 |
-
-原始指标之间没有直接相加。单指标因子先完成缺失值处理、方向统一和必要的截面标准化，再进入分组或复合计算。当前质量复合因子是四个子因子的等权平均，实际计算时只对当期有值的子因子重新取可用项平均。`roa` 不进入当前主复合质量因子。
-
-## 因子如何用于分组和收益计算
-
-当前公开历史页面中的 19 个因子属于历史研究快照，不能完全等同于上面这套最新的核心字典。历史研究的共同流程是：
-
-1. 在每个月末，用当时可见的因子值给股票排序。
-2. 将股票分成五组，每组约 20%，最高分组和最低分组等权。
-3. 持有到下一个月末，每天计算高分组减低分组的收益差。
-4. 将每日收益差复合成年度收益、波动率、夏普比率和回撤。
-
-这一步是分组收益的聚合，不是把不同股票的原始指标简单相加。行业调整、标准化和缺失值处理属于历史研究流程，具体结果仍受当时可用数据和因子版本影响。研究页面中的 `size` 历史方向是大市值组减小市值组，独立的市值十分组诊断则使用 Q1 减 Q10，方向相反，阅读时需要区分。
-
-## 归类是否需要调整
-
-现有六个一级家族可以保留，但建议把家族和具体实现边界写清楚：
-
-| 现有归类 | 建议 | 原因 |
-| --- | --- | --- |
-| 规模 | 保留 | 当前只有总市值的对数，归类明确，但不应写成完整商业 Barra 规模模型 |
-| 价值 | 保留，并拆出账面市值比和盈利收益率 | 两者分别来自 PB 和 PE，缺失规则也不同 |
-| 动量 | 保留，名称加上短期价格行为说明 | 21 日窗口更接近短期动量或反转代理，不是标准中期动量 |
-| 波动率 | 保留 | 当前是总收益波动率，尚未做市场和行业中性化 |
-| 流动性 | 保留一级家族，增加两个子类 | 换手率属于交易活跃度，Amihud 属于价格冲击或非流动性，不能完全当成同一个特征 |
-| 质量 | 保留，并明确四个子因子和一个复合因子 | 复合质量与子因子同时用于归因会重复计入，尤其是杠杆 |
-| 历史快照中的成长、贝塔、持仓、资金流、股息和市销率 | 单列为历史研究因子 | 这些因子不在当前核心 descriptor 字典中，数据覆盖和时间口径也不完全相同 |
-
-因此，当前不必增加新的一级家族。更重要的调整是把流动性拆成交易活跃度和非流动性两个子类，把质量的子因子层级展示出来，并在网页中明确历史 19 因子与当前核心定义不是同一套版本。
-
-研究引擎现在会同时保留四个子因子的标准化得分，字段分别为 `factor_quality_profitability`、`factor_quality_leverage`、`factor_quality_earnings_variability` 和 `factor_quality_earnings_quality`。复合 `factor_quality` 仍按可用子因子等权计算。这样可以在同一份因子面板中检查质量家族的组成，避免把复合质量和其中的杠杆成分重复解释。
-
-目前公开的 18 年历史快照仍是旧版复合因子结果，尚未用这四个子因子重新生成逐年收益和归因表。现有风险输入快照只保留规模和换手暴露，不能直接用于质量家族重跑。平台目前可见的点时财务资产覆盖 2015 年以后，且主要是前 800 只股票，无法覆盖 2008 年起的完整历史样本。重新运行需要完整的历史行情、点时基本面和原始基准产物。生成新版本后，应同时保留旧版结果，并对比覆盖率、相关性、收益和实际组合暴露。
-
-截至 2026-09-16，平台另有 `quarterly_pit_panel_earliest_disclosure.parquet`，可见报告期覆盖 1991 年至 2026 年、可见日期覆盖 1994-04-06 至 2026-05-21。该面板包含 ROA、毛利率、营收同比、经营现金流/收入、净利率、资产周转率和 Debt/Assets，但没有 ROE，也没有当前定义所需的连续 8 季度净利润同比序列。它适合做点时质量代理变量的覆盖率诊断，不能直接替代现有 Quality 定义。完整 18 年重跑仍应等待 ROE、盈利稳定性和一致的历史行情连接条件齐备。
-
-
-## 历史 19 因子快照清单
-
-这里的“历史 19 因子”指来源包 `style-factors/weekly-20260904` 中已经落盘并用于公开页面的历史收益序列，不是当前 `factor-descriptors.yml` 的 19 个可重算 descriptor。当前仓库只提交了汇总结果和来源清单，原始历史因子面板没有复制进来（`raw_data_copied: false`），因此下表把“研究含义”和“当前可验证程度”分开记录；没有证据支持的历史公式不臆测补写。
-
-| 因子 ID | 研究含义（按历史命名解释） | 历史覆盖 | 当前可验证程度 |
-| --- | --- | ---: | --- |
-| `liquidity` | 流动性/交易摩擦方向的历史合成因子；具体是换手、冲击还是复合口径，当前来源包外无法拆分 | 4,518 天 / 18.6 年 | 有历史收益摘要；原始 descriptor 和公式未随项目提交 |
-| `growth` | 成长风格，通常用于描述盈利、收入或资产扩张，但本快照没有保留具体组成字段 | 4,460 天 / 18.3 年 | 有历史收益摘要；组成和公式未确认 |
-| `value` | 价值风格的历史合成因子；不能直接等同于当前核心字典中的账面市值比或盈利收益率 | 4,518 天 / 18.6 年 | 有历史收益摘要；具体价值 descriptor 未确认 |
-| `ps_value` | 市销率价值方向，名称表明与 Price-to-Sales 相关 | 4,518 天 / 18.6 年 | 有历史收益摘要；销售字段、取倒数规则和缺失处理未确认 |
-| `lowvol` | 低波动风格，倾向低历史收益波动股票 | 4,518 天 / 18.6 年 | 有历史收益摘要；窗口、是否市场中性化未确认 |
-| `dividend_yield` | 股息率风格，按历史命名表示股息收益率暴露 | 4,518 天 / 18.6 年 | 有历史收益摘要；股息字段、复权和形成日口径未确认 |
-| `institution_holding` | 机构持仓水平风格 | 833 天 / 11.1 年 | 有历史收益摘要；机构范围、披露滞后和 PIT 处理未确认 |
-| `earnings_yield` | 盈利收益率风格，通常与 PE 的倒数相关 | 4,518 天 / 18.6 年 | 有历史收益摘要；与当前 `1 / PE_TTM` 定义不能自动视为同一版本 |
-| `quality` | 质量风格的历史复合因子 | 4,460 天 / 18.3 年 | 有历史收益摘要；与当前四子因子等权复合版本未完成历史重算对齐 |
-| `leverage` | 杠杆风格，通常表示负债水平或其反向暴露 | 4,460 天 / 18.3 年 | 有历史收益摘要；与当前 Debt / Assets 定义不能自动视为同一版本 |
-| `chip_concentration` | 股东/筹码集中度风格 | 872 天 / 11.1 年 | 有历史收益摘要；持股来源、集中度计算和披露滞后未确认 |
-| `fund_breadth_change` | 基金持仓广度变化风格 | 1,686 天 / 11.4 年 | 有历史收益摘要；基金集合和变化窗口未确认 |
-| `fund_ownership_change` | 基金持股比例变化风格 | 1,703 天 / 11.4 年 | 有历史收益摘要；基金集合、变化窗口和披露可见日未确认 |
-| `fund_ownership` | 基金持股水平风格 | 2,818 天 / 11.6 年 | 有历史收益摘要；基金集合和披露可见日未确认 |
-| `beta` | 相对市场收益敏感度风格 | 4,397 天 / 18.1 年 | 有历史收益摘要；基准、估计窗口和是否滚动估计未确认 |
-| `fund_breadth` | 基金持仓覆盖广度风格 | 2,818 天 / 11.6 年 | 有历史收益摘要；覆盖定义和披露可见日未确认 |
-| `momentum` | 动量风格的历史版本 | 4,502 天 / 18.5 年 | 有历史收益摘要；形成窗口、跳过近期收益和方向未确认，不能替代当前 21 日代理 |
-| `size` | 市值规模风格 | 4,518 天 / 18.6 年 | 有历史收益摘要；历史页面方向和当前 `log_market_cap` 方向需按页面口径区分 |
-| `liquidity_flow` | 流动性资金流/交易流变化风格 | 144 天 / 0.6 年 | 有历史收益摘要但覆盖很短；原始字段和公式未确认 |
-
-上述“未确认”不是数据质量结论，而是 provenance 边界：仓库中目前没有历史来源包的原始 descriptor、计算脚本或 PIT 字段清单。若要把这些因子升级为可复现定义，必须先恢复来源包或其审计后的字段级清单，再逐项补充公式、形成日、缺失值处理、标准化/中性化、股票池和收益分组规则。当前公开结果应继续称为历史 Barra-style 快照，不能称为 19 个完整可重建的商业 Barra 因子。
-## 数据和时间口径
-
-每个 descriptor 都应记录来源字段、变换、窗口、方向和形成日可见性。行情变量使用形成日前已完成的观测。基本面变量还需要依赖来源数据的披露和可见时间，当前公开快照不应被描述为完整的 PIT 基本面数据库。
-
-换手率和 Amihud 同属流动性家族，但它们描述的侧面不同。换手率描述交易活跃程度，Amihud 描述单位成交额对应的价格变化。控制其中一个后，另一个仍可能携带不同窗口或不同股本口径的信息。
-
-## 与商业 Barra 的关系
-
-当前研究是 Barra 风格的简化实现。它提供可审计的横截面分组和因子收益序列，但尚未实现商业模型常见的完整行业因子、纯因子收益估计、协方差矩阵、特异风险和组合风险预测。报告中应使用“Barra-style”或“Barra-inspired”表述。
-
-后续升级时，应先固定版本化 descriptor，再比较新旧版本的覆盖率、相关性、因子收益、组合暴露和历史归因。不要在没有记录版本的情况下直接替换因子定义。
+The repository does not include the original historical factor panel or a complete descriptor and formula for every row. Do not describe this snapshot as a fully reproducible commercial Barra model.
