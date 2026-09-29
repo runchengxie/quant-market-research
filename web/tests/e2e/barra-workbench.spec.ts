@@ -10,7 +10,7 @@ test("unknown URL factor cannot crash the explorer", async ({ page }) => {
 
 test("factor search, family filter and shared link preserve selected evidence", async ({ page }) => {
   await page.goto("research/style-factors-18y/?factor=quality");
-  const detail = page.getByRole("region", { name: "所选因子详情" });
+  const detail = page.getByRole("region", { name: /所选因子详情|Selected-factor detail/ });
   await expect(page.locator('button[data-factor="quality"]')).toHaveAttribute("aria-pressed", "true");
   await expect(detail).toContainText("ROE");
   await page.getByRole("searchbox", { name: /^(Search factors|搜索因子)$/ }).fill("beta");
@@ -37,7 +37,7 @@ test("optional dataset failure stays local and can be retried", async ({ page })
   await page.goto("research/style-factors-18y/?factor=quality");
   await expect(page.locator("button[data-factor]")).toHaveCount(19);
   await expect(page.locator("#barra-annual canvas")).toBeVisible();
-  const quality = page.getByRole("region", { name: "Quality 子因子数据" });
+  const quality = page.getByRole("region", { name: /Quality 子因子数据|Quality sub-factor data/ });
   await expect(quality.getByRole("alert")).toContainText(/(Loading failed|加载失败)/);
   fail = false;
   await quality.getByRole("button", { name: /(Retry|重试)/ }).click();
@@ -74,8 +74,8 @@ test("size data is lazy, shows revision limits and can page through all records"
   await expect(diagnostic.getByRole("button", { name: /^(Next page|下一页)$/ })).toBeDisabled();
   await diagnostic.getByRole("button", { name: /^(First page|第一页)$/ }).click();
   await expect(table.getByRole("row")).toHaveCount(51);
-  await diagnostic.getByRole("button", { name: "阶段收益差", exact: true }).click();
-  await expect(diagnostic.getByRole("table").nth(1)).toContainText("共同分组日期数");
+  await diagnostic.getByRole("button", { name: /^(阶段收益差|Stage spread)$/ }).click();
+  await expect(diagnostic.getByRole("table").nth(1)).toContainText(/共同分组日期数|Paired formation dates/);
 });
 
 for (const width of [390, 1280]) {
@@ -85,15 +85,15 @@ for (const width of [390, 1280]) {
     const annual = page.locator("#barra-annual");
     await expect(annual.locator("canvas")).toBeVisible();
     expect(await annual.evaluate(el => el.getBoundingClientRect().top)).toBeLessThan(width > 800 ? 600 : 850);
-    await expect(page.getByRole("region", { name: "所选因子关键指标" })).toContainText("4.0%");
-    await expect(page.getByRole("region", { name: "因子相关性" })).toContainText("正相关");
+    await expect(page.getByRole("region", { name: /所选因子关键指标|Selected-factor key metrics/ })).toContainText("4.0%");
+    await expect(page.getByRole("region", { name: /因子相关性|Factor correlations/ })).toContainText(/正相关|positive/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();
     await page.screenshot({ path: `test-results/workbench-light-${width}.png`, fullPage: true });
     await page.locator(".theme-toggle").click();
     await page.locator(".theme-toggle").click();
     await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await page.locator('button[data-factor="size"]').click();
-    await expect(page.getByRole("region", { name: "所选因子关键指标" })).not.toContainText("4.0%");
+    await expect(page.getByRole("region", { name: /所选因子关键指标|Selected-factor key metrics/ })).not.toContainText("4.0%");
     await page.screenshot({ path: `test-results/workbench-dark-${width}.png`, fullPage: true });
   });
 }

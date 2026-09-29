@@ -495,10 +495,10 @@ function QualityDiagnostic() {
     quality_earnings_quality: "盈利质量 · OCF / Net Profit",
     quality_earnings_variability: "盈利稳定性 · 财务同比波动",
   };
-  return <section className="quality-diagnostic" role="region" aria-label="Quality 子因子数据">
-    <h4>Quality 子因子诊断</h4>
+  return <section className="quality-diagnostic" role="region" aria-label={text("Quality 子因子数据", "Quality sub-factor data")}>
+    <h4>{text("Quality 子因子诊断", "Quality sub-factor diagnostic")}</h4>
     <p className="panel-note">独立短样本诊断，按原说明主要覆盖 2020 年以后、前 800 只股票；原始生成记录尚未定位。它与 18 年历史复合因子的样本和版本不同，不能视为对历史收益的贡献分解。</p>
-    {!qualityComponents || !qualityComponents.length ? <DataNotice label="Quality 子因子" error={error} retry={retry} empty={!!qualityComponents} /> :
+    {!qualityComponents || !qualityComponents.length ? <DataNotice label={text("Quality 子因子", "Quality sub-factors")} error={error} retry={retry} empty={!!qualityComponents} /> :
       <SortableTable rows={qualityComponents.filter(row => row.factor.startsWith("quality_")).map(row => ({
         ...row,
         ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map(key => [key, Number.isFinite(finiteNumber(row[key])) ? String(finiteNumber(row[key]) / 100) : ""])),
@@ -506,7 +506,7 @@ function QualityDiagnostic() {
         years: num(row.years),
         factor: names[row.factor] ?? row.factor,
       }))}
-        columns={[["factor", "子因子与主要特征"], ["days", "交易日"], ["years", "样本年数"], ["geometric_annual_ret", "几何年化"], ["annual_vol", "年化波动率"], ["sharpe", "夏普比率"], ["max_drawdown", "最大回撤"], ["hit_rate", "正收益比例"]]}
+        columns={[["factor", text("子因子与主要特征", "Sub-factor and features")], ["days", text("交易日", "Trading days")], ["years", text("样本年数", "Sample years")], ["geometric_annual_ret", text("几何年化", "Geometric annualized")], ["annual_vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["max_drawdown", text("最大回撤", "Max drawdown")], ["hit_rate", text("正收益比例", "Positive-return ratio")]]}
         percentColumns={["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"]} />}
     <div className="quality-method-grid">
       <div><strong>01 · 盈利能力</strong><span>ROE，截面缩尾后标准化。ROA 只作敏感性版本。</span></div>
@@ -520,11 +520,11 @@ function QualityDiagnostic() {
 function SizeSnapshot() {
   const { data, error, retry } = useCsv("barra/barra_size_quantiles.csv");
   const metadata = useJson<BarraSummary & { revision?: { input_vintage?: string; as_of?: string } }>("barra/barra_summary.json");
-  if (!data || !data.length) return <DataNotice label="市值诊断" error={error} retry={retry} empty={!!data} />;
+  if (!data || !data.length) return <DataNotice label={text("市值诊断", "Size diagnostic")} error={error} retry={retry} empty={!!data} />;
   const rows = data.map(row => ({ ...row, bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return }));
   return <>
     <p className="panel-note">独立十分组诊断，不用于复核上方历史五分组收益。修订结果先固定形成日成员，再报告后续缺失报价；完整样本筛选仍可能带来条件选择偏差，不代表可交易或无偏收益。</p>
-    {metadata.data?.revision ? <p className="size-revision-note">修订快照 · 输入版本 {metadata.data.revision.input_vintage} · 数据截至 {metadata.data.revision.as_of}。这不是原始输入版本的精确复现。缺失后续报价 {num(metadata.data.size_monotonicity?.missing_return_count)} 条，未填零，也未猜测退市终值。</p> : <DataNotice label="诊断版本说明" error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
+    {metadata.data?.revision ? <p className="size-revision-note">修订快照 · 输入版本 {metadata.data.revision.input_vintage} · 数据截至 {metadata.data.revision.as_of}。这不是原始输入版本的精确复现。缺失后续报价 {num(metadata.data.size_monotonicity?.missing_return_count)} 条，未填零，也未猜测退市终值。</p> : <DataNotice label={text("诊断版本说明", "Diagnostic version note")} error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
     <SizeDiagnosticPanel rows={rows} dailyCurve={dailySizeCurve(comparableSizeRows(rows))} />
   </>;
 }
@@ -535,13 +535,13 @@ function CorrelationPanel({ selectedFactor, onSelect }: { selectedFactor: string
   const related = correlations && typeof correlations === "object" ? Object.entries(correlations)
     .filter(([id, value]) => id !== selectedFactor && Object.hasOwn(FACTOR_NAMES, id) && typeof value === "number" && Number.isFinite(value) && Math.abs(value) <= 1)
     .sort(([, a], [, b]) => Math.abs(b) - Math.abs(a)).slice(0, 8) : [];
-  return <section role="region" aria-label="因子相关性" id="barra-correlations">
-    <Panel title="因子相关性" tag="日收益差 · 非因果关系">
+  return <section role="region" aria-label={text("因子相关性", "Factor correlations")} id="barra-correlations">
+    <Panel title={text("因子相关性", "Factor correlations")} tag={text("日收益差 · 非因果关系", "Daily return spread · non-causal")}>
       <p className="panel-note">与{FACTOR_NAMES[selectedFactor]}相关程度最高的 8 个因子。正相关表示同向变化，负相关表示反向变化；点击名称切换观察对象。配对样本区间未完整提供，不应直接据此构建组合。</p>
       {!related.length ? <DataNotice label="相关性" error={error} retry={retry} empty={!!data} /> :
         <div className="correlation-list">
-          <div className="correlation-scale"><span>−1 · 负相关</span><span>0</span><span>正相关 · +1</span></div>
-          {related.map(([id, value]) => <button type="button" key={id} onClick={() => onSelect(id)} className="correlation-row" aria-label={`查看${FACTOR_NAMES[id]}，相关系数 ${value.toFixed(2)}`}>
+          <div className="correlation-scale"><span>{text("−1 · 负相关", "−1 · negative")}</span><span>0</span><span>{text("正相关 · +1", "positive · +1")}</span></div>
+          {related.map(([id, value]) => <button type="button" key={id} onClick={() => onSelect(id)} className="correlation-row" aria-label={text(`查看${FACTOR_NAMES[id]}，相关系数 ${value.toFixed(2)}`, `View ${FACTOR_NAMES[id]}, correlation ${value.toFixed(2)}`)}>
             <span className="correlation-name">{FACTOR_NAMES[id]}</span>
             <span className="correlation-track" aria-hidden="true"><i className={value < 0 ? "negative" : "positive"} style={{ width: `${Math.abs(value) * 50}%`, left: value < 0 ? `${50 + value * 50}%` : "50%" }} /></span>
             <strong>{value > 0 ? "+" : ""}{value.toFixed(2)}</strong>
@@ -611,7 +611,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
       <section id="barra-annual" aria-label={text("年度因子探索", "Annual factor exploration")}>
       <Panel title={text("逐年合成收益与阶段表现", "Annual composite returns and period performance")} tag={text("历史序列 · 公式待核验", "Historical series · formula pending audit")}>
         <div className="explorer-layout">
-          <aside className="factor-navigator" aria-label="因子选择">
+          <aside className="factor-navigator" aria-label={text("因子选择", "Factor selection")}>
             <div className="factor-filter">
             <label>{text("搜索因子", "Search factors")}<input type="search" aria-label={text("搜索因子", "Search factors")} placeholder={text("中文名称或英文代码", "Chinese name or English code")} value={query} onChange={event => setQuery(event.target.value)} /></label>
               <label>{text("因子家族", "Factor family")}<select aria-label={text("因子家族", "Factor family")} value={family} onChange={event => setFamily(event.target.value)}><option value="全部">{familyLabel("全部")}</option>{familyOrder.map(value => <option key={value} value={value}>{familyLabel(value)}</option>)}</select></label>
@@ -625,36 +625,36 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
               })}</div>}
           </aside>
           <div className="factor-chart">
-            <div className="selected-heading"><div><span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span><h3>{FACTOR_NAMES[selectedFactor]}</h3></div><span className="chart-unit">年度合成收益 · %</span></div>
-            <section className="factor-stats" role="region" aria-label="所选因子关键指标">
-              <Stat label="几何年化" value={percentage(selectedFactorSummary?.geometric_annual_ret)} note="历史合成序列" />
-              <Stat label="最大回撤" value={percentage(selectedFactorSummary?.max_drawdown)} note="同一历史序列" />
-              <Stat label="样本年数" value={num(selectedFactorSummary?.years)} note={`${num(selectedFactorSummary?.days)} 个交易日`} />
+            <div className="selected-heading"><div><span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span><h3>{FACTOR_NAMES[selectedFactor]}</h3></div><span className="chart-unit">{text("年度合成收益 · %", "Annual composite return · %")}</span></div>
+            <section className="factor-stats" role="region" aria-label={text("所选因子关键指标", "Selected-factor key metrics")}>
+              <Stat label={text("几何年化", "Geometric annualized")} value={percentage(selectedFactorSummary?.geometric_annual_ret)} note={text("历史合成序列", "Historical composite series")} />
+              <Stat label={text("最大回撤", "Max drawdown")} value={percentage(selectedFactorSummary?.max_drawdown)} note={text("同一历史序列", "Same historical series")} />
+              <Stat label={text("样本年数", "Sample years")} value={num(selectedFactorSummary?.years)} note={`${num(selectedFactorSummary?.days)} ${text("个交易日", "trading days")}`} />
             </section>
-            {!selectedYearly.length ? <DataNotice label="年度收益" error={yearlyResource.error} retry={yearlyResource.retry} empty={!!yearlyResource.data} /> :
+            {!selectedYearly.length ? <DataNotice label={text("年度收益", "Annual returns")} error={yearlyResource.error} retry={yearlyResource.retry} empty={!!yearlyResource.data} /> :
               <><BarChart rows={selectedYearly} labelKey="year" valueKey="value" color="#2563a6" />
-                <details className="chart-data"><summary>查看年度数值</summary><SortableTable rows={selectedYearly} columns={[["year", "年份"], ["value", "年度合成收益"]]} percentColumns={["value"]} /></details></>}
+                <details className="chart-data"><summary>{text("查看年度数值", "View annual values")}</summary><SortableTable rows={selectedYearly} columns={[["year", text("年份", "Year")], ["value", text("年度合成收益", "Annual composite return")]]} percentColumns={["value"]} /></details></>}
             <p className="panel-note">按每日多空收益差复合计算；不足一年的按已有区间展示。切换因子时样本可能不同，不宜直接排名判断优劣。</p>
           </div>
         </div>
       </Panel>
       </section>
       <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
-      <Panel title="因子定义、特征与计算方法" tag="随所选因子联动">
+      <Panel title={text("因子定义、特征与计算方法", "Factor definition, features, and calculation")} tag={text("随所选因子联动", "Linked to selected factor")}>
         <div className="factor-detail-grid">
           <div>
             <span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span>
             <h4>{FACTOR_NAMES[selectedFactor]}</h4>
             <dl className="factor-detail-list">
-              <div><dt>是什么 · 包含什么特征</dt><dd>{selectedFactorDetail?.feature}</dd></div>
-              <div><dt>历史页面记录的多空方向</dt><dd>{selectedFactorDefinition?.direction ?? "未提供"}。此处沿用旧页面标签，原始得分方向待源代码核验。</dd></div>
-              <div><dt>怎么计算 · 已核查的现行实现</dt><dd>{currentFactorImplementations[selectedFactor]}</dd></div>
-              <div><dt>共同处理流程</dt><dd>{commonFactorProcessing}</dd></div>
-              <div><dt>当前核心字典对应关系</dt><dd>{selectedFactorDetail?.current}</dd></div>
+              <div><dt>{text("是什么 · 包含什么特征", "What it is · included features")}</dt><dd>{selectedFactorDetail?.feature}</dd></div>
+              <div><dt>{text("历史页面记录的多空方向", "Historical long-short direction")}</dt><dd>{selectedFactorDefinition?.direction ?? text("未提供", "not available")}。此处沿用旧页面标签，原始得分方向待源代码核验。</dd></div>
+              <div><dt>{text("怎么计算 · 已核查的现行实现", "How it is calculated · reviewed implementation")}</dt><dd>{currentFactorImplementations[selectedFactor]}</dd></div>
+              <div><dt>{text("共同处理流程", "Common processing")}</dt><dd>{commonFactorProcessing}</dd></div>
+              <div><dt>{text("当前核心字典对应关系", "Current core-dictionary mapping")}</dt><dd>{selectedFactorDetail?.current}</dd></div>
             </dl>
           </div>
           <aside className="factor-detail-note">
-            <span className="section-kicker">验证状态 · 请与收益一起阅读</span>
+            <span className="section-kicker">{text("验证状态 · 请与收益一起阅读", "Verification status · read with returns")}</span>
             <p>现行代码已核查：{implementationSource.project} · <code>{implementationSource.revision.slice(0, 7)}</code>（{implementationSource.inspected}）。</p>
             <p>历史收益文件与原运行包一致，但历史生成提交尚未定位；包内一份元数据的校验值不一致。因此现行公式不能直接视为上方历史收益的原公式。</p>
             <p>历史收益、历史原始公式、当前核心代理是三件不同的事。PIT、持仓缺失收益及可交易性仍需独立验证。</p>
@@ -665,15 +665,15 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
       </div>
     </section>
     <section id="barra-overview">
-      <Panel title="19 个因子表现总览" tag="可搜索 · 可排序">
+      <Panel title={text("19 个因子表现总览", "Overview of 19 factor results")} tag={text("可搜索 · 可排序", "Searchable · sortable")}>
         <p className="panel-note">完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。</p>
-        {!factorRows.length ? <DataNotice label="因子总览" error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
-          <SortableTable rows={factorRows} columns={[["factor", "因子"], ["coverage", "样本范围"], ["annual", "几何年化"], ["vol", "年化波动率"], ["sharpe", "夏普比率"], ["drawdown", "最大回撤"], ["hit", "日收益为正比例"]]} percentColumns={["annual", "vol", "drawdown", "hit"]} />}
+        {!factorRows.length ? <DataNotice label={text("因子总览", "Factor overview")} error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
+          <SortableTable rows={factorRows} columns={[["factor", text("因子", "Factor")], ["coverage", text("样本范围", "Coverage")], ["annual", text("几何年化", "Geometric annualized")], ["vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["drawdown", text("最大回撤", "Max drawdown")], ["hit", text("日收益为正比例", "Positive daily-return ratio")]]} percentColumns={["annual", "vol", "drawdown", "hit"]} />}
       </Panel>
     </section>
     <CorrelationPanel selectedFactor={selectedFactor} onSelect={id => { selectFactor(id); setFamily("全部"); setQuery(""); document.getElementById("barra-annual")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" }); }} />
     <details className="panel size-diagnostic" onToggle={event => setShowSizeDiagnostic(event.currentTarget.open)}>
-      <summary>补充研究：市值十分组与稳定性诊断</summary>
+      <summary>{text("补充研究：市值十分组与稳定性诊断", "Supplement: size deciles and stability diagnostics")}</summary>
       {showSizeDiagnostic && <SizeSnapshot />}
     </details>
   </div>;
