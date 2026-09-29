@@ -9,8 +9,8 @@ const routes = [
   ["research/indices/", "Index and ETF history"],
   ["research/style-factors-18y/", "18-year A-share style factors"],
   ["research/liquidity/", "Cross-market liquidity"],
-  ["research/factors/low-turnover/", "低换手因子：它保留了什么信息？"],
-  ["research/factors/pb-roe/", "PB 与 ROE：历史对照与证据边界"],
+  ["research/factors/low-turnover/", "Low-turnover factor: what information remains?"],
+  ["research/factors/pb-roe/", "PB and ROE: historical comparison and evidence boundary"],
 ] as const;
 
 test.beforeEach(async ({ page }) => {
@@ -73,7 +73,7 @@ test("low-turnover report links to its full methodology", async ({ page }) => {
 test("PB/ROE topic links to the reviewed evidence and discloses its scope", async ({ page }) => {
   await page.goto("research/");
   await page.getByRole("link", { name: /PB 与 ROE 历史对照/ }).click();
-  await expect(page.locator(".theme-heading p")).toContainText("数据截至 2026-08-31");
+  await expect(page.locator(".theme-heading p")).toContainText(/数据截至 2026-08-31|through 2026-08-31/);
   await expect(page.getByText("不能当作严格纯 PB 组合", { exact: false })).toBeVisible();
   await expect(page.getByRole("link", { name: /阅读完整数据与方法/ })).toHaveAttribute("href", /\/docs\/research\/factors\/pb-roe\//);
 });
