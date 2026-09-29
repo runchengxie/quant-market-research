@@ -413,10 +413,10 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
 .data-notice button, .filter-empty button { background: var(--surface); cursor: pointer; border-radius: 5px; }
 .filter-empty { font-size: 13px; padding: 20px 0; }
 .size-revision-note { border-left: 3px solid var(--accent-strong); padding: 14px 18px; background: var(--accent-soft); font-size: 13px; line-height: 1.8; color: var(--ink-soft); }
-.research-workbench nav[aria-label="表格分页"] { display: flex; flex-wrap: wrap; justify-content: start; gap: 8px; margin-top: 16px; }
-.research-workbench nav[aria-label="表格分页"] button { min-height: 40px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface); color: var(--ink-soft); cursor: pointer; font-size: 12px; }
-.research-workbench nav[aria-label="表格分页"] button:disabled { opacity: .45; cursor: default; }
-.research-workbench nav[aria-label="表格分页"] > span { margin: 0 8px; }
+.research-workbench nav:is([aria-label="表格分页"], [aria-label="Table pagination"]) { display: flex; flex-wrap: wrap; justify-content: start; gap: 8px; margin-top: 16px; }
+.research-workbench nav:is([aria-label="表格分页"], [aria-label="Table pagination"]) button { min-height: 40px; padding: 8px 12px; border: 1px solid var(--rule); border-radius: 5px; background: var(--surface); color: var(--ink-soft); cursor: pointer; font-size: 12px; }
+.research-workbench nav:is([aria-label="表格分页"], [aria-label="Table pagination"]) button:disabled { opacity: .45; cursor: default; }
+.research-workbench nav:is([aria-label="表格分页"], [aria-label="Table pagination"]) > span { margin: 0 8px; }
 .methodology-section p, .research-source p { font-size: 14px; line-height: 1.85; color: var(--ink-soft); }
 .research-workbench :is(button, a, input, select, summary):focus-visible { outline: 2px solid var(--accent-strong); outline-offset: 3px; }
 @media (max-width: 900px) {

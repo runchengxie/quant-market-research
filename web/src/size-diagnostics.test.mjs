@@ -25,7 +25,7 @@ test('lazy chart wrappers preserve surrounding content while their module is loa
     assert.doesNotThrow(() => { html=render(h('section',null,h('h2',null,'Research remains visible'),h(Component,props))); });
     assert.match(html, /Research remains visible/);
     assert.match(html, /role="status"/);
-    assert.match(html, /图表/);
+    assert.match(html, /chart/i);
   }
 });
 
@@ -89,7 +89,7 @@ test('size panel explicitly marks an empty comparable set instead of showing unm
   const rows=[row('2025-01-01','Q1','.9'),row('2025-01-02','Q10','.8')];
   const html=render(h(shared.SizeDiagnosticPanel,{rows,dailyCurve:[{bucket:'Q1',value:'.9'},{bucket:'Q10',value:'.8'}]}));
   assert.match(html.replace(/<[^>]*>/g,''),/完整可比日期 0 \/ 2，排除 2/);
-  assert.match(html,/暂无.*可比数据/);
+  assert.match(html,/No comparable data across all groups available/);
   assert.doesNotMatch(html,/research-chart|正在加载图表/);
 });
 
@@ -194,22 +194,22 @@ test('sortable tables expose sort direction, a bounded page, its range and navig
   assert.match(html, /aria-sort="descending"/);
   assert.match(html, /aria-sort="none"/);
   assert.equal((html.match(/<tr/g) ?? []).length, 51);
-  assert.match(html.replace(/<[^>]*>/g,''), /1–50 \/ 55/);
-  assert.match(html, /aria-label="下一页"/);
-  assert.match(html, /aria-label="上一页"[^>]*disabled/);
-  assert.match(html, /aria-label="最后一页"/);
+  assert.match(html.replace(/<[^>]*>/g,''), /1–50 of 55/);
+  assert.match(html, /aria-label="Next page"/);
+  assert.match(html, /aria-label="Previous page"[^>]*disabled/);
+  assert.match(html, /aria-label="Last page"/);
 });
 
 test('large tables render only 50 data rows and report all 28380 records', () => {
   const html=render(h(shared.SortableTable,{rows:Array.from({length:28380},(_,i)=>({value:String(i)})),columns:[['value','Value']]}));
   assert.equal((html.match(/<tr/g) ?? []).length,51);
-  assert.match(html.replace(/<[^>]*>/g,''), /1–50 \/ 28380/);
+  assert.match(html.replace(/<[^>]*>/g,''), /1–50 of 28380/);
 });
 
 test('empty tables report a zero range without enabled navigation', () => {
   const html=render(h(shared.SortableTable,{rows:[],columns:[['value','Value']]}));
-  assert.match(html.replace(/<[^>]*>/g,''), /0–0 \/ 0/);
-  assert.doesNotMatch(html, /aria-label="下一页"(?![^>]*disabled)/);
+  assert.match(html.replace(/<[^>]*>/g,''), /0–0 of 0/);
+  assert.doesNotMatch(html, /aria-label="Next page"/);
 });
 
 test('resource state distinguishes error, loading, empty and ready with labeled retry', () => {
@@ -219,6 +219,6 @@ test('resource state distinguishes error, loading, empty and ready with labeled 
   assert.match(error, /HTTP 503/);
   assert.match(error, /<button[^>]*aria-label="[^"]*Size data/);
   assert.match(render(h(shared.ResourceState,{loading:true})), /role="status"/);
-  assert.match(render(h(shared.ResourceState,{empty:true})), /暂无/);
+  assert.match(render(h(shared.ResourceState,{empty:true})), /No research data available/);
   assert.equal(render(h(shared.ResourceState,{})), '');
 });

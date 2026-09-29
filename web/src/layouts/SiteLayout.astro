@@ -27,6 +27,17 @@ const pageTitle = `${titleEn} · Quant Market Research`;
     <script is:inline>
       (() => {
         try {
+          const locale = localStorage.getItem("quant-market-research-locale") === "zh-CN" ? "zh-CN" : "en-US";
+          document.documentElement.lang = locale;
+          document.documentElement.dataset.locale = locale;
+          const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");
+          if (title) document.title = title;
+        } catch { /* storage is optional */ }
+      })();
+    </script>
+    <script is:inline>
+      (() => {
+        try {
           const stored = localStorage.getItem("market-research-theme");
           const choice = stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
           const dark = choice === "dark" || (choice === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
