@@ -1,14 +1,14 @@
 import { expect, test } from "@playwright/test";
 
 const routes = [
-  ["", "从主要发现开始了解这些研究"],
-  ["research/cashflow/", "现金流历史研究"],
-  ["research/cashflow/recovery/", "现金流回撤与回本时间"],
-  ["research/microcap/", "A 股微盘历史研究"],
-  ["research/microcap/cross-market-liquidity/", "跨市场小微盘流动性"],
-  ["research/indices/", "指数与 ETF 历史表现"],
-  ["research/style-factors-18y/", "18 年 A 股风格因子研究"],
-  ["research/liquidity/", "跨市场流动性"],
+  ["", "Start with the main findings"],
+  ["research/cashflow/", "Cash-flow history"],
+  ["research/cashflow/recovery/", "Cash-flow drawdowns and recovery time"],
+  ["research/microcap/", "A-share micro-cap history"],
+  ["research/microcap/cross-market-liquidity/", "Cross-market micro-cap liquidity"],
+  ["research/indices/", "Index and ETF history"],
+  ["research/style-factors-18y/", "18-year A-share style factors"],
+  ["research/liquidity/", "Cross-market liquidity"],
   ["research/factors/low-turnover/", "低换手因子：它保留了什么信息？"],
   ["research/factors/pb-roe/", "PB 与 ROE：历史对照与证据边界"],
 ] as const;
@@ -62,7 +62,7 @@ for (const [route, heading] of routes) {
 test("legacy hash links redirect to the new research URL", async ({ page }) => {
   await page.goto("#microcap");
   await expect(page).toHaveURL(/\/research\/microcap\/$/);
-  await expect(page.getByRole("heading", { name: "A 股微盘历史研究", exact: true }).first()).toBeVisible();
+  await expect(page.getByRole("heading", { name: "A-share micro-cap history", exact: true }).first()).toBeVisible();
 });
 
 test("low-turnover report links to its full methodology", async ({ page }) => {

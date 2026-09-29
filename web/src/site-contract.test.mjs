@@ -23,9 +23,13 @@ test('data snapshot hashing detects mutation and deletion', async () => {
 test('public shell is English-first and exposes a persistent Chinese switch', async () => {
   const layout = await readFile(new URL('./layouts/SiteLayout.astro', import.meta.url), 'utf8');
   const header = await readFile(new URL('./components/SiteHeader.astro', import.meta.url), 'utf8');
-  assert.match(layout, /<html lang="en-US">/);
+  const researchPage = await readFile(new URL('./components/ResearchPage.astro', import.meta.url), 'utf8');
+  assert.match(layout, /<html lang="en-US"/);
   assert.match(layout, /quant-market-research-locale/);
   assert.match(header, /data-locale-toggle/);
   assert.match(header, /Research overview/);
   assert.match(header, /研究总览/);
+  assert.match(researchPage, /titleEn\?: string/);
+  assert.match(researchPage, /data-en=\{titleEn\}/);
+  assert.match(researchPage, /data-zh=\{title\}/);
 });
