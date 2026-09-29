@@ -137,7 +137,7 @@ for (const width of [1280, 390]) {
     await expect(page.locator("#barra-annual canvas")).toBeVisible();
     const buttons = page.locator("button[data-factor]");
     await expect(buttons).toHaveCount(19);
-    const workspace = page.locator('[aria-label="当前因子诊断工作区"]');
+    const workspace = page.locator('[aria-label="Selected-factor diagnostic workspace"], [aria-label="当前因子诊断工作区"]');
     await expect(workspace).toBeVisible();
     await expect(workspace.locator("#barra-annual")).toBeVisible();
     await expect(workspace.locator("#barra-factor-detail")).toBeVisible();
@@ -158,7 +158,7 @@ for (const width of [1280, 390]) {
     await expect(leverage).toContainText("1.2%");
     await expect(leverage).toContainText("10.5%");
     await expect(detail.locator(".quality-method-grid > div")).toHaveCount(4);
-    const chart = page.locator(".panel").filter({ has: page.getByRole("heading", { name: "逐年合成收益与阶段表现" }) });
+    const chart = page.locator(".panel").filter({ has: page.getByRole("heading", { name: /^(Annual composite returns and period performance|逐年合成收益与阶段表现)$/ }) });
     await expect(chart.locator("canvas")).toHaveCount(1);
     expect(await chart.evaluate((el) => el.getBoundingClientRect().bottom)).toBeLessThanOrEqual(await detail.evaluate((el) => el.getBoundingClientRect().top));
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBeTruthy();
