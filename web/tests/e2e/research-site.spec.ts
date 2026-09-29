@@ -24,7 +24,7 @@ test("research HTML preserves UTF-8 text before hydration", async ({ request }) 
     const bytes = await response.body();
     expect(bytes.includes(0), `${route} contains NUL bytes`).toBe(false);
     const html = new TextDecoder("utf-8", { fatal: true }).decode(bytes);
-    if (route === "research/style-factors-18y/") expect(html).toContain("同一历史序列");
+    if (route === "research/style-factors-18y/") expect(html).toMatch(/同一历史序列|Same historical series/);
   }
 });
 
@@ -36,7 +36,7 @@ test("Barra hydration preserves pagination ARIA references", async ({ page }) =>
   });
   await page.goto("research/style-factors-18y/");
   await expect(page.locator("#barra-annual canvas")).toBeVisible();
-  await page.getByText("补充研究：市值十分组与稳定性诊断", { exact: true }).click();
+  await page.getByText(/补充研究：市值十分组与稳定性诊断|Supplement: size deciles and stability diagnostics/, { exact: true }).click();
   const pagination = page.locator('nav[aria-label="Table pagination"], nav[aria-label="表格分页"]');
   await expect(pagination.first()).toBeVisible();
   for (const nav of await pagination.all()) {
@@ -141,16 +141,16 @@ for (const width of [1280, 390]) {
     await expect(workspace).toBeVisible();
     await expect(workspace.locator("#barra-annual")).toBeVisible();
     await expect(workspace.locator("#barra-factor-detail")).toBeVisible();
-    const detail = page.getByRole("region", { name: "所选因子详情" });
+    const detail = page.getByRole("region", { name: /所选因子详情|Selected-factor detail/ });
     for (let i = 0; i < 19; i++) {
       const button = buttons.nth(i);
       const factor = await button.getAttribute("data-factor");
       await button.click();
       await expect(button).toHaveAttribute("aria-pressed", "true");
       await expect(detail.locator(".section-kicker").first()).toContainText(factor!);
-      await expect(detail).toContainText("历史页面记录的多空方向");
-      await expect(detail).toContainText("怎么计算");
-      await expect(detail.getByRole("heading", { name: "Quality 子因子诊断" })).toHaveCount(factor === "quality" ? 1 : 0);
+      await expect(detail).toContainText(/历史页面记录的多空方向|Historical long-short direction/);
+      await expect(detail).toContainText(/怎么计算|How it is calculated/);
+      await expect(detail.getByRole("heading", { name: /Quality 子因子诊断|Quality sub-factor diagnostic/ })).toHaveCount(factor === "quality" ? 1 : 0);
       await expect(workspace.locator(".workspace-context strong")).toHaveText(await button.textContent() ?? "");
     }
     await page.locator('button[data-factor="quality"]').click();
@@ -162,9 +162,9 @@ for (const width of [1280, 390]) {
     await expect(chart.locator("canvas")).toHaveCount(1);
     expect(await chart.evaluate((el) => el.getBoundingClientRect().bottom)).toBeLessThanOrEqual(await detail.evaluate((el) => el.getBoundingClientRect().top));
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBeTruthy();
-    await page.getByText("补充研究：市值十分组与稳定性诊断", { exact: true }).click();
-    await expect(page.getByRole("heading", { name: "补充研究：市值十分组", exact: true })).toBeVisible();
-    await page.getByText("补充研究：市值十分组与稳定性诊断", { exact: true }).click();
+    await page.getByText(/补充研究：市值十分组与稳定性诊断|Supplement: size deciles and stability diagnostics/, { exact: true }).click();
+    await expect(page.getByRole("heading", { name: /补充研究：市值十分组|Supplemental research: size deciles/, exact: true })).toBeVisible();
+    await page.getByText(/补充研究：市值十分组与稳定性诊断|Supplement: size deciles and stability diagnostics/, { exact: true }).click();
     await page.screenshot({ path: `test-results/barra-${width}.png`, fullPage: true });
   });
 }

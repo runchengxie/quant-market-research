@@ -47,6 +47,7 @@ function localeLabel(label: string, english: boolean) {
 }
 
 export function SizeDiagnosticPanel({ rows }: { rows: Row[]; dailyCurve: Row[] }) {
+  const ui = (zh: string, en: string) => englishLocale() ? en : zh;
   const [view, setView] = useState<DiagnosticView>("monthly");
   const comparable = comparableSizeRows(rows);
   const completeDates = new Set(comparable.map(row => row.formation_date)).size;
@@ -58,21 +59,21 @@ export function SizeDiagnosticPanel({ rows }: { rows: Row[]; dailyCurve: Row[] }
   const daily = dailySizeCurve(comparable);
   const chartRows = view === "daily" ? daily : view === "monthly" ? monthlyCurve : stages.map(row => ({ bucket: row.period, value: Number.isFinite(row.spread) ? String(row.spread) : "" }));
   const dates = sizeDateRange(rows);
-  const formatter = (value: number) => Number.isFinite(value) ? `${(value * 100).toFixed(2)}%` : "未提供";
-  const coverageColumns = [["formation_count", "形成时股票数"], ["count", "形成时股票数（count）"], ["observed_return_count", "已观测收益数"], ["missing_return_count", "缺失收益数"], ["return_coverage", "收益覆盖率"], ["observed_count", "已观测股票数"], ["missing_count", "缺失股票数"], ["coverage_ratio", "观测覆盖率"]].filter(([key]) => rows.some(row => key in row));
+  const formatter = (value: number) => Number.isFinite(value) ? `${(value * 100).toFixed(2)}%` : ui("未提供", "not available");
+  const coverageColumns = [["formation_count", ui("形成时股票数", "Stocks at formation")], ["count", ui("形成时股票数（count）", "Stocks at formation (count)")], ["observed_return_count", ui("已观测收益数", "Observed returns")], ["missing_return_count", ui("缺失收益数", "Missing returns")], ["return_coverage", ui("收益覆盖率", "Return coverage")], ["observed_count", ui("已观测股票数", "Observed stocks")], ["missing_count", ui("缺失股票数", "Missing stocks")], ["coverage_ratio", ui("观测覆盖率", "Observation coverage")]].filter(([key]) => rows.some(row => key in row));
   return <>
-    <Panel title="补充研究：市值十分组" tag="当前样本的历史统计">
+    <Panel title={ui("补充研究：市值十分组", "Supplemental research: size deciles")} tag={ui("当前样本的历史统计", "Historical statistics for current sample")}>
       <p className="panel-note">当前快照的分组日期覆盖 {dates.start ?? "未提供"} 至 {dates.end ?? "未提供"}。按市值分成十组，观察各组下一交易日的收益，并按月和阶段汇总。这些结果仅描述历史样本；旧快照未提供完整覆盖字段时，覆盖质量仍待核实。</p>
       <p className="panel-note">完整可比日期 {completeDates} / {totalDates}，排除 {excluded} 个分组日期。按日和按月曲线仅使用所有分组各有一条有效且覆盖完整记录的共同日期；旧快照按已出现的分组集合匹配，覆盖质量仍待核实。</p>
-      {completeDates ? <BarChart rows={daily} labelKey="bucket" valueKey="value" color="#b64d33" formatter={formatter}/> : <ResourceState empty label="所有分组共同日期的可比数据"/>}
+      {completeDates ? <BarChart rows={daily} labelKey="bucket" valueKey="value" color="#b64d33" formatter={formatter}/>: <ResourceState empty label={ui("所有分组共同日期的可比数据", "Comparable dates across all groups")}/>}
       <p className="panel-note">曲线展示共同日期的下一交易日平均收益。相邻交易日的结果可能相关，分组日期的数量不等于独立样本数。</p>
-      <SortableTable rows={rows} columns={[["formation_date", "分组日期"], ["bucket", "市值分组"], ["forward_return", "下一交易日收益"], ...coverageColumns]} percentColumns={["forward_return", "return_coverage", "coverage_ratio"]}/>
+      <SortableTable rows={rows} columns={[["formation_date", ui("分组日期", "Formation date")], ["bucket", ui("市值分组", "Size bucket")], ["forward_return", ui("下一交易日收益", "Next-day return")], ...coverageColumns]} percentColumns={["forward_return", "return_coverage", "coverage_ratio"]}/>
     </Panel>
-    <Panel title="稳定性观察：按月与按阶段" tag="观察不同时间尺度">
+    <Panel title={ui("稳定性观察：按月与按阶段", "Stability by month and stage")} tag={ui("观察不同时间尺度", "Compare time scales")}>
       <p className="panel-note">月度结果先在所有分组的共同日期上计算每月平均收益，再对各月等权平均。阶段（2015–2019、2020–2024、2025–当前）收益差仅使用 Q1 与 Q10 同时有有效收益的共同分组日期，剔除已知覆盖不完整的记录，不要求中间分组完整。尚未校正时间相关性，也未用区块自助法估计置信区间或检验统计显著性。</p>
-      <ControlBar><span className="control-label">观察口径</span><Choice active={view === "daily"} onClick={() => setView("daily")}>按日分组</Choice><Choice active={view === "monthly"} onClick={() => setView("monthly")}>按月汇总</Choice><Choice active={view === "stage"} onClick={() => setView("stage")}>阶段收益差</Choice></ControlBar>
-      {view === "stage" || completeDates > 0 ? <BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/> : <ResourceState empty label="所有分组共同日期的可比数据"/>}
-      {view === "stage" && <SimpleTable rows={stages.map(row => ({ period: row.period, q1: formatter(row.q1), q10: formatter(row.q10), spread: formatter(row.spread), pairedDates: String(row.pairedDates) }))} columns={[["period", "阶段"], ["q1", "共同日期最小组平均收益"], ["q10", "共同日期最大组平均收益"], ["spread", "最小组减最大组"], ["pairedDates", "共同分组日期数"]]}/>}
+      <ControlBar><span className="control-label">{ui("观察口径", "View")} </span><Choice active={view === "daily"} onClick={() => setView("daily")}>{ui("按日分组", "Daily groups")}</Choice><Choice active={view === "monthly"} onClick={() => setView("monthly")}>{ui("按月汇总", "Monthly summary")}</Choice><Choice active={view === "stage"} onClick={() => setView("stage")}>{ui("阶段收益差", "Stage spread")}</Choice></ControlBar>
+      {view === "stage" || completeDates > 0 ? <BarChart rows={chartRows} labelKey="bucket" valueKey="value" color="#1267d6" formatter={formatter}/>: <ResourceState empty label={ui("所有分组共同日期的可比数据", "Comparable dates across all groups")}/>}
+      {view === "stage" && <SimpleTable rows={stages.map(row => ({ period: row.period, q1: formatter(row.q1), q10: formatter(row.q10), spread: formatter(row.spread), pairedDates: String(row.pairedDates) }))} columns={[["period", ui("阶段", "Stage")], ["q1", ui("共同日期最小组平均收益", "Average return of smallest group")], ["q10", ui("共同日期最大组平均收益", "Average return of largest group")], ["spread", ui("最小组减最大组", "Smallest minus largest")], ["pairedDates", ui("共同分组日期数", "Paired formation dates")]]}/>}
     </Panel>
   </>;
 }

@@ -89,7 +89,7 @@ test('size panel explicitly marks an empty comparable set instead of showing unm
   const rows=[row('2025-01-01','Q1','.9'),row('2025-01-02','Q10','.8')];
   const html=render(h(shared.SizeDiagnosticPanel,{rows,dailyCurve:[{bucket:'Q1',value:'.9'},{bucket:'Q10',value:'.8'}]}));
   assert.match(html.replace(/<[^>]*>/g,''),/完整可比日期 0 \/ 2，排除 2/);
-  assert.match(html,/No comparable data across all groups available/);
+  assert.match(html,/No (?:comparable data across all groups|Comparable dates across all groups) available/i);
   assert.doesNotMatch(html,/research-chart|正在加载图表/);
 });
 
