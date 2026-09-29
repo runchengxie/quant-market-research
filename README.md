@@ -1,10 +1,10 @@
 # Quant Market Research
 
+[中文 README](README.zh-CN.md)
+
 Reproducible public market research methods, reviewed derived results, and a research website covering indices and ETFs, liquidity, microcaps, cash flow, and style factors. Raw market data and complete run outputs remain outside the repository.
 
 Private strategies and models are maintained by `quant-research`. Market data is owned by `quant-market-data-platform`. Shared backtesting and execution simulation come from `quant-platform`.
-
-[中文 README](README.zh-CN.md)
 
 ## Browse the research
 
