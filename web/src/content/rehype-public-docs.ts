@@ -19,6 +19,10 @@ export function resolveDocLink(source: string, href: string, base: string): stri
   }
   const normalized = parts.join('/');
   const match = publicDocs.find((doc) => doc.source === normalized);
+  if (!match && normalized.startsWith('docs/') && normalized.endsWith('.zh-CN.md')) {
+    const localeSlug = normalized.slice('docs/'.length, -'.md'.length);
+    return `${basePath(base, `/docs/${localeSlug}/`)}${fragment ? `#${fragment}` : ''}`;
+  }
   if (!match) throw new Error(`public document link outside allowlist: ${href}`);
   return `${basePath(base, match.route)}${fragment ? `#${fragment}` : ''}`;
 }

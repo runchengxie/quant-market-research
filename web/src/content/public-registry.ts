@@ -25,6 +25,15 @@ const docSources = new Set([
   'docs/research/factors/smallcap-turnover-history.md',
   'docs/research/factors/barra-factor-dictionary.md',
   'docs/research/factors/barra-source-inventory.md',
+  'docs/index.zh-CN.md',
+  'docs/research-closeout-status.zh-CN.md',
+  'docs/research/factors/low-turnover.zh-CN.md',
+  'docs/research/factors/pb-roe.zh-CN.md',
+  'docs/research/factors/microcap.zh-CN.md',
+  'docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md',
+  'docs/research/factors/smallcap-turnover-history.zh-CN.md',
+  'docs/research/factors/barra-factor-dictionary.zh-CN.md',
+  'docs/research/factors/barra-source-inventory.zh-CN.md',
 ]);
 const allowedSnapshotKeys = new Set([
   'cashflow.performance', 'cashflow.recovery', 'microcap.summary',
@@ -54,6 +63,15 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'smallcap-turnover-history', route: '/docs/research/factors/smallcap-turnover-history/', title: '小盘换手历史', summary: '小盘换手历史研究的口径与结果。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap'], snapshotKeys: [] }),
   page({ id: 'barra-factor-dictionary', route: '/docs/research/factors/barra-factor-dictionary/', title: 'Barra 因子字典', summary: '19 个历史因子、检查过的定义与核心代理。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
   page({ id: 'barra-source-inventory', route: '/docs/research/factors/barra-source-inventory/', title: 'Barra 来源清单', summary: 'Barra 因子来源、版本与可验证程度。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
+  page({ id: 'docs-zh-CN', route: '/docs/index.zh-CN/', title: '研究说明', summary: '中文研究方法、因子定义、数据来源与收尾状态。', section: 'docs', aliases: [], related: ['docs'], snapshotKeys: [] }),
+  page({ id: 'research-closeout-status-zh-CN', route: '/docs/research-closeout-status.zh-CN/', title: '研究收口状态', summary: '中文研究项目完成度、边界与未完成事项。', section: 'docs', aliases: [], related: ['docs'], snapshotKeys: [] }),
+  page({ id: 'low-turnover-method-zh-CN', route: '/docs/research/factors/low-turnover.zh-CN/', title: '低换手因子方法', summary: '中文低换手研究方法、执行与验证说明。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover'], snapshotKeys: [] }),
+  page({ id: 'pb-roe-method-zh-CN', route: '/docs/research/factors/pb-roe.zh-CN/', title: 'PB 与 ROE 历史对照', summary: '中文估值与盈利能力历史配对结果和验证边界。', section: 'docs', topic: 'style', aliases: [], related: ['pb-roe', 'barra-factor-dictionary'], snapshotKeys: [] }),
+  page({ id: 'microcap-method-zh-CN', route: '/docs/research/factors/microcap.zh-CN/', title: '小微盘因子方法', summary: '中文小微盘研究方法、覆盖与限制。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap'], snapshotKeys: [] }),
+  page({ id: 'microcap-execution-diagnostic-zh-CN', route: '/docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN/', title: '微盘执行模拟诊断', summary: '中文微盘执行账本和可验证边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
+  page({ id: 'smallcap-turnover-history-zh-CN', route: '/docs/research/factors/smallcap-turnover-history.zh-CN/', title: '小盘换手历史', summary: '中文小盘换手历史研究口径与结果。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap'], snapshotKeys: [] }),
+  page({ id: 'barra-factor-dictionary-zh-CN', route: '/docs/research/factors/barra-factor-dictionary.zh-CN/', title: 'Barra 因子字典', summary: '中文 Barra 因子定义与历史快照边界。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
+  page({ id: 'barra-source-inventory-zh-CN', route: '/docs/research/factors/barra-source-inventory.zh-CN/', title: 'Barra 来源清单', summary: '中文 Barra 因子来源、版本与可验证程度。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
   page({ id: 'data-sources', route: '/data-sources/', title: '数据与版本', summary: '公开数据快照、覆盖日期和生成版本。', section: 'data', aliases: [], related: ['overview', 'docs'], snapshotKeys: [] }),
 ];
 
@@ -67,6 +85,15 @@ export const publicDocs: readonly PublicDoc[] = [
   { ...publicPages.find((p) => p.id === 'smallcap-turnover-history'), source: 'docs/research/factors/smallcap-turnover-history.md', slug: 'research/factors/smallcap-turnover-history' },
   { ...publicPages.find((p) => p.id === 'barra-factor-dictionary'), source: 'docs/research/factors/barra-factor-dictionary.md', slug: 'research/factors/barra-factor-dictionary' },
   { ...publicPages.find((p) => p.id === 'barra-source-inventory'), source: 'docs/research/factors/barra-source-inventory.md', slug: 'research/factors/barra-source-inventory' },
+  { ...publicPages.find((p) => p.id === 'docs-zh-CN'), source: 'docs/index.zh-CN.md', slug: 'index.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'research-closeout-status-zh-CN'), source: 'docs/research-closeout-status.zh-CN.md', slug: 'research-closeout-status.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'low-turnover-method-zh-CN'), source: 'docs/research/factors/low-turnover.zh-CN.md', slug: 'research/factors/low-turnover.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'pb-roe-method-zh-CN'), source: 'docs/research/factors/pb-roe.zh-CN.md', slug: 'research/factors/pb-roe.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'microcap-method-zh-CN'), source: 'docs/research/factors/microcap.zh-CN.md', slug: 'research/factors/microcap.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'microcap-execution-diagnostic-zh-CN'), source: 'docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md', slug: 'research/experiments/microcap-execution-diagnostic-20260928.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'smallcap-turnover-history-zh-CN'), source: 'docs/research/factors/smallcap-turnover-history.zh-CN.md', slug: 'research/factors/smallcap-turnover-history.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'barra-factor-dictionary-zh-CN'), source: 'docs/research/factors/barra-factor-dictionary.zh-CN.md', slug: 'research/factors/barra-factor-dictionary.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'barra-source-inventory-zh-CN'), source: 'docs/research/factors/barra-source-inventory.zh-CN.md', slug: 'research/factors/barra-source-inventory.zh-CN' },
 ].map((doc) => ({ ...doc } as PublicDoc));
 
 export function validateRegistry(pages: readonly PublicPage[], docs: readonly PublicDoc[]): void {
