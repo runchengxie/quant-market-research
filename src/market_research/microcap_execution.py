@@ -13,9 +13,18 @@ import yaml
 
 
 PANEL_COLUMNS = {
-    "ts_code", "trade_date", "close", "adj_close", "total_mv", "amount",
-    "is_st", "is_suspended", "list_date", "delist_date",
+    "ts_code",
+    "trade_date",
+    "close",
+    "adj_close",
+    "total_mv",
+    "amount",
+    "is_st",
+    "is_suspended",
+    "list_date",
+    "delist_date",
 }
+ST_TIMING_POLICY_ID = "announced_prior_close_only.v1"
 
 
 def _iso(day: str) -> str:
@@ -115,8 +124,8 @@ def historical_name_mask(namechange: pd.DataFrame, source: pd.DataFrame) -> pd.S
             "ts_code", keep="last"
         )
         allowed = active.loc[
-            ~active.name.str.contains("ST", na=True)
-            & ~active.change_reason.eq("退市整理期"), "ts_code"
+            ~active.name.str.contains("ST", na=True) & ~active.change_reason.eq("退市整理期"),
+            "ts_code",
         ]
         eligible.loc[rows.index] = rows.ts_code.isin(allowed).to_numpy()
     return eligible
@@ -145,15 +154,21 @@ def build_replay_inputs(
         raise ValueError("at least three market sessions are required")
     name_eligible = (
         historical_name_mask(namechange, source)
-        if namechange is not None else pd.Series(True, index=source.index)
+        if namechange is not None
+        else pd.Series(True, index=source.index)
     )
     listed = source.list_date.notna() & source.list_date.astype(str).le(source.trade_date)
     delisted = source.delist_date.notna() & source.delist_date.astype(str).le(source.trade_date)
     eligible = (
-        listed & ~delisted & name_eligible & source.is_st.eq(False).fillna(False)
+        listed
+        & ~delisted
+        & name_eligible
+        & source.is_st.eq(False).fillna(False)
         & source.is_suspended.eq(False).fillna(False)
-        & source.total_mv.gt(0) & source.amount.gt(0)
-        & source.close.gt(0) & source.adj_close.gt(0)
+        & source.total_mv.gt(0)
+        & source.amount.gt(0)
+        & source.close.gt(0)
+        & source.adj_close.gt(0)
     )
     candidates = source.loc[eligible].sort_values(["trade_date", "total_mv", "ts_code"])
     rows: list[dict[str, object]] = []
@@ -165,20 +180,27 @@ def build_replay_inputs(
         entry = days[index + 1]
         clocks[day] = decision_clock(day, entry, days[-1])
         rows.extend(
-            {"rebalance_date": day, "entry_date": entry,
-             "symbol": symbol, "weight": 1.0 / constituent_count}
+            {
+                "rebalance_date": day,
+                "entry_date": entry,
+                "symbol": symbol,
+                "weight": 1.0 / constituent_count,
+            }
             for symbol in selected.ts_code
         )
     positions = pd.DataFrame(rows)
     first_selected = positions.groupby("symbol").rebalance_date.min().to_dict()
     selected_symbols = set(first_selected)
     source = source.loc[source.ts_code.isin(selected_symbols)].copy()
-    active = source.loc[source.apply(
-        lambda row: row.trade_date >= first_selected[row.ts_code], axis=1
-    )].copy()
+    active = source.loc[
+        source.apply(lambda row: row.trade_date >= first_selected[row.ts_code], axis=1)
+    ].copy()
     delist_dates = (
         source.loc[source.delist_date.notna(), ["ts_code", "delist_date"]]
-        .drop_duplicates("ts_code").set_index("ts_code").delist_date.astype(str).to_dict()
+        .drop_duplicates("ts_code")
+        .set_index("ts_code")
+        .delist_date.astype(str)
+        .to_dict()
     )
 
     event_keys = set()
@@ -209,23 +231,36 @@ def build_replay_inputs(
             if previous is None or (not delisted and key not in event_keys):
                 raise ValueError(f"unexplained daily price gap for {symbol} on {day}")
             delist_carry_rows += int(delisted)
-            synthetic.append({
-                "trade_date": day, "ts_code": symbol, "close": None,
-                "adj_close": previous, "amount": 0.0, "is_suspended": not delisted,
-                "delist_date": delist_dates.get(symbol),
-            })
+            synthetic.append(
+                {
+                    "trade_date": day,
+                    "ts_code": symbol,
+                    "close": None,
+                    "adj_close": previous,
+                    "amount": 0.0,
+                    "is_suspended": not delisted,
+                    "delist_date": delist_dates.get(symbol),
+                }
+            )
     prices = pd.concat([active, pd.DataFrame(synthetic)], ignore_index=True)
     limit_rows = limits[["trade_date", "ts_code", "up_limit", "down_limit"]].copy()
     limit_rows["trade_date"] = limit_rows.trade_date.astype(str)
     if limit_rows.duplicated(["trade_date", "ts_code"]).any():
         raise ValueError("limit input has duplicate symbol/date keys")
-    prices = prices.merge(limit_rows, on=["trade_date", "ts_code"], how="left", validate="one_to_one")
+    prices = prices.merge(
+        limit_rows, on=["trade_date", "ts_code"], how="left", validate="one_to_one"
+    )
     for column in ("close", "adj_close", "amount", "up_limit", "down_limit"):
         prices[column] = pd.to_numeric(prices[column], errors="coerce")
     suspended = prices.is_suspended.eq(True).fillna(False)
     delisted = prices.delist_date.notna() & prices.delist_date.astype(str).le(prices.trade_date)
     required = ~(suspended | delisted)
-    if prices.loc[required, ["close", "adj_close", "amount", "up_limit", "down_limit"]].isna().any().any():
+    if (
+        prices.loc[required, ["close", "adj_close", "amount", "up_limit", "down_limit"]]
+        .isna()
+        .any()
+        .any()
+    ):
         raise ValueError("active pricing has unknown prices, liquidity or price limits")
     if prices.loc[required, "adj_close"].le(0).any():
         raise ValueError("active pricing has nonpositive adjusted marks")
@@ -235,17 +270,31 @@ def build_replay_inputs(
     pricing = prices.rename(columns={"ts_code": "symbol"})[
         ["trade_date", "symbol", "adj_close", "amount", "tradable", "limit_up", "limit_down"]
     ]
-    return positions, pricing, clocks, {
-        "confirmed_suspension_carry_rows": len(synthetic) - delist_carry_rows,
-        "post_delist_nontradable_carry_rows": delist_carry_rows,
-        "historical_name_excluded_rows": int((~name_eligible).sum()) if namechange is not None else 0,
-    }
+    return (
+        positions,
+        pricing,
+        clocks,
+        {
+            "confirmed_suspension_carry_rows": len(synthetic) - delist_carry_rows,
+            "post_delist_nontradable_carry_rows": delist_carry_rows,
+            "historical_name_excluded_rows": int((~name_eligible).sum())
+            if namechange is not None
+            else 0,
+        },
+    )
 
 
 def run_diagnostic(
-    *, daily_asset: Path, limit_asset: Path, instruments: Path, suspensions: Path,
+    *,
+    daily_asset: Path,
+    limit_asset: Path,
+    instruments: Path,
+    suspensions: Path,
     namechange_asset: Path,
-    output_dir: Path, start: str, end: str, constituent_count: int = 400,
+    output_dir: Path,
+    start: str,
+    end: str,
+    constituent_count: int = 400,
 ) -> dict[str, object]:
     if output_dir.exists() and any(output_dir.iterdir()):
         raise FileExistsError(f"output directory is not empty: {output_dir}")
@@ -261,9 +310,18 @@ def run_diagnostic(
     except (ValueError, FileNotFoundError) as error:
         output_dir.mkdir(parents=True, exist_ok=True)
         (output_dir / "summary.json").write_text(
-            json.dumps({"evidence_tier": "blocked", "start": start, "end": end,
-                        "constituent_count": constituent_count, "reason": str(error)},
-                       ensure_ascii=False, indent=2) + "\n",
+            json.dumps(
+                {
+                    "evidence_tier": "blocked",
+                    "start": start,
+                    "end": end,
+                    "constituent_count": constituent_count,
+                    "reason": str(error),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
             encoding="utf-8",
         )
         raise
@@ -271,50 +329,90 @@ def run_diagnostic(
     from market_research.runtime_jobs import publish_verified_frames, run_sequenced_job
 
     config = ExecutionSimConfig(
-        enabled=True, portfolio_value=1_000_000.0, participation_rate=0.05,
-        liquidity_cols=("amount",), liquidity_notional_multiplier=1000.0,
-        buy_max_days=5, sell_max_days=10, enforce_t1=True,
-        enforce_price_limits=True, limit_up_col="limit_up", limit_down_col="limit_down",
+        enabled=True,
+        portfolio_value=1_000_000.0,
+        participation_rate=0.05,
+        liquidity_cols=("amount",),
+        liquidity_notional_multiplier=1000.0,
+        buy_max_days=5,
+        sell_max_days=10,
+        enforce_t1=True,
+        enforce_price_limits=True,
+        limit_up_col="limit_up",
+        limit_down_col="limit_down",
     )
     output_dir.mkdir(parents=True, exist_ok=True)
     result_dir, receipt = run_sequenced_job(
-        output_dir / ".runtime", "microcap", positions, pricing, clocks, asdict(config),
+        output_dir / ".runtime",
+        "microcap",
+        positions,
+        pricing,
+        clocks,
+        asdict(config),
         transaction_cost_bps=5.0,
     )
     selected = set(positions.symbol)
     delist_dates = {
         str(row.ts_code): str(row.delist_date)
-        for row in panel.loc[panel.ts_code.isin(selected) & panel.delist_date.notna(),
-                             ["ts_code", "delist_date"]].drop_duplicates("ts_code").itertuples()
+        for row in panel.loc[
+            panel.ts_code.isin(selected) & panel.delist_date.notna(), ["ts_code", "delist_date"]
+        ]
+        .drop_duplicates("ts_code")
+        .itertuples()
     }
     try:
         exit_audit = audit_delisting_exits(
-            pd.read_parquet(result_dir / "fills.parquet"), pricing, delist_dates,
+            pd.read_parquet(result_dir / "fills.parquet"),
+            pricing,
+            delist_dates,
             price_col="adj_close",
         )
     except ValueError as error:
         (output_dir / "summary.json").write_text(
-            json.dumps({"evidence_tier": "blocked", "start": start, "end": end,
-                        "constituent_count": constituent_count, "reason": str(error)},
-                       ensure_ascii=False, indent=2) + "\n", encoding="utf-8",
+            json.dumps(
+                {
+                    "evidence_tier": "blocked",
+                    "start": start,
+                    "end": end,
+                    "constituent_count": constituent_count,
+                    "reason": str(error),
+                },
+                ensure_ascii=False,
+                indent=2,
+            )
+            + "\n",
+            encoding="utf-8",
         )
         raise
     publish_verified_frames(result_dir, output_dir)
     (output_dir / "decision_clocks.json").write_text(
         json.dumps(clocks, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
     )
-    sources = {"daily_manifest": daily_asset / "manifest.yml",
-               "limit_manifest": limit_asset / "manifest.yml", "instruments": instruments,
-               "suspensions": suspensions, "namechange": namechange_asset}
+    sources = {
+        "daily_manifest": daily_asset / "manifest.yml",
+        "limit_manifest": limit_asset / "manifest.yml",
+        "instruments": instruments,
+        "suspensions": suspensions,
+        "namechange": namechange_asset,
+    }
     report: dict[str, object] = {
-        "evidence_tier": "diagnostic", "constituent_count": constituent_count,
-        "start": start, "end": end, "decision_count": len(clocks),
+        "evidence_tier": "diagnostic",
+        "constituent_count": constituent_count,
+        "start": start,
+        "end": end,
+        "decision_count": len(clocks),
         "terminal_nav": float(
             pd.read_parquet(output_dir / "daily_ledger.parquet").nav.iloc[-1]
             / config.portfolio_value
         ),
         "runtime_job_id": receipt["job_id"],
         "reason": "input release times, raw corporate actions and delisting cash settlement are unverified",
+        "st_timing_policy": {
+            "id": ST_TIMING_POLICY_ID,
+            "rule": "namechange.ann_date must be strictly earlier than the decision trade date",
+            "same_day_announcements": "excluded_from_new_positions",
+            "release_time_evidence": "unavailable",
+        },
         "audit": audit,
         "delisting_exit_audit": exit_audit.to_dict("records"),
         "source_sha256": {
@@ -339,13 +437,23 @@ def main() -> None:
     parser.add_argument("--end", required=True)
     parser.add_argument("--constituent-count", type=int, default=400)
     args = parser.parse_args()
-    print(json.dumps(run_diagnostic(
-        daily_asset=args.daily_asset, limit_asset=args.limit_asset,
-        instruments=args.instruments, suspensions=args.suspensions,
-        namechange_asset=args.namechange_asset,
-        output_dir=args.output_dir, start=args.start, end=args.end,
-        constituent_count=args.constituent_count,
-    ), ensure_ascii=False, indent=2))
+    print(
+        json.dumps(
+            run_diagnostic(
+                daily_asset=args.daily_asset,
+                limit_asset=args.limit_asset,
+                instruments=args.instruments,
+                suspensions=args.suspensions,
+                namechange_asset=args.namechange_asset,
+                output_dir=args.output_dir,
+                start=args.start,
+                end=args.end,
+                constituent_count=args.constituent_count,
+            ),
+            ensure_ascii=False,
+            indent=2,
+        )
+    )
 
 
 if __name__ == "__main__":
