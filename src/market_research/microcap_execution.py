@@ -16,6 +16,7 @@ PANEL_COLUMNS = {
     "ts_code", "trade_date", "close", "adj_close", "total_mv", "amount",
     "is_st", "is_suspended", "list_date", "delist_date",
 }
+ST_TIMING_POLICY_ID = "announced_prior_close_only.v1"
 
 
 def _iso(day: str) -> str:
@@ -315,6 +316,12 @@ def run_diagnostic(
         ),
         "runtime_job_id": receipt["job_id"],
         "reason": "input release times, raw corporate actions and delisting cash settlement are unverified",
+        "st_timing_policy": {
+            "id": ST_TIMING_POLICY_ID,
+            "rule": "namechange.ann_date must be strictly earlier than the decision trade date",
+            "same_day_announcements": "excluded_from_new_positions",
+            "release_time_evidence": "unavailable",
+        },
         "audit": audit,
         "delisting_exit_audit": exit_audit.to_dict("records"),
         "source_sha256": {
