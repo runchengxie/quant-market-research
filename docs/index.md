@@ -1,14 +1,18 @@
-# Quant Market Research 研究说明
+# Quant Market Research
 
-这里介绍公开网页中的因子研究、计算口径和证据限制。专题页面适合先看图表和主要发现，说明文档补充研究方法、结果含义和仍需验证的问题。
+[中文页面](index.zh-CN.md)
 
-专题网页采用报告式结构，先给出结论，再放关键数字、证据边界和下一步。低换手页面是这套图文混合模板的首个版本。
+This site presents reviewed public factor research, calculation conventions, and evidence limitations. Research pages lead with findings, then document key numbers, evidence boundaries, and follow-up work.
 
-## 因子研究
+## Factor research
 
-- [PB 与 ROE：怎样比较估值和盈利能力](research/factors/pb-roe.md)：汇总历史配对实验、候选池审计和点时数据限制。
-- [低换手：它可能反映哪些特征](research/factors/low-turnover.md)：介绍代理变量、逐步归因、组内排序、可交易性和下一轮检验。
-- [微盘股：收益证据与水下时间](research/factors/microcap.md)：介绍最小市值组合的回撤、长期未创新高、早年数据限制和审计路线。
-- [2008–2014 年小市值成交活跃度补充](research/factors/smallcap-turnover-history.md)：记录早年 Tushare 日频成交额统计和数据边界。
+- [Research closeout status](research-closeout-status.md): current evidence status and unresolved verification work.
+- [PB and ROE](research/factors/pb-roe.md): historical valuation and profitability comparisons.
+- [Low turnover](research/factors/low-turnover.md): proxy variables, attribution, ranking, and tradability limits.
+- [Microcap](research/factors/microcap.md): small-cap proxy returns, drawdowns, and underwater periods.
+- [Microcap execution diagnostic](research/experiments/microcap-execution-diagnostic-20260928.md): the public execution-simulation boundary and diagnostic ledger.
+- [Small-cap turnover history](research/factors/smallcap-turnover-history.md): early-period liquidity context.
+- [Barra factor dictionary](research/factors/barra-factor-dictionary.md): public factor definitions and machine-readable descriptors.
+- [Barra source inventory](research/factors/barra-source-inventory.md): source material suitable for public research.
 
-网页负责展示图表和交互，说明站提供因子研究的方法、数据口径和证据限制。网站构建方式、实施计划和运行手册属于维护资料，不作为公开研究内容。
+Historical research results are evidence for further investigation. They are not trading recommendations or claims of future returns.

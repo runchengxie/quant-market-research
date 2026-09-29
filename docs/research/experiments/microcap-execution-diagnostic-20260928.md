@@ -1,27 +1,9 @@
-# 微盘组合公共执行模拟诊断（2026-09-28）
+# Microcap portfolio execution diagnostic
 
-本研究新增 `microcap-execution-diagnostic`。它从仓库外的清洗日线按当日收盘后的总市值、ST、停牌和上市状态生成最小 N 只目标，逐日绑定独立决策时钟，次一交易日将内容哈希输入提交到 quant-backtest-runtime，由 worker 调用 quant-platform 的公共执行模拟器。清洗日线必须有已完成的 manifest、定日 ST 来源及完整质量收据。模拟启用 5% 成交额参与率、T+1、每日涨跌停阻断、未成交留现金及每次成交 5 个基点的简化成本。价格采用清洗日线的 `adj_close` 复权代理。结果包括目标、订单、成交、每日现金和净值账本，均保存在仓库外。只有 runtime 验证成功的账本才会复制到诊断目录，`summary.json` 记录作业 ID。
+[中文页面](microcap-execution-diagnostic-20260928.zh-CN.md)
 
-示例命令需要 Python 3.12 或更新版本，且输出目录为空：
+The `microcap-execution-diagnostic` experiment selects the smallest N eligible stocks from cleaned daily data using post-close market capitalization, ST status, suspension, and listing-state rules. Each decision date has an independent research clock. The input is submitted by content hash to `quant-backtest-runtime`, whose worker calls the public execution simulator in `quant-platform`.
 
-```bash
-uv sync --extra duckdb --extra formal
-uv run --extra duckdb --extra formal microcap-execution-diagnostic \
-  --daily-asset /path/to/published/daily_clean \
-  --limit-asset /path/to/published/limit_status \
-  --instruments /path/to/instrument_snapshot.parquet \
-  --suspensions /path/to/suspend_d.parquet \
-  --namechange-asset /path/to/published/namechange_latest.parquet \
-  --output-dir /path/to/empty-external-output \
-  --start 20250102 --end 20250127 --constituent-count 400
-```
+The diagnostic uses a 5% participation rate, T+1, daily limit-up and limit-down blocking, unfilled cash, and a simplified 5-basis-point per-trade cost. Prices use the cleaned daily `adj_close` proxy. Targets, orders, fills, daily cash, and NAV ledgers remain outside the repository. Only runtime-validated ledgers are copied into the diagnostic directory, and `summary.json` records the job ID.
 
-早期 2025-01-02 至 2025-01-27 的 N=400 历史诊断共有 17 次决策，终值为 1.0640597259。它使用旧清洗日线和临时证券快照，结果仅保留为迁移记录，不能沿用于当前输入。迁移前的 `summary.json` SHA-256 为 `52afdfd42fc46499884782258377f66a4dd792fd789c90fc35d799e5fd85f21c`。
-
-早期输入扩展至 2025-03-31 时，已选股票 `600225.SH` 在 2025-03-06 退市，数据没有可核实的现金结算事件，旧入口写入 `blocked` 收据。当前入口会为已知退市日后的缺行情生成不可交易的最后价格标记，执行完成后用成交和执行价格核对退市日前的模拟股数是否归零。没有此前价格、仍有残余股数或退市当日及之后成交时仍会阻断，且不会复制诊断账本。遇到无法解释的其他日线缺口、缺涨跌停价、证券资格不足或重复键也会停止。历史纸面序列的加载器已改为选择有清单的最新稳定 `daily_clean` 资产。
-
-新入口读取已发布的 `namechange` 全量资产，按公告日在决策日前、生效日在决策日或之前的条件确认历史简称。简称未知、含 ST 或处于退市整理期的证券均不进入候选池，来源哈希和被排除行数记录在诊断收据中。清洗日线的 `is_st` 仍作为第二道排除条件。目标剔除不证明卖单成交。退市后的价格或持仓仍有缺口时，诊断保持阻断。由于没有 `anns_d.rec_time`，研究口径固定为 `announced_prior_close_only.v1`，同日公告不进入新建仓股票池。
-
-使用 2026-09-28 发布的更名和证券快照，以及有已发布 ST 历史来源的 `daily_clean_latest`，2025 年第一季度的私有诊断有 56 次决策，终值 1.2948。2026-01-05 至 2026-06-30 区间有 115 次决策，终值 0.8212。接入退市退出审计后，两段回放终值未变，审计列表均为空，因为目标中没有样本期内退市证券；这不构成对真实退市现金结算的验证。旧版 9 月 17 日清洗日线把 `600421.SH` 标为非 ST，当前带 ST 来源的日线在对应日期正确标为 ST。两组新账本的研究质量门禁覆盖 11,775,852 行、5,827 只证券，另有 1 行历史涨跌幅一致性警告。ST 来源属于重建时点证据，收据中的 `revision_safe=false`，两组账本仍缺少输入真实可用时间和完整公司行动审计，不作为正式收益。
-
-这组数字不能与原纸面净值直接比较。原序列按形成日构造、下一交易日收盘执行、再下一交易日计价的独立区间计算，新的执行模拟持续持仓并有现金、未成交和成本。两者都没有每项输入的真实可用时间，复权价格也不能替代完整公司行动账本。2008 至 2014 年的历史 ST、停牌和资格数据仍不完整。该输出仅诊断执行机制，不标为正式可投资收益。要发布完整长期业绩，仍需逐股核对公司行动和退市现金结算，并补齐可审计的点时输入。
+This diagnostic ledger is separate from historical paper returns. It is an execution feasibility check, not a live-trading result or strategy promotion.
