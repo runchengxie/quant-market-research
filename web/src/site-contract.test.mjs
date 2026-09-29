@@ -24,6 +24,7 @@ test('public shell is English-first and exposes a persistent Chinese switch', as
   const layout = await readFile(new URL('./layouts/SiteLayout.astro', import.meta.url), 'utf8');
   const header = await readFile(new URL('./components/SiteHeader.astro', import.meta.url), 'utf8');
   const researchPage = await readFile(new URL('./components/ResearchPage.astro', import.meta.url), 'utf8');
+  const sharedResearch = await readFile(new URL('./components/react/research-shared.tsx', import.meta.url), 'utf8');
   assert.match(layout, /<html lang="en-US"/);
   assert.match(layout, /quant-market-research-locale/);
   assert.match(header, /data-locale-toggle/);
@@ -32,4 +33,7 @@ test('public shell is English-first and exposes a persistent Chinese switch', as
   assert.match(researchPage, /titleEn\?: string/);
   assert.match(researchPage, /data-en=\{titleEn\}/);
   assert.match(researchPage, /data-zh=\{title\}/);
+  assert.match(sharedResearch, /function englishLocale\(\)/);
+  assert.match(sharedResearch, /Search table contents/);
+  assert.match(sharedResearch, /Table pagination/);
 });
