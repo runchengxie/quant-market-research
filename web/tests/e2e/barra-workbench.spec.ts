@@ -69,10 +69,10 @@ test("size data is lazy, shows revision limits and can page through all records"
   expect(sizeRequests).toBe(1);
   const table = diagnostic.getByRole("table").first();
   await expect(table.getByRole("row")).toHaveCount(51);
-  await diagnostic.getByRole("button", { name: "最后一页", exact: true }).click();
+  await diagnostic.getByRole("button", { name: /^(Last page|最后一页)$/ }).click();
   await expect(table.getByRole("row")).toHaveCount(31);
-  await expect(diagnostic.getByRole("button", { name: "下一页", exact: true })).toBeDisabled();
-  await diagnostic.getByRole("button", { name: "第一页", exact: true }).click();
+  await expect(diagnostic.getByRole("button", { name: /^(Next page|下一页)$/ })).toBeDisabled();
+  await diagnostic.getByRole("button", { name: /^(First page|第一页)$/ }).click();
   await expect(table.getByRole("row")).toHaveCount(51);
   await diagnostic.getByRole("button", { name: "阶段收益差", exact: true }).click();
   await expect(diagnostic.getByRole("table").nth(1)).toContainText("共同分组日期数");

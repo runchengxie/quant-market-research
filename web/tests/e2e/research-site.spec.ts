@@ -37,15 +37,15 @@ test("Barra hydration preserves pagination ARIA references", async ({ page }) =>
   await page.goto("research/style-factors-18y/");
   await expect(page.locator("#barra-annual canvas")).toBeVisible();
   await page.getByText("补充研究：市值十分组与稳定性诊断", { exact: true }).click();
-  const pagination = page.getByRole("navigation", { name: "表格分页" });
+  const pagination = page.locator('nav[aria-label="Table pagination"], nav[aria-label="表格分页"]');
   await expect(pagination.first()).toBeVisible();
   for (const nav of await pagination.all()) {
     const target = await nav.getAttribute("aria-describedby");
     expect(target).toBeTruthy();
     expect(await page.evaluate((id) => Array.from(document.querySelectorAll("[id]")).filter((element) => element.id === id).length, target)).toBe(1);
   }
-  await pagination.first().getByRole("button", { name: "下一页", exact: true }).click();
-  await expect(pagination.first()).toContainText("第 2 /");
+  await pagination.first().getByRole("button", { name: /^(Next page|下一页)$/ }).click();
+  await expect(pagination.first()).toContainText(/(?:第 2 \/|Page 2 \/)/);
   expect(errors).toEqual([]);
 });
 

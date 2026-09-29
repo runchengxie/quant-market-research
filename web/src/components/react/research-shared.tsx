@@ -29,6 +29,23 @@ export type DiagnosticView = "daily" | "monthly" | "stage";
 
 const DATA = publicDataUrl("", import.meta.env.BASE_URL);
 
+function englishLocale() {
+  return typeof document === "undefined" || document.documentElement.lang === "en-US";
+}
+
+function localeLabel(label: string, english: boolean) {
+  if (!english) return label;
+  const labels: Record<string, string> = {
+    "研究数据": "research data",
+    "图表": "chart",
+    "所有分组共同日期的可比数据": "comparable data across all groups",
+    "研究快照": "research snapshot",
+    "现金流研究": "cash-flow research",
+    "回本与持有期风险研究": "recovery and holding-period risk research",
+  };
+  return labels[label] ?? label;
+}
+
 export function SizeDiagnosticPanel({ rows }: { rows: Row[]; dailyCurve: Row[] }) {
   const [view, setView] = useState<DiagnosticView>("monthly");
   const comparable = comparableSizeRows(rows);
@@ -74,9 +91,11 @@ export function useJson<T>(path: string | null) { return useResource<T>(path, pa
 export function useCsv(path: string | null) { return useResource<Row[]>(path, parseCsvResource); }
 
 export function ResourceState({ error = "", loading = false, empty = false, retry, label = "研究数据" }: { error?: string; loading?: boolean; empty?: boolean; retry?: () => void; label?: string }) {
-  if (error) return <div role="alert"><p>{label}加载失败：{error}</p>{retry && <button type="button" aria-label={`重试加载${label}`} onClick={retry}>重试</button>}</div>;
-  if (loading) return <p className="loading" role="status">正在加载{label}……</p>;
-  if (empty) return <p role="status">暂无{label}可展示。</p>;
+  const english = englishLocale();
+  const displayLabel = localeLabel(label, english);
+  if (error) return <div role="alert"><p>{english ? `${displayLabel} failed to load: ${error}` : `${label}加载失败：${error}`}</p>{retry && <button type="button" aria-label={english ? `Retry loading ${displayLabel}` : `重试加载${label}`} onClick={retry}>{english ? "Retry" : "重试"}</button>}</div>;
+  if (loading) return <p className="loading" role="status">{english ? `Loading ${displayLabel}…` : `正在加载${label}……`}</p>;
+  if (empty) return <p role="status">{english ? `No ${displayLabel} available.` : `暂无${label}可展示。`}</p>;
   return null;
 }
 
@@ -112,6 +131,8 @@ function tableValue(key: string, value: string | undefined, percent: boolean) {
 }
 export function SimpleTable({ rows, columns, percentColumns = [] }: { rows: Row[]; columns: string[][]; percentColumns?: string[] }) { return <div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key} scope="col">{label}</th>)}</tr></thead><tbody>{rows.map((row, index) => <tr key={`${index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{tableValue(key, row[key], percentColumns.includes(key))}</td>)}</tr>)}</tbody></table></div>; }
 export function SortableTable({ rows, columns, percentColumns = [], searchPlaceholder = "搜索表格内容" }: { rows: Row[]; columns: string[][]; percentColumns?: string[]; searchPlaceholder?: string }) {
+  const english = englishLocale();
+  const localizedSearch = english && searchPlaceholder === "搜索表格内容" ? "Search table contents" : searchPlaceholder;
   const [query, setQuery] = useState("");
   const [sortKey, setSortKey] = useState(columns[0]?.[0] ?? "");
   const [direction, setDirection] = useState<"asc" | "desc">("desc");
@@ -131,17 +152,17 @@ export function SortableTable({ rows, columns, percentColumns = [], searchPlaceh
   const choose = (key: string) => { setPage(0); if (key === sortKey) setDirection(direction === "desc" ? "asc" : "desc"); else { setSortKey(key); setDirection("desc"); } };
   return <>
     <div className="table-controls">
-      <input aria-label={searchPlaceholder} placeholder={searchPlaceholder} value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }}/>
-      <span id={rangeId} role="status" aria-live="polite" aria-atomic="true">显示 {visible.length ? start + 1 : 0}–{end} / {visible.length} 条（共 {rows.length} 条）</span>
+      <input aria-label={localizedSearch} placeholder={localizedSearch} value={query} onChange={(event) => { setQuery(event.target.value); setPage(0); }}/>
+      <span id={rangeId} role="status" aria-live="polite" aria-atomic="true">{english ? `${visible.length ? start + 1 : 0}–${end} of ${visible.length} rows (${rows.length} total)` : `显示 ${visible.length ? start + 1 : 0}–${end} / ${visible.length} 条（共 ${rows.length} 条）`}</span>
     </div>
     <div className="table-scroll"><table><thead><tr>{columns.map(([key, label]) => <th key={key} scope="col" aria-sort={sortKey === key ? (direction === "desc" ? "descending" : "ascending") : "none"}><button type="button" className="table-sort" onClick={() => choose(key)}>{label} {sortKey === key ? (direction === "desc" ? "↓" : "↑") : "↕"}</button></th>)}</tr></thead><tbody>{visible.slice(start, end).map((row, index) => <tr key={`${start + index}-${row[columns[0]?.[0] ?? ""]}`}>{columns.map(([key]) => <td key={key}>{tableValue(key, row[key], percentColumns.includes(key))}</td>)}</tr>)}</tbody></table></div>
-    {pages > 1 && <nav className="table-controls" aria-label="表格分页" aria-describedby={rangeId}>
-      <button type="button" aria-label="第一页" disabled={currentPage === 0} onClick={() => setPage(0)}>第一页</button>
-      <button type="button" aria-label="上一页" disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>上一页</button>
-      <span>第 {currentPage + 1} / {pages} 页，每页 50 条</span>
-      <button type="button" aria-label="下一页" disabled={currentPage === pages - 1} onClick={() => setPage(currentPage + 1)}>下一页</button>
-      <button type="button" aria-label="最后一页" disabled={currentPage === pages - 1} onClick={() => setPage(pages - 1)}>最后一页</button>
+    {pages > 1 && <nav className="table-controls" aria-label={english ? "Table pagination" : "表格分页"} aria-describedby={rangeId}>
+      <button type="button" aria-label={english ? "First page" : "第一页"} disabled={currentPage === 0} onClick={() => setPage(0)}>{english ? "First" : "第一页"}</button>
+      <button type="button" aria-label={english ? "Previous page" : "上一页"} disabled={currentPage === 0} onClick={() => setPage(currentPage - 1)}>{english ? "Previous" : "上一页"}</button>
+      <span>{english ? `Page ${currentPage + 1} / ${pages}, 50 rows per page` : `第 ${currentPage + 1} / ${pages} 页，每页 50 条`}</span>
+      <button type="button" aria-label={english ? "Next page" : "下一页"} disabled={currentPage === pages - 1} onClick={() => setPage(currentPage + 1)}>{english ? "Next" : "下一页"}</button>
+      <button type="button" aria-label={english ? "Last page" : "最后一页"} disabled={currentPage === pages - 1} onClick={() => setPage(pages - 1)}>{english ? "Last" : "最后一页"}</button>
     </nav>}
   </>;
 }
-export function Loading() { return <p className="loading">正在加载研究数据……</p>; }
+export function Loading() { return <p className="loading">{englishLocale() ? "Loading research data…" : "正在加载研究数据……"}</p>; }
