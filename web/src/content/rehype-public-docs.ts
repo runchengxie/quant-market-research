@@ -1,5 +1,17 @@
 import { publicDocs } from './public-registry';
 
+const publicLocaleCompanions = new Set([
+  'docs/index.zh-CN.md',
+  'docs/research-closeout-status.zh-CN.md',
+  'docs/research/factors/low-turnover.zh-CN.md',
+  'docs/research/factors/pb-roe.zh-CN.md',
+  'docs/research/factors/microcap.zh-CN.md',
+  'docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md',
+  'docs/research/factors/smallcap-turnover-history.zh-CN.md',
+  'docs/research/factors/barra-factor-dictionary.zh-CN.md',
+  'docs/research/factors/barra-source-inventory.zh-CN.md',
+]);
+
 function basePath(base: string, route: string) { return `${base.replace(/\/$/, '')}${route}`; }
 
 export function resolveDocLink(source: string, href: string, base: string): string {
@@ -19,8 +31,12 @@ export function resolveDocLink(source: string, href: string, base: string): stri
   }
   const normalized = parts.join('/');
   const match = publicDocs.find((doc) => doc.source === normalized);
-  if (!match) throw new Error(`public document link outside allowlist: ${href}`);
-  return `${basePath(base, match.route)}${fragment ? `#${fragment}` : ''}`;
+  if (match) return `${basePath(base, match.route)}${fragment ? `#${fragment}` : ''}`;
+  if (publicLocaleCompanions.has(normalized)) {
+    const slug = normalized.slice('docs/'.length).replace(/\.md$/, '');
+    return `${basePath(base, `/docs/${slug}/`)}${fragment ? `#${fragment}` : ''}`;
+  }
+  throw new Error(`public document link outside allowlist: ${href}`);
 }
 
 export function publicDocsTransform(base = '/quant-market-research') {
