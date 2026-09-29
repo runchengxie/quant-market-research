@@ -29,7 +29,7 @@ export type DiagnosticView = "daily" | "monthly" | "stage";
 
 const DATA = publicDataUrl("", import.meta.env.BASE_URL);
 
-function englishLocale() {
+export function englishLocale() {
   return typeof document === "undefined" || document.documentElement.lang === "en-US";
 }
 

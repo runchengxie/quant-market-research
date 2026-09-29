@@ -13,16 +13,16 @@ test("factor search, family filter and shared link preserve selected evidence", 
   const detail = page.getByRole("region", { name: "所选因子详情" });
   await expect(page.locator('button[data-factor="quality"]')).toHaveAttribute("aria-pressed", "true");
   await expect(detail).toContainText("ROE");
-  await page.getByRole("searchbox", { name: "搜索因子" }).fill("beta");
+  await page.getByRole("searchbox", { name: /^(Search factors|搜索因子)$/ }).fill("beta");
   await expect(page.locator("button[data-factor]")).toHaveCount(1);
   await page.locator('button[data-factor="beta"]').click();
   await expect(detail).toContainText("beta");
   await expect(page).toHaveURL(/factor=beta/);
-  await page.getByRole("searchbox", { name: "搜索因子" }).fill("没有这个因子");
-  await expect(page.getByText("没有匹配的因子")).toBeVisible();
-  await page.getByRole("button", { name: "清除筛选" }).click();
+  await page.getByRole("searchbox", { name: /^(Search factors|搜索因子)$/ }).fill("没有这个因子");
+  await expect(page.getByText(/^(No matching factors|没有匹配的因子)$/)).toBeVisible();
+  await page.getByRole("button", { name: /^(Clear filters|清除筛选)$/ }).click();
   await expect(page.locator("button[data-factor]")).toHaveCount(19);
-  await page.getByRole("combobox", { name: "因子家族" }).selectOption("价值");
+  await page.getByRole("combobox", { name: /^(Factor family|因子家族)$/ }).selectOption("价值");
   await expect(page.locator('button[data-factor="value"]')).toBeVisible();
   await expect(page.locator('button[data-factor="beta"]')).toHaveCount(0);
   await expect(detail).toContainText("beta");
@@ -38,9 +38,9 @@ test("optional dataset failure stays local and can be retried", async ({ page })
   await expect(page.locator("button[data-factor]")).toHaveCount(19);
   await expect(page.locator("#barra-annual canvas")).toBeVisible();
   const quality = page.getByRole("region", { name: "Quality 子因子数据" });
-  await expect(quality.getByRole("alert")).toContainText("加载失败");
+  await expect(quality.getByRole("alert")).toContainText(/(Loading failed|加载失败)/);
   fail = false;
-  await quality.getByRole("button", { name: /重试/ }).click();
+  await quality.getByRole("button", { name: /(Retry|重试)/ }).click();
   await expect(quality.getByRole("row").filter({ hasText: "低杠杆 · Debt / Assets" })).toContainText("1.2%");
 });
 
@@ -50,9 +50,9 @@ test("required dataset failure has recovery instead of an endless spinner", asyn
     ? route.fulfill({ status: 503, body: "unavailable" }) : route.continue());
   await page.goto("research/style-factors-18y/");
   const annual = page.locator("#barra-annual");
-  await expect(annual.getByRole("alert")).toContainText("加载失败");
+  await expect(annual.getByRole("alert")).toContainText(/(Loading failed|加载失败)/);
   fail = false;
-  await annual.getByRole("button", { name: /重试/ }).click();
+  await annual.getByRole("button", { name: /(Retry|重试)/ }).click();
   await expect(annual.locator("canvas")).toBeVisible();
 });
 

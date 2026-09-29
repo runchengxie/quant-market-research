@@ -17,6 +17,7 @@ import {
   useJson,
   useCsv,
   SizeDiagnosticPanel,
+  englishLocale,
 } from "./research-shared";
 import { dailySizeCurve, comparableSizeRows, finiteNumber } from "../../lib/size-diagnostics";
 import { currentFactorImplementations, commonFactorProcessing, implementationSource } from "../../lib/factor-implementations";
@@ -28,6 +29,10 @@ import type {
   HistoricalFactor,
   CorrelationMatrix,
 } from "./research-shared";
+
+function text(zh: string, en: string) {
+  return englishLocale() ? en : zh;
+}
 
 export function StylePage({ scope }: { scope: StyleScope }) {
   return (
@@ -45,6 +50,8 @@ export function StylePage({ scope }: { scope: StyleScope }) {
 }
 
 export function IndicesPage() {
+  const english = englishLocale();
+  const ui = (zh: string, en: string) => english ? en : zh;
   const { data: returns } = useCsv(
     "index/linked_indices/ten_year_price_returns.csv",
   );
@@ -76,44 +83,44 @@ export function IndicesPage() {
   return (
     <>
       <ThemeHeading
-        kicker="指数长期回报 · ETF 可投资性"
-        title="指数长期回报与可投资的基金产品"
-        text="查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。"
-        asof="已发布的历史数据"
+        kicker={ui("指数长期回报 · ETF 可投资性", "Long-run index returns · ETF investability")}
+        title={ui("指数长期回报与可投资的基金产品", "Long-run index returns and investable ETFs")}
+        text={ui("查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。", "Review the index catalog, ten-year price returns, and representative exchange-traded funds (ETFs). Price returns exclude dividends; fund returns also reflect fees and tracking error.")}
+        asof={ui("已发布的历史数据", "Published historical data")}
       />
       <section className="stat-grid">
         <Stat
-          label="指数目录"
+          label={ui("指数目录", "Index catalog")}
           value={num(catalog.length)}
-          note="已收录公开目录"
+          note={ui("已收录公开目录", "Public entries")}
           accent
         />
         <Stat
-          label="当前类别指数"
+          label={ui("当前类别指数", "Indexes in selected category")}
           value={num(filteredReturns.length)}
-          note={category === "全部" ? "全部类别" : category}
+          note={category === "全部" ? ui("全部类别", "All categories") : category}
         />
         <Stat
-          label="代表性基金"
+          label={ui("代表性基金", "Representative funds")}
           value={num(etfs.length)}
-          note="与指数对应的基金产品"
+          note={ui("与指数对应的基金产品", "Funds matched to indexes")}
         />
         <Stat
-          label="符合成交额筛选的基金"
+          label={ui("符合成交额筛选的基金", "Funds passing liquidity filter")}
           value={num(liquid)}
-          note="近60日成交额筛选"
+          note={ui("近60日成交额筛选", "60-day median turnover")}
         />
       </section>
-      <Panel title="十年价格回报最高的指数" tag="按类别筛选 · 前12名">
+      <Panel title={ui("十年价格回报最高的指数", "Top ten-year price returns")} tag={ui("按类别筛选 · 前12名", "Category filter · top 12")}>
         <ControlBar>
-          <span className="control-label">指数类别</span>
+          <span className="control-label">{ui("指数类别", "Index category")}</span>
           {categories.map((value) => (
             <Choice
               key={value}
               active={category === value}
               onClick={() => setCategory(value)}
             >
-              {value}
+              {value === "全部" ? ui("全部", "All") : value}
             </Choice>
           ))}
         </ControlBar>
@@ -124,27 +131,26 @@ export function IndicesPage() {
           color="#1267d6"
         />
         <p className="panel-note">
-          这里的指数排行榜仍使用十年价格回报，类别筛选用于定位研究对象。下方 ETF
-          表提供统一的 1 年、3 年、5 年和 10 年区间比较。
+          {ui("这里的指数排行榜仍使用十年价格回报，类别筛选用于定位研究对象。下方 ETF 表提供统一的 1 年、3 年、5 年和 10 年区间比较。", "This ranking uses ten-year price returns; the category filter narrows the research universe. The ETF table below provides consistent 1-, 3-, 5-, and 10-year comparisons.")}
         </p>
       </Panel>
-      <Panel title="指数与代表性基金的表现" tag="可搜索、可排序">
+      <Panel title={ui("指数与代表性基金的表现", "Index and representative ETF performance")} tag={ui("可搜索、可排序", "Searchable · sortable")}>
         <SortableTable
           rows={etfs}
           columns={[
             ["ts_code", "ETF"],
-            ["matched_index_name", "跟踪指数"],
-            ["etf_cagr", "基金年化回报"],
-            ["index_cagr", "指数年化回报"],
-            ["etf_max_drawdown", "基金最大回撤"],
-            ["median_amount_60d", "近60日成交额中位数"],
+            ["matched_index_name", ui("跟踪指数", "Tracked index")],
+            ["etf_cagr", ui("基金年化回报", "ETF annualized return")],
+            ["index_cagr", ui("指数年化回报", "Index annualized return")],
+            ["etf_max_drawdown", ui("基金最大回撤", "ETF max drawdown")],
+            ["median_amount_60d", ui("近60日成交额中位数", "60-day median turnover")],
           ]}
           percentColumns={["etf_cagr", "index_cagr", "etf_max_drawdown"]}
         />
       </Panel>
-      <Panel title="代表性 ETF 的多区间表现" tag="前复权价格 · 2015 年以来">
+      <Panel title={ui("代表性 ETF 的多区间表现", "Representative ETF performance across horizons")} tag={ui("前复权价格 · 2015 年以来", "Adjusted prices · since 2015")}>
         <ControlBar>
-          <span className="control-label">区间</span>
+          <span className="control-label">{ui("区间", "Horizon")}</span>
           {["1Y", "3Y", "5Y", "10Y"].map((value) => (
             <Choice
               key={value}
@@ -159,16 +165,16 @@ export function IndicesPage() {
           rows={multi.filter((row) => row.period === period)}
           columns={[
             ["ts_code", "ETF"],
-            ["name", "名称"],
-            ["matched_index_name", "跟踪指数"],
-            ["start", "起始日"],
-            ["end", "结束日"],
-            ["total_return", "累计收益"],
-            ["cagr", "年化收益"],
-            ["annualized_volatility", "年化波动率"],
-            ["max_drawdown", "最大回撤"],
-            ["current_drawdown", "期末回撤"],
-            ["median_amount", "成交额中位数"],
+            ["name", ui("名称", "Name")],
+            ["matched_index_name", ui("跟踪指数", "Tracked index")],
+            ["start", ui("起始日", "Start")],
+            ["end", ui("结束日", "End")],
+            ["total_return", ui("累计收益", "Total return")],
+            ["cagr", ui("年化收益", "Annualized return")],
+            ["annualized_volatility", ui("年化波动率", "Annualized volatility")],
+            ["max_drawdown", ui("最大回撤", "Max drawdown")],
+            ["current_drawdown", ui("期末回撤", "Current drawdown")],
+            ["median_amount", ui("成交额中位数", "Median turnover")],
           ]}
           percentColumns={[
             "total_return",
@@ -179,8 +185,7 @@ export function IndicesPage() {
           ]}
         />
         <p className="panel-note">
-          区间从共同数据结束日倒推，按各 ETF
-          的实际上市和可用交易日计算。收益使用前复权收盘价，不含费用和税费。波动率按日收益年化，期末回撤表示区间结束日相对区间内最高点的回撤。它是历史比较，不构成未来收益预测。
+          {ui("区间从共同数据结束日倒推，按各 ETF 的实际上市和可用交易日计算。收益使用前复权收盘价，不含费用和税费。波动率按日收益年化，期末回撤表示区间结束日相对区间内最高点的回撤。它是历史比较，不构成未来收益预测。", "Each horizon is measured backward from the shared data end date using each ETF's actual listing and available trading days. Returns use adjusted closes and exclude fees and taxes. Volatility is annualized from daily returns; current drawdown is measured from the in-period high. This is historical comparison, not a forecast.")}
         </p>
       </Panel>
     </>
@@ -476,9 +481,9 @@ void LEGACY_FACTOR_DETAILS;
 
 function DataNotice({ label, error, retry, empty = false }: { label: string; error?: string; retry?: () => void; empty?: boolean }) {
   return <div className="data-notice" role={error ? "alert" : "status"}>
-    <strong>{label}：{error ? "加载失败" : empty ? "暂无可用数据" : "正在加载"}</strong>
-    <p>{error ? "其余研究内容仍可使用。请重试，或稍后再查看此数据。" : empty ? "未提供不等于零；不据此生成收益或结论。" : "正在读取公开派生快照。"}</p>
-    {error && retry && <button type="button" className="button-link" onClick={retry}>重试{label}</button>}
+    <strong>{label}{text("：", ": ")}{error ? text("加载失败", "Loading failed") : empty ? text("暂无可用数据", "No data available") : text("正在加载", "Loading")}</strong>
+    <p>{error ? text("其余研究内容仍可使用。请重试，或稍后再查看此数据。", "The remaining research remains available. Retry this dataset or check again later.") : empty ? text("未提供不等于零；不据此生成收益或结论。", "Unavailable does not mean zero; no return or conclusion is inferred.") : text("正在读取公开派生快照。", "Reading the public derived snapshot.")}</p>
+    {error && retry && <button type="button" className="button-link" onClick={retry}>{text("重试", "Retry")}{label}</button>}
   </div>;
 }
 
@@ -552,6 +557,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const [selectedFactor, setSelectedFactor] = useState("size");
   const [query, setQuery] = useState("");
   const [family, setFamily] = useState("全部");
+  const familyLabel = (value: string) => text(value, ({ "全部": "All", "规模": "Size", "价值": "Value", "质量": "Quality", "成长": "Growth", "动量": "Momentum", "波动率": "Volatility", "市场敏感度": "Market sensitivity", "流动性": "Liquidity", "持仓与筹码": "Holdings & positioning" } as Record<string, string>)[value] ?? value);
   const [showSizeDiagnostic, setShowSizeDiagnostic] = useState(false);
   useEffect(() => {
     const restore = () => {
@@ -592,30 +598,30 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     hit: row.hit_rate == null ? "" : String(row.hit_rate / 100),
   }));
   return <div className="barra-explorer">
-    {includeNarrative && <ThemeHeading kicker="历史研究档案 · Barra 风格因子" title="A 股风格因子的长期历史表现" text="历史多空合成收益，不代表实际账户盈亏。" asof="各因子样本区间不同" />}
-    <nav className="section-nav" aria-label="本页目录">
-      <a href="#barra-annual">因子探索</a><a href="#barra-factor-detail">定义与计算</a><a href="#barra-overview">全部表现</a><a href="#barra-correlations">相关性</a>
+    {includeNarrative && <ThemeHeading kicker={text("历史研究档案 · Barra 风格因子", "Historical research archive · Barra-style factors")} title={text("A 股风格因子的长期历史表现", "Long-run A-share style-factor performance")} text={text("历史多空合成收益，不代表实际账户盈亏。", "Historical long-short composite returns do not represent account P&L.")} asof={text("各因子样本区间不同", "Sample windows differ by factor")} />}
+    <nav className="section-nav" aria-label={text("本页目录", "On this page")}>
+      <a href="#barra-annual">{text("因子探索", "Factor explorer")}</a><a href="#barra-factor-detail">{text("定义与计算", "Definition & calculation")}</a><a href="#barra-overview">{text("全部表现", "All performance")}</a><a href="#barra-correlations">{text("相关性", "Correlations")}</a>
     </nav>
-    <section className="factor-diagnostic-workspace" aria-label="当前因子诊断工作区">
+    <section className="factor-diagnostic-workspace" aria-label={text("当前因子诊断工作区", "Selected-factor diagnostic workspace")}>
       <div className="workspace-context">
-        <span className="section-kicker">当前因子诊断</span>
+        <span className="section-kicker">{text("当前因子诊断", "Selected-factor diagnostic")}</span>
         <strong>{FACTOR_NAMES[selectedFactor]}</strong>
-        <span>切换因子后，历史收益、阶段指标、定义和计算方法同步更新</span>
+        <span>{text("切换因子后，历史收益、阶段指标、定义和计算方法同步更新", "Historical returns, period metrics, definitions, and calculations update with the selected factor.")}</span>
       </div>
-      <section id="barra-annual" aria-label="年度因子探索">
-      <Panel title="逐年合成收益与阶段表现" tag="历史序列 · 公式待核验">
+      <section id="barra-annual" aria-label={text("年度因子探索", "Annual factor exploration")}>
+      <Panel title={text("逐年合成收益与阶段表现", "Annual composite returns and period performance")} tag={text("历史序列 · 公式待核验", "Historical series · formula pending audit")}>
         <div className="explorer-layout">
           <aside className="factor-navigator" aria-label="因子选择">
             <div className="factor-filter">
-              <label>搜索因子<input type="search" aria-label="搜索因子" placeholder="中文名称或英文代码" value={query} onChange={event => setQuery(event.target.value)} /></label>
-              <label>因子家族<select aria-label="因子家族" value={family} onChange={event => setFamily(event.target.value)}><option>全部</option>{familyOrder.map(value => <option key={value}>{value}</option>)}</select></label>
-              <span className="filter-count">{shown.length} / {factors.length} 个因子</span>
+            <label>{text("搜索因子", "Search factors")}<input type="search" aria-label={text("搜索因子", "Search factors")} placeholder={text("中文名称或英文代码", "Chinese name or English code")} value={query} onChange={event => setQuery(event.target.value)} /></label>
+              <label>{text("因子家族", "Factor family")}<select aria-label={text("因子家族", "Factor family")} value={family} onChange={event => setFamily(event.target.value)}><option value="全部">{familyLabel("全部")}</option>{familyOrder.map(value => <option key={value} value={value}>{familyLabel(value)}</option>)}</select></label>
+              <span className="filter-count">{shown.length} / {factors.length} {text("个因子", "factors")}</span>
             </div>
             {!factors.length ? <DataNotice label="因子目录" error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
-              !shown.length ? <div className="filter-empty" role="status"><p>没有匹配的因子</p><button type="button" className="button-link" onClick={() => { setQuery(""); setFamily("全部"); }}>清除筛选</button></div> :
+              !shown.length ? <div className="filter-empty" role="status"><p>{text("没有匹配的因子", "No matching factors")}</p><button type="button" className="button-link" onClick={() => { setQuery(""); setFamily("全部"); }}>{text("清除筛选", "Clear filters")}</button></div> :
               <div className="factor-groups">{familyOrder.map(group => {
                 const groupFactors = shown.filter(row => groupedFamily(row.factor) === group);
-                return groupFactors.length > 0 && <div className="factor-group" key={group}><span className="factor-group-label">{group}</span><div>{groupFactors.map(row => <button key={row.factor} type="button" className={`choice ${selectedFactor === row.factor ? "active" : ""}`} aria-pressed={selectedFactor === row.factor} aria-controls="barra-factor-detail" data-factor={row.factor} onClick={() => selectFactor(row.factor)}>{FACTOR_NAMES[row.factor]}</button>)}</div></div>;
+                return groupFactors.length > 0 && <div className="factor-group" key={group}><span className="factor-group-label">{familyLabel(group)}</span><div>{groupFactors.map(row => <button key={row.factor} type="button" className={`choice ${selectedFactor === row.factor ? "active" : ""}`} aria-pressed={selectedFactor === row.factor} aria-controls="barra-factor-detail" data-factor={row.factor} onClick={() => selectFactor(row.factor)}>{FACTOR_NAMES[row.factor]}</button>)}</div></div>;
               })}</div>}
           </aside>
           <div className="factor-chart">
