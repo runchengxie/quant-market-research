@@ -26,7 +26,7 @@ test('cashflow recovery defaults to price series and preserves censoring and imm
   assert.match(html, /25\.00%/);
   assert.match(html, /样本不足|Insufficient sample/);
   assert.match(html, /期限已满|Mature/);
-  const entryTable = html.slice(html.indexOf('等待最久的买入日'));
+  const entryTable = html.slice(Math.max(0, html.search(/等待最久的买入日|Longest entry waits/)));
   assert.match(entryTable, /交易日|Trading days/);
   assert.match(entryTable, /回本前最差收益|Worst return before recovery/);
   assert.match(entryTable, /-20\.00%/);
