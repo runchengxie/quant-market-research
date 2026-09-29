@@ -10,7 +10,7 @@ const routes = [
   ["research/style-factors-18y/", "18-year A-share style factors"],
   ["research/liquidity/", "Cross-market liquidity"],
   ["research/factors/low-turnover/", "Low-turnover factor: what information remains?"],
-  ["research/factors/pb-roe/", "PB 与 ROE：历史对照与证据边界"],
+  ["research/factors/pb-roe/", "PB and ROE: historical comparison and evidence boundary"],
 ] as const;
 
 test.beforeEach(async ({ page }) => {
