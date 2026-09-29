@@ -17,6 +17,7 @@ import {
   useJson,
   useCsv,
   SizeDiagnosticPanel,
+  englishLocale,
 } from "./research-shared";
 import { dailySizeCurve, comparableSizeRows, finiteNumber } from "../../lib/size-diagnostics";
 import { currentFactorImplementations, commonFactorProcessing, implementationSource } from "../../lib/factor-implementations";
@@ -45,6 +46,8 @@ export function StylePage({ scope }: { scope: StyleScope }) {
 }
 
 export function IndicesPage() {
+  const english = englishLocale();
+  const ui = (zh: string, en: string) => english ? en : zh;
   const { data: returns } = useCsv(
     "index/linked_indices/ten_year_price_returns.csv",
   );
@@ -76,44 +79,44 @@ export function IndicesPage() {
   return (
     <>
       <ThemeHeading
-        kicker="指数长期回报 · ETF 可投资性"
-        title="指数长期回报与可投资的基金产品"
-        text="查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。"
-        asof="已发布的历史数据"
+        kicker={ui("指数长期回报 · ETF 可投资性", "Long-run index returns · ETF investability")}
+        title={ui("指数长期回报与可投资的基金产品", "Long-run index returns and investable ETFs")}
+        text={ui("查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。", "Review the index catalog, ten-year price returns, and representative exchange-traded funds (ETFs). Price returns exclude dividends; fund returns also reflect fees and tracking error.")}
+        asof={ui("已发布的历史数据", "Published historical data")}
       />
       <section className="stat-grid">
         <Stat
-          label="指数目录"
+          label={ui("指数目录", "Index catalog")}
           value={num(catalog.length)}
-          note="已收录公开目录"
+          note={ui("已收录公开目录", "Public entries")}
           accent
         />
         <Stat
-          label="当前类别指数"
+          label={ui("当前类别指数", "Indexes in selected category")}
           value={num(filteredReturns.length)}
-          note={category === "全部" ? "全部类别" : category}
+          note={category === "全部" ? ui("全部类别", "All categories") : category}
         />
         <Stat
-          label="代表性基金"
+          label={ui("代表性基金", "Representative funds")}
           value={num(etfs.length)}
-          note="与指数对应的基金产品"
+          note={ui("与指数对应的基金产品", "Funds matched to indexes")}
         />
         <Stat
-          label="符合成交额筛选的基金"
+          label={ui("符合成交额筛选的基金", "Funds passing liquidity filter")}
           value={num(liquid)}
-          note="近60日成交额筛选"
+          note={ui("近60日成交额筛选", "60-day median turnover")}
         />
       </section>
-      <Panel title="十年价格回报最高的指数" tag="按类别筛选 · 前12名">
+      <Panel title={ui("十年价格回报最高的指数", "Top ten-year price returns")} tag={ui("按类别筛选 · 前12名", "Category filter · top 12")}>
         <ControlBar>
-          <span className="control-label">指数类别</span>
+          <span className="control-label">{ui("指数类别", "Index category")}</span>
           {categories.map((value) => (
             <Choice
               key={value}
               active={category === value}
               onClick={() => setCategory(value)}
             >
-              {value}
+              {value === "全部" ? ui("全部", "All") : value}
             </Choice>
           ))}
         </ControlBar>
@@ -124,27 +127,26 @@ export function IndicesPage() {
           color="#1267d6"
         />
         <p className="panel-note">
-          这里的指数排行榜仍使用十年价格回报，类别筛选用于定位研究对象。下方 ETF
-          表提供统一的 1 年、3 年、5 年和 10 年区间比较。
+          {ui("这里的指数排行榜仍使用十年价格回报，类别筛选用于定位研究对象。下方 ETF 表提供统一的 1 年、3 年、5 年和 10 年区间比较。", "This ranking uses ten-year price returns; the category filter narrows the research universe. The ETF table below provides consistent 1-, 3-, 5-, and 10-year comparisons.")}
         </p>
       </Panel>
-      <Panel title="指数与代表性基金的表现" tag="可搜索、可排序">
+      <Panel title={ui("指数与代表性基金的表现", "Index and representative ETF performance")} tag={ui("可搜索、可排序", "Searchable · sortable")}>
         <SortableTable
           rows={etfs}
           columns={[
             ["ts_code", "ETF"],
-            ["matched_index_name", "跟踪指数"],
-            ["etf_cagr", "基金年化回报"],
-            ["index_cagr", "指数年化回报"],
-            ["etf_max_drawdown", "基金最大回撤"],
-            ["median_amount_60d", "近60日成交额中位数"],
+            ["matched_index_name", ui("跟踪指数", "Tracked index")],
+            ["etf_cagr", ui("基金年化回报", "ETF annualized return")],
+            ["index_cagr", ui("指数年化回报", "Index annualized return")],
+            ["etf_max_drawdown", ui("基金最大回撤", "ETF max drawdown")],
+            ["median_amount_60d", ui("近60日成交额中位数", "60-day median turnover")],
           ]}
           percentColumns={["etf_cagr", "index_cagr", "etf_max_drawdown"]}
         />
       </Panel>
-      <Panel title="代表性 ETF 的多区间表现" tag="前复权价格 · 2015 年以来">
+      <Panel title={ui("代表性 ETF 的多区间表现", "Representative ETF performance across horizons")} tag={ui("前复权价格 · 2015 年以来", "Adjusted prices · since 2015")}>
         <ControlBar>
-          <span className="control-label">区间</span>
+          <span className="control-label">{ui("区间", "Horizon")}</span>
           {["1Y", "3Y", "5Y", "10Y"].map((value) => (
             <Choice
               key={value}
@@ -159,16 +161,16 @@ export function IndicesPage() {
           rows={multi.filter((row) => row.period === period)}
           columns={[
             ["ts_code", "ETF"],
-            ["name", "名称"],
-            ["matched_index_name", "跟踪指数"],
-            ["start", "起始日"],
-            ["end", "结束日"],
-            ["total_return", "累计收益"],
-            ["cagr", "年化收益"],
-            ["annualized_volatility", "年化波动率"],
-            ["max_drawdown", "最大回撤"],
-            ["current_drawdown", "期末回撤"],
-            ["median_amount", "成交额中位数"],
+            ["name", ui("名称", "Name")],
+            ["matched_index_name", ui("跟踪指数", "Tracked index")],
+            ["start", ui("起始日", "Start")],
+            ["end", ui("结束日", "End")],
+            ["total_return", ui("累计收益", "Total return")],
+            ["cagr", ui("年化收益", "Annualized return")],
+            ["annualized_volatility", ui("年化波动率", "Annualized volatility")],
+            ["max_drawdown", ui("最大回撤", "Max drawdown")],
+            ["current_drawdown", ui("期末回撤", "Current drawdown")],
+            ["median_amount", ui("成交额中位数", "Median turnover")],
           ]}
           percentColumns={[
             "total_return",
@@ -179,8 +181,7 @@ export function IndicesPage() {
           ]}
         />
         <p className="panel-note">
-          区间从共同数据结束日倒推，按各 ETF
-          的实际上市和可用交易日计算。收益使用前复权收盘价，不含费用和税费。波动率按日收益年化，期末回撤表示区间结束日相对区间内最高点的回撤。它是历史比较，不构成未来收益预测。
+          {ui("区间从共同数据结束日倒推，按各 ETF 的实际上市和可用交易日计算。收益使用前复权收盘价，不含费用和税费。波动率按日收益年化，期末回撤表示区间结束日相对区间内最高点的回撤。它是历史比较，不构成未来收益预测。", "Each horizon is measured backward from the shared data end date using each ETF's actual listing and available trading days. Returns use adjusted closes and exclude fees and taxes. Volatility is annualized from daily returns; current drawdown is measured from the in-period high. This is historical comparison, not a forecast.")}
         </p>
       </Panel>
     </>
