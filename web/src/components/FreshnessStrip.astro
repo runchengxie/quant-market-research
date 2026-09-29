@@ -12,10 +12,10 @@ const status = snapshot.quality_status ?? "pending";
 const marketDates = Object.entries(snapshot.markets ?? {}).map(([market, value]) => `${market} ${date(value.as_of)}`).join(" · ");
 ---
 
-<aside class={`freshness-strip status-${status}`} aria-label={label}>
-  <span class="section-kicker">{label}</span>
+<aside class={`freshness-strip status-${status}`} aria-label="Data freshness">
+  <span class="section-kicker" data-locale-text data-en="Data freshness" data-zh={label}>Data freshness</span>
   <strong>{range}</strong>
   <span class="freshness-status">{status}</span>
-  <span class="freshness-source">来源：{snapshot.source ?? "待补"}；快照生成于 {date(snapshot.generated_at)}</span>
-  {marketDates && <span class="freshness-markets">各市场：{marketDates}</span>}
+  <span class="freshness-source" data-locale-text data-en={`Source: ${snapshot.source ?? "pending"}; snapshot generated ${date(snapshot.generated_at)}`} data-zh={`来源：${snapshot.source ?? "待补"}；快照生成于 ${date(snapshot.generated_at)}`}>Source: {snapshot.source ?? "pending"}; snapshot generated {date(snapshot.generated_at)}</span>
+  {marketDates && <span class="freshness-markets" data-locale-text data-en={`Markets: ${marketDates}`} data-zh={`各市场：${marketDates}`}>Markets: {marketDates}</span>}
 </aside>

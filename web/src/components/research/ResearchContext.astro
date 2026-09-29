@@ -1,15 +1,18 @@
 ---
 interface Props {
   question: string;
+  questionEn?: string;
   evidence: string;
+  evidenceEn?: string;
   nextStep: string;
+  nextStepEn?: string;
 }
 
-const { question, evidence, nextStep } = Astro.props;
+const { question, questionEn = question, evidence, evidenceEn = evidence, nextStep, nextStepEn = nextStep } = Astro.props;
 ---
 
-<section class="report-context" aria-label="研究摘要">
-  <div><span class="section-kicker">研究问题</span><p>{question}</p></div>
-  <div><span class="section-kicker">证据状态</span><p><span class="evidence-status">{evidence}</span></p></div>
-  <div><span class="section-kicker">下一步</span><p>{nextStep}</p></div>
+<section class="report-context" aria-label="Research summary">
+  <div><span class="section-kicker" data-locale-text data-en="Research question" data-zh="研究问题">Research question</span><p data-locale-text data-en={questionEn} data-zh={question}>{questionEn}</p></div>
+  <div><span class="section-kicker" data-locale-text data-en="Evidence status" data-zh="证据状态">Evidence status</span><p><span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span></p></div>
+  <div><span class="section-kicker" data-locale-text data-en="Next step" data-zh="下一步">Next step</span><p data-locale-text data-en={nextStepEn} data-zh={nextStep}>{nextStepEn}</p></div>
 </section>

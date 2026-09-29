@@ -5,18 +5,19 @@ import SiteFooter from "../components/SiteFooter.astro";
 
 interface Props {
   title: string;
+  titleEn?: string;
   description: string;
   activeRoute?: string;
   section?: "overview" | "research" | "docs" | "data";
   workbench?: boolean;
 }
 
-const { title, description, activeRoute = "overview", section, workbench = false } = Astro.props;
-const pageTitle = `${title} · Quant Market Research`;
+const { title, titleEn = title, description, activeRoute = "overview", section, workbench = false } = Astro.props;
+const pageTitle = `${titleEn} · Quant Market Research`;
 ---
 
 <!doctype html>
-<html lang="en-US">
+<html lang="en-US" data-title-en={pageTitle} data-title-zh={`${title} · Quant Market Research`}>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -52,6 +53,8 @@ const pageTitle = `${title} · Quant Market Research`;
       const locale = stored === "zh-CN" ? "zh-CN" : "en-US";
       document.documentElement.lang = locale;
       document.documentElement.dataset.locale = locale;
+      const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");
+      if (title) document.title = title;
       document.querySelectorAll("[data-locale-text]").forEach((node) => {
         const value = node.getAttribute(locale === "en-US" ? "data-en" : "data-zh");
         if (value) node.textContent = value;
