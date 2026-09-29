@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { mkdtemp, mkdir, writeFile } from 'node:fs/promises';
+import { mkdtemp, mkdir, readFile, writeFile } from 'node:fs/promises';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { collectHeadingAnchors, hashPublicFiles } from '../scripts/site-contract.mjs';
@@ -18,4 +18,14 @@ test('data snapshot hashing detects mutation and deletion', async () => {
   await writeFile(join(root, 'data', 'nested', 'sample.csv'), 'date,value\n2020-01-01,1\n');
   const after = await hashPublicFiles(root);
   assert.notDeepEqual(after, before);
+});
+
+test('public shell is English-first and exposes a persistent Chinese switch', async () => {
+  const layout = await readFile(new URL('./layouts/SiteLayout.astro', import.meta.url), 'utf8');
+  const header = await readFile(new URL('./components/SiteHeader.astro', import.meta.url), 'utf8');
+  assert.match(layout, /<html lang="en-US">/);
+  assert.match(layout, /quant-market-research-locale/);
+  assert.match(header, /data-locale-toggle/);
+  assert.match(header, /Research overview/);
+  assert.match(header, /研究总览/);
 });

@@ -21,6 +21,6 @@ test('blocked storage does not prevent navigation or readable content', async ({
   await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
   await page.goto('./');
   await expect(page.locator('main h1')).toBeVisible();
-  await page.getByRole('link', { name: '方法与字典', exact: true }).click();
+  await page.getByRole('link', { name: 'Methods & dictionary', exact: true }).click();
   await expect(page.locator('main h1')).toBeVisible();
 });
