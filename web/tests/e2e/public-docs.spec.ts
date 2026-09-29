@@ -6,7 +6,7 @@ test('all seven public documents use the shared shell and preserve readable cont
   for (const route of docs) {
     await page.goto(route);
     await expect(page.locator('main h1')).toHaveCount(1);
-    await expect(page.getByRole('navigation', { name: '主导航' })).toBeVisible();
+    await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
     const html = await page.locator('html').evaluate((node) => node.outerHTML);
     expect(html).not.toContain('\u0000');
     expect(html).not.toContain('INTERNAL_ONLY_SENTINEL');

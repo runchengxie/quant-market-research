@@ -47,7 +47,8 @@ const pageTitle = `${title} · Quant Market Research`;
   <script is:inline>
     (() => {
       const storageKey = "quant-market-research-locale";
-      const stored = localStorage.getItem(storageKey);
+      let stored = null;
+      try { stored = localStorage.getItem(storageKey); } catch { /* storage is optional */ }
       const locale = stored === "zh-CN" ? "zh-CN" : "en-US";
       document.documentElement.lang = locale;
       document.documentElement.dataset.locale = locale;
@@ -61,7 +62,7 @@ const pageTitle = `${title} · Quant Market Research`;
         toggle.setAttribute("aria-label", locale === "en-US" ? "Switch to Chinese" : "切换到英文");
         toggle.addEventListener("click", () => {
           const next = document.documentElement.lang === "en-US" ? "zh-CN" : "en-US";
-          localStorage.setItem(storageKey, next);
+          try { localStorage.setItem(storageKey, next); } catch { /* storage is optional */ }
           window.location.reload();
         });
       }

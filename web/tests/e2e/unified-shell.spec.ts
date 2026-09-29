@@ -5,8 +5,8 @@ test('one heading and a compact shared navigation', async ({ page }) => {
     await page.goto(route);
     await expect(page.locator('main h1')).toHaveCount(1);
     await expect(page.locator('header h1')).toHaveCount(0);
-    await expect(page.getByRole('navigation', { name: '主导航' })).toBeVisible();
-    await expect(page.getByRole('link', { name: '方法与字典', exact: true })).toHaveAttribute('href', /\/docs\/$/);
+    await expect(page.getByRole('navigation', { name: 'Primary navigation' })).toBeVisible();
+    await expect(page.getByRole('link', { name: 'Methods & dictionary', exact: true })).toHaveAttribute('href', /\/docs\/$/);
   }
 });
 
