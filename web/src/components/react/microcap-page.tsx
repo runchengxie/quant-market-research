@@ -29,6 +29,7 @@ import {
   useJson,
   useCsv,
   formatTurnover,
+  englishLocale,
 } from "./research-shared";
 import type {
   Row,
@@ -86,14 +87,15 @@ type MicrocapRepairSummary = {
 };
 
 function HistoricalMicrocapSection() {
+  const t = (zh: string, en: string) => englishLocale() ? en : zh;
   const { data, error } = useJson<HistoricalMicrocapData>(
     "microcap_history_2008_2014.json",
   );
   if (error)
     return (
       <div className="callout compact">
-        <span className="section-kicker">2008–2014 历史补充</span>
-        <p>历史补充汇总暂时无法加载：{error}</p>
+        <span className="section-kicker">{t("2008–2014 历史补充", "2008–2014 historical supplement")}</span>
+        <p>{t("历史补充汇总暂时无法加载：", "Historical supplement failed to load: ")}{error}</p>
       </div>
     );
   if (!data) return <Loading />;
@@ -107,7 +109,7 @@ function HistoricalMicrocapSection() {
   }));
   const latest = data.coverage_by_year.at(-1);
   return (
-    <Panel title="2008–2014 年微盘历史补充" tag="独立历史口径">
+    <Panel title={t("2008–2014 年微盘历史补充", "2008–2014 microcap history")} tag={t("独立历史口径", "Independent historical basis")}>
       <p className="panel-note">
         这段日频重建覆盖 {data.coverage_start} 至 {data.coverage_end}，共{" "}
         {num(data.trading_days)} 个交易日。每年都有价格和市值记录，2014
@@ -136,6 +138,7 @@ function HistoricalMicrocapSection() {
 }
 
 export function SmallcapTurnoverSection() {
+  const t = (zh: string, en: string) => englishLocale() ? en : zh;
   const { data, error } = useJson<SmallcapTurnoverData>(
     "smallcap_turnover.json",
   );
@@ -146,8 +149,8 @@ export function SmallcapTurnoverSection() {
   if (error)
     return (
       <div className="callout compact">
-        <span className="section-kicker">小微盘成交额研究</span>
-        <p>网页汇总暂时无法加载：{error}</p>
+        <span className="section-kicker">{t("小微盘成交额研究", "Small-cap turnover research")}</span>
+        <p>{t("网页汇总暂时无法加载：", "Web summary failed to load: ")}{error}</p>
       </div>
     );
   if (!data) return <Loading />;
@@ -173,7 +176,7 @@ export function SmallcapTurnoverSection() {
   }));
   const latestClean = cleanRows.at(-1);
   const latestHistorical = historicalRows.at(-1);
-  const periodLabel = granularity === "annual" ? "年度" : "月度";
+  const periodLabel = granularity === "annual" ? t("年度", "annual") : t("月度", "monthly");
   const diagnosticNote =
     rankCount === 1
       ? "N = 1 是每日市值最小的一只股票，仅作极端诊断。个股切换、停牌、涨跌停和数据异常都会显著影响它，不能代表一组可交易的股票。"
@@ -188,11 +191,11 @@ export function SmallcapTurnoverSection() {
   return (
     <>
       <SectionHeading
-        title="小微盘成交额研究"
-        text="按每日总市值选取最小 N 只股票，N 表示股票数量。页面用它观察日成交额的历史变化，并把清洗口径与长历史口径并列展示。"
+        title={t("小微盘成交额研究", "Small-cap turnover research")}
+        text={t("按每日总市值选取最小 N 只股票，N 表示股票数量。页面用它观察日成交额的历史变化，并把清洗口径与长历史口径并列展示。", "Select the N smallest stocks by daily total market value. The page compares turnover history under the cleaned and long-history definitions.")}
       />
       <div className="callout compact">
-        <span className="section-kicker">覆盖口径</span>
+        <span className="section-kicker">{t("覆盖口径", "Coverage definitions")}</span>
         <p>
           <strong>2015 年起清洗口径</strong>覆盖
           ST、停牌和价格质量规则，数据较完整。<strong>2008 年起历史口径</strong>
@@ -202,52 +205,52 @@ export function SmallcapTurnoverSection() {
       </div>
       <section className="stat-grid">
         <Stat
-          label="清洗口径覆盖"
+          label={t("清洗口径覆盖", "Cleaned coverage")}
           value={data.clean.coverage_start + " 至 " + data.clean.coverage_end}
-          note="主分析口径"
+          note={t("主分析口径", "Primary analysis basis")}
           accent
         />
         <Stat
-          label="历史口径覆盖"
+          label={t("历史口径覆盖", "Historical coverage")}
           value={
             data.historical.coverage_start +
             " 至 " +
             data.historical.coverage_end
           }
-          note="覆盖不完整"
+          note={t("覆盖不完整", "Incomplete coverage")}
         />
         <Stat
           label={"N = " + rankCount + " · 清洗口径"}
           value={formatTurnover(latestClean?.turnover_median ?? NaN)}
-          note={labelOf(latestClean ?? {}) + " " + periodLabel + "日中位数"}
+          note={labelOf(latestClean ?? {}) + " " + periodLabel + t("日中位数", " daily median")}
         />
         <Stat
           label={"N = " + rankCount + " · 历史口径"}
           value={formatTurnover(latestHistorical?.turnover_median ?? NaN)}
           note={
-            labelOf(latestHistorical ?? {}) + " " + periodLabel + "日中位数"
+            labelOf(latestHistorical ?? {}) + " " + periodLabel + t("日中位数", " daily median")
           }
         />
       </section>
       <Panel
-        title="最小 N 只股票的日成交额"
-        tag={periodLabel + "汇总 · 可缩放"}
+        title={t("最小 N 只股票的日成交额", "Daily turnover of the N smallest stocks")}
+        tag={periodLabel + t("汇总 · 可缩放", " summary · zoomable")}
       >
         <ControlBar>
-          <span className="control-label">统计粒度</span>
+          <span className="control-label">{t("统计粒度", "Granularity")}</span>
           <Choice
             active={granularity === "annual"}
             onClick={() => setGranularity("annual")}
           >
-            年度汇总
+            {t("年度汇总", "Annual")}
           </Choice>
           <Choice
             active={granularity === "monthly"}
             onClick={() => setGranularity("monthly")}
           >
-            月度汇总
+            {t("月度汇总", "Monthly")}
           </Choice>
-          <span className="control-label">股票数量</span>
+          <span className="control-label">{t("股票数量", "Stock count")}</span>
           {data.clean.rank_counts.map((value) => (
             <Choice
               key={value}
@@ -276,7 +279,7 @@ export function SmallcapTurnoverSection() {
           ]}
         />
         <details className="chart-data-details">
-          <summary>查看图表数据</summary>
+          <summary>{t("查看图表数据", "View chart data")}</summary>
           <SimpleTable rows={chartRows} columns={[["period", periodLabel], ["clean", "2015+ 清洗口径"], ["historical", "2008+ 历史口径"]]} />
         </details>
         <p className="panel-note">
@@ -285,7 +288,7 @@ export function SmallcapTurnoverSection() {
         </p>
       </Panel>
       <Panel
-        title="清洗口径与历史口径的重叠审计"
+        title={t("清洗口径与历史口径的重叠审计", "Overlap audit: cleaned vs historical")}
         tag="2015-01-05 至 2026-08-21"
       >
         <p className="panel-note">
@@ -303,7 +306,7 @@ export function SmallcapTurnoverSection() {
         />
       </Panel>
       <div className="fine-print">
-        <span className="section-kicker">研究边界</span>
+        <span className="section-kicker">{t("研究边界", "Research boundary")}</span>
         <p>{data.caveats.join(" ")}</p>
       </div>
     </>
@@ -333,11 +336,12 @@ export function MicrocapPage({
 }
 
 function MicrocapMethodSection() {
+  const t = (zh: string, en: string) => englishLocale() ? en : zh;
   return (
     <>
       <SectionHeading
-        title="这项实验怎么做"
-        text="先固定规则，再检查数据能不能支持这套规则。每一步都尽量使用当时已经知道的信息。"
+        title={t("这项实验怎么做", "How this experiment works")}
+        text={t("先固定规则，再检查数据能不能支持这套规则。每一步都尽量使用当时已经知道的信息。", "Fix the rules first, then test whether the data supports them. Each step uses only information available at the time.")}
       />
       <div className="research-grid">
         <ResearchCard
@@ -408,6 +412,7 @@ function MicrocapMethodSection() {
 }
 
 export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: boolean }) {
+  const t = (zh: string, en: string) => englishLocale() ? en : zh;
   const { data: summary } = useJson<MicrocapSummary>(
     "index/microcap/summary.json",
   );
@@ -446,7 +451,7 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
       {includeMethod && <MicrocapMethodSection />}
       {repair && (
         <Panel
-          title="缺失价格审计"
+          title={t("缺失价格审计", "Missing-price audit")}
           tag={`审计区间 ${repair.coverage_start} 至 ${repair.coverage_end}`}
         >
           <p className="panel-note">
@@ -477,43 +482,43 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
         </Panel>
       )}
       <ThemeHeading
-        kicker="历史研究档案 · 微盘规则复现"
-        title="小微盘的长期收益、回撤与交易限制"
-        text="这组结果用固定规则重建小市值股票组合，帮助观察长期收益和风险。规则重建与公开参考指数的成分、调仓和数据来源不同。"
-        asof={`重建截至 ${reconstructedNav.at(-1)?.date ?? "未提供"}`}
+        kicker={t("历史研究档案 · 微盘规则复现", "Historical research archive · microcap rule reconstruction")}
+        title={t("小微盘的长期收益、回撤与交易限制", "Long-term returns, drawdowns, and trading constraints for microcaps")}
+        text={t("这组结果用固定规则重建小市值股票组合，帮助观察长期收益和风险。规则重建与公开参考指数的成分、调仓和数据来源不同。", "These results reconstruct a small-cap portfolio with fixed rules to study long-term returns and risk. The reconstruction differs from the public reference index in constituents, rebalancing, and data source.")}
+        asof={`${t("重建截至", "Reconstruction through")} ${reconstructedNav.at(-1)?.date ?? t("未提供", "not available")}`}
       />
       <section className="stat-grid">
         <Stat
-          label="公开参考净值"
+          label={t("公开参考净值", "Public reference NAV")}
           value={num(asNumber(nav.at(-1)?.nav))}
-          note={`截至 ${nav.at(-1)?.date ?? "未提供"}`}
+          note={`${t("截至", "Through")} ${nav.at(-1)?.date ?? t("未提供", "not available")}`}
           accent
         />
         <Stat
-          label="2025年收益"
+          label={t("2025年收益", "2025 return")}
           value={pct(asNumber(latestAnnual?.return))}
-          note="公开资料参考"
+          note={t("公开资料参考", "Public reference")}
         />
         <Stat
-          label="重建最大回撤"
+          label={t("重建最大回撤", "Reconstructed max drawdown")}
           value={pct(asNumber(reconstructed.max_drawdown))}
-          note="2015年以来日频"
+          note={t("2015年以来日频", "Daily, since 2015")}
         />
         <Stat
-          label="最长未回到前高的时间"
+          label={t("最长未回到前高的时间", "Longest time below a prior high")}
           value={`${num(asNumber(reconstructed.longest_underwater_trading_days))} 个交易日`}
           note={`${reconstructed.longest_underwater_start ?? "未提供"} 至 ${reconstructed.longest_underwater_end ?? "未提供"}`}
         />
         <Stat
-          label="重建样本"
+          label={t("重建样本", "Reconstructed sample")}
           value={`${num(asNumber(reconstructed.observations))} 天`}
           note={`${reconstructed.coverage_start ?? "未提供"} 至 ${reconstructed.coverage_end ?? "未提供"}`}
         />
       </section>
       <div className="panel ytd-panel">
         <div className="panel-title">
-          <h3>2026 年至今</h3>
-          <span className="tag warm">公开资料参考</span>
+          <h3>{t("2026 年至今", "2026 year to date")}</h3>
+          <span className="tag warm">{t("公开资料参考", "Public reference")}</span>
         </div>
         <p>
           公开资料参考收益截至 {summary.metrics.ytd_2026_as_of ?? "未提供"}
@@ -522,20 +527,20 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
         </p>
       </div>
       <SectionHeading
-        title="收益路径"
-        text="查看公开参考和规则重建的历史净值、回撤与恢复过程。"
+        title={t("收益路径", "Return paths")}
+        text={t("查看公开参考和规则重建的历史净值、回撤与恢复过程。", "Review historical NAV, drawdowns, and recovery paths for the public reference and reconstruction.")}
       />
       <div className="panel">
         <div className="panel-title">
-          <h3>公开资料参考净值</h3>
-          <span className="tag">可悬停、缩放</span>
+          <h3>{t("公开资料参考净值", "Public reference NAV")}</h3>
+          <span className="tag">{t("可悬停、缩放", "Hover and zoom")}</span>
         </div>
         <NavChart rows={nav} name="公开资料参考" color="#1267d6" />
       </div>
       <div className="panel">
         <div className="panel-title">
-          <h3>规则重建净值（数据来源：Tushare）</h3>
-          <span className="tag warm">2015年以来 · 可悬停、缩放</span>
+          <h3>{t("规则重建净值（数据来源：Tushare）", "Rule-reconstructed NAV (source: Tushare)")}</h3>
+          <span className="tag warm">{t("2015年以来 · 可悬停、缩放", "Since 2015 · hover and zoom")}</span>
         </div>
         <p className="panel-note">
           按上海、深圳 A 股总市值选取最小 400
@@ -549,23 +554,23 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
       </div>
       <div className="panel">
         <div className="panel-title">
-          <h3>年度收益</h3>
-          <span className="tag warm">悬停查看数值</span>
+          <h3>{t("年度收益", "Annual returns")}</h3>
+          <span className="tag warm">{t("悬停查看数值", "Hover for values")}</span>
         </div>
         <AnnualChart rows={annual} />
       </div>
       <div className="research-grid">
-        <Panel title="滚动年化收益" tag="持有期限">
-          <MetricChart rows={cagr} value="cagr" label="年化收益" />
+        <Panel title={t("滚动年化收益", "Rolling annualized returns")} tag={t("持有期限", "Holding period")}>
+          <MetricChart rows={cagr} value="cagr" label={t("年化收益", "Annualized return")} />
         </Panel>
-        <Panel title="滚动最大回撤" tag="月频与日频参考">
-          <MetricChart rows={drawdown} value="max_drawdown" label="最大回撤" />
+        <Panel title={t("滚动最大回撤", "Rolling maximum drawdown")} tag={t("月频与日频参考", "Monthly and daily reference")}>
+          <MetricChart rows={drawdown} value="max_drawdown" label={t("最大回撤", "Max drawdown")} />
         </Panel>
       </div>
       <div className="panel">
         <div className="panel-title">
-          <h3>最长未回到前高的区间</h3>
-          <span className="tag warm">按交易日排序</span>
+          <h3>{t("最长未回到前高的区间", "Longest periods below a prior high")}</h3>
+          <span className="tag warm">{t("按交易日排序", "Ranked by trading days")}</span>
         </div>
         <p className="panel-note">
           水下期指净值低于此前高点的连续时间。图表展示持续时间最长的 10
@@ -574,8 +579,8 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
         <UnderwaterChart rows={underwater} />
       </div>
       <SectionHeading
-        title="研究解读"
-        text="了解选股规则、收益来源、历史阶段和实际复制的难点。"
+        title={t("研究解读", "Research interpretation")}
+        text={t("了解选股规则、收益来源、历史阶段和实际复制的难点。", "Understand the selection rules, return drivers, historical phases, and replication challenges.")}
       />
       <div className="research-grid">
         <ResearchCard
@@ -596,7 +601,7 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
         />
       </div>
       <div className="fine-print">
-        <span className="section-kicker">研究边界</span>
+        <span className="section-kicker">{t("研究边界", "Research boundary")}</span>
         <p>
           {readableNotes(
             reconstructed.caveats ??
