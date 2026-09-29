@@ -17,23 +17,23 @@ test('overview dates and representative observations come from the corresponding
   assert.match(html, /href="\/research\/cashflow\/"/);
   assert.match(html, /href="\/research\/microcap\/"/);
   assert.match(html, /href="\/research\/indices\/"/);
-  assert.match(html, /18 年 A 股风格因子动态/);
+  assert.match(html, /18 年 A 股风格因子动态|18-year A-share style factors/);
   assert.match(html, /href="\/research\/style-factors-18y\/"/);
-  assert.match(html, /收益、稳定性与市场阶段/);
+  assert.match(html, /收益、稳定性与市场阶段|returns, stability, and market regimes/);
   assert.doesNotMatch(html, /-22\.16|独立报告|recovery\.html|<table|<select|research-chart/);
 });
 
 test('missing evidence does not retain dated conclusions or imply validation', () => {
   const html = renderToStaticMarkup(createElement(OverviewContent, {recovery: null, barra: null}));
   assert.doesNotMatch(html, /1,073|308|2026-09-04|2026-08-14/);
-  assert.match(html, /数据暂不可用/);
-  assert.match(html, /查看现金流专题/);
+  assert.match(html, /数据暂不可用|Data unavailable/);
+  assert.match(html, /查看现金流专题|Open Cash flow study/);
 });
 
 test('overview does not present blocked groups as checked', () => {
   const blocked = {...recovery, series: [], issues: [{group: 'cashflow_price', status: 'blocked_calendar_or_price_gap'}]};
   const html = renderToStaticMarkup(createElement(OverviewContent, {recovery: blocked, barra: null}));
-  assert.match(html, /数据暂不可用/);
+  assert.match(html, /数据暂不可用|Data unavailable/);
   assert.doesNotMatch(html, /1,073|308/);
 });
 
@@ -42,5 +42,5 @@ test('representative code with mismatched return basis is not described as price
   wrong.series.find(row => row.ts_code === '932368.CSI').group = 'cashflow_gross_total_return';
   const html = renderToStaticMarkup(createElement(OverviewContent, {recovery: wrong, barra: null}));
   assert.doesNotMatch(html, /1,073/);
-  assert.match(html, /数据暂不可用/);
+  assert.match(html, /数据暂不可用|Data unavailable/);
 });

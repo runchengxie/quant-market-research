@@ -22,13 +22,13 @@ test('cashflow recovery defaults to price series and preserves censoring and imm
   const html = render('cashflow');
   assert.match(html, /800现金流/);
   assert.doesNotMatch(html, /同花顺微盘|800现金流（税前全收益）/);
-  assert.match(html, /至少 4 天/);
+  assert.match(html, /至少 4 天|At least 4 days/);
   assert.match(html, /25\.00%/);
-  assert.match(html, /样本不足/);
-  assert.match(html, /期限已满/);
+  assert.match(html, /样本不足|Insufficient sample/);
+  assert.match(html, /期限已满|Mature/);
   const entryTable = html.slice(html.indexOf('等待最久的买入日'));
-  assert.match(entryTable, /交易日/);
-  assert.match(entryTable, /回本前最差收益/);
+  assert.match(entryTable, /交易日|Trading days/);
+  assert.match(entryTable, /回本前最差收益|Worst return before recovery/);
   assert.match(entryTable, /-20\.00%/);
   assert.match(html, /href="\/research\/microcap\/#microcap-recovery"/);
   assert.doesNotMatch(html, /<iframe|NaN|undefined/);
@@ -38,21 +38,21 @@ test('microcap recovery cannot silently display a cashflow result', () => {
   const html = render('microcap');
   assert.match(html, /同花顺微盘/);
   assert.doesNotMatch(html, /800现金流/);
-  assert.match(html, /分红口径/);
+  assert.match(html, /分红口径|Dividend basis/);
   assert.match(html, /href="\/research\/cashflow\/recovery\/"/);
 });
 
 test('empty or blocked research shows explicit unavailable status, not zero recovery', () => {
   const html = render('cashflow', {...snapshot, series: [], issues: [{group: 'cashflow_price', status: 'blocked_calendar_or_price_gap'}]});
-  assert.match(html, /暂无通过校验/);
+  assert.match(html, /暂无通过校验|No validated recovery data/);
   assert.match(html, /blocked_calendar_or_price_gap/);
   assert.doesNotMatch(html, /0 天|0\.00%/);
 });
 
 test('blocked group cannot continue displaying retained statistics', () => {
   const html = render('cashflow', {...snapshot, issues: [{group: 'cashflow_price', status: 'blocked_calendar_or_price_gap'}]});
-  assert.match(html, /暂无通过校验/);
-  assert.doesNotMatch(html, /25\.00%|至少 4 天/);
+  assert.match(html, /暂无通过校验|No validated recovery data/);
+  assert.doesNotMatch(html, /25\.00%|至少 4 天|At least 4 days/);
 });
 
 test('malformed nested series are rejected before rendering, while null horizons remain valid', () => {
