@@ -15,6 +15,7 @@ import {
   ThemeHeading,
   SortableTable,
   Loading,
+  englishLocale,
   useCsv,
 } from "./research-shared";
 import type { CashflowBasis } from "./research-shared";
@@ -30,6 +31,8 @@ export function CashflowPage() {
 }
 
 export function CashflowPageContent() {
+  const english = englishLocale();
+  const t = (zh: string, en: string) => english ? en : zh;
   const { data: rows } = useCsv(
     "index/cashflow_indices/cashflow_performance.csv",
   );
@@ -66,42 +69,42 @@ export function CashflowPageContent() {
             },
         );
   const windowLabel = displayLabels[windowKey] ?? windowKey;
-  const basisLabel = basis === "all" ? "全部回报口径" : displayLabels[basis];
+  const basisLabel = basis === "all" ? t("全部回报口径", "all return bases") : displayLabels[basis];
   const asOf = [...new Set(rows.map((row) => row.as_of).filter(Boolean))]
     .sort()
     .at(-1);
   return (
     <>
       <ThemeHeading
-        kicker="现金流指数 · 股息与调仓研究"
-        title="比较现金流指数在不同周期下的历史表现。"
-        text="按时间窗口和回报口径筛选，查看调仓频率及历史收益。价格回报只计价格变化，税前全收益计入税前股息再投资。"
-        asof={`数据截至 ${asOf ?? "未提供"}`}
+        kicker={t("现金流指数 · 股息与调仓研究", "Cash-flow indices · dividends and rebalancing")}
+        title={t("比较现金流指数在不同周期下的历史表现。", "Compare cash-flow indices across historical windows.")}
+        text={t("按时间窗口和回报口径筛选，查看调仓频率及历史收益。价格回报只计价格变化，税前全收益计入税前股息再投资。", "Filter by window and return basis to inspect rebalancing frequency and historical returns. Price return excludes dividends; gross total return reinvests pre-tax dividends.")}
+        asof={`${t("数据截至", "Data through")} ${asOf ?? t("未提供", "not available")}`}
       />
       <section className="stat-grid">
         <Stat
-          label="指数样本"
+          label={t("指数样本", "Index samples")}
           value={num(codes.length)}
-          note="现金流主题指数"
+          note={t("现金流主题指数", "Cash-flow themed indices")}
           accent
         />
         <Stat
-          label="调仓频率参考"
+          label={t("调仓频率参考", "Rebalancing reference")}
           value={displayValue(
             "rebalance_frequency",
             frequency[0]?.rebalance_frequency ?? "未提供",
           )}
-          note="首条记录的调仓频率"
+          note={t("首条记录的调仓频率", "Frequency from the first record")}
         />
         <Stat
-          label="可选时间窗口"
+          label={t("可选时间窗口", "Available windows")}
           value={num(windows.length)}
-          note="从近一周到近十年"
+          note={t("从近一周到近十年", "One week to ten years")}
         />
       </section>
-      <Panel title="指数收益对比" tag={`${windowLabel} · ${basisLabel}`}>
+      <Panel title={t("指数收益对比", "Index return comparison")} tag={`${windowLabel} · ${basisLabel}`}>
         <ControlBar>
-          <span className="control-label">时间窗口</span>
+          <span className="control-label">{t("时间窗口", "Time window")}</span>
           {windows.map((value) => (
             <Choice
               key={value}
@@ -111,11 +114,11 @@ export function CashflowPageContent() {
               {displayValue("window", value)}
             </Choice>
           ))}
-          <span className="control-label">回报口径</span>
+          <span className="control-label">{t("回报口径", "Return basis")}</span>
           {[
-            ["all", "全部口径"],
-            ["price_return", "价格回报"],
-            ["gross_total_return", "税前全收益"],
+            ["all", t("全部口径", "All bases")],
+            ["price_return", t("价格回报", "Price return")],
+            ["gross_total_return", t("税前全收益", "Gross total return")],
           ].map(([value, label]) => (
             <Choice
               key={value}
@@ -134,19 +137,19 @@ export function CashflowPageContent() {
             color="#1267d6"
           />
         ) : (
-          <p className="panel-note">当前窗口没有对应回报口径的数据。</p>
+          <p className="panel-note">{t("当前窗口没有对应回报口径的数据。", "No return-basis data is available for the current window.")}</p>
         )}
       </Panel>
-      <Panel title="当前窗口的表现明细">
+      <Panel title={t("当前窗口的表现明细", "Current-window detail")}>
         <SortableTable
           rows={comparison}
           columns={[
-            ["name", "指数"],
-            ["rebalance_frequency", "调仓"],
-            ["return_basis", "回报口径"],
-            ["window", "窗口"],
-            ["return", "累计回报"],
-            ["cagr", "年化回报"],
+            ["name", t("指数", "Index")],
+            ["rebalance_frequency", t("调仓", "Rebalancing")],
+            ["return_basis", t("回报口径", "Return basis")],
+            ["window", t("窗口", "Window")],
+            ["return", t("累计回报", "Cumulative return")],
+            ["cagr", t("年化回报", "Annualized return")],
           ]}
           percentColumns={["return", "cagr"]}
         />
