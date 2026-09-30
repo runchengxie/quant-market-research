@@ -103,10 +103,10 @@ export function ResourceState({ error = "", loading = false, empty = false, retr
 export function Stat({ label, value, note, accent = false }: { label: string; value: string; note: string; accent?: boolean }) { return <article className={`stat ${accent ? "accent" : ""}`}><span>{label}</span><strong>{value}</strong><small>{note}</small></article>; }
 export function Panel({ title, tag, children }: { title: string; tag?: string; children: React.ReactNode }) { return <section className="panel"><div className="panel-title"><h3>{title}</h3>{tag && <span className="tag warm">{tag}</span>}</div>{children}</section>; }
 export function SectionHeading({ title, text }: { title: string; text: string }) { return <div className="section-heading"><h3>{title}</h3><p>{text}</p></div>; }
-export function ResearchCard({ title, text }: { title: string; text: string }) { return <article className="research-card"><span className="section-kicker">阅读提示</span><h3>{title}</h3><p>{text}</p></article>; }
+export function ResearchCard({ title, text }: { title: string; text: string }) { return <article className="research-card"><span className="section-kicker">{englishLocale() ? "RESEARCH NOTE" : "阅读提示"}</span><h3>{title}</h3><p>{text}</p></article>; }
 
-export function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <Suspense fallback={<ResourceState loading label="图表"/>}><ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/></Suspense>; }
-export function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <Suspense fallback={<ResourceState loading label="图表"/>}><ResearchLineChart series={series} labels={labels}/></Suspense>; }
+export function BarChart({ rows, labelKey, valueKey, color = "#c84b2f", formatter = pct, logScale = false }: { rows: Row[]; labelKey: string; valueKey: string; color?: string; formatter?: (value: number) => string; logScale?: boolean }) { return <Suspense fallback={<ResourceState loading label={englishLocale() ? "chart" : "图表"}/>}><ResearchBarChart rows={rows} labelKey={labelKey} valueKey={valueKey} color={color} formatter={formatter} logScale={logScale}/></Suspense>; }
+export function LineChart({ series, labels }: { series: Series[]; labels: string[] }) { return <Suspense fallback={<ResourceState loading label={englishLocale() ? "chart" : "图表"}/>}><ResearchLineChart series={series} labels={labels}/></Suspense>; }
 
 export function ControlBar({ children }: { children: React.ReactNode }) { return <div className="control-bar">{children}</div>; }
 export function Choice({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) { return <button className={`choice ${active ? "active" : ""}`} onClick={onClick}>{children}</button>; }
@@ -114,15 +114,17 @@ export function MicrocapSubTabs({ scope, onChange }: { scope: MicrocapScope; onC
 export function StyleSubTabs({ scope }: { scope: StyleScope }) { const base = import.meta.env.BASE_URL ?? "/"; const ui = (zh: string, en: string) => englishLocale() ? en : zh; return <div className="sub-tabs" aria-label={ui("市场长期风格研究子主题", "Long-run market style topics")}><a className={scope === "indices" ? "active" : ""} href={withBase("/research/indices/", base)}>{ui("指数与 ETF", "Indices and ETFs")}</a><a className={scope === "barra" ? "active" : ""} href={withBase("/research/style-factors-18y/", base)}>{ui("Barra 风格因子研究（18年）", "18-year Barra-style factor research")}</a></div>; }
 
 export function formatTurnover(value: number) {
-  if (!Number.isFinite(value)) return "未提供";
-  if (value >= 100_000_000) return "¥" + (value / 100_000_000).toFixed(2) + " 亿";
-  if (value >= 10_000) return "¥" + (value / 10_000).toFixed(1) + " 万";
-  return "¥" + Math.round(value).toLocaleString("zh-CN");
+  const english = englishLocale();
+  if (!Number.isFinite(value)) return english ? "Not reported" : "未提供";
+  if (value >= 100_000_000) return "¥" + (value / 100_000_000).toFixed(2) + (english ? " B" : " 亿");
+  if (value >= 1_000_000) return "¥" + (value / 1_000_000).toFixed(1) + (english ? " M" : " 万");
+  if (value >= 1_000) return "¥" + (value / 1_000).toFixed(1) + (english ? " K" : " 千");
+  return "¥" + Math.round(value).toLocaleString(english ? "en-US" : "zh-CN");
 }
 
 export function ThemeHeading({ kicker, title, text, asof }: { kicker: string; title: string; text: string; asof: string }) { return <header className="theme-heading"><div><span className="section-kicker">{kicker}</span><h2>{title}</h2><p>{text}</p></div><span className="asof">{asof}</span></header>; }
 function tableValue(key: string, value: string | undefined, percent: boolean) {
-  if (value == null || !String(value).trim()) return "未提供";
+  if (value == null || !String(value).trim()) return englishLocale() ? "Not reported" : "未提供";
   if (percent) return pct(finiteNumber(value));
   if (/(?:^|_)(?:count|observations|days|years)$/.test(key)) {
     const numeric = /^[+-]?\d{1,3}(?:,\d{3})+(?:\.\d+)?$/.test(value.trim()) ? value.replace(/,/g, "") : value;

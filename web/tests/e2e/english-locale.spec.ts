@@ -75,8 +75,33 @@ test('recovery reports localize source labels and expanded methodology in Englis
   await page.locator('astro-island[component-export="MicrocapPage"]').scrollIntoViewIfNeeded();
   const microcapRecovery = page.getByRole('region', { name: 'Recovery and holding-period risk' });
   await expect(microcapRecovery).toContainText('Tonghuashun Micro-cap');
-  const visibleHanCount = await page.locator('.recovery-section, .replication-section').evaluateAll((sections) => {
-    return sections.map((section) => section.textContent ?? '').join('').match(/[\u4e00-\u9fff]/g)?.length ?? 0;
+  await page.getByRole('button', { name: 'Monthly', exact: true }).click();
+  await page.getByRole('button', { name: 'N = 1', exact: true }).click();
+  await expect(page.getByText('N = 1 · cleaned basis')).toBeVisible();
+  const visibleHanCount = await page.locator('body').evaluate((body) => {
+    const copy = body.cloneNode(true) as HTMLElement;
+    copy.querySelectorAll('script, style, .locale-toggle').forEach((node) => node.remove());
+    const walker = document.createTreeWalker(copy, NodeFilter.SHOW_TEXT);
+    const fragments: string[] = [...copy.querySelectorAll('[aria-label], [title], [placeholder], img[alt]')]
+      .flatMap((node) => ['aria-label', 'title', 'placeholder', 'alt'].map((name) => node.getAttribute(name) ?? ''));
+    while (walker.nextNode()) {
+      const value = walker.currentNode.textContent?.trim() ?? '';
+      if (/[\u4e00-\u9fff]/.test(value)) fragments.push(value.slice(0, 200));
+    }
+    return fragments.filter((fragment) => /[\u4e00-\u9fff]/.test(fragment));
   });
-  expect(visibleHanCount).toBe(0);
+  expect(visibleHanCount, `Visible Chinese text remains: ${visibleHanCount.slice(0, 50).join(' | ')}`).toEqual([]);
+
+  const recoveryMetrics = await microcapRecovery.locator('.recovery-stats strong').allInnerTexts();
+  const englishMetricFacts = recoveryMetrics.map((value) => value.match(/[\d.]+%?/g) ?? []);
+  await page.getByRole('button', { name: 'Switch to Chinese' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
+  await expect(page.getByRole('heading', { name: '自行计算的结果与官方指数有多接近？' })).toBeVisible();
+  const chineseRecovery = page.locator('.recovery-section');
+  await expect(chineseRecovery).toContainText('回本与持有期风险');
+  const chineseMetricFacts = (await chineseRecovery.locator('.recovery-stats strong').allInnerTexts()).map((value) => value.match(/[\d.]+%?/g) ?? []);
+  expect(chineseMetricFacts).toEqual(englishMetricFacts);
+  await page.getByRole('button', { name: '切换到英文' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+  await expect(page.locator('.replication-section h2')).toHaveText('How closely do local reconstructions track official indices?');
 });

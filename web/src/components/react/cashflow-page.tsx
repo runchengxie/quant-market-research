@@ -68,8 +68,8 @@ export function CashflowPageContent() {
               cagr: "",
             },
         );
-  const windowLabel = displayLabels[windowKey] ?? windowKey;
-  const basisLabel = basis === "all" ? t("全部回报口径", "all return bases") : displayLabels[basis];
+  const windowLabel = displayValue("window", windowKey);
+  const basisLabel = basis === "all" ? t("全部回报口径", "all return bases") : displayValue("basis", basis);
   const asOf = [...new Set(rows.map((row) => row.as_of).filter(Boolean))]
     .sort()
     .at(-1);
