@@ -8,6 +8,7 @@ The following routes pass a visible-Han scan in the default English locale:
 
 - `/research/factors/low-turnover/`
 - `/research/factors/pb-roe/`
+- `/research/style-factors-18y/`
 - `/research/microcap/`
 - `/research/cashflow/` and `/research/cashflow/recovery/`
 - `/research/indices/`
@@ -17,8 +18,8 @@ The following routes pass a visible-Han scan in the default English locale:
 - `/data-sources/`
 - `/search/`
 
-## Remaining known leakage
+## Audit boundary
 
-`/research/style-factors-18y/` still exposes Chinese factor labels and factor definitions after the React workbench hydrates. A local Playwright audit counted 1,299 Han characters in visible page text. The names, historical definitions, current implementation descriptions, and related diagnostics need English presentation strings before this route can join the hydrated browser gate.
+The style-factor workbench's React labels, factor definitions, execution descriptions, and research narrative now use locale-aware presentation strings. The browser test scans visible text after hydration and separately verifies that switching to Chinese preserves the selected factor and metric values. All twelve listed research and utility routes pass the hydrated English-text scan.
 
-This inventory is intentionally incomplete until each public English route is checked after client hydration. Passing static HTML checks alone does not establish that an interactive route is fully localized.
+Other public routes, especially documentation routes rendered by MkDocs, are checked by static output validation. The runtime scan is not a proof for every generated path or every interactive state; add routes and states as they are audited.

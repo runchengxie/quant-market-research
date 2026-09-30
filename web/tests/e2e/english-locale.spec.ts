@@ -3,6 +3,7 @@ import { expect, test } from '@playwright/test';
 for (const route of [
   'research/factors/low-turnover/',
   'research/factors/pb-roe/',
+  'research/style-factors-18y/',
   'research/microcap/',
   'research/cashflow/',
   'research/indices/',
@@ -34,3 +35,15 @@ for (const route of [
     expect(hanText.count, `default English page ${route} contains visible Chinese: ${JSON.stringify(hanText.fragments)}`).toBe(0);
   });
 }
+
+test('style-factor language switch preserves the selected factor and its metrics', async ({ page }) => {
+  await page.goto('research/style-factors-18y/?factor=quality');
+  const metrics = page.locator('.factor-stats');
+  await expect(metrics).toBeVisible();
+  const englishValues = await metrics.locator('.stat strong').allInnerTexts();
+  await page.getByRole('button', { name: 'Switch to Chinese' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
+  await expect(page.locator('main h1')).toHaveText('18 年 A 股风格因子研究');
+  await expect(page.locator('button[data-factor="quality"]')).toHaveText('复合质量');
+  await expect(metrics.locator('.stat strong')).toHaveText(englishValues);
+});

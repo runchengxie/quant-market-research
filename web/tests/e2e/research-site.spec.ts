@@ -145,6 +145,9 @@ for (const width of [1280, 390]) {
     for (let i = 0; i < 19; i++) {
       const button = buttons.nth(i);
       const factor = await button.getAttribute("data-factor");
+      if (width <= 640) {
+        await button.evaluate((element) => element.scrollIntoView({ block: "nearest", inline: "center" }));
+      }
       await button.click();
       await expect(button).toHaveAttribute("aria-pressed", "true");
       await expect(detail.locator(".section-kicker").first()).toContainText(factor!);

@@ -444,7 +444,7 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
   .factor-filter { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 8px; }
   .filter-count { grid-column: 1 / -1; }
   .factor-groups { display: flex; width: 100%; min-width: 0; box-sizing: border-box; overflow-x: auto; gap: 14px; padding: 0 0 12px; margin-top: 10px; }
-  .factor-group { flex: none; max-width: 260px; }
+  .factor-group { flex: none; width: max-content; max-width: none; }
   .factor-group > div { flex-wrap: nowrap; }
   .research-workbench .factor-group .choice { white-space: nowrap; min-height: 44px; font-size: 13px; padding: 9px 12px; }
   .factor-chart .research-chart { height: 530px; }
