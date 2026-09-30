@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import re
 from typing import Any
 
 import yaml
@@ -56,7 +57,7 @@ def test_published_pages_have_reciprocal_language_links_and_shareable_routes() -
 
         english_text = english.read_text(encoding="utf-8")
         chinese_text = chinese.read_text(encoding="utf-8")
-        assert f"[中文页面]({chinese.name})" in english_text
+        assert re.search(rf"\[[^\]]+\]\({re.escape(chinese.name)}\)", english_text)
         assert f"[English page]({english.name})" in chinese_text
 
     assert not any(path.endswith(".zh-CN.md") for path in navigation)

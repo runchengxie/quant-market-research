@@ -1,6 +1,6 @@
 # Barra factor dictionary
 
-[中文页面](barra-factor-dictionary.zh-CN.md)
+[Chinese version](barra-factor-dictionary.zh-CN.md)
 
 This dictionary separates raw research metrics, style factors, and report-level factor families. It documents the public research implementation and is not a complete reproduction of a commercial Barra model.
 

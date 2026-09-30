@@ -1,6 +1,6 @@
 # Barra research source inventory
 
-[中文页面](barra-source-inventory.zh-CN.md)
+[Chinese version](barra-source-inventory.zh-CN.md)
 
 The public 18-year style pages show selected reviewed results. Supporting research is distributed across `quant-research` and `quant-platform`, including calculation code, methodology notes, and experiment records.
 

@@ -1,4 +1,4 @@
-export type SearchRecord = { id: string; title: string; kind: 'research' | 'method' | 'factor' | 'data'; href: string; text: string; aliases: readonly string[] };
+export type SearchRecord = { id: string; title: string; titleEn?: string; kind: 'research' | 'method' | 'factor' | 'data'; href: string; text: string; textEn?: string; locale?: 'en-US' | 'zh-CN'; aliases: readonly string[] };
 
 export function normalizeQuery(value: string): string { return Array.from(String(value ?? '').normalize('NFKC').trim().toLowerCase()).slice(0, 200).join(''); }
 

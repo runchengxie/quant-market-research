@@ -34,6 +34,53 @@ function text(zh: string, en: string) {
   return englishLocale() ? en : zh;
 }
 
+const localizedNumber = (value: number | string | null | undefined) =>
+  value == null || value === "" || !Number.isFinite(Number(value))
+    ? text("未提供", "not available")
+    : num(Number(value));
+
+const FACTOR_NAMES_EN: Record<string, string> = {
+  beta: "Low beta", chip_concentration: "Shareholder concentration", dividend_yield: "Dividend yield",
+  earnings_yield: "Earnings yield", fund_breadth: "Fund-holding breadth", fund_breadth_change: "Change in fund-holding breadth",
+  fund_ownership: "Fund ownership", fund_ownership_change: "Change in fund ownership", growth: "Growth",
+  institution_holding: "Institutional holdings", leverage: "Low leverage", liquidity: "Low turnover (historical)",
+  liquidity_flow: "Trading flow (historical)", lowvol: "Low volatility (historical)", momentum: "Momentum (historical)",
+  ps_value: "Price-to-sales value", quality: "Composite quality", size: "Size", value: "Value",
+};
+const factorName = (id: string) => text(FACTOR_NAMES[id] ?? id, FACTOR_NAMES_EN[id] ?? id);
+const FACTOR_DIRECTIONS_EN: Record<string, string> = {
+  size: "Large-cap minus small-cap", value: "Low price-to-book minus high price-to-book",
+  momentum: "Winners minus losers", quality: "High quality minus low quality",
+  earnings_yield: "Low price-to-earnings minus high price-to-earnings", lowvol: "Low volatility minus high volatility",
+  growth: "High growth minus low growth", leverage: "Low leverage minus high leverage", beta: "Low beta minus high beta",
+  liquidity: "Low turnover minus high turnover", liquidity_flow: "Higher large-order net buying minus lower",
+  chip_concentration: "Higher shareholder concentration minus lower", institution_holding: "Higher institutional holdings minus lower",
+  fund_breadth: "More heavily held funds minus fewer", fund_breadth_change: "Increase minus decrease in fund coverage",
+  fund_ownership: "Higher fund ownership minus lower", fund_ownership_change: "Increase minus decrease in fund ownership",
+  dividend_yield: "Higher dividend yield minus lower", ps_value: "Low price-to-sales minus high price-to-sales",
+};
+const FACTOR_IMPLEMENTATIONS_EN: Record<string, string> = {
+  size: "ln(total_mv + 1). total_mv is the source total-market-capitalization field; higher scores indicate larger capitalization.",
+  value: "Keep positive PB only, clip PB to [0.01, 100], then take its reciprocal; lower PB receives a higher score.",
+  earnings_yield: "Keep positive PE_TTM only, clip PE_TTM to [1, 500], then take its reciprocal. This is a valuation measure, not an operating-quality measure.",
+  momentum: "For each security, calculate the return over the previous 21 observed closing-price points and lag it by one observation. Higher scores indicate stronger prior returns. Observation windows are not calendar days.",
+  lowvol: "Negate the rolling standard deviation of daily stock returns over 21 observations (at least 10), lagged by one observation; lower volatility receives a higher score.",
+  beta: "−Cov(rᵢ, rₘ) / Var(rₘ), using 252 observations with at least 126. rᵢ = pct_chg / 100; rₘ is the equal-weighted mean return of the sample stocks on that date. The implementation includes the formation-date observation and does not default to an index benchmark.",
+  liquidity: "−clip(turnover_rate, 0.01, 100): the negative formation-date turnover rate. Lower turnover scores higher; this is not a 20- or 60-day average.",
+  growth: "Clip net-income year-over-year growth to [−300, 500] and revenue growth to [−200, 500], then average available components. Both source fields must exist, but when one value is missing the available value is used. Financial-data point-in-time visibility still needs review.",
+  leverage: "−clip(debt_to_assets, 0, 500). The source-field unit is retained; lower debt-to-assets receives a higher score.",
+  quality: "Cross-sectionally winsorize ROE, negative debt ratio, negative earnings variability, and operating cash flow / positive net income at 1%/99%, z-score, then average equally. ROE must be valid. Missing security-level component scores are filled with zero; an entirely missing component column is excluded. Earnings variability uses eight announcement-ordered financial observations (at least four), not necessarily eight consecutive quarters.",
+  liquidity_flow: "Use buy_lg_amount_rate when the column exists; otherwise use net_amount. This is a column-level fallback, not a row-level missing-value fallback. The fields have different units and should not both be described as a large-order net-buy ratio.",
+  chip_concentration: "Use top10_float_concentration, the top-ten tradable-shareholder concentration field, then apply common cross-sectional processing. The source's availability date still needs review.",
+  institution_holding: "Use top10_inst_float_hold_ratio, the top-ten institutional tradable-shareholding ratio. It does not represent all institutional holdings.",
+  fund_breadth: "ln(1 + max(number of funds holding the security, 0)). Counts include funds listing the security among their top ten holdings; they do not represent coverage across all fund holdings.",
+  fund_breadth_change: "sign(Δ fund count) × ln(1 + |Δ fund count|), where Δ is the change in visible top-ten-holding fund counts between adjacent formation dates.",
+  fund_ownership: "Use fund_top10_stk_float_ratio_sum: the sum of tradable-share ownership ratios for funds' top-ten holdings within the same disclosure scope.",
+  fund_ownership_change: "Change in the sum of the above tradable-share ownership ratios between adjacent formation dates. This is neither a return nor a change in fund count.",
+  dividend_yield: "Use the source rolling-yield field daily_basic.dv_ttm, then apply common cross-sectional processing. No additional dividend-reinvestment assumption is made.",
+  ps_value: "Take the reciprocal of positive ps_ttm; nonpositive values are unavailable. Lower price-to-sales receives a higher score.",
+};
+
 export function StylePage({ scope }: { scope: StyleScope }) {
   return (
     <>
@@ -91,23 +138,23 @@ export function IndicesPage() {
       <section className="stat-grid">
         <Stat
           label={ui("指数目录", "Index catalog")}
-          value={num(catalog.length)}
+          value={localizedNumber(catalog.length)}
           note={ui("已收录公开目录", "Public entries")}
           accent
         />
         <Stat
           label={ui("当前类别指数", "Indexes in selected category")}
-          value={num(filteredReturns.length)}
+          value={localizedNumber(filteredReturns.length)}
           note={category === "全部" ? ui("全部类别", "All categories") : category}
         />
         <Stat
           label={ui("代表性基金", "Representative funds")}
-          value={num(etfs.length)}
+          value={localizedNumber(etfs.length)}
           note={ui("与指数对应的基金产品", "Funds matched to indexes")}
         />
         <Stat
           label={ui("符合成交额筛选的基金", "Funds passing liquidity filter")}
-          value={num(liquid)}
+          value={localizedNumber(liquid)}
           note={ui("近60日成交额筛选", "60-day median turnover")}
         />
       </section>
@@ -497,22 +544,22 @@ function QualityDiagnostic() {
   };
   return <section className="quality-diagnostic" role="region" aria-label={text("Quality 子因子数据", "Quality sub-factor data")}>
     <h4>{text("Quality 子因子诊断", "Quality sub-factor diagnostic")}</h4>
-    <p className="panel-note">独立短样本诊断，按原说明主要覆盖 2020 年以后、前 800 只股票；原始生成记录尚未定位。它与 18 年历史复合因子的样本和版本不同，不能视为对历史收益的贡献分解。</p>
+      <p className="panel-note">{text("独立短样本诊断，按原说明主要覆盖 2020 年以后、前 800 只股票；原始生成记录尚未定位。它与 18 年历史复合因子的样本和版本不同，不能视为对历史收益的贡献分解。", "This is a separate short-sample diagnostic, described as mainly covering the top 800 stocks from 2020 onward. Its original generation record has not been located. Its sample and version differ from the 18-year composite, so it is not a decomposition of the historical returns.")}</p>
     {!qualityComponents || !qualityComponents.length ? <DataNotice label={text("Quality 子因子", "Quality sub-factors")} error={error} retry={retry} empty={!!qualityComponents} /> :
       <SortableTable rows={qualityComponents.filter(row => row.factor.startsWith("quality_")).map(row => ({
         ...row,
         ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map(key => [key, Number.isFinite(finiteNumber(row[key])) ? String(finiteNumber(row[key]) / 100) : ""])),
-        sharpe: num(row.sharpe),
-        years: num(row.years),
+        sharpe: localizedNumber(row.sharpe),
+        years: localizedNumber(row.years),
         factor: names[row.factor] ?? row.factor,
       }))}
         columns={[["factor", text("子因子与主要特征", "Sub-factor and features")], ["days", text("交易日", "Trading days")], ["years", text("样本年数", "Sample years")], ["geometric_annual_ret", text("几何年化", "Geometric annualized")], ["annual_vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["max_drawdown", text("最大回撤", "Max drawdown")], ["hit_rate", text("正收益比例", "Positive-return ratio")]]}
         percentColumns={["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"]} />}
     <div className="quality-method-grid">
-      <div><strong>01 · 盈利能力</strong><span>ROE，截面缩尾后标准化。ROA 只作敏感性版本。</span></div>
-      <div><strong>02 · 低杠杆</strong><span>Debt / Assets，缩尾与标准化后反向计分。</span></div>
-      <div><strong>03 · 盈利质量</strong><span>OCF / Net Profit，缩尾后标准化，仍需核验 PIT 可见时间。</span></div>
-      <div><strong>04 · 盈利稳定性</strong><span>现行实现对 8 个财务观测（至少 4 个）的净利润同比波动取负值，不保证为连续 8 季度。</span></div>
+      <div><strong>01 · {text("盈利能力", "Profitability")}</strong><span>{text("ROE，截面缩尾后标准化。ROA 只作敏感性版本。", "ROE, winsorized cross-sectionally and standardized. ROA is used only in a sensitivity variant.")}</span></div>
+      <div><strong>02 · {text("低杠杆", "Low leverage")}</strong><span>{text("Debt / Assets，缩尾与标准化后反向计分。", "Debt / Assets, winsorized and standardized with the sign reversed.")}</span></div>
+      <div><strong>03 · {text("盈利质量", "Earnings quality")}</strong><span>{text("OCF / Net Profit，缩尾后标准化，仍需核验 PIT 可见时间。", "OCF / Net Profit, winsorized and standardized; point-in-time availability still needs verification.")}</span></div>
+      <div><strong>04 · {text("盈利稳定性", "Earnings stability")}</strong><span>{text("现行实现对 8 个财务观测（至少 4 个）的净利润同比波动取负值，不保证为连续 8 季度。", "The current implementation negates net-income year-over-year variability across eight financial observations (at least four); they are not guaranteed to be eight consecutive quarters.")}</span></div>
     </div>
   </section>;
 }
@@ -523,8 +570,8 @@ function SizeSnapshot() {
   if (!data || !data.length) return <DataNotice label={text("市值诊断", "Size diagnostic")} error={error} retry={retry} empty={!!data} />;
   const rows = data.map(row => ({ ...row, bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return }));
   return <>
-    <p className="panel-note">独立十分组诊断，不用于复核上方历史五分组收益。修订结果先固定形成日成员，再报告后续缺失报价；完整样本筛选仍可能带来条件选择偏差，不代表可交易或无偏收益。</p>
-    {metadata.data?.revision ? <p className="size-revision-note">修订快照 · 输入版本 {metadata.data.revision.input_vintage} · 数据截至 {metadata.data.revision.as_of}。这不是原始输入版本的精确复现。缺失后续报价 {num(metadata.data.size_monotonicity?.missing_return_count)} 条，未填零，也未猜测退市终值。</p> : <DataNotice label={text("诊断版本说明", "Diagnostic version note")} error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
+      <p className="panel-note">{text("独立十分组诊断，不用于复核上方历史五分组收益。修订结果先固定形成日成员，再报告后续缺失报价；完整样本筛选仍可能带来条件选择偏差，不代表可交易或无偏收益。", "This separate decile diagnostic does not validate the five-bucket historical returns above. The revised result fixes formation-date membership before reporting later missing quotes. Complete-case filtering may still introduce selection bias; these are not tradable or unbiased returns.")}</p>
+    {metadata.data?.revision ? <p className="size-revision-note">{text("修订快照 · 输入版本", "Revised snapshot · input vintage")} {metadata.data.revision.input_vintage} · {text("数据截至", "data through")} {metadata.data.revision.as_of}{text("。这不是原始输入版本的精确复现。缺失后续报价", ". This is not an exact reproduction of the original input vintage. Missing later quotes: ")}{localizedNumber(metadata.data.size_monotonicity?.missing_return_count)}{text(" 条，未填零，也未猜测退市终值。", "; missing values were not filled with zero, and delisting proceeds were not inferred.")}</p> : <DataNotice label={text("诊断版本说明", "Diagnostic version note")} error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
     <SizeDiagnosticPanel rows={rows} dailyCurve={dailySizeCurve(comparableSizeRows(rows))} />
   </>;
 }
@@ -537,12 +584,12 @@ function CorrelationPanel({ selectedFactor, onSelect }: { selectedFactor: string
     .sort(([, a], [, b]) => Math.abs(b) - Math.abs(a)).slice(0, 8) : [];
   return <section role="region" aria-label={text("因子相关性", "Factor correlations")} id="barra-correlations">
     <Panel title={text("因子相关性", "Factor correlations")} tag={text("日收益差 · 非因果关系", "Daily return spread · non-causal")}>
-      <p className="panel-note">与{FACTOR_NAMES[selectedFactor]}相关程度最高的 8 个因子。正相关表示同向变化，负相关表示反向变化；点击名称切换观察对象。配对样本区间未完整提供，不应直接据此构建组合。</p>
-      {!related.length ? <DataNotice label="相关性" error={error} retry={retry} empty={!!data} /> :
+      <p className="panel-note">{text(`与${FACTOR_NAMES[selectedFactor]}相关程度最高的 8 个因子。正相关表示同向变化，负相关表示反向变化；点击名称切换观察对象。配对样本区间未完整提供，不应直接据此构建组合。`, `The eight factors most correlated with ${factorName(selectedFactor)} are shown. Positive correlation indicates co-movement; negative correlation indicates opposite movement. Select a factor to inspect it. Paired-sample dates are incomplete, so do not use this matrix directly to construct a portfolio.`)}</p>
+      {!related.length ? <DataNotice label={text("相关性", "Correlations")} error={error} retry={retry} empty={!!data} /> :
         <div className="correlation-list">
           <div className="correlation-scale"><span>{text("−1 · 负相关", "−1 · negative")}</span><span>0</span><span>{text("正相关 · +1", "positive · +1")}</span></div>
-          {related.map(([id, value]) => <button type="button" key={id} onClick={() => onSelect(id)} className="correlation-row" aria-label={text(`查看${FACTOR_NAMES[id]}，相关系数 ${value.toFixed(2)}`, `View ${FACTOR_NAMES[id]}, correlation ${value.toFixed(2)}`)}>
-            <span className="correlation-name">{FACTOR_NAMES[id]}</span>
+          {related.map(([id, value]) => <button type="button" key={id} onClick={() => onSelect(id)} className="correlation-row" aria-label={text(`查看${FACTOR_NAMES[id]}，相关系数 ${value.toFixed(2)}`, `View ${factorName(id)}, correlation ${value.toFixed(2)}`)}>
+            <span className="correlation-name">{factorName(id)}</span>
             <span className="correlation-track" aria-hidden="true"><i className={value < 0 ? "negative" : "positive"} style={{ width: `${Math.abs(value) * 50}%`, left: value < 0 ? `${50 + value * 50}%` : "50%" }} /></span>
             <strong>{value > 0 ? "+" : ""}{value.toFixed(2)}</strong>
           </button>)}
@@ -557,7 +604,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const [selectedFactor, setSelectedFactor] = useState("size");
   const [query, setQuery] = useState("");
   const [family, setFamily] = useState("全部");
-  const familyLabel = (value: string) => text(value, ({ "全部": "All", "规模": "Size", "价值": "Value", "质量": "Quality", "成长": "Growth", "动量": "Momentum", "波动率": "Volatility", "市场敏感度": "Market sensitivity", "流动性": "Liquidity", "持仓与筹码": "Holdings & positioning" } as Record<string, string>)[value] ?? value);
+  const familyLabel = (value: string) => text(value, ({ "全部": "All", "规模": "Size", "价值": "Value", "价值 / 收益": "Value / yield", "质量": "Quality", "成长": "Growth", "动量": "Momentum", "波动率": "Volatility", "市场敏感度": "Market sensitivity", "流动性": "Liquidity", "流动性 / 交易流": "Liquidity / trading flow", "持仓": "Holdings", "持仓 / 筹码": "Holdings / positioning", "基金持仓": "Fund holdings", "持仓与筹码": "Holdings & positioning", "其他": "Other" } as Record<string, string>)[value] ?? value);
   const [showSizeDiagnostic, setShowSizeDiagnostic] = useState(false);
   useEffect(() => {
     const restore = () => {
@@ -584,13 +631,16 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   };
   const familyOrder = ["规模", "价值", "质量", "成长", "动量", "波动率", "市场敏感度", "流动性", "持仓与筹码"];
   const shown = factors.filter(row => (family === "全部" || groupedFamily(row.factor) === family) &&
-    `${row.factor} ${FACTOR_NAMES[row.factor]} ${groupedFamily(row.factor)}`.toLowerCase().includes(query.trim().toLowerCase()));
+    `${row.factor} ${factorName(row.factor)} ${familyLabel(groupedFamily(row.factor))}`.toLowerCase().includes(query.trim().toLowerCase()));
   const selectedYearly = (yearlyResource.data ?? []).filter(row => row.factor === selectedFactor)
     .sort((a, b) => Number(a.year) - Number(b.year))
     .map(row => ({ year: row.year, value: Number.isFinite(finiteNumber(row.annual_ret)) ? String(finiteNumber(row.annual_ret) / 100) : "" }));
-  const percentage = (value: number | undefined) => pct(value == null || !Number.isFinite(value) ? NaN : value / 100);
+  const percentage = (value: number | undefined) =>
+    value == null || !Number.isFinite(value)
+      ? text("未提供", "not available")
+      : pct(value / 100);
   const factorRows = factors.map(row => ({
-    factor: FACTOR_NAMES[row.factor], coverage: `${num(row.years)} 年 · ${num(row.days)} 日`,
+    factor: factorName(row.factor), coverage: `${localizedNumber(row.years)} ${text("年", "years")} · ${localizedNumber(row.days)} ${text("日", "days")}`,
     annual: row.geometric_annual_ret == null ? "" : String(row.geometric_annual_ret / 100),
     vol: row.annual_vol == null ? "" : String(row.annual_vol / 100),
     sharpe: Number.isFinite(finiteNumber(row.sharpe)) ? String(Number(finiteNumber(row.sharpe).toFixed(2))) : "",
@@ -605,7 +655,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     <section className="factor-diagnostic-workspace" aria-label={text("当前因子诊断工作区", "Selected-factor diagnostic workspace")}>
       <div className="workspace-context">
         <span className="section-kicker">{text("当前因子诊断", "Selected-factor diagnostic")}</span>
-        <strong>{FACTOR_NAMES[selectedFactor]}</strong>
+        <strong>{factorName(selectedFactor)}</strong>
         <span>{text("切换因子后，历史收益、阶段指标、定义和计算方法同步更新", "Historical returns, period metrics, definitions, and calculations update with the selected factor.")}</span>
       </div>
       <section id="barra-annual" aria-label={text("年度因子探索", "Annual factor exploration")}>
@@ -617,47 +667,47 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
               <label>{text("因子家族", "Factor family")}<select aria-label={text("因子家族", "Factor family")} value={family} onChange={event => setFamily(event.target.value)}><option value="全部">{familyLabel("全部")}</option>{familyOrder.map(value => <option key={value} value={value}>{familyLabel(value)}</option>)}</select></label>
               <span className="filter-count">{shown.length} / {factors.length} {text("个因子", "factors")}</span>
             </div>
-            {!factors.length ? <DataNotice label="因子目录" error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
+            {!factors.length ? <DataNotice label={text("因子目录", "Factor catalog")} error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
               !shown.length ? <div className="filter-empty" role="status"><p>{text("没有匹配的因子", "No matching factors")}</p><button type="button" className="button-link" onClick={() => { setQuery(""); setFamily("全部"); }}>{text("清除筛选", "Clear filters")}</button></div> :
               <div className="factor-groups">{familyOrder.map(group => {
                 const groupFactors = shown.filter(row => groupedFamily(row.factor) === group);
-                return groupFactors.length > 0 && <div className="factor-group" key={group}><span className="factor-group-label">{familyLabel(group)}</span><div>{groupFactors.map(row => <button key={row.factor} type="button" className={`choice ${selectedFactor === row.factor ? "active" : ""}`} aria-pressed={selectedFactor === row.factor} aria-controls="barra-factor-detail" data-factor={row.factor} onClick={() => selectFactor(row.factor)}>{FACTOR_NAMES[row.factor]}</button>)}</div></div>;
+                return groupFactors.length > 0 && <div className="factor-group" key={group}><span className="factor-group-label">{familyLabel(group)}</span><div>{groupFactors.map(row => <button key={row.factor} type="button" className={`choice ${selectedFactor === row.factor ? "active" : ""}`} aria-pressed={selectedFactor === row.factor} aria-controls="barra-factor-detail" data-factor={row.factor} onClick={() => selectFactor(row.factor)}>{factorName(row.factor)}</button>)}</div></div>;
               })}</div>}
           </aside>
           <div className="factor-chart">
-            <div className="selected-heading"><div><span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span><h3>{FACTOR_NAMES[selectedFactor]}</h3></div><span className="chart-unit">{text("年度合成收益 · %", "Annual composite return · %")}</span></div>
+            <div className="selected-heading"><div><span className="section-kicker">{familyLabel(selectedFactorDetail?.family ?? "其他")} · {selectedFactor}</span><h3>{factorName(selectedFactor)}</h3></div><span className="chart-unit">{text("年度合成收益 · %", "Annual composite return · %")}</span></div>
             <section className="factor-stats" role="region" aria-label={text("所选因子关键指标", "Selected-factor key metrics")}>
               <Stat label={text("几何年化", "Geometric annualized")} value={percentage(selectedFactorSummary?.geometric_annual_ret)} note={text("历史合成序列", "Historical composite series")} />
               <Stat label={text("最大回撤", "Max drawdown")} value={percentage(selectedFactorSummary?.max_drawdown)} note={text("同一历史序列", "Same historical series")} />
-              <Stat label={text("样本年数", "Sample years")} value={num(selectedFactorSummary?.years)} note={`${num(selectedFactorSummary?.days)} ${text("个交易日", "trading days")}`} />
+              <Stat label={text("样本年数", "Sample years")} value={localizedNumber(selectedFactorSummary?.years)} note={`${localizedNumber(selectedFactorSummary?.days)} ${text("个交易日", "trading days")}`} />
             </section>
             {!selectedYearly.length ? <DataNotice label={text("年度收益", "Annual returns")} error={yearlyResource.error} retry={yearlyResource.retry} empty={!!yearlyResource.data} /> :
               <><BarChart rows={selectedYearly} labelKey="year" valueKey="value" color="#2563a6" />
                 <details className="chart-data"><summary>{text("查看年度数值", "View annual values")}</summary><SortableTable rows={selectedYearly} columns={[["year", text("年份", "Year")], ["value", text("年度合成收益", "Annual composite return")]]} percentColumns={["value"]} /></details></>}
-            <p className="panel-note">按每日多空收益差复合计算；不足一年的按已有区间展示。切换因子时样本可能不同，不宜直接排名判断优劣。</p>
+            <p className="panel-note">{text("按每日多空收益差复合计算；不足一年的按已有区间展示。切换因子时样本可能不同，不宜直接排名判断优劣。", "Returns compound daily long-short spreads; shorter samples are shown over their available periods. Sample windows can differ by factor, so do not rank factors directly from these figures.")}</p>
           </div>
         </div>
       </Panel>
       </section>
-      <div id="barra-factor-detail" role="region" aria-label="所选因子详情" aria-live="polite">
+      <div id="barra-factor-detail" role="region" aria-label={text("所选因子详情", "Selected-factor details")} aria-live="polite">
       <Panel title={text("因子定义、特征与计算方法", "Factor definition, features, and calculation")} tag={text("随所选因子联动", "Linked to selected factor")}>
         <div className="factor-detail-grid">
           <div>
-            <span className="section-kicker">{selectedFactorDetail?.family} · {selectedFactor}</span>
-            <h4>{FACTOR_NAMES[selectedFactor]}</h4>
+            <span className="section-kicker">{familyLabel(selectedFactorDetail?.family ?? "其他")} · {selectedFactor}</span>
+            <h4>{factorName(selectedFactor)}</h4>
             <dl className="factor-detail-list">
-              <div><dt>{text("是什么 · 包含什么特征", "What it is · included features")}</dt><dd>{selectedFactorDetail?.feature}</dd></div>
-              <div><dt>{text("历史页面记录的多空方向", "Historical long-short direction")}</dt><dd>{selectedFactorDefinition?.direction ?? text("未提供", "not available")}。此处沿用旧页面标签，原始得分方向待源代码核验。</dd></div>
-              <div><dt>{text("怎么计算 · 已核查的现行实现", "How it is calculated · reviewed implementation")}</dt><dd>{currentFactorImplementations[selectedFactor]}</dd></div>
-              <div><dt>{text("共同处理流程", "Common processing")}</dt><dd>{commonFactorProcessing}</dd></div>
-              <div><dt>{text("当前核心字典对应关系", "Current core-dictionary mapping")}</dt><dd>{selectedFactorDetail?.current}</dd></div>
+              <div><dt>{text("是什么 · 包含什么特征", "What it is · included features")}</dt><dd>{text(selectedFactorDetail?.feature ?? "", `${factorName(selectedFactor)} is documented as a historical return series alongside its current recomputable proxy; the historical underlying feature may not be fully preserved.`)}</dd></div>
+              <div><dt>{text("历史页面记录的多空方向", "Historical long-short direction")}</dt><dd>{text(selectedFactorDefinition?.direction ?? "未提供", FACTOR_DIRECTIONS_EN[selectedFactor] ?? "not available")}{text("。此处沿用旧页面标签，原始得分方向待源代码核验。", ". This retains the legacy page label; the direction of the original raw score has not been confirmed from source code.")}</dd></div>
+              <div><dt>{text("怎么计算 · 已核查的现行实现", "How it is calculated · reviewed implementation")}</dt><dd>{text(currentFactorImplementations[selectedFactor], FACTOR_IMPLEMENTATIONS_EN[selectedFactor] ?? "The current implementation has not been translated yet.")}</dd></div>
+              <div><dt>{text("共同处理流程", "Common processing")}</dt><dd>{text(commonFactorProcessing, "Final scores are winsorized at the 1st and 99th percentiles within each cross-section. When first-level Shenwan industry data is available, scores are demeaned by industry and then z-scored across the market. This does not guarantee sector-neutral long-short portfolio weights.")}</dd></div>
+              <div><dt>{text("当前核心字典对应关系", "Current core-dictionary mapping")}</dt><dd>{text(selectedFactorDetail?.current ?? "", `The ${selectedFactor} proxy in the current core dictionary should be read together with its source, version, and scope.`)}</dd></div>
             </dl>
           </div>
           <aside className="factor-detail-note">
             <span className="section-kicker">{text("验证状态 · 请与收益一起阅读", "Verification status · read with returns")}</span>
-            <p>现行代码已核查：{implementationSource.project} · <code>{implementationSource.revision.slice(0, 7)}</code>（{implementationSource.inspected}）。</p>
-            <p>历史收益文件与原运行包一致，但历史生成提交尚未定位；包内一份元数据的校验值不一致。因此现行公式不能直接视为上方历史收益的原公式。</p>
-            <p>历史收益、历史原始公式、当前核心代理是三件不同的事。PIT、持仓缺失收益及可交易性仍需独立验证。</p>
+            <p>{text("现行代码已核查：", "Current code reviewed: ")}{implementationSource.project} · <code>{implementationSource.revision.slice(0, 7)}</code> ({implementationSource.inspected}).</p>
+            <p>{text("历史收益文件与原运行包一致，但历史生成提交尚未定位；包内一份元数据的校验值不一致。因此现行公式不能直接视为上方历史收益的原公式。", "The historical return files match the original run package, but the commit that generated them has not been located, and one metadata checksum in the package does not match. The current formula therefore cannot be assumed to be the formula used for the historical returns above.")}</p>
+            <p>{text("历史收益、历史原始公式、当前核心代理是三件不同的事。PIT、持仓缺失收益及可交易性仍需独立验证。", "Historical returns, the original historical formula, and the current core proxy are distinct. Point-in-time integrity, missing returns on held securities, and tradability require separate validation.")}</p>
           </aside>
         </div>
         {selectedFactor === "quality" && <QualityDiagnostic />}
@@ -666,7 +716,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     </section>
     <section id="barra-overview">
       <Panel title={text("19 个因子表现总览", "Overview of 19 factor results")} tag={text("可搜索 · 可排序", "Searchable · sortable")}>
-        <p className="panel-note">完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。</p>
+        <p className="panel-note">{text("完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。", "Full figures are provided for reference. Short and long samples are shown together but do not cover the same periods. These returns are not validated tradable returns.")}</p>
         {!factorRows.length ? <DataNotice label={text("因子总览", "Factor overview")} error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
           <SortableTable rows={factorRows} columns={[["factor", text("因子", "Factor")], ["coverage", text("样本范围", "Coverage")], ["annual", text("几何年化", "Geometric annualized")], ["vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["drawdown", text("最大回撤", "Max drawdown")], ["hit", text("日收益为正比例", "Positive daily-return ratio")]]} percentColumns={["annual", "vol", "drawdown", "hit"]} />}
       </Panel>

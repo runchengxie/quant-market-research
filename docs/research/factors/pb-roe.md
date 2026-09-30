@@ -1,6 +1,6 @@
 # PB and ROE: comparing valuation and profitability
 
-[中文页面](pb-roe.zh-CN.md)
+[Chinese version](pb-roe.zh-CN.md)
 
 This page preserves the public summary of historical PB/ROE experiments and their method notes. The unified research entry now lives in the [PB/ROE study at Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/studies/pb-roe).
 

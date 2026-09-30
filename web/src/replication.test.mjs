@@ -34,18 +34,19 @@ test('published snapshot has valid provenance and measurements and all six resea
   }
 });
 
-test('replication comparison labels its own dates and basis and keeps topic scopes separate', () => {
-  const html = render('cashflow');
+test('English replication comparison labels its own dates and basis and keeps topic scopes separate', () => {
+  const html = renderToStaticMarkup(createElement(ReplicationContent, {scope: 'cashflow', snapshot: data, locale: 'en-US'}));
   assert.match(html, /12\.27%/);
   assert.match(html, /9\.69%/);
   assert.match(html, /-22\.70%/);
   assert.match(html, /2021-03-15/);
-  assert.match(html, /价格回报/);
-  assert.match(html, /未扣成本复刻与官方收益/);
+  assert.match(html, /Price-return comparison/);
+  assert.match(html, /Correlation and tracking error compare gross replica returns with official returns/);
+  assert.doesNotMatch(html, /[\u3400-\u9fff]/);
   assert.match(html, /href="https:\/\/example.com\/study"/);
   assert.doesNotMatch(html, /万得微盘/);
   const micro = render('microcap');
-  assert.match(micro, /万得微盘/);
+  assert.match(micro, /<h3>wind<\/h3>/, 'unknown machine codes remain readable without leaking source-language labels');
   assert.doesNotMatch(micro, /12\.27%|<table/);
 });
 
@@ -54,9 +55,16 @@ test('missing measurements remain unavailable while actual zero remains zero', (
   copy.comparisons[0].rows[0].daily_correlation = null;
   copy.comparisons[0].rows[0].replica_net_cagr = 0;
   const html = render('cashflow', copy);
-  assert.match(html, /未提供/);
+  assert.match(html, /Not reported/);
   assert.match(html, /0\.00%/);
   assert.doesNotMatch(html, /NaN|undefined/);
+});
+
+test('Chinese locale keeps source-language research details and index labels', () => {
+  const html = renderToStaticMarkup(createElement(ReplicationContent, {scope: 'microcap', snapshot: data, locale: 'zh-CN'}));
+  assert.match(html, /万得微盘/);
+  assert.match(html, /日线缺失/);
+  assert.match(html, /数据来源与研究边界/);
 });
 
 test('replication snapshot rejects broken provenance, scope, dates and numeric contracts', () => {

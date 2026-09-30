@@ -425,8 +425,12 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
   .research-workbench .panel { padding: 20px; }
 }
 @media (max-width: 640px) {
+  .research-workbench .topic-nav { margin: 10px 0; }
+  .research-workbench .factor-diagnostic-workspace { margin-top: 10px; }
   .research-workbench .site-main { padding-top: 24px; }
   .research-workbench .site-masthead { display: flex; padding: 15px 0 8px; gap: 8px; }
+  .research-workbench .site-masthead > div:first-child { min-width: 0; flex: 1 1 0; }
+  .research-workbench .site-masthead h1 { overflow-wrap: anywhere; }
   .research-workbench h1 { font-size: 20px; }
   .research-workbench .site-nav { gap: 18px; }
   .research-workbench .site-nav a { flex: none; font-size: 12px; }
@@ -439,8 +443,8 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
   .factor-navigator { border: 0; padding: 0; }
   .factor-filter { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); gap: 8px; }
   .filter-count { grid-column: 1 / -1; }
-  .factor-groups { display: flex; overflow-x: auto; gap: 14px; padding: 0 0 12px; margin-top: 10px; }
-  .factor-group { flex: none; max-width: 260px; }
+  .factor-groups { display: flex; width: 100%; min-width: 0; box-sizing: border-box; overflow-x: auto; gap: 14px; padding: 0 0 12px; margin-top: 10px; }
+  .factor-group { flex: none; width: max-content; max-width: none; }
   .factor-group > div { flex-wrap: nowrap; }
   .research-workbench .factor-group .choice { white-space: nowrap; min-height: 44px; font-size: 13px; padding: 9px 12px; }
   .factor-chart .research-chart { height: 530px; }
@@ -459,6 +463,12 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
   .section-nav a { font-size: 13px; }
 }
 @media (prefers-reduced-motion: reduce) { .research-workbench *, .research-workbench *::before, .research-workbench *::after { scroll-behavior: auto !important; transition: none !important; } }
+@media (max-width: 360px) {
+  .research-workbench .site-masthead { flex-wrap: wrap; }
+  .research-workbench .site-masthead > div:first-child { flex-basis: 100%; }
+  .research-workbench .site-meta { width: 100%; }
+  .research-workbench .theme-toggle { margin-left: auto; }
+}
 
 /* Chinese copy keeps its own rhythm while Latin figures retain tabular numerals. */
 body { font-size: 15px; line-height: 1.75; }

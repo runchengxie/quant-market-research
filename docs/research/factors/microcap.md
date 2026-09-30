@@ -1,6 +1,6 @@
 # Microcaps: return evidence and underwater periods
 
-[中文页面](microcap.zh-CN.md)
+[Chinese version](microcap.zh-CN.md)
 
 This page describes reconstructed historical rules and risk characteristics. It is not a Wind index replication and does not represent a directly tradable strategy.
 

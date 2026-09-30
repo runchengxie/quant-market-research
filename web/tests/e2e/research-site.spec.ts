@@ -67,15 +67,15 @@ test("legacy hash links redirect to the new research URL", async ({ page }) => {
 
 test("low-turnover report links to its full methodology", async ({ page }) => {
   await page.goto("research/factors/low-turnover/");
-  await expect(page.getByRole("link", { name: /阅读完整方法说明/ })).toHaveAttribute("href", /\/docs\/research\/factors\/low-turnover\//);
+  await expect(page.getByRole("link", { name: /Read the full methodology/ })).toHaveAttribute("href", /\/docs\/research\/factors\/low-turnover\//);
 });
 
 test("PB/ROE topic links to the reviewed evidence and discloses its scope", async ({ page }) => {
   await page.goto("research/");
-  await page.getByRole("link", { name: /PB 与 ROE 历史对照/ }).click();
+  await page.getByRole("link", { name: /Historical PB and ROE Comparison/ }).click();
   await expect(page.locator(".theme-heading p")).toContainText(/数据截至 2026-08-31|through 2026-08-31/);
-  await expect(page.getByText("不能当作严格纯 PB 组合", { exact: false })).toBeVisible();
-  await expect(page.getByRole("link", { name: /阅读完整数据与方法/ })).toHaveAttribute("href", /\/docs\/research\/factors\/pb-roe\//);
+  await expect(page.getByText("not a strict pure-PB portfolio", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Read the full data and methodology/ })).toHaveAttribute("href", /\/docs\/research\/factors\/pb-roe\//);
 });
 
 test("PB/ROE charts separate the shared pool from the quality audit", async ({ page }) => {
@@ -127,7 +127,7 @@ test("replication data loads from the GitHub Pages base path", async ({ page }) 
   await page.locator("astro-island[component-export='MicrocapPage']").scrollIntoViewIfNeeded();
   const replicationResponse = await page.request.get("data/research/replication.json");
   expect(replicationResponse.ok()).toBeTruthy();
-  await expect(page.getByRole("heading", { name: "自行计算的结果与官方指数有多接近？" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "How closely do local reconstructions track official indices?" })).toBeVisible();
 });
 
 for (const width of [1280, 390]) {
@@ -145,6 +145,9 @@ for (const width of [1280, 390]) {
     for (let i = 0; i < 19; i++) {
       const button = buttons.nth(i);
       const factor = await button.getAttribute("data-factor");
+      if (width <= 640) {
+        await button.evaluate((element) => element.scrollIntoView({ block: "nearest", inline: "center" }));
+      }
       await button.click();
       await expect(button).toHaveAttribute("aria-pressed", "true");
       await expect(detail.locator(".section-kicker").first()).toContainText(factor!);

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { readableNotes } from "../../research-copy";
+import { liquidityCaveats } from "../../liquidity-copy";
 import { formatNumber as num } from "../../lib/format";
 import {
   Stat,
@@ -16,7 +16,6 @@ import {
 import type { LiquiditySummary } from "./research-shared";
 
 const t = (zh: string, en: string) => englishLocale() ? en : zh;
-
 export function LiquidityPage({ embedded = false }: { embedded?: boolean }) {
   return (
     <>
@@ -93,7 +92,7 @@ export function LiquidityPeriodPanel({ embedded }: { embedded: boolean }) {
       </ControlBar>
       <div className="period-meta">
         {selected
-          ? `${selected.common_start ?? "未提供"} 至 ${selected.common_end ?? "未提供"} · ${available.length}/${markets.length} 个市场可比`
+          ? `${selected.common_start ?? t("未提供", "not available")} ${t("至", "to")} ${selected.common_end ?? t("未提供", "not available")} · ${available.length}/${markets.length} ${t("个市场可比", "markets comparable")}`
           : `${t("各市场最近可用数据", "Latest available data by market")} · ${latestDates || t("日期待补充", "dates pending")}`}
       </div>
       {selected && selected.status === "incomplete" && (
@@ -162,7 +161,7 @@ export function LiquidityPageLegacy() {
       count: String(bucket.count),
       median_usd: String(bucket.median_usd),
       mean_usd: String(bucket.mean_usd),
-      p90_usd: bucket.p90_usd == null ? "未提供" : String(bucket.p90_usd),
+      p90_usd: bucket.p90_usd == null ? t("未提供", "Not available") : String(bucket.p90_usd),
     })),
   );
   const metricLabel =
@@ -177,7 +176,7 @@ export function LiquidityPageLegacy() {
         kicker={t("小微盘历史研究 · 跨市场流动性", "Micro-cap history · cross-market liquidity")}
         title={t("比较各市场小市值股票的成交规模", "Compare small-cap turnover across markets")}
         text={t("比较各市场小市值股票的流动性，并列出数据覆盖情况。页面仅展示汇总结果，原始行情不公开。", "Compare small-cap liquidity across markets and disclose data coverage. This page shows summaries only; raw quotes are not public.")}
-        asof={`${summary.method.roll_days}日平均 · ${summary.method.currency}`}
+        asof={t(`${summary.method.roll_days}日平均 · ${summary.method.currency}`, `${summary.method.roll_days}-day average · ${summary.method.currency}`)}
       />
       <ControlBar>
         <span className="control-label">{t("市场", "Market")}</span>
@@ -255,7 +254,7 @@ export function LiquidityPageLegacy() {
       </Panel>
       <div className="fine-print">
         <span className="section-kicker">{t("数据与研究边界", "Data and research boundary")}</span>
-        <p>{readableNotes(summary.caveats)}</p>
+        <p>{liquidityCaveats(summary.caveats, englishLocale() ? "en-US" : "zh-CN")}</p>
       </div>
       <div className="research-grid">
         <article className="research-card">

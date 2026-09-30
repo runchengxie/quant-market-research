@@ -2,5 +2,6 @@
 import { visibleSections, type TopicSection } from '../lib/topic-sections';
 const { sections } = Astro.props as { sections: readonly TopicSection[] };
 const visible = visibleSections(sections);
+const englishFallbacks: Record<string, string> = { "研究内容": "Research content", "数据与方法": "Data and methods", "主要发现": "Key findings", "发现": "Findings", "主题内容": "Topic content" };
 ---
-{visible.length > 1 && <nav class="topic-nav" aria-label="本页目录"><span data-locale-text data-en="On this page" data-zh="本页目录">On this page</span>{visible.map((section) => <a href={`#${section.id}`} data-locale-text data-en={section.labelEn ?? section.label} data-zh={section.label}>{section.labelEn ?? section.label}</a>)}</nav>}
+{visible.length > 1 && <nav class="topic-nav" aria-label="On this page"><span data-locale-text data-en="On this page" data-zh="本页目录">On this page</span>{visible.map((section) => { const english = section.labelEn ?? englishFallbacks[section.label] ?? section.label; return <a href={`#${section.id}`} data-locale-text data-en={english} data-zh={section.label}>{english}</a>; })}</nav>}

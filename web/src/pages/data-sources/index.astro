@@ -2,11 +2,11 @@
 import SiteLayout from "../../layouts/SiteLayout.astro";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
-import { snapshotCards } from "../../lib/data-catalog";
+import { localizeSnapshotCard, snapshotCards } from "../../lib/data-catalog";
 const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
-const cards = snapshotCards(manifest);
+const cards = snapshotCards(manifest).map((card) => ({ original: card, english: localizeSnapshotCard(card, "en-US") }));
 ---
-<SiteLayout title="数据与版本" description="公开数据快照、覆盖日期和生成版本。" section="data">
-  <section class="theme-heading"><div><span class="section-kicker">数据与版本</span><h1>每份公开快照都有自己的日期和边界</h1><p>生成日期不等于数据覆盖结束日期。缺少日期保持为未提供，不用构建时间补齐。</p></div></section>
-  <div class="data-catalog">{cards.map((card) => <article class="panel data-card"><div class="panel-title"><h2>{card.id}</h2><span class={`status-badge ${card.status}`}>{card.status}</span></div><p>{card.source}</p><dl><div><dt>生成</dt><dd>{card.generatedAt ?? "未提供"}</dd></div><div><dt>覆盖</dt><dd>{card.coverageStart ?? "未提供"} — {card.coverageEnd ?? "未提供"}</dd></div></dl>{card.caveats.length > 0 && <ul>{card.caveats.map((caveat) => <li>{caveat}</li>)}</ul>}</article>)}</div>
+<SiteLayout title="数据与版本" titleEn="Data and versions" description="Public data snapshots, coverage dates, and build versions." section="data">
+  <section class="theme-heading"><div><span class="section-kicker" data-locale-text data-en="Data and versions" data-zh="数据与版本">Data and versions</span><h1 data-locale-text data-en="Every public snapshot has its own dates and boundaries" data-zh="每份公开快照都有自己的日期和边界">Every public snapshot has its own dates and boundaries</h1><p data-locale-text data-en="Generation time is not the end of data coverage. Missing dates remain unspecified; build time is not used as a substitute." data-zh="生成日期不等于数据覆盖结束日期。缺少日期保持为未提供，不用构建时间补齐。">Generation time is not the end of data coverage. Missing dates remain unspecified; build time is not used as a substitute.</p></div></section>
+  <div class="data-catalog">{cards.map(({ original, english }) => <article class="panel data-card"><div class="panel-title"><h2>{original.id}</h2><span class={`status-badge ${original.status}`}>{original.status}</span></div><p data-locale-text data-en={english.source} data-zh={original.source}>{english.source}</p><dl><div><dt data-locale-text data-en="Generated" data-zh="生成">Generated</dt><dd>{original.generatedAt ?? <span data-locale-text data-en="Not provided" data-zh="未提供">Not provided</span>}</dd></div><div><dt data-locale-text data-en="Coverage" data-zh="覆盖">Coverage</dt><dd>{original.coverageStart ?? <span data-locale-text data-en="Not provided" data-zh="未提供">Not provided</span>} — {original.coverageEnd ?? <span data-locale-text data-en="Not provided" data-zh="未提供">Not provided</span>}</dd></div></dl>{original.caveats.length > 0 && <ul>{original.caveats.map((caveat, index) => <li data-locale-text data-en={english.caveats[index] ?? caveat} data-zh={caveat}>{english.caveats[index] ?? caveat}</li>)}</ul>}</article>)}</div>
 </SiteLayout>

@@ -174,7 +174,7 @@ test('date range is sorted and does not use input row order; period boundaries a
 test('table missing percentages remain missing and real zero is displayed', () => {
   for (const Component of [shared.SimpleTable, shared.SortableTable]) {
     const html = render(h(Component,{rows:[{value:' '},{value:''},{value:'0'}],columns:[['value','Return']],percentColumns:['value']}));
-    assert.equal((html.match(/未提供/g) ?? []).length, 2);
+    assert.equal((html.match(/Not reported/g) ?? []).length, 2);
     assert.equal((html.match(/0\.0%/g) ?? []).length, 1);
   }
 });
@@ -184,7 +184,7 @@ test('tables preserve caller-formatted thousands in days and count without conve
     const html=render(h(Component,{rows:[{days:'2,847',count:'12,345.5'},{days:'',count:' '},{days:'0',count:'0'}],columns:[['days','Days'],['count','Count']]}));
     assert.match(html,/<td>2,847<\/td>/);
     assert.match(html,/<td>12,345.5<\/td>/);
-    assert.equal((html.match(/<td>未提供<\/td>/g)??[]).length,2);
+    assert.equal((html.match(/<td>Not reported<\/td>/g)??[]).length,2);
     assert.equal((html.match(/<td>0<\/td>/g)??[]).length,2);
   }
 });

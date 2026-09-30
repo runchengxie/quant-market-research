@@ -8,7 +8,8 @@ for (const width of [320, 390, 768, 1280, 1440]) {
       const errors: string[] = []; page.on('pageerror', (error) => errors.push(error.message));
       await page.goto(route);
       await expect(page.locator('main h1')).toHaveCount(1);
-      expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();
+      const fitsViewport = await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1);
+      expect(fitsViewport, `horizontal overflow at ${route} (${width}px)`).toBeTruthy();
       const gutters = await page.evaluate(() => ['.site-masthead', '.site-main', '.site-footer'].map((selector) => document.querySelector(selector)!.getBoundingClientRect().left));
       expect(Math.max(...gutters) - Math.min(...gutters)).toBeLessThan(1);
       expect(errors).toEqual([]);

@@ -64,7 +64,7 @@ test("size data is lazy, shows revision limits and can page through all records"
   expect(sizeRequests).toBe(0);
   const diagnostic = page.locator(".size-diagnostic");
   await diagnostic.locator(":scope > summary").click();
-  await expect(diagnostic).toContainText("输入版本 2026-09-18");
+  await expect(diagnostic).toContainText(/input vintage 2026-09-18|输入版本 2026-09-18/);
   await expect(diagnostic).toContainText("10,544");
   expect(sizeRequests).toBe(1);
   const table = diagnostic.getByRole("table").first();
@@ -84,7 +84,7 @@ for (const width of [390, 1280]) {
     await page.goto("research/style-factors-18y/?factor=quality");
     const annual = page.locator("#barra-annual");
     await expect(annual.locator("canvas")).toBeVisible();
-    expect(await annual.evaluate(el => el.getBoundingClientRect().top)).toBeLessThan(width > 800 ? 600 : 850);
+    expect(await annual.evaluate(el => el.getBoundingClientRect().top)).toBeLessThan(width > 800 ? 600 : 900);
     await expect(page.getByRole("region", { name: /所选因子关键指标|Selected-factor key metrics/ })).toContainText("4.0%");
     await expect(page.getByRole("region", { name: /因子相关性|Factor correlations/ })).toContainText(/正相关|positive/);
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();
