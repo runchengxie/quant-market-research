@@ -1,6 +1,6 @@
 # Microcap portfolio execution diagnostic
 
-[中文页面](microcap-execution-diagnostic-20260928.zh-CN.md)
+[Chinese version](microcap-execution-diagnostic-20260928.zh-CN.md)
 
 The `microcap-execution-diagnostic` experiment selects the smallest N eligible stocks from cleaned daily data using post-close market capitalization, ST status, suspension, and listing-state rules. Each decision date has an independent research clock. The input is submitted by content hash to `quant-backtest-runtime`, whose worker calls the public execution simulator in `quant-platform`.
 

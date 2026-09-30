@@ -1,6 +1,6 @@
 # Research closeout status
 
-[中文页面](research-closeout-status.zh-CN.md)
+[Chinese version](research-closeout-status.zh-CN.md)
 
 This page records the current state of public research cleanup, completed organization work, and remaining data or manual verification tasks. It describes evidence status and does not imply that a strategy is ready for live trading.
 

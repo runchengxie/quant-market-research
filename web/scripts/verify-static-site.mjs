@@ -5,7 +5,7 @@ import { fileURLToPath } from "node:url";
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
 const routes = [
-  ["index.html", "研究总览"],
+  ["index.html", "Research overview"],
   ["research/cashflow/index.html", "Cash-flow history"],
   ["research/cashflow/recovery/index.html", "Cash-flow drawdowns and recovery time"],
   ["research/microcap/index.html", "A-share micro-cap history"],
@@ -15,9 +15,9 @@ const routes = [
   ["research/liquidity/index.html", "Cross-market liquidity"],
   ["research/factors/low-turnover/index.html", "低换手因子：它保留了什么信息？"],
   ["research/factors/pb-roe/index.html", "PB 与 ROE：历史对照与证据边界"],
-  ["research/index.html", "从研究问题进入数据与图表"],
-  ["data-sources/index.html", "每份公开快照都有自己的日期和边界"],
-  ["search/index.html", "搜索研究、方法与因子定义"],
+  ["research/index.html", "Explore data and charts by research question"],
+  ["data-sources/index.html", "Every public snapshot has its own dates and boundaries"],
+  ["search/index.html", "Search research, methods, and factor definitions"],
   ["docs/research-closeout-status/index.html", "Research closeout status"],
   ["docs/research/factors/low-turnover/index.html", "Low turnover: what might it represent?"],
   ["docs/research/factors/pb-roe/index.html", "PB and ROE: comparing valuation and profitability"],
@@ -34,6 +34,28 @@ const routes = [
   ["docs/research/factors/smallcap-turnover-history.zh-CN/index.html", "小市值成交活跃度补充"],
   ["docs/research/factors/barra-factor-dictionary.zh-CN/index.html", "Barra 风格因子字典"],
   ["docs/research/factors/barra-source-inventory.zh-CN/index.html", "Barra 风格研究资料清单"],
+];
+
+const englishRoutes = [
+  "index.html",
+  "404.html",
+  "research/index.html",
+  "docs/index.html",
+  "data-sources/index.html",
+  "search/index.html",
+  "research/cashflow/index.html",
+  "research/cashflow/recovery/index.html",
+  "research/indices/index.html",
+  "research/liquidity/index.html",
+  "research/microcap/cross-market-liquidity/index.html",
+  "docs/research-closeout-status/index.html",
+  "docs/research/factors/low-turnover/index.html",
+  "docs/research/factors/pb-roe/index.html",
+  "docs/research/factors/microcap/index.html",
+  "docs/research/factors/smallcap-turnover-history/index.html",
+  "docs/research/factors/barra-factor-dictionary/index.html",
+  "docs/research/factors/barra-source-inventory/index.html",
+  "docs/research/experiments/microcap-execution-diagnostic-20260928/index.html",
 ];
 
 function filesBelow(directory) {
@@ -73,6 +95,17 @@ export function verifyStaticSite(distDirectory) {
     }
     const html = fs.readFileSync(file, "utf8");
     if (!html.includes(marker)) errors.push(`Route output is missing its title marker: ${relative}`);
+  }
+
+  for (const relative of englishRoutes) {
+    const file = path.join(dist, relative);
+    if (!fs.existsSync(file)) continue;
+    const html = fs.readFileSync(file, "utf8")
+      .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+      .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
+      .replace(/<button\b[^>]*class="locale-toggle"[^>]*>[\s\S]*?<\/button>/gi, " ")
+      .replace(/<[^>]+>/g, " ");
+    if (/[\u4e00-\u9fff]/.test(html)) errors.push(`${relative}: English route contains visible Chinese text`);
   }
 
   for (const relative of ["404.html", "docs/index.html", "search-index.json", "data/manifest.json", "data/research/recovery.json"]) {

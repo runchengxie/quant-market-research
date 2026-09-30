@@ -21,3 +21,12 @@ test("research and documentation directories render English-first localized copy
     assert.ok(copy.includes(pageId), `missing English copy for ${pageId}`);
   }
 });
+
+test("static verification checks visible English route text while allowing the locale switch", async () => {
+  const verifier = await fs.readFile(path.join(root, "../scripts/verify-static-site.mjs"), "utf8");
+  assert.match(verifier, /const englishRoutes = \[/);
+  assert.match(verifier, /visible Chinese text/);
+  assert.ok(verifier.includes('class="locale-toggle"'));
+  assert.match(verifier, /data-sources\/index\.html/);
+  assert.match(verifier, /search\/index\.html/);
+});

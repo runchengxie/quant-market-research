@@ -12,8 +12,8 @@ const barra = JSON.parse(await readFile(resolve(process.cwd(), "public/data/barr
 const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
 ---
 
-<SiteLayout title="研究总览" description="历史市场研究与公开数据的总览页面。" activeRoute="overview">
+<SiteLayout title="研究总览" titleEn="Research overview" description="An overview of historical market research and public data." activeRoute="overview">
   <LegacyHashRedirect />
-  <FreshnessStrip snapshot={manifest.snapshots?.overview ?? {}} label="公开快照总览" />
+  <FreshnessStrip snapshot={manifest.snapshots?.overview ?? {}} snapshotKey="overview" label="公开快照总览" />
   <OverviewContent recovery={recovery} barra={barra} />
 </SiteLayout>

@@ -1,6 +1,6 @@
 # Low turnover: what might it represent?
 
-[中文页面](low-turnover.zh-CN.md)
+[Chinese version](low-turnover.zh-CN.md)
 
 Current evidence is exploratory. An independent premium and practical tradability have not been established.
 

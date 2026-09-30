@@ -51,7 +51,7 @@ export default function ReplicationSection({scope}: {scope: Scope}) {
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, []);
-  if (loading) return <p role="status">正在读取复刻研究…</p>;
+  if (loading) return <p role="status" data-locale-text data-en="Loading replication research…" data-zh="正在读取复刻研究…">Loading replication research…</p>;
   if (!snapshot) return <section className="panel" role="status">复刻研究数据暂不可用，请稍后重试。其他专题数据仍可查看。</section>;
   return <ReplicationContent scope={scope} snapshot={snapshot}/>;
 }

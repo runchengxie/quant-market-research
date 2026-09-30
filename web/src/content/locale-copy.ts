@@ -1,6 +1,8 @@
 import type { PublicPage } from "./public-registry";
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  overview: { title: "Research overview", summary: "Research topics, data boundaries, and the latest verifiable evidence." },
+  research: { title: "Research topics", summary: "Browse public research topics by question." },
   cashflow: { title: "Cash Flow and Dividends", summary: "Long-run factor performance, recovery tests, and limitations." },
   "cashflow-recovery": { title: "Cash-Flow Recovery", summary: "Recovery, replication, and implementability evidence." },
   microcap: { title: "Micro-cap Research", summary: "Evidence on size, turnover, and sample coverage." },
@@ -19,8 +21,9 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
   "barra-factor-dictionary": { title: "Barra Factor Dictionary", summary: "Definitions checked for 19 historical factors and their core proxies." },
   "barra-source-inventory": { title: "Barra Source Inventory", summary: "Sources, versions, and verification status for Barra factors." },
   "data-sources": { title: "Data and Versions", summary: "Public data snapshots, coverage dates, and build versions." },
+  docs: { title: "Methods and dictionary", summary: "Research methods, factor definitions, data sources, and closeout status." },
 };
 
-export function englishCopy(page: PublicPage) {
+export function englishCopy(page: Pick<PublicPage, "id" | "title" | "summary">) {
   return englishCopies[page.id] ?? { title: page.title, summary: page.summary };
 }

@@ -1,6 +1,6 @@
 # Small-cap turnover history, 2008–2014
 
-[中文页面](smallcap-turnover-history.zh-CN.md)
+[Chinese version](smallcap-turnover-history.zh-CN.md)
 
 This supplement uses published A-share `daily` and `daily_basic` assets from `quant-market-data-platform` to observe turnover among the N smallest stocks ranked by total market capitalization.
 

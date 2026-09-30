@@ -1,6 +1,6 @@
 # Quant Market Research
 
-[中文页面](index.zh-CN.md)
+[Chinese version](index.zh-CN.md)
 
 This site presents reviewed public factor research, calculation conventions, and evidence limitations. Research pages lead with findings, then document key numbers, evidence boundaries, and follow-up work.
 

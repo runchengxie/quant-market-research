@@ -37,12 +37,12 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
         date={microcap ? `${microcap.start} ${t('至', 'to')} ${microcap.end}` : t('数据暂不可用', 'Data unavailable')}
         scope={t('同花顺微盘用于观察微盘表现，中证2000和国证2000作为小盘对照。', 'The vendor micro-cap series describes micro-cap performance; CSI 2000 and SZSE 2000 provide small-cap comparisons.')}/>
       <EvidenceCard domain="市场与板块" title="长期风格" href={withBase(PUBLIC_ROUTES.indices, import.meta.env?.BASE_URL ?? "/")} status={styleAvailable ? '历史结果供研究参考' : '数据暂不可用'}
-        conclusion={styleAvailable ? `已整理 ${history.factor_count} 个因子的历史结果，用于观察不同风格在各阶段的表现。` : '数据恢复后显示长期风格研究范围。'}
-        date={styleAvailable ? `Barra 历史研究截至 ${history.coverage_end}` : '数据暂不可用'}
-        scope="指数和 ETF 反映市场表现，风格研究观察高分组与低分组的收益差异。"/>
+        conclusion={styleAvailable ? `${t('已整理', 'Historical results are available for')} ${history.factor_count} ${t('个因子的历史结果，用于观察不同风格在各阶段的表现。', 'factors, to compare style performance across market regimes.')}` : t('数据恢复后显示长期风格研究范围。', 'Long-run style coverage will appear when data is restored.')}
+        date={styleAvailable ? `${t('Barra 历史研究截至', 'Barra historical research through')} ${history.coverage_end}` : t('数据暂不可用', 'Data unavailable')}
+        scope={t('指数和 ETF 反映市场表现，风格研究观察高分组与低分组的收益差异。', 'Indices and ETFs describe market performance; style research compares returns between high- and low-scoring groups.')}/>
       <EvidenceCard domain="因子与风格" title="低换手因子" href={withBase(PUBLIC_ROUTES.lowTurnover, import.meta.env?.BASE_URL ?? "/")} status="探索性研究"
-        conclusion="低换手在控制规模、低波动和现有特征后仍保留历史条件相关性，但尚未证明能稳定转化为净收益。"
-        date="共同样本 2019-05 至 2026-06" scope="比较原始换手、低波动、流动性和组合执行之间的关系。"/>
+        conclusion={t('低换手在控制规模、低波动和现有特征后仍保留历史条件相关性，但尚未证明能稳定转化为净收益。', 'Low turnover retains historical conditional association after controls for size, low volatility, and existing features, but stable conversion into net returns has not been demonstrated.')}
+        date={t('共同样本 2019-05 至 2026-06', 'Common sample: 2019-05 to 2026-06')} scope={t('比较原始换手、低波动、流动性和组合执行之间的关系。', 'Compares raw turnover, low volatility, liquidity, and portfolio execution.')}/>
     </section>
     <div className="fine-print"><span className="section-kicker">{t('阅读提示', 'Reading note')}</span><p>{t('各专题的样本时间不同，历史最长等待也会受到样本范围影响。页面保留尚未回本和数据缺失的记录。历史结果仅供研究参考。', 'Sample windows differ by topic, so the longest historical wait depends on coverage. Unrecovered and missing-data records remain visible. Historical results are for research only.')}</p></div>
   </>;

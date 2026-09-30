@@ -48,8 +48,8 @@ const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
     <p class="workbench-boundary" data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</p>
   </> : <>
     <p class="fine-print"><span class="section-kicker" data-locale-text data-en="Reading boundary" data-zh="阅读边界">Reading boundary</span><br /><span data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</span></p>
-    <div id="research-method"><FreshnessStrip snapshot={snapshot} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></div>
+    <div id="research-method"><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></div>
   </>}
   <div id="topic-content"><slot /></div>
-  {compact && <details id="research-method" class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
+  {compact && <details id="research-method" class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
 </SiteLayout>
