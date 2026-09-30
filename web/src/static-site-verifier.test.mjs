@@ -25,7 +25,7 @@ const routes = [
   ["docs/research/factors/microcap/index.html", "Microcaps: return evidence and underwater periods"],
   ["docs/research/factors/smallcap-turnover-history/index.html", "Small-cap turnover history"],
   ["docs/research/factors/barra-factor-dictionary/index.html", "Barra factor dictionary"],
-  ["docs/research/factors/barra-source-inventory/index.html", "Barra source inventory"],
+  ["docs/research/factors/barra-source-inventory/index.html", "Barra research source inventory"],
 ];
 
 async function makeSite() {

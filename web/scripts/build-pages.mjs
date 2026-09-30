@@ -15,6 +15,7 @@ function run(command, args, cwd) {
 
 run(npm, ["run", "build"], web);
 run(uv, ["run", "--locked", "--extra", "docs", "mkdocs", "build", "--strict"], root);
+run(process.execPath, ["scripts/copy-doc-locale-companions.mjs"], web);
 const dist = path.join(web, "dist");
 mkdirSync(dist, { recursive: true });
 writeFileSync(path.join(dist, ".nojekyll"), "");

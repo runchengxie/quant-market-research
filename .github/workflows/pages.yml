@@ -55,6 +55,9 @@ jobs:
       - name: Build public research documentation
         run: uv run --locked --extra docs mkdocs build --strict
 
+      - name: Add published locale companion pages
+        run: node web/scripts/copy-doc-locale-companions.mjs
+
       - name: Verify published site routes, assets, and public boundary
         working-directory: web
         run: npm run verify:static
