@@ -1,6 +1,8 @@
 import { expect, test } from '@playwright/test';
 
 for (const route of [
+  '',
+  '404.html',
   'research/factors/low-turnover/',
   'research/factors/pb-roe/',
   'research/style-factors-18y/',
@@ -11,6 +13,15 @@ for (const route of [
   'research/microcap/cross-market-liquidity/',
   'research/cashflow/recovery/',
   'research/',
+  'docs/',
+  'docs/research-closeout-status/',
+  'docs/research/factors/low-turnover/',
+  'docs/research/factors/pb-roe/',
+  'docs/research/factors/microcap/',
+  'docs/research/factors/smallcap-turnover-history/',
+  'docs/research/factors/barra-factor-dictionary/',
+  'docs/research/factors/barra-source-inventory/',
+  'docs/research/experiments/microcap-execution-diagnostic-20260928/',
   'data-sources/',
   'search/',
 ]) {
@@ -18,7 +29,7 @@ for (const route of [
     await page.goto(route);
     await expect(page.locator('main h1')).toBeVisible();
     await page.waitForLoadState('networkidle');
-    if (route.includes('low-turnover')) {
+    if (route === 'research/factors/low-turnover/') {
       await expect(page.getByRole('region', { name: 'Low-turnover execution validation' })).toBeVisible();
     }
     const hanText = await page.locator('body').evaluate((body) => {
