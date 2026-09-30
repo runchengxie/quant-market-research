@@ -67,15 +67,15 @@ test("legacy hash links redirect to the new research URL", async ({ page }) => {
 
 test("low-turnover report links to its full methodology", async ({ page }) => {
   await page.goto("research/factors/low-turnover/");
-  await expect(page.getByRole("link", { name: /阅读完整方法说明/ })).toHaveAttribute("href", /\/docs\/research\/factors\/low-turnover\//);
+  await expect(page.getByRole("link", { name: /Read the full methodology/ })).toHaveAttribute("href", /\/docs\/research\/factors\/low-turnover\//);
 });
 
 test("PB/ROE topic links to the reviewed evidence and discloses its scope", async ({ page }) => {
   await page.goto("research/");
-  await page.getByRole("link", { name: /PB 与 ROE 历史对照/ }).click();
+  await page.getByRole("link", { name: /Historical PB and ROE Comparison/ }).click();
   await expect(page.locator(".theme-heading p")).toContainText(/数据截至 2026-08-31|through 2026-08-31/);
-  await expect(page.getByText("不能当作严格纯 PB 组合", { exact: false })).toBeVisible();
-  await expect(page.getByRole("link", { name: /阅读完整数据与方法/ })).toHaveAttribute("href", /\/docs\/research\/factors\/pb-roe\//);
+  await expect(page.getByText("not a strict pure-PB portfolio", { exact: false })).toBeVisible();
+  await expect(page.getByRole("link", { name: /Read the full data and methodology/ })).toHaveAttribute("href", /\/docs\/research\/factors\/pb-roe\//);
 });
 
 test("PB/ROE charts separate the shared pool from the quality audit", async ({ page }) => {
