@@ -2,8 +2,9 @@
 import SiteLayout from '../../layouts/SiteLayout.astro';
 import { publicDocs } from '../../content/public-registry';
 import { withBase } from '../../lib/routes';
+import { englishCopy } from '../../content/locale-copy';
 ---
-<SiteLayout title="方法与字典" description="研究方法、因子定义、数据来源与收尾状态。" section="docs">
-  <section class="theme-heading"><div><span class="section-kicker">方法与字典</span><h1 id="quant-market-research">图表告诉你发生了什么，文档告诉你如何理解</h1><h2 id="_1">公开说明</h2><p>公开说明与研究页面共享同一套导航、主题和阅读边界；维护计划和内部运行手册不在公开内容中。</p></div></section>
-  <div class="research-grid directory-grid">{publicDocs.map((doc) => <a class="research-card" href={withBase(doc.route, import.meta.env.BASE_URL)}><span class="section-kicker">公开说明</span><h2>{doc.title}</h2><p>{doc.summary}</p><b>阅读说明 →</b></a>)}</div>
+<SiteLayout title="方法与字典" titleEn="Methods and dictionary" description="Research methods, factor definitions, data sources, and closeout status." section="docs">
+  <section class="theme-heading"><div><span class="section-kicker" data-locale-text data-en="Methods and dictionary" data-zh="方法与字典">Methods and dictionary</span><h1 id="quant-market-research" data-locale-text data-en="Charts show what happened; documentation explains how to read them" data-zh="图表告诉你发生了什么，文档告诉你如何理解">Charts show what happened; documentation explains how to read them</h1><h2 data-locale-text data-en="Public documentation" data-zh="公开说明">Public documentation</h2><p data-locale-text data-en="Public documentation shares navigation, theme, and research boundaries with the site. Internal runbooks and maintenance plans are not published here." data-zh="公开说明与研究页面共享同一套导航、主题和阅读边界；维护计划和内部运行手册不在公开内容中。">Public documentation shares navigation, theme, and research boundaries with the site. Internal runbooks and maintenance plans are not published here.</p></div></section>
+  <div class="research-grid directory-grid">{publicDocs.filter((doc) => !doc.id.endsWith('-zh-CN')).map((doc) => { const en = englishCopy(doc); return <a class="research-card" href={withBase(doc.route, import.meta.env.BASE_URL)}><span class="section-kicker" data-locale-text data-en="Public documentation" data-zh="公开说明">Public documentation</span><h2 data-locale-text data-en={en.title} data-zh={doc.title}>{en.title}</h2><p data-locale-text data-en={en.summary} data-zh={doc.summary}>{en.summary}</p><b data-locale-text data-en="Read documentation →" data-zh="阅读说明 →">Read documentation →</b></a>; })}</div>
 </SiteLayout>
