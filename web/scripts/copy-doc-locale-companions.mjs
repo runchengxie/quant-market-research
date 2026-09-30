@@ -2,8 +2,10 @@ import fs from "node:fs";
 import path from "node:path";
 import process from "node:process";
 
-const web = process.cwd();
-const reference = path.resolve(web, "../.build/mkdocs-reference");
+const cwd = process.cwd();
+const web = path.basename(cwd) === "web" ? cwd : path.join(cwd, "web");
+const root = path.dirname(web);
+const reference = path.join(root, ".build/mkdocs-reference");
 const destination = path.join(web, "dist/docs");
 const sharedAssets = ["assets", "css", "img", "js", "search", "webfonts"];
 const companions = [
@@ -20,7 +22,7 @@ const companions = [
 
 for (const asset of sharedAssets) {
   const candidates = [path.join(reference, asset)];
-  if (asset === "assets") candidates.push(path.resolve(web, "../docs/assets"));
+  if (asset === "assets") candidates.push(path.join(root, "docs/assets"));
   const source = candidates.find((candidate) => fs.existsSync(candidate));
   const target = path.join(destination, asset);
   if (!source) throw new Error(`MkDocs shared asset missing: ${asset}`);
