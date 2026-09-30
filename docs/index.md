@@ -4,6 +4,8 @@
 
 This site presents reviewed public factor research, calculation conventions, and evidence limitations. Research pages lead with findings, then document key numbers, evidence boundaries, and follow-up work.
 
+English and Chinese pages have separate stable URLs. Use the language link at the top of a page to switch versions, or share that page's URL directly.
+
 ## Factor research
 
 - [Research closeout status](research-closeout-status.md): current evidence status and unresolved verification work.
