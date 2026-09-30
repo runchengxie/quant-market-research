@@ -104,4 +104,19 @@ test('recovery reports localize source labels and expanded methodology in Englis
   await page.getByRole('button', { name: '切换到英文' }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
   await expect(page.locator('.replication-section h2')).toHaveText('How closely do local reconstructions track official indices?');
+  await page.getByRole('button', { name: 'Cross-market micro-cap liquidity' }).click();
+  await expect(page.getByRole('heading', { name: 'Compare small-cap turnover across markets' })).toBeVisible();
+  const crossMarketHan = await page.locator('body').evaluate((body) => {
+    const copy = body.cloneNode(true) as HTMLElement;
+    copy.querySelectorAll('script, style, .locale-toggle').forEach((node) => node.remove());
+    const walker = document.createTreeWalker(copy, NodeFilter.SHOW_TEXT);
+    const fragments: string[] = [...copy.querySelectorAll('[aria-label], [title], [placeholder], img[alt]')]
+      .flatMap((node) => ['aria-label', 'title', 'placeholder', 'alt'].map((name) => node.getAttribute(name) ?? ''));
+    while (walker.nextNode()) {
+      const value = walker.currentNode.textContent?.trim() ?? '';
+      if (/[\u4e00-\u9fff]/.test(value)) fragments.push(value.slice(0, 200));
+    }
+    return fragments.filter((fragment) => /[\u4e00-\u9fff]/.test(fragment));
+  });
+  expect(crossMarketHan, `Cross-market micro-cap view contains Chinese: ${crossMarketHan.slice(0, 50).join(' | ')}`).toEqual([]);
 });
