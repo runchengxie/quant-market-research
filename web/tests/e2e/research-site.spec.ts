@@ -127,7 +127,7 @@ test("replication data loads from the GitHub Pages base path", async ({ page }) 
   await page.locator("astro-island[component-export='MicrocapPage']").scrollIntoViewIfNeeded();
   const replicationResponse = await page.request.get("data/research/replication.json");
   expect(replicationResponse.ok()).toBeTruthy();
-  await expect(page.getByRole("heading", { name: "自行计算的结果与官方指数有多接近？" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "How closely do local reconstructions track official indices?" })).toBeVisible();
 });
 
 for (const width of [1280, 390]) {
