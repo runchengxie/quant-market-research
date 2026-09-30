@@ -34,6 +34,11 @@ function text(zh: string, en: string) {
   return englishLocale() ? en : zh;
 }
 
+const localizedNumber = (value: number | string | null | undefined) =>
+  value == null || value === "" || !Number.isFinite(Number(value))
+    ? text("未提供", "not available")
+    : num(Number(value));
+
 const FACTOR_NAMES_EN: Record<string, string> = {
   beta: "Low beta", chip_concentration: "Shareholder concentration", dividend_yield: "Dividend yield",
   earnings_yield: "Earnings yield", fund_breadth: "Fund-holding breadth", fund_breadth_change: "Change in fund-holding breadth",
@@ -133,23 +138,23 @@ export function IndicesPage() {
       <section className="stat-grid">
         <Stat
           label={ui("指数目录", "Index catalog")}
-          value={num(catalog.length)}
+          value={localizedNumber(catalog.length)}
           note={ui("已收录公开目录", "Public entries")}
           accent
         />
         <Stat
           label={ui("当前类别指数", "Indexes in selected category")}
-          value={num(filteredReturns.length)}
+          value={localizedNumber(filteredReturns.length)}
           note={category === "全部" ? ui("全部类别", "All categories") : category}
         />
         <Stat
           label={ui("代表性基金", "Representative funds")}
-          value={num(etfs.length)}
+          value={localizedNumber(etfs.length)}
           note={ui("与指数对应的基金产品", "Funds matched to indexes")}
         />
         <Stat
           label={ui("符合成交额筛选的基金", "Funds passing liquidity filter")}
-          value={num(liquid)}
+          value={localizedNumber(liquid)}
           note={ui("近60日成交额筛选", "60-day median turnover")}
         />
       </section>
@@ -544,8 +549,8 @@ function QualityDiagnostic() {
       <SortableTable rows={qualityComponents.filter(row => row.factor.startsWith("quality_")).map(row => ({
         ...row,
         ...Object.fromEntries(["geometric_annual_ret", "annual_vol", "max_drawdown", "hit_rate"].map(key => [key, Number.isFinite(finiteNumber(row[key])) ? String(finiteNumber(row[key]) / 100) : ""])),
-        sharpe: num(row.sharpe),
-        years: num(row.years),
+        sharpe: localizedNumber(row.sharpe),
+        years: localizedNumber(row.years),
         factor: names[row.factor] ?? row.factor,
       }))}
         columns={[["factor", text("子因子与主要特征", "Sub-factor and features")], ["days", text("交易日", "Trading days")], ["years", text("样本年数", "Sample years")], ["geometric_annual_ret", text("几何年化", "Geometric annualized")], ["annual_vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["max_drawdown", text("最大回撤", "Max drawdown")], ["hit_rate", text("正收益比例", "Positive-return ratio")]]}
@@ -566,7 +571,7 @@ function SizeSnapshot() {
   const rows = data.map(row => ({ ...row, bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return }));
   return <>
       <p className="panel-note">{text("独立十分组诊断，不用于复核上方历史五分组收益。修订结果先固定形成日成员，再报告后续缺失报价；完整样本筛选仍可能带来条件选择偏差，不代表可交易或无偏收益。", "This separate decile diagnostic does not validate the five-bucket historical returns above. The revised result fixes formation-date membership before reporting later missing quotes. Complete-case filtering may still introduce selection bias; these are not tradable or unbiased returns.")}</p>
-    {metadata.data?.revision ? <p className="size-revision-note">{text("修订快照 · 输入版本", "Revised snapshot · input vintage")} {metadata.data.revision.input_vintage} · {text("数据截至", "data through")} {metadata.data.revision.as_of}{text("。这不是原始输入版本的精确复现。缺失后续报价", ". This is not an exact reproduction of the original input vintage. Missing later quotes: ")}{num(metadata.data.size_monotonicity?.missing_return_count)}{text(" 条，未填零，也未猜测退市终值。", "; missing values were not filled with zero, and delisting proceeds were not inferred.")}</p> : <DataNotice label={text("诊断版本说明", "Diagnostic version note")} error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
+    {metadata.data?.revision ? <p className="size-revision-note">{text("修订快照 · 输入版本", "Revised snapshot · input vintage")} {metadata.data.revision.input_vintage} · {text("数据截至", "data through")} {metadata.data.revision.as_of}{text("。这不是原始输入版本的精确复现。缺失后续报价", ". This is not an exact reproduction of the original input vintage. Missing later quotes: ")}{localizedNumber(metadata.data.size_monotonicity?.missing_return_count)}{text(" 条，未填零，也未猜测退市终值。", "; missing values were not filled with zero, and delisting proceeds were not inferred.")}</p> : <DataNotice label={text("诊断版本说明", "Diagnostic version note")} error={metadata.error} retry={metadata.retry} empty={!!metadata.data} />}
     <SizeDiagnosticPanel rows={rows} dailyCurve={dailySizeCurve(comparableSizeRows(rows))} />
   </>;
 }
@@ -580,7 +585,7 @@ function CorrelationPanel({ selectedFactor, onSelect }: { selectedFactor: string
   return <section role="region" aria-label={text("因子相关性", "Factor correlations")} id="barra-correlations">
     <Panel title={text("因子相关性", "Factor correlations")} tag={text("日收益差 · 非因果关系", "Daily return spread · non-causal")}>
       <p className="panel-note">{text(`与${FACTOR_NAMES[selectedFactor]}相关程度最高的 8 个因子。正相关表示同向变化，负相关表示反向变化；点击名称切换观察对象。配对样本区间未完整提供，不应直接据此构建组合。`, `The eight factors most correlated with ${factorName(selectedFactor)} are shown. Positive correlation indicates co-movement; negative correlation indicates opposite movement. Select a factor to inspect it. Paired-sample dates are incomplete, so do not use this matrix directly to construct a portfolio.`)}</p>
-      {!related.length ? <DataNotice label="相关性" error={error} retry={retry} empty={!!data} /> :
+      {!related.length ? <DataNotice label={text("相关性", "Correlations")} error={error} retry={retry} empty={!!data} /> :
         <div className="correlation-list">
           <div className="correlation-scale"><span>{text("−1 · 负相关", "−1 · negative")}</span><span>0</span><span>{text("正相关 · +1", "positive · +1")}</span></div>
           {related.map(([id, value]) => <button type="button" key={id} onClick={() => onSelect(id)} className="correlation-row" aria-label={text(`查看${FACTOR_NAMES[id]}，相关系数 ${value.toFixed(2)}`, `View ${factorName(id)}, correlation ${value.toFixed(2)}`)}>
@@ -630,9 +635,12 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const selectedYearly = (yearlyResource.data ?? []).filter(row => row.factor === selectedFactor)
     .sort((a, b) => Number(a.year) - Number(b.year))
     .map(row => ({ year: row.year, value: Number.isFinite(finiteNumber(row.annual_ret)) ? String(finiteNumber(row.annual_ret) / 100) : "" }));
-  const percentage = (value: number | undefined) => pct(value == null || !Number.isFinite(value) ? NaN : value / 100);
+  const percentage = (value: number | undefined) =>
+    value == null || !Number.isFinite(value)
+      ? text("未提供", "not available")
+      : pct(value / 100);
   const factorRows = factors.map(row => ({
-    factor: factorName(row.factor), coverage: `${num(row.years)} ${text("年", "years")} · ${num(row.days)} ${text("日", "days")}`,
+    factor: factorName(row.factor), coverage: `${localizedNumber(row.years)} ${text("年", "years")} · ${localizedNumber(row.days)} ${text("日", "days")}`,
     annual: row.geometric_annual_ret == null ? "" : String(row.geometric_annual_ret / 100),
     vol: row.annual_vol == null ? "" : String(row.annual_vol / 100),
     sharpe: Number.isFinite(finiteNumber(row.sharpe)) ? String(Number(finiteNumber(row.sharpe).toFixed(2))) : "",
@@ -659,7 +667,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
               <label>{text("因子家族", "Factor family")}<select aria-label={text("因子家族", "Factor family")} value={family} onChange={event => setFamily(event.target.value)}><option value="全部">{familyLabel("全部")}</option>{familyOrder.map(value => <option key={value} value={value}>{familyLabel(value)}</option>)}</select></label>
               <span className="filter-count">{shown.length} / {factors.length} {text("个因子", "factors")}</span>
             </div>
-            {!factors.length ? <DataNotice label="因子目录" error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
+            {!factors.length ? <DataNotice label={text("因子目录", "Factor catalog")} error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
               !shown.length ? <div className="filter-empty" role="status"><p>{text("没有匹配的因子", "No matching factors")}</p><button type="button" className="button-link" onClick={() => { setQuery(""); setFamily("全部"); }}>{text("清除筛选", "Clear filters")}</button></div> :
               <div className="factor-groups">{familyOrder.map(group => {
                 const groupFactors = shown.filter(row => groupedFamily(row.factor) === group);
@@ -671,7 +679,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
             <section className="factor-stats" role="region" aria-label={text("所选因子关键指标", "Selected-factor key metrics")}>
               <Stat label={text("几何年化", "Geometric annualized")} value={percentage(selectedFactorSummary?.geometric_annual_ret)} note={text("历史合成序列", "Historical composite series")} />
               <Stat label={text("最大回撤", "Max drawdown")} value={percentage(selectedFactorSummary?.max_drawdown)} note={text("同一历史序列", "Same historical series")} />
-              <Stat label={text("样本年数", "Sample years")} value={num(selectedFactorSummary?.years)} note={`${num(selectedFactorSummary?.days)} ${text("个交易日", "trading days")}`} />
+              <Stat label={text("样本年数", "Sample years")} value={localizedNumber(selectedFactorSummary?.years)} note={`${localizedNumber(selectedFactorSummary?.days)} ${text("个交易日", "trading days")}`} />
             </section>
             {!selectedYearly.length ? <DataNotice label={text("年度收益", "Annual returns")} error={yearlyResource.error} retry={yearlyResource.retry} empty={!!yearlyResource.data} /> :
               <><BarChart rows={selectedYearly} labelKey="year" valueKey="value" color="#2563a6" />

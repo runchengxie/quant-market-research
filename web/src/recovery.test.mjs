@@ -20,8 +20,8 @@ const render = (scope, data = snapshot) => renderToStaticMarkup(createElement(Re
 
 test('cashflow recovery defaults to price series and preserves censoring and immature denominators', () => {
   const html = render('cashflow');
-  assert.match(html, /800现金流/);
-  assert.doesNotMatch(html, /同花顺微盘|800现金流（税前全收益）/);
+  assert.match(html, /CSI 800 Cash Flow/);
+  assert.doesNotMatch(html, /Tonghuashun Micro-cap|CSI 800 Cash Flow \(gross total return\)/);
   assert.match(html, /至少 4 天|At least 4 days/);
   assert.match(html, /25\.00%/);
   assert.match(html, /样本不足|Insufficient sample/);
@@ -36,10 +36,24 @@ test('cashflow recovery defaults to price series and preserves censoring and imm
 
 test('microcap recovery cannot silently display a cashflow result', () => {
   const html = render('microcap');
-  assert.match(html, /同花顺微盘/);
-  assert.doesNotMatch(html, /800现金流/);
-  assert.match(html, /分红口径|Dividend basis/);
+  assert.match(html, /Tonghuashun Micro-cap/);
+  assert.doesNotMatch(html, /CSI 800 Cash Flow/);
+  assert.match(html, /Dividend treatment still needs review/);
   assert.match(html, /href="\/research\/cashflow\/recovery\/"/);
+});
+
+test('Chinese locale retains the source-language series labels and method copy', () => {
+  const previousDocument = globalThis.document;
+  globalThis.document = {documentElement: {lang: 'zh-CN'}};
+  try {
+    const html = render('microcap');
+    assert.match(html, /同花顺微盘/);
+    assert.match(html, /水下期从前期高点算起/);
+    assert.doesNotMatch(html, /Tonghuashun Micro-cap|An underwater period starts/);
+  } finally {
+    if (previousDocument === undefined) delete globalThis.document;
+    else globalThis.document = previousDocument;
+  }
 });
 
 test('empty or blocked research shows explicit unavailable status, not zero recovery', () => {

@@ -68,6 +68,19 @@ test("static site verifier reports missing routes and private material", async (
   assert.match(errors, /forbidden local path or credential marker/);
 });
 
+test("static site verifier checks English HTML routes outside the required-route list", async (t) => {
+  const root = await makeSite();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const newRoute = path.join(root, "research/new-topic/index.html");
+  await fs.mkdir(path.dirname(newRoute), { recursive: true });
+  await fs.writeFile(newRoute, "<html><body><main>历史实验</main></body></html>");
+
+  assert.match(
+    verifyStaticSite(root).join("\n"),
+    /research\/new-topic\/index\.html: English route contains visible Chinese text/,
+  );
+});
+
 test("static site verifier rejects NUL bytes in generated HTML", async (t) => {
   const root = await makeSite();
   t.after(() => fs.rm(root, { recursive: true, force: true }));

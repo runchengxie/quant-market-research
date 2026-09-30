@@ -36,36 +36,17 @@ const routes = [
   ["docs/research/factors/barra-source-inventory.zh-CN/index.html", "Barra 风格研究资料清单"],
 ];
 
-const englishRoutes = [
-  "index.html",
-  "404.html",
-  "research/index.html",
-  "docs/index.html",
-  "data-sources/index.html",
-  "search/index.html",
-  "research/cashflow/index.html",
-  "research/cashflow/recovery/index.html",
-  "research/indices/index.html",
-  "research/liquidity/index.html",
-  "research/microcap/cross-market-liquidity/index.html",
-  "research/factors/low-turnover/index.html",
-  "research/factors/pb-roe/index.html",
-  "docs/research-closeout-status/index.html",
-  "docs/research/factors/low-turnover/index.html",
-  "docs/research/factors/pb-roe/index.html",
-  "docs/research/factors/microcap/index.html",
-  "docs/research/factors/smallcap-turnover-history/index.html",
-  "docs/research/factors/barra-factor-dictionary/index.html",
-  "docs/research/factors/barra-source-inventory/index.html",
-  "docs/research/experiments/microcap-execution-diagnostic-20260928/index.html",
-];
-
 function filesBelow(directory) {
   if (!fs.existsSync(directory)) return [];
   return fs.readdirSync(directory, { withFileTypes: true }).flatMap((entry) => {
     const file = path.join(directory, entry.name);
     return entry.isDirectory() ? filesBelow(file) : [file];
   });
+}
+
+function isChineseLocaleRoute(relativePath) {
+  return /(?:^|\/)[^/]*\.zh-CN(?:\/|$)/i.test(relativePath)
+    || /(?:^|\/)zh-CN(?:\/|$)/i.test(relativePath);
 }
 
 function resolveLocalReference(reference, htmlFile, dist) {
@@ -99,8 +80,9 @@ export function verifyStaticSite(distDirectory) {
     if (!html.includes(marker)) errors.push(`Route output is missing its title marker: ${relative}`);
   }
 
-  for (const relative of englishRoutes) {
-    const file = path.join(dist, relative);
+  for (const file of filesBelow(dist).filter((candidate) => candidate.endsWith(".html"))) {
+    const relative = path.relative(dist, file).split(path.sep).join("/");
+    if (isChineseLocaleRoute(relative)) continue;
     if (!fs.existsSync(file)) continue;
     const html = fs.readFileSync(file, "utf8")
       .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")

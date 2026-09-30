@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 for (const route of [
   '',
+  'research/recovery.html',
   '404.html',
   'research/factors/low-turnover/',
   'research/factors/pb-roe/',
@@ -57,4 +58,25 @@ test('style-factor language switch preserves the selected factor and its metrics
   await expect(page.locator('main h1')).toHaveText('18 年 A 股风格因子研究');
   await expect(page.locator('button[data-factor="quality"]')).toHaveText('复合质量');
   await expect(metrics.locator('.stat strong')).toHaveText(englishValues);
+});
+
+test('recovery reports localize source labels and expanded methodology in English', async ({ page }) => {
+  await page.goto('research/cashflow/recovery/');
+  await page.locator('astro-island[component-export="CashflowPage"]').scrollIntoViewIfNeeded();
+  const recovery = page.getByRole('region', { name: 'Recovery and holding-period risk' });
+  await expect(recovery).toContainText('CSI 800 Cash Flow');
+  await recovery.getByText('Method and reading notes', { exact: true }).click();
+  await expect(recovery.getByText(
+    'The gain needed to recover is the prior high divided by the current level, minus one. For example, a 50% loss requires a 100% gain to break even.',
+    { exact: true },
+  )).toBeVisible();
+
+  await page.goto('research/microcap/#microcap-recovery');
+  await page.locator('astro-island[component-export="MicrocapPage"]').scrollIntoViewIfNeeded();
+  const microcapRecovery = page.getByRole('region', { name: 'Recovery and holding-period risk' });
+  await expect(microcapRecovery).toContainText('Tonghuashun Micro-cap');
+  const visibleHanCount = await page.locator('.recovery-section, .replication-section').evaluateAll((sections) => {
+    return sections.map((section) => section.textContent ?? '').join('').match(/[\u4e00-\u9fff]/g)?.length ?? 0;
+  });
+  expect(visibleHanCount).toBe(0);
 });
