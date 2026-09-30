@@ -37,14 +37,17 @@ for (const route of [
       const copy = body.cloneNode(true) as HTMLElement;
       copy.querySelectorAll('script, style, .locale-toggle').forEach((node) => node.remove());
       const walker = document.createTreeWalker(copy, NodeFilter.SHOW_TEXT);
-      const fragments: string[] = [];
+      const fragments: string[] = [...copy.querySelectorAll('[aria-label], [title], [placeholder], img[alt]')]
+        .flatMap((node) => ['aria-label', 'title', 'placeholder', 'alt']
+          .map((attribute) => node.getAttribute(attribute) ?? ''));
       while (walker.nextNode()) {
         const value = walker.currentNode.textContent?.trim() ?? '';
         if (/[\u4e00-\u9fff]/.test(value)) fragments.push(value.slice(0, 260));
       }
-      return { count: fragments.join('').match(/[\u4e00-\u9fff]/g)?.length ?? 0, fragments: fragments.slice(0, 100) };
+      const visible = fragments.filter((fragment) => /[\u4e00-\u9fff]/.test(fragment));
+      return { count: visible.join('').match(/[\u4e00-\u9fff]/g)?.length ?? 0, fragments: visible.slice(0, 100) };
     });
-    expect(hanText.count, `default English page ${route} contains visible Chinese: ${JSON.stringify(hanText.fragments)}`).toBe(0);
+    expect(hanText.count, `default English page ${route} contains visible or accessible Chinese: ${JSON.stringify(hanText.fragments)}`).toBe(0);
   });
 }
 
