@@ -19,9 +19,11 @@ const companions = [
 ];
 
 for (const asset of sharedAssets) {
-  const source = path.join(reference, asset);
+  const candidates = [path.join(reference, asset)];
+  if (asset === "assets") candidates.push(path.resolve(web, "../docs/assets"));
+  const source = candidates.find((candidate) => fs.existsSync(candidate));
   const target = path.join(destination, asset);
-  if (!fs.existsSync(source)) throw new Error(`MkDocs shared asset missing: ${asset}`);
+  if (!source) throw new Error(`MkDocs shared asset missing: ${asset}`);
   fs.cpSync(source, target, { recursive: true });
 }
 
