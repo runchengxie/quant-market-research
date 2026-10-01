@@ -28,7 +28,9 @@ def build_a_share_panel(
     root = Path(data_root)
     dated_st_source = _has_dated_st_source(root)
     if not dated_st_source and not retain_ineligible_quotes:
-        raise ValueError("A-share formation requires validated dated ST history in manifest.yml")
+        raise ValueError(
+            "A-share formation requires validated dated ST history and availability in manifest.yml"
+        )
     if use_duckdb and root.is_dir():
         return _build_a_share_with_duckdb(
             root, as_of, fx_rate, retain_ineligible_quotes, dated_st_source
@@ -61,7 +63,7 @@ def _build_a_share_with_duckdb(
     pattern = str(root / "**" / "*.parquet")
     query = """
         SELECT filename,
-               COLUMNS('^(ts_code|trade_date|close|adj_close|vol|amount|total_mv|is_st|is_suspended)$')
+               COLUMNS('^(ts_code|trade_date|close|adj_close|vol|amount|total_mv|is_st|st_available_from|is_suspended)$')
         FROM read_parquet(?, union_by_name=true, filename=true)
     """
     with duckdb.connect() as connection:
@@ -99,6 +101,19 @@ def _prepare_quotes(
             "true": True, "false": False, "1": True, "0": False,
             "1.0": True, "0.0": False,
         }).astype("boolean")
+    if dated_st_source and "st_available_from" not in frame:
+        raise ValueError("daily_clean.v2 is missing st_available_from")
+    available = pd.to_datetime(
+        frame.get("st_available_from", pd.Series(pd.NA, index=frame.index)),
+        format="%Y%m%d", errors="coerce",
+    )
+    decision_date = pd.to_datetime(frame["trade_date"], errors="coerce")
+    availability_unknown = (
+        frame["is_st"].eq(True)
+        & (available.isna() | available.gt(decision_date))
+    ) | (frame["is_st"].eq(False) & available.notna())
+    frame.loc[availability_unknown, "is_st"] = pd.NA
+    frame["st_available_from"] = available.dt.strftime("%Y%m%d").astype("string")
     if not dated_st_source:
         frame["is_st"] = pd.Series(pd.NA, index=frame.index, dtype="boolean")
     symbols = frame.get("ts_code", pd.Series(pd.NA, index=frame.index)).astype("string")
@@ -128,6 +143,7 @@ def _prepare_quotes(
             "currency": "CNY",
             "is_tradable": eligible["is_tradable"],
             "is_st": eligible["is_st"],
+            "st_available_from": eligible["st_available_from"],
             "is_suspended": eligible["is_suspended"],
             "source": source,
         }
@@ -139,6 +155,7 @@ def _empty_panel() -> pd.DataFrame:
         columns=[
             "market", "symbol", "date", "close", "adj_close", "volume", "turnover", "market_cap",
             "currency", "is_tradable", "is_st", "is_suspended", "source",
+            "st_available_from",
         ]
     )
 
@@ -151,7 +168,17 @@ def _has_dated_st_source(root: Path) -> bool:
         manifest = yaml.safe_load(candidate.read_text(encoding="utf-8"))
         if isinstance(manifest, dict):
             inputs = manifest.get("inputs")
-            return isinstance(inputs, dict) and bool(inputs.get("st_history_file"))
+            contracts = manifest.get("contracts")
+            return (
+                manifest.get("schema_version") == "tushare.a_share.daily_clean.v2"
+                and isinstance(inputs, dict)
+                and bool(inputs.get("st_history_file"))
+                and inputs.get("st_history_receipt_schema")
+                == "market-data-platform.reconstructed-st-history.v2"
+                and isinstance(contracts, dict)
+                and contracts.get("st_availability")
+                == "daily_clean.st_available_from.v1"
+            )
     return False
 
 

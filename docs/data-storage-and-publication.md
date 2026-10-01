@@ -1,5 +1,7 @@
 # 数据保存与公开发布
 
+> English canonical: [Data storage and publication](data-storage-and-publication.en.md).
+
 本仓库保存研究代码和经过审核的派生结果。原始行情由 `quant-market-data-platform` 管理，完整研究运行结果写入仓库外的稳定目录。
 
 ## 数据分层
@@ -50,7 +52,7 @@ CSV 适合体量较小、需要人工核对的公开结果。它便于查看差�
 
 2008 年起的扩展版本使用不同历史数据源，并在 summary 和 manifest 中标记 `quality_status = incomplete`。历史源缺少可靠的 ST 和停牌字段，因此这段序列适合长期描述，不能与 2015 年后的清洗版本合并成同一质量等级。
 
-A 股清洗面板只有在来源目录的 `manifest.yml` 记录经过校验的 `inputs.st_history_file` 时，才可标记为 `verified`（保留持仓报价的面板为 `derived`）。没有这条血缘记录的旧数据标记为 `incomplete`，ST 资格视为未知，不进入新建仓股票池；保留持仓报价的模式仍可检查真实价格。该历史 ST 表按生效日期重建，历史修订可得性仍需单独审计。
+A 股清洗面板只有在 `manifest.yml` 声明 `tushare.a_share.daily_clean.v2`、记录 `inputs.st_history_file` 和 `market-data-platform.reconstructed-st-history.v2` receipt，并声明 `daily_clean.st_available_from.v1` 契约时，才可将 ST 来源标记为已验证。保留持仓报价的面板为 `derived`。旧版或缺少 `st_available_from` 的数据标记为 `incomplete`，ST 资格视为未知，不得用于新建仓。对 `is_st=true` 的行，只有 `st_available_from` 不晚于决策日时才可确认当日状态；日期缺失或晚于决策日时资格仍未知。保留持仓报价的模式仍可检查真实价格。该历史 ST 表按生效日期重建，receipt 中的 `revision_safe=false` 表示历史修订可得性仍未完全得到证明。
 
 页面只展示审核后的摘要或降采样结果，不读取完整逐股票逐日面板。当前小微盘成交额页面读取 `web/public/data/smallcap_turnover.json`，内容包括年度和月度汇总、覆盖质量、N=1 极端诊断、股票数量选项和重叠审计摘要。完整的清洗日频结果、历史日频结果和审计明细保存在仓库外。
 

@@ -32,8 +32,25 @@ def test_a_share_formation_requires_explicit_eligibility_evidence():
     frame["is_tradable"] = True
     frame["is_st"] = False
     frame["is_suspended"] = False
+    frame["st_available_from"] = None
     result = build_quantile_returns(frame, "market_cap", quantiles=2)
     assert result["count"].sum() == 4
+
+
+def test_a_share_formation_requires_st_availability_and_fails_closed():
+    frame = panel(4)
+    frame["market"] = "a_share"
+    frame["is_tradable"] = True
+    frame["is_st"] = False
+    frame["is_suspended"] = False
+    with pytest.raises(ValueError, match="st_available_from"):
+        build_quantile_returns(frame, "market_cap", quantiles=2)
+
+    frame["st_available_from"] = None
+    frame.loc[frame.index[0], "is_st"] = True
+    frame.loc[frame.index[0], "st_available_from"] = "20240102"
+    result = build_quantile_returns(frame, "market_cap", quantiles=2)
+    assert result["count"].sum() == 3
 
 
 def build(frame, entrypoint, quantiles=5, holding_period=1):

@@ -39,7 +39,7 @@ def build_quantile_returns(
     if missing:
         raise ValueError("missing panel columns: " + ", ".join(sorted(missing)))
     if "market" in panel.columns and panel["market"].astype("string").str.lower().eq("a_share").any():
-        eligibility = {"is_tradable", "is_st", "is_suspended"}
+        eligibility = {"is_tradable", "is_st", "is_suspended", "st_available_from"}
         absent = eligibility.difference(panel.columns)
         if absent:
             raise ValueError("A-share eligibility columns are required: " + ", ".join(sorted(absent)))
@@ -51,6 +51,19 @@ def build_quantile_returns(
         "factor": pd.to_numeric(panel[factor_column], errors="coerce").astype(float),
         "price": pd.to_numeric(panel[return_column], errors="coerce").astype(float),
     })
+    is_a_share = (
+        panel["market"].astype("string").str.lower().eq("a_share")
+        if "market" in panel else pd.Series(False, index=panel.index)
+    )
+    st_known_for_date = pd.Series(True, index=panel.index)
+    if is_a_share.any():
+        st_state = panel["is_st"].astype("boolean")
+        available = pd.to_datetime(panel["st_available_from"], errors="coerce")
+        available_by_date = available.notna() & available.le(frame["date"])
+        st_known_for_date.loc[is_a_share] = (
+            (st_state.eq(False) & available.isna())
+            | (st_state.eq(True) & available_by_date)
+        ).loc[is_a_share].fillna(False)
     if frame.duplicated(["symbol", "date"]).any():
         raise ValueError("duplicate symbol/date rows in panel")
     for column, default in (("is_tradable", True), ("is_st", False), ("is_suspended", False)):
@@ -71,6 +84,7 @@ def build_quantile_returns(
         & frame["symbol"].notna() & frame["symbol"].str.strip().ne("")
         & np.isfinite(frame["factor"])
         & np.isfinite(frame["price"]) & frame["price"].gt(0)
+        & st_known_for_date
         & frame["is_tradable"] & ~frame["is_st"] & ~frame["is_suspended"]
     )
     eligible = frame.loc[formation_mask & frame["target_date"].notna()].copy()

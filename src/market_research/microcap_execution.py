@@ -14,7 +14,7 @@ import yaml
 
 PANEL_COLUMNS = {
     "ts_code", "trade_date", "close", "adj_close", "total_mv", "amount",
-    "is_st", "is_suspended", "list_date", "delist_date",
+    "is_st", "st_available_from", "is_suspended", "list_date", "delist_date",
 }
 ST_TIMING_POLICY_ID = "announced_prior_close_only.v1"
 
@@ -56,20 +56,32 @@ def load_clean_panel(asset: Path, instruments: Path, start: str, end: str) -> pd
     st_source = (manifest.get("inputs") or {}).get("st_history_file")
     if not st_source:
         raise ValueError("clean daily asset has no dated ST source lineage")
+    if (
+        manifest.get("schema_version") != "tushare.a_share.daily_clean.v2"
+        or (manifest.get("inputs") or {}).get("st_history_receipt_schema")
+        != "market-data-platform.reconstructed-st-history.v2"
+        or (manifest.get("contracts") or {}).get("st_availability")
+        != "daily_clean.st_available_from.v1"
+    ):
+        raise ValueError("clean daily asset has no versioned ST availability contract")
     st_path = Path(st_source)
     receipt_path = st_path.with_suffix(".receipt.json")
     if not st_path.is_file() or not receipt_path.is_file():
         raise FileNotFoundError(f"published ST history or receipt is missing: {st_path}")
     st_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
-    if st_receipt.get("quality_status") != "complete":
-        raise ValueError("published ST history is not quality complete")
+    if (
+        st_receipt.get("quality_status") != "complete"
+        or st_receipt.get("schema_version")
+        != "market-data-platform.reconstructed-st-history.v2"
+    ):
+        raise ValueError("published ST history receipt is not complete v2")
     if not instruments.is_file():
         raise FileNotFoundError(f"instrument snapshot is missing: {instruments}")
     connection = duckdb.connect()
     try:
         panel = connection.execute(
             """SELECT ts_code, trade_date, close, adj_close, total_mv, amount,
-                      is_st, is_suspended, list_date
+                      is_st, st_available_from, is_suspended, list_date
                FROM read_parquet(?) WHERE trade_date BETWEEN ? AND ?""",
             [files, start, end],
         ).fetchdf()
@@ -139,6 +151,13 @@ def build_replay_inputs(
     source = panel.copy()
     source["trade_date"] = source.trade_date.astype(str)
     source["ts_code"] = source.ts_code.astype(str)
+    source["is_st"] = source.is_st.astype("boolean")
+    available = pd.to_datetime(source.st_available_from, format="%Y%m%d", errors="coerce")
+    decision_date = pd.to_datetime(source.trade_date, format="%Y%m%d", errors="coerce")
+    unavailable_st = (
+        source.is_st.eq(True) & (available.isna() | available.gt(decision_date))
+    ) | (source.is_st.eq(False) & available.notna())
+    source.loc[unavailable_st, "is_st"] = pd.NA
     if source.duplicated(["trade_date", "ts_code"]).any():
         raise ValueError("clean panel has duplicate symbol/date keys")
     days = sorted(source.trade_date.unique().tolist())
