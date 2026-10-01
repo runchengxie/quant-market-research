@@ -6,6 +6,8 @@ Reproducible public market research methods, reviewed derived results, and a res
 
 Private strategies and models are maintained by `quant-research`. Market data is owned by `quant-market-data-platform`. Shared backtesting and execution simulation come from `quant-platform`.
 
+This repository owns independent public market research projects, their reproducible methods, and project-specific evidence. The [Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) owns factor catalog organization, standardized factor studies, publication status, and reviewed projections under its publication contract. When a topic appears in both places, each site links to the authoritative source recorded in the study or publication manifest instead of copying the full material.
+
 ## Browse the research
 
 - [Research website](https://runchengxie.github.io/quant-market-research/)

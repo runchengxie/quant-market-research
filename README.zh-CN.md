@@ -6,6 +6,8 @@
 
 本项目属于 Quant Research 项目系列，与同系列的数据、研究框架和交付项目各自独立维护、按接口协作。私有策略和模型由 `quant-research` 管理，市场原始数据由 `quant-market-data-platform` 管理，通用回测能力由 `quant-platform` 提供。
 
+本仓库维护独立的公开市场研究项目、可复现方法和项目级证据。[Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) 负责因子目录组织、标准化因子专题、发布状态和符合其发布契约的审核投影。同一主题同时出现在两站时，以专题或发布 manifest 标注的权威来源为准，通过链接导览，不复制整份材料。
+
 ## 浏览研究
 
 - [研究网页](https://runchengxie.github.io/quant-market-research/)
