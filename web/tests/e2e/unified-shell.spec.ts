@@ -41,6 +41,21 @@ test('a shared locale URL overrides a conflicting saved preference', async ({ pa
   await expect(page.locator('main h1')).toHaveText('现金流历史研究');
 });
 
+test('an unsupported URL locale falls back to the saved supported locale', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('quant-market-research-locale', 'zh-CN'));
+  await page.goto('research/cashflow/?lang=fr-FR');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
+  await expect(page.locator('main h1')).toHaveText('现金流历史研究');
+});
+
+test('unsupported URL and saved locales fall back to English', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('quant-market-research-locale', 'fr-FR'));
+  await page.goto('research/cashflow/?lang=fr-FR');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+  await expect(page.locator('main h1')).toHaveText('Cash-flow history');
+  await expect(page.getByRole('button', { name: 'Switch to Chinese' })).toBeVisible();
+});
+
 test('shareable English URLs keep research and methods cards in English', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('quant-market-research-locale', 'zh-CN'));
 
