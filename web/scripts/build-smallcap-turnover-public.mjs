@@ -2,8 +2,9 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseCsv } from "./csv.mjs";
+import { resolveMarketResearchOutputRoot } from "./market-research-output-root.mjs";
 
-const outputRoot = process.env.MARKET_RESEARCH_OUTPUT_ROOT ?? "/home/richard/data/market-research/outputs";
+const outputRoot = resolveMarketResearchOutputRoot();
 const publicPath = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../public/data/smallcap_turnover.json");
 
 function median(values) {
