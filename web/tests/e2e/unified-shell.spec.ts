@@ -40,3 +40,19 @@ test('a shared locale URL overrides a conflicting saved preference', async ({ pa
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
   await expect(page.locator('main h1')).toHaveText('现金流历史研究');
 });
+
+test('shareable English URLs keep research and methods cards in English', async ({ page }) => {
+  await page.addInitScript(() => localStorage.setItem('quant-market-research-locale', 'zh-CN'));
+
+  await page.goto('research/?lang=en-US');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+  await expect(page.locator('main h1')).toHaveText('Explore data and charts by research question');
+  await expect(page.getByRole('heading', { name: 'Cash Flow and Dividends' })).toBeVisible();
+  await expect(page.getByText('View topic →').first()).toBeVisible();
+
+  await page.goto('docs/?lang=en-US');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+  await expect(page.locator('main h1')).toHaveText('Charts show what happened; documentation explains how to read them');
+  await expect(page.getByRole('heading', { name: 'Methods and dictionary' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'Low-turnover Method' })).toBeVisible();
+});
