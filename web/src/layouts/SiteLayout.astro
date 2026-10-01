@@ -27,7 +27,11 @@ const pageTitle = `${titleEn} · Quant Market Research`;
     <script is:inline>
       (() => {
         try {
-          const locale = localStorage.getItem("quant-market-research-locale") === "zh-CN" ? "zh-CN" : "en-US";
+          const requested = new URLSearchParams(window.location.search).get("lang");
+          const saved = localStorage.getItem("quant-market-research-locale");
+          const locale = requested === "zh-CN" || requested === "en-US"
+            ? requested
+            : saved === "zh-CN" ? "zh-CN" : "en-US";
           document.documentElement.lang = locale;
           document.documentElement.dataset.locale = locale;
           const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");
@@ -59,9 +63,7 @@ const pageTitle = `${titleEn} · Quant Market Research`;
   <script is:inline>
     (() => {
       const storageKey = "quant-market-research-locale";
-      let stored = null;
-      try { stored = localStorage.getItem(storageKey); } catch { /* storage is optional */ }
-      const locale = stored === "zh-CN" ? "zh-CN" : "en-US";
+      const locale = document.documentElement.dataset.locale === "zh-CN" ? "zh-CN" : "en-US";
       document.documentElement.lang = locale;
       document.documentElement.dataset.locale = locale;
       const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");
@@ -77,7 +79,9 @@ const pageTitle = `${titleEn} · Quant Market Research`;
         toggle.addEventListener("click", () => {
           const next = document.documentElement.lang === "en-US" ? "zh-CN" : "en-US";
           try { localStorage.setItem(storageKey, next); } catch { /* storage is optional */ }
-          window.location.reload();
+          const url = new URL(window.location.href);
+          url.searchParams.set("lang", next);
+          window.location.assign(url.toString());
         });
       }
     })();
