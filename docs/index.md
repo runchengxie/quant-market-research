@@ -18,3 +18,7 @@ English and Chinese pages have separate stable URLs. Use the language link at th
 - [Barra source inventory](research/factors/barra-source-inventory.md): source material suitable for public research.
 
 Historical research results are evidence for further investigation. They are not trading recommendations or claims of future returns.
+
+## Where factor research is published
+
+Use this site for independent market research projects and their reproducible methods, sample definitions, results, and limitations. The [Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) owns factor catalog organization, standardized factor studies, publication status, and reviewed projections under its publication contract. When a topic appears on both sites, follow the source identity in its study page or publication manifest; link to the authoritative material rather than copying it. Private strategy research remains in `quant-research`; publication there requires a separate review and redacted projection.

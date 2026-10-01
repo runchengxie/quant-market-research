@@ -16,3 +16,7 @@
 - [2008–2014 年小市值成交活跃度补充](research/factors/smallcap-turnover-history.md)：记录早年 Tushare 日频成交额统计和数据边界。
 
 网页负责展示图表和交互，说明站提供因子研究的方法、数据口径和证据限制。网站构建方式、实施计划和运行手册属于维护资料，不作为公开研究内容。
+
+## 因子研究发布去向
+
+独立市场研究项目及其可复现方法、样本定义、结果和限制放在本站。[Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) 负责因子目录组织、标准化因子专题、发布状态和符合其发布契约的审核投影。同一主题同时出现在两站时，以专题页或发布 manifest 中的来源身份为准，链接到权威材料，不复制整份内容。私有策略研究仍由 `quant-research` 维护；公开发布需要单独审核并生成脱敏投影。
