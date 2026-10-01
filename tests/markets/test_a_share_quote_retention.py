@@ -14,6 +14,7 @@ def source_rows():
             "ts_code": symbol, "trade_date": date, "close": 10 + t,
             "adj_close": 10 + t, "vol": 100, "amount": 100.0,
             "total_mv": cap, "is_st": False, "is_suspended": False,
+            "st_available_from": None,
         }
         for symbol, cap in [("000001.SZ", 1.0), ("000002.SZ", 2.0)]
         for t, date in enumerate(["2024-01-01", "2024-01-02", "2024-01-03"])
@@ -26,7 +27,10 @@ def write_source(root, frame):
     # Partition filenames need not equal the security identifier.
     frame.to_parquet(root / "part-000.parquet", index=False)
     (root / "manifest.yml").write_text(
-        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
 
@@ -41,6 +45,10 @@ def test_holding_marks_survive_ineligibility_without_new_formation(tmp_path, eng
     frame = source_rows()
     future_a = frame.ts_code.eq("000001.SZ") & frame.trade_date.ne("2024-01-01")
     frame.loc[future_a, column] = value
+    if column == "is_st" and value is True:
+        frame.loc[future_a, "st_available_from"] = (
+            frame.loc[future_a, "trade_date"].str.replace("-", "")
+        )
     write_source(tmp_path, frame)
     panel, metadata = build_a_share_panel(tmp_path, use_duckdb=engine, retain_ineligible_quotes=True)
     assert len(panel) == 6
@@ -62,6 +70,7 @@ def test_holding_marks_survive_ineligibility_without_new_formation(tmp_path, eng
 def test_engines_agree_and_default_filters_ineligible_rows(tmp_path, retain):
     frame = source_rows()
     frame.loc[[1, 2], "is_st"] = True
+    frame.loc[[1, 2], "st_available_from"] = frame.loc[[1, 2], "trade_date"].str.replace("-", "")
     write_source(tmp_path, frame)
     pandas_panel, _ = build_a_share_panel(tmp_path, retain_ineligible_quotes=retain)
     duck_panel, _ = build_a_share_panel(tmp_path, use_duckdb=True, retain_ineligible_quotes=retain)
@@ -92,6 +101,7 @@ def test_retention_honors_as_of_and_never_fills_missing_price(tmp_path, engine):
     frame["adj_close"] = frame.adj_close.astype(float)
     frame.loc[1, "adj_close"] = np.nan
     frame.loc[1, "is_st"] = True
+    frame.loc[1, "st_available_from"] = frame.loc[1, "trade_date"].replace("-", "")
     write_source(tmp_path, frame)
     panel, _ = build_a_share_panel(
         tmp_path, as_of="2024-01-02", use_duckdb=engine, retain_ineligible_quotes=True
@@ -108,7 +118,10 @@ def test_symbols_fall_back_to_filename_only_without_ts_code(tmp_path, engine):
     frame = source_rows().loc[lambda x: x.ts_code.eq("000001.SZ")].drop(columns="ts_code")
     frame.to_parquet(tmp_path / "000001.SZ.parquet", index=False)
     (tmp_path / "manifest.yml").write_text(
-        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
     panel, _ = build_a_share_panel(tmp_path, use_duckdb=engine)
@@ -119,7 +132,10 @@ def test_pandas_uses_actual_security_code_even_for_single_file(tmp_path):
     source = tmp_path / "part-000.parquet"
     source_rows().to_parquet(source, index=False)
     (tmp_path / "manifest.yml").write_text(
-        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
     panel, _ = build_a_share_panel(source)
@@ -130,7 +146,10 @@ def test_normalize_preserves_extra_columns_flags_and_attrs(tmp_path):
     # Use one security so the original loader can supply valid canonical data.
     source_rows().iloc[:3].to_parquet(tmp_path / "000001.SZ.parquet", index=False)
     (tmp_path / "manifest.yml").write_text(
-        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
     panel, metadata = build_a_share_panel(tmp_path)
@@ -194,6 +213,7 @@ def test_retained_metadata_distinguishes_derived_from_incomplete(tmp_path, engin
     frame = source_rows()
     if case == "known_st_holding_quote":
         frame.loc[1, "is_st"] = True
+        frame.loc[1, "st_available_from"] = frame.loc[1, "trade_date"].replace("-", "")
     elif case == "unknown_st":
         frame.loc[1, "is_st"] = pd.NA
     elif case == "unknown_suspension":

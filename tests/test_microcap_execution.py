@@ -22,6 +22,7 @@ def _inputs() -> tuple[pd.DataFrame, pd.DataFrame, pd.DataFrame]:
                 "ts_code": symbol, "trade_date": day,
                 "close": 10.0, "adj_close": 20.0, "total_mv": 1.0 if symbol == "B.SZ" else 2.0,
                 "amount": 1000.0, "is_st": False, "is_suspended": False,
+                "st_available_from": None,
                 "list_date": "20200101", "delist_date": None,
             })
     panel = pd.DataFrame(rows)
@@ -135,3 +136,60 @@ def test_clean_panel_requires_dated_st_lineage(tmp_path) -> None:
     (asset / "manifest.yml").write_text("status: completed\ninputs: {}\n", encoding="utf-8")
     with pytest.raises(ValueError, match="dated ST source lineage"):
         load_clean_panel(asset, instruments, "20250102", "20250106")
+
+
+def test_clean_panel_reads_versioned_st_availability(tmp_path) -> None:
+    asset = tmp_path / "daily"
+    data = asset / "data"
+    data.mkdir(parents=True)
+    st_history = tmp_path / "st_history_reconstructed.parquet"
+    st_history.touch()
+    st_history.with_suffix(".receipt.json").write_text(
+        json.dumps({
+            "quality_status": "complete",
+            "schema_version": "market-data-platform.reconstructed-st-history.v2",
+        }), encoding="utf-8"
+    )
+    (asset / "manifest.yml").write_text(
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "status: completed\n"
+        f"inputs:\n  st_history_file: {st_history}\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
+        encoding="utf-8",
+    )
+    pd.DataFrame(
+        {
+            "ts_code": ["A.SZ"], "trade_date": ["20250102"], "close": [10.0],
+            "adj_close": [10.0], "total_mv": [2.0], "amount": [1000.0],
+            "is_st": [True], "st_available_from": ["20250103"],
+            "is_suspended": [False], "list_date": ["20200101"],
+        }
+    ).to_parquet(data / "A.SZ.parquet")
+    instruments = tmp_path / "instruments.parquet"
+    pd.DataFrame({"ts_code": ["A.SZ"], "delist_date": [None]}).to_parquet(instruments)
+
+    panel = load_clean_panel(asset, instruments, "20250102", "20250102")
+
+    assert panel.loc[0, "st_available_from"] == "20250103"
+
+
+def test_clean_panel_requires_versioned_st_availability(tmp_path) -> None:
+    panel, limits, events = _inputs()
+    with pytest.raises(ValueError, match="st_available_from"):
+        build_replay_inputs(
+            panel.drop(columns="st_available_from"), limits, events, constituent_count=1
+        )
+
+
+def test_unavailable_st_state_fails_closed_for_replay() -> None:
+    panel, limits, events = _inputs()
+    row = panel.ts_code.eq("B.SZ") & panel.trade_date.eq("20250102")
+    panel.loc[row, "is_st"] = True
+    panel.loc[row, "st_available_from"] = "20250103"
+
+    positions, pricing, _, _ = build_replay_inputs(
+        panel, limits, events, constituent_count=1
+    )
+
+    assert positions.loc[positions.rebalance_date.eq("20250102"), "symbol"].tolist() == ["A.SZ"]

@@ -5,7 +5,10 @@ import pandas as pd
 
 def _dated_st_manifest(root: Path) -> None:
     (root / "manifest.yml").write_text(
-        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
 
@@ -17,7 +20,7 @@ def test_liquidity_report_command_writes_bundle_for_configured_sources(tmp_path:
     a_share.mkdir()
     _dated_st_manifest(a_share)
     pd.DataFrame(
-        {"trade_date": ["2026-01-01"], "amount": [1000.0], "total_mv": [5000.0], "is_st": [False], "is_suspended": [False]}
+        {"trade_date": ["2026-01-01"], "amount": [1000.0], "total_mv": [5000.0], "is_st": [False], "st_available_from": [None], "is_suspended": [False]}
     ).to_parquet(a_share / "000001.SZ.parquet")
     config = tmp_path / "config.toml"
     output = tmp_path / "outputs"
@@ -54,6 +57,7 @@ def test_microcap_report_command_writes_reconstruction_outputs(tmp_path: Path):
             "amount": [1000.0, 1100.0],
             "total_mv": [5000.0, 5000.0],
             "is_st": [False, False],
+            "st_available_from": [None, None],
             "is_suspended": [False, False],
         }
     ).to_parquet(a_share / "000001.SZ.parquet")

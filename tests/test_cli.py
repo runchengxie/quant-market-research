@@ -6,7 +6,10 @@ import pandas as pd
 
 def _dated_st_manifest(root: Path) -> None:
     (root / "manifest.yml").write_text(
-        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n",
+        "schema_version: tushare.a_share.daily_clean.v2\n"
+        "inputs:\n  st_history_file: /fixture/validated-st-history.parquet\n"
+        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
 
@@ -41,6 +44,7 @@ def test_barra_report_writes_summary_and_size_quantiles(tmp_path: Path):
                 "amount": [100, 100],
                 "total_mv": [cap, cap],
                 "is_st": [False] * 2,
+                "st_available_from": [None] * 2,
                 "is_suspended": [False] * 2,
             }
         ).to_parquet(source / f"{code}.parquet", index=False)
@@ -83,6 +87,7 @@ def test_barra_risk_input_report_writes_pit_panels(tmp_path: Path):
                 "amount": [100, 100, 100],
                 "total_mv": [cap] * 3,
                 "is_st": [False] * 3,
+                "st_available_from": [None] * 3,
                 "is_suspended": [False] * 3,
             }
         ).to_parquet(source / f"{code}.parquet", index=False)
@@ -119,6 +124,7 @@ def test_smallcap_turnover_report_writes_daily_stats_and_summary(tmp_path: Path)
                 "amount": [cap * 10, cap * 20],
                 "total_mv": [cap, cap],
                 "is_st": [False, False],
+                "st_available_from": [None, None],
                 "is_suspended": [False, False],
             }
         ).to_parquet(source / f"{code}.parquet", index=False)
