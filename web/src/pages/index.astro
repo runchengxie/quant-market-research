@@ -14,6 +14,6 @@ const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/m
 
 <SiteLayout title="研究总览" titleEn="Research overview" description="An overview of historical market research and public data." activeRoute="overview">
   <LegacyHashRedirect />
-  <FreshnessStrip snapshot={manifest.snapshots?.overview ?? {}} snapshotKey="overview" label="公开快照总览" />
   <OverviewContent recovery={recovery} barra={barra} />
+  <FreshnessStrip snapshot={manifest.snapshots?.overview ?? {}} snapshotKey="overview" label="公开快照总览" />
 </SiteLayout>

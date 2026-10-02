@@ -539,3 +539,7 @@ body { font-size: 15px; line-height: 1.75; }
 @media (max-width: 480px) {
   .site-masthead, .site-nav, .site-main, .site-footer { width: calc(100% - 28px); }
 }
+
+.research-verdict { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--line, #ccc); border-radius: 12px; }
+.research-verdict h2 { margin-top: 0; }
+.research-verdict p { max-width: 80ch; line-height: 1.7; }

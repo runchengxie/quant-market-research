@@ -2,6 +2,7 @@
 import SiteLayout from "../layouts/SiteLayout.astro";
 import FreshnessStrip from "./FreshnessStrip.astro";
 import ResearchContext from "./research/ResearchContext.astro";
+import { conclusionCopy } from "../conclusion-copy";
 import TopicNav from "./TopicNav.astro";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
@@ -39,17 +40,21 @@ const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
     <div>
       <span class="section-kicker" data-locale-text data-en={kickerEn} data-zh={kicker}>{kickerEn}</span>
       <h1 data-locale-text data-en={titleEn} data-zh={title}>{titleEn}</h1>
-      <p data-locale-text data-en={introductionEn} data-zh={introduction}>{introductionEn}</p>
+      <p data-locale-text data-en={compact ? conclusionCopy.byTopic[snapshotKey].en : introductionEn} data-zh={compact ? conclusionCopy.byTopic[snapshotKey].zh : introduction}>{compact ? conclusionCopy.byTopic[snapshotKey].en : introductionEn}</p>
     </div>
   </section>
+  {!compact && <section class="research-verdict" aria-labelledby="current-conclusion">
+    <h2 id="current-conclusion" data-locale-text data-en={conclusionCopy.heading.en} data-zh={conclusionCopy.heading.zh}>{conclusionCopy.heading.en}</h2>
+    <span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span>
+    <p data-locale-text data-en={conclusionCopy.byTopic[snapshotKey].en} data-zh={conclusionCopy.byTopic[snapshotKey].zh}>{conclusionCopy.byTopic[snapshotKey].en}</p>
+    <p><strong data-locale-text data-en={conclusionCopy.boundary.en} data-zh={conclusionCopy.boundary.zh}>{conclusionCopy.boundary.en}</strong> · <span data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</span></p>
+    <small>{snapshot.coverage_start ?? '—'} — {snapshot.coverage_end ?? '—'}</small>
+  </section>}
   <TopicNav sections={topicSections} />
-  {compact ? <>
+  {compact && <>
     <div class="workbench-meta"><span data-locale-text data-en="Historical sample" data-zh="历史样本">Historical sample</span><strong>{snapshot.coverage_start ?? "Date pending"} — {snapshot.coverage_end ?? "Date pending"}</strong><span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span></div>
     <p class="workbench-boundary" data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</p>
-  </> : <>
-    <p class="fine-print"><span class="section-kicker" data-locale-text data-en="Reading boundary" data-zh="阅读边界">Reading boundary</span><br /><span data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</span></p>
-    <div id="research-method"><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></div>
   </>}
   <div id="topic-content"><slot /></div>
-  {compact && <details id="research-method" class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
+  {<details id="research-method" class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
 </SiteLayout>
