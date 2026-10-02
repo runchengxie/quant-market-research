@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import argparse
 import json
 import shutil
 from pathlib import Path
@@ -7,7 +8,6 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 TARGET = ROOT / "web" / "public" / "data"
-INDEX_ROOT = Path("/home/richard/code/index-research/web/public/outputs")
 
 
 INDEX_FILES = (
@@ -37,6 +37,11 @@ INDEX_FILES = (
 
 
 def copy_files(source_root: Path, target_root: Path, files: tuple[str, ...]) -> int:
+    # Missing snapshots must fail before any existing public file is replaced.
+    for relative in files:
+        source = source_root / relative
+        if not source.is_file():
+            raise FileNotFoundError(source)
     copied = 0
     for relative in files:
         source = source_root / relative
@@ -49,19 +54,37 @@ def copy_files(source_root: Path, target_root: Path, files: tuple[str, ...]) -> 
     return copied
 
 
-def main() -> None:
-    if not INDEX_ROOT.exists():
-        raise SystemExit(f"missing index-research public output: {INDEX_ROOT}")
-    copied = copy_files(INDEX_ROOT, TARGET / "index", INDEX_FILES)
-
-    manifest_path = TARGET / "manifest.json"
+def main(argv: list[str] | None = None) -> None:
+    parser = argparse.ArgumentParser(
+        description="Migrate reviewed derived index snapshots; not a refresh job."
+    )
+    parser.add_argument(
+        "--source-root",
+        type=Path,
+        required=True,
+        help="Directory containing reviewed public index outputs.",
+    )
+    parser.add_argument(
+        "--target-root",
+        type=Path,
+        default=TARGET,
+        help="Public snapshot directory containing manifest.json.",
+    )
+    args = parser.parse_args(argv)
+    source_root = args.source_root.expanduser().resolve()
+    target_root = args.target_root.expanduser().resolve()
+    if source_root == (target_root / "index").resolve():
+        raise SystemExit("source and destination must differ")
+    manifest_path = target_root / "manifest.json"
     manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-    manifest["included_snapshots"] = {
-        "index_research_files": copied - 10,
-        "raw_data_published": False,
-    }
-    manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print(f"copied {copied} derived public snapshot files into {TARGET}")
+    if not isinstance(manifest, dict) or not isinstance(manifest.get("included_snapshots"), dict):
+        raise SystemExit("manifest must contain an included_snapshots object")
+    copied = copy_files(source_root, target_root / "index", INDEX_FILES)
+    manifest["included_snapshots"].update(index_research_files=copied, raw_data_published=False)
+    manifest_path.write_text(
+        json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
+    print(f"copied {copied} derived public snapshot files into {target_root}")
 
 
 if __name__ == "__main__":
