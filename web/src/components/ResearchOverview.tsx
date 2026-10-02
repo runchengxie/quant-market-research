@@ -19,7 +19,7 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
       <div>
         <span className="section-kicker">{t('重点研究 · Barra 风格因子', 'Featured study · Barra-style factors')}</span>
         <h2>{t('18 年 A 股风格因子动态：收益、稳定性与市场阶段', '18-year A-share style factors: returns, stability, and market regimes')}</h2>
-        <p>{t('这项研究帮助读者比较不同风格因子在 A 股各个市场阶段的表现。页面汇总历史分组收益、年度变化和因子相关性，IC、样本外验证与统计显著性仍在补充。', 'Compare style-factor performance across A-share market regimes. The page summarizes grouped returns, annual changes, and correlations; IC, out-of-sample validation, and statistical significance remain under review.')}</p>
+        <p>{t('已有历史风格因子对照，但尚不能认定为已验证的预测性 Alpha。IC、样本外验证与统计显著性仍在补充。', 'Historical style-factor comparisons are available, but they do not establish validated predictive alpha. IC, out-of-sample validation, and statistical significance remain under review.')}</p>
         <div className="featured-facts" aria-label={t('研究范围', 'Research scope')}><span><strong>{t('18 年', '18 years')}</strong>{t('历史样本', ' of history')}</span><span><strong>{t('19 个', '19')}</strong>{t('历史因子', ' historical factors')}</span><span><strong>{t('分年度', 'Annual')}</strong>{t('和分阶段比较', ' and regime comparisons')}</span></div>
       </div>
       <a href={withBase(PUBLIC_ROUTES.styleFactors, import.meta.env?.BASE_URL ?? "/")}>{t('进入风格因子研究 ↗', 'Open style-factor research ↗')}</a>
