@@ -149,7 +149,20 @@ npm run e2e
 
 构建后可运行 `npm run report:bundle` 查看静态 HTML、CSS 和 JavaScript 的实际大小。该报告只记录当前结果，不把某个体积阈值当作研究网站的功能门槛。当前最大的文件通常是 ECharts 图表包，后续拆分专题时再比较变化。已发布的测量值见[网页静态产物基线](web-bundle-baseline.md)。
 
-Python、Ruff 和 MkDocs 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流会先构建 Astro 网站，再生成 MkDocs 说明站，检查路由、资源和公开数据边界，并运行浏览器冒烟测试。公开输出位于 `web/dist/`。`scripts/sync_public_research_data.py` 依赖旧 `index-research` 仓库的本地产物，仅供迁移期间使用，不属于当前发布流程。
+Python、Ruff 和 MkDocs 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流会先构建 Astro 网站，再生成 MkDocs 说明站，检查路由、资源和公开数据边界，并运行浏览器冒烟测试。公开输出位于 `web/dist/`。
+
+`scripts/sync_public_research_data.py` 仅用于迁移已经审查的指数派生快照，不属于当前发布流程。
+必须显式提供包含旧输出格式的来源目录，不再推断旧仓库位置：
+
+```bash
+python scripts/sync_public_research_data.py --source-root /path/to/reviewed-index-outputs
+```
+
+可通过 `--target-root` 指定包含 `manifest.json` 的公开快照目标目录，默认是
+`web/public/data`。脚本先读取并检查清单、检查全部必需来源文件，再复制快照；缺失
+来源文件不会造成部分覆盖。复制成功后更新准确的指数文件数，并保留其他快照统计。
+这不是跨文件事务，复制过程中发生磁盘或权限错误仍可能留下部分更新；来源内容的
+公开审查必须在执行前完成。不要将原始数据或私有策略产物作为来源。
 
 ## Barra / 风格因子报告
 
