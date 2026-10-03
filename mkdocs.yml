@@ -11,6 +11,9 @@ theme:
   features:
     - navigation.top
 
+hooks:
+  - locale_navigation.py
+
 # The repository's internal runbooks include local-only paths and operational
 # details. Only reviewed public research notes are included in GitHub Pages.
 exclude_docs: |
@@ -52,6 +55,17 @@ nav:
       - Small-cap turnover history: research/factors/smallcap-turnover-history.md
       - Barra factor dictionary: research/factors/barra-factor-dictionary.md
       - Barra source inventory: research/factors/barra-source-inventory.md
+  - 简体中文:
+      - 研究总览: index.zh-CN.md
+      - 因子研究:
+          - 研究收尾状态: research-closeout-status.zh-CN.md
+          - PB 与 ROE: research/factors/pb-roe.zh-CN.md
+          - 低换手: research/factors/low-turnover.zh-CN.md
+          - 微盘: research/factors/microcap.zh-CN.md
+          - 微盘执行诊断: research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md
+          - 小盘换手历史: research/factors/smallcap-turnover-history.zh-CN.md
+          - Barra 因子字典: research/factors/barra-factor-dictionary.zh-CN.md
+          - Barra 来源清单: research/factors/barra-source-inventory.zh-CN.md
 extra:
   public_site_url: https://runchengxie.github.io/quant-market-research/
 
