@@ -3,10 +3,10 @@ export const conclusionCopy = {
   heading: { en: 'Current conclusion', zh: '当前结论' },
   boundary: { en: 'Evidence boundary', zh: '证据边界' },
   byTopic: {
-    cashflow: { en: 'Cash-flow index history is observable, but an independently executable stock-portfolio replication remains under review. Price and total-return evidence must be read separately.', zh: '现金流指数历史可供观察，但独立可执行的股票组合复刻仍在核验中。价格收益与全收益证据须分别解读。' },
-    microcap: { en: 'The smallest-cap reconstruction remains conditional on missing-price treatment. Historical portfolio results cannot yet establish executable net returns.', zh: '最小市值组合重建结果仍取决于缺失价格的处理方式。历史组合结果尚不能证明可执行的净收益。' },
-    barra: { en: 'Style comparisons remain exploratory; PIT integrity and executable alpha are unverified.', zh: '历史风格对照仍属探索性证据；预测性 Alpha、时点完整性与可交易性尚未验证。' },
-    indices: { en: 'Index and ETF histories describe the observed market paths. Different coverage and return bases prevent treating every series as a directly comparable investment result.', zh: '指数与 ETF 历史描述已观察到的市场路径。覆盖区间与收益口径不同，不能将全部序列直接视为可比的投资结果。' },
-    liquidity: { en: 'Traded-value comparisons describe observed liquidity and coverage; they do not yet establish order-level capacity or implementation costs.', zh: '成交额对照描述已观察到的流动性与数据覆盖，尚不能确定订单层面的容量或实际交易成本。' },
+    cashflow: { en: 'Past cash-flow index results can be studied, but a real stock portfolio that follows those rules has not yet been fully rebuilt and checked. Price-only returns and returns including dividends answer different questions.', zh: '可以研究现金流指数过去的表现，但按规则买卖股票的组合还没有完整复现并核验。只看价格的收益和包含分红的收益回答的是不同问题。' },
+    microcap: { en: 'Rebuilt portfolios of the smallest stocks show large losses and long waits to recover old highs. Some prices and delisting outcomes are missing, so these historical results do not yet show what a real account could have earned.', zh: '按规则重建的小市值组合曾大幅下跌，也有多年没有回到前高。部分价格和退市结果缺失，因此这些历史结果还不能说明真实账户能赚多少。' },
+    barra: { en: 'These style-factor comparisons describe historical group differences. Financial data availability and future-period performance have not been fully checked, so the results do not establish a tradable edge.', zh: '这些风格因子对照描述的是历史分组差异。财务数据当时是否可得、未来时期能否重复以及能否实际交易，都还没有充分核实。' },
+    indices: { en: 'The index and ETF charts show different historical market paths. Their dates, fees, and treatment of dividends differ, so the numbers are not directly comparable investment results.', zh: '指数和 ETF 图表展示了不同的历史走势。日期范围、费用和分红处理方式可能不同，因此这些数字不能直接当成同一口径的投资结果比较。' },
+    liquidity: { en: 'Trading-value comparisons show how much the sampled stocks traded and how complete the data is. They do not yet tell us how large an order could be filled or what trading would cost.', zh: '成交额对照说明样本股票交易有多活跃、数据覆盖有多完整；它还不能回答大额订单能否成交或实际交易要花多少钱。' },
   },
 } as const;

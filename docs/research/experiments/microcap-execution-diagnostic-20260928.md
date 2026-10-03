@@ -7,3 +7,7 @@ The `microcap-execution-diagnostic` experiment selects the smallest N eligible s
 The diagnostic uses a 5% participation rate, T+1, daily limit-up and limit-down blocking, unfilled cash, and a simplified 5-basis-point per-trade cost. Prices use the cleaned daily `adj_close` proxy. Targets, orders, fills, daily cash, and NAV ledgers remain outside the repository. Only runtime-validated ledgers are copied into the diagnostic directory, and `summary.json` records the job ID.
 
 This diagnostic ledger is separate from historical paper returns. It is an execution feasibility check, not a live-trading result or strategy promotion.
+
+**In plain language:** A short historical list of target stocks was sent through a public trading simulator to see what could be bought or sold under basic trading limits. This checks whether the simulation process runs; it does not show that the strategy makes money. The sample is short, and both prices and costs are simplified.
+
+A **5% participation rate** limits simulated trading in a stock to 5% of its daily trading value. **T+1** means a stock bought today cannot be sold until the next trading day. **Five basis points** equals a 0.05% assumed cost per trade. Any unfilled amount stays in cash.
