@@ -51,6 +51,16 @@ for (const route of [
   });
 }
 
+test('English research overview uses English punctuation in generated findings', async ({ page }) => {
+  await page.goto('?lang=en-US');
+  await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
+  const conclusions = await page.locator('.evidence-conclusion').allInnerTexts();
+  expect(conclusions.length).toBeGreaterThan(0);
+  expect(conclusions.join('\n')).not.toMatch(/[。，；：“”]/);
+  expect(conclusions[0]).toMatch(/calendar days\.$/);
+  expect(conclusions[1]).toMatch(/calendar days\.$/);
+});
+
 test('style-factor language switch preserves the selected factor and its metrics', async ({ page }) => {
   await page.goto('research/style-factors-18y/?factor=quality');
   const metrics = page.locator('.factor-stats');
