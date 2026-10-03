@@ -25,7 +25,7 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
       <a href={withBase(PUBLIC_ROUTES.styleFactors, import.meta.env?.BASE_URL ?? "/")}>{t('进入风格因子研究 ↗', 'Open style-factor research ↗')}</a>
     </section>
     <section className="research-library" aria-label={t('研究目录', 'Research library')}>
-      <div className="theme-heading library-heading"><div><span className="section-kicker">{t('研究目录', 'Research library')}</span><h2>{t('按关心的问题进入报告', 'Enter through a research question')}</h2><p>{t('先看每项研究的结论和数据范围，再打开专题核对数字。更细的计算规则、数据来源和审计记录也都保留在文档区。', 'Start with each study’s finding and sample, then open the topic to check the numbers. Full calculation rules, sources, and audit notes remain in the documentation.')}</p></div></div>
+      <div className="theme-heading library-heading"><div><span className="section-kicker">{t('研究目录', 'Research library')}</span><h2>{t('按关心的问题进入报告', 'Enter through a research question')}</h2><p>{t('先浏览每项研究的结论和证据范围，再看结论对应的时间段与股票范围。打开专题后可以核对图表和数字；详细方法与数据口径收录在文档区。', 'Start with each study’s finding and sample, then open the topic to check the numbers. Full calculation rules, sources, and audit notes remain in the documentation.')}</p></div></div>
     </section>
     <section className="evidence-grid overview-evidence-grid" aria-label={t('各专题研究进展', 'Research progress by topic')}>
       <EvidenceCard domain="基本面与现金流" title="现金流" href={withBase(PUBLIC_ROUTES.cashflow, import.meta.env?.BASE_URL ?? "/")} status={cashflow ? '指数数据已检查' : '数据暂不可用'}
