@@ -685,6 +685,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
               <><BarChart rows={selectedYearly} labelKey="year" valueKey="value" color="#2563a6" />
                 <details className="chart-data"><summary>{text("查看年度数值", "View annual values")}</summary><SortableTable rows={selectedYearly} columns={[["year", text("年份", "Year")], ["value", text("年度合成收益", "Annual composite return")]]} percentColumns={["value"]} /></details></>}
             <p className="panel-note">{text("按每日多空收益差复合计算；不足一年的按已有区间展示。切换因子时样本可能不同，不宜直接排名判断优劣。", "Returns compound daily long-short spreads; shorter samples are shown over their available periods. Sample windows can differ by factor, so do not rank factors directly from these figures.")}</p>
+            <details className="panel-note"><summary>{text("这些收益和风险指标是什么意思？", "What do these return and risk measures mean?")}</summary><p>{text("年化收益把不同长度的区间换算到一年尺度；最大回撤是这条收益序列从高点跌到随后低点的最大幅度。这些数来自历史合成多空序列，不是账户实际收益。", "Annualized return expresses a result on a one-year scale; maximum drawdown is the largest fall in this return series from a high to a later low. These figures come from a historical long-short series, not an actual account.")}</p></details>
           </div>
         </div>
       </Panel>
@@ -717,6 +718,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     <section id="barra-overview">
       <Panel title={text("19 个因子表现总览", "Overview of 19 factor results")} tag={text("可搜索 · 可排序", "Searchable · sortable")}>
         <p className="panel-note">{text("完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。", "Full figures are provided for reference. Short and long samples are shown together but do not cover the same periods. These returns are not validated tradable returns.")}</p>
+        <details className="panel-note"><summary>{text("这些指标是什么意思？", "What do these measures mean?")}</summary><p>{text("几何年化把历史收益折算到一年；年化波动率描述收益起伏大小；夏普比率把收益与波动放在一起比较；最大回撤是从高点到之后低点的最大跌幅；日收益为正比例表示有多少个交易日收益为正。它们都来自历史序列，不能单独证明未来表现。", "Geometric annualized return expresses the historical result per year; annualized volatility describes how much returns moved; the Sharpe ratio compares return with volatility; maximum drawdown is the largest fall from a high to a later low; positive daily-return ratio is the share of days with a gain. All are summaries of past data and do not establish future performance on their own.")}</p></details>
         {!factorRows.length ? <DataNotice label={text("因子总览", "Factor overview")} error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
           <SortableTable rows={factorRows} columns={[["factor", text("因子", "Factor")], ["coverage", text("样本范围", "Coverage")], ["annual", text("几何年化", "Geometric annualized")], ["vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["drawdown", text("最大回撤", "Max drawdown")], ["hit", text("日收益为正比例", "Positive daily-return ratio")]]} percentColumns={["annual", "vol", "drawdown", "hit"]} />}
       </Panel>

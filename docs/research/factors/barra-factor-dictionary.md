@@ -4,6 +4,10 @@
 
 This dictionary separates raw research metrics, style factors, and report-level factor families. It documents the public research implementation and is not a complete reproduction of a commercial Barra model.
 
+## Quick guide
+
+A **descriptor** is a measured feature, such as company size or recent return. A **factor** turns one or more descriptors into a score used to compare stocks. A **factor family** groups related scores for reporting. “High minus low” means the average result for the highest-scoring stock group minus that for the lowest-scoring group; it is a historical comparison, not an investor's account return. **Point-in-time (PIT)** means the information was available on the historical date being studied. The tables retain the exact calculation and source limits below.
+
 The machine-readable descriptors are maintained in `studies/style_factors_18y/factor-descriptors.yml`. The public pages show only reviewed derived results; implementation details and source ownership remain linked to the relevant research and platform repositories.
 
 ## Historical 19-factor snapshot

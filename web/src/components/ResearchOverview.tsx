@@ -19,13 +19,13 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
       <div>
         <span className="section-kicker">{t('重点研究 · Barra 风格因子', 'Featured study · Barra-style factors')}</span>
         <h2>{t('18 年 A 股风格因子动态：收益、稳定性与市场阶段', '18-year A-share style factors: returns, stability, and market regimes')}</h2>
-        <p>{t('已有历史风格因子对照，但尚不能认定为已验证的预测性 Alpha。IC、样本外验证与统计显著性仍在补充。', 'Historical style-factor comparisons are available, but they do not establish validated predictive alpha. IC, out-of-sample validation, and statistical significance remain under review.')}</p>
+        <p>{t('这些历史对照显示不同股票特征对应的收益差异，但还不能证明它们能预测未来。财务数据的历史可用时间、未参与研究的新时期，以及实际交易结果仍待核查。', 'These historical comparisons show return differences between groups of stocks, but do not prove that the factors predict future returns. Historical financial-data availability, newer periods not used in the research, and actual trading results still need checking.')}</p>
         <div className="featured-facts" aria-label={t('研究范围', 'Research scope')}><span><strong>{t('18 年', '18 years')}</strong>{t('历史样本', ' of history')}</span><span><strong>{t('19 个', '19')}</strong>{t('历史因子', ' historical factors')}</span><span><strong>{t('分年度', 'Annual')}</strong>{t('和分阶段比较', ' and regime comparisons')}</span></div>
       </div>
       <a href={withBase(PUBLIC_ROUTES.styleFactors, import.meta.env?.BASE_URL ?? "/")}>{t('进入风格因子研究 ↗', 'Open style-factor research ↗')}</a>
     </section>
     <section className="research-library" aria-label={t('研究目录', 'Research library')}>
-      <div className="theme-heading library-heading"><div><span className="section-kicker">{t('研究目录', 'Research library')}</span><h2>{t('按关心的问题进入报告', 'Enter through a research question')}</h2><p>{t('每个专题都把结论、证据、图表和限制放在一起，详细方法与数据口径收录在文档区。', 'Each topic brings conclusions, evidence, charts, and limitations together; detailed methods and data definitions live in the documentation.')}</p></div></div>
+      <div className="theme-heading library-heading"><div><span className="section-kicker">{t('研究目录', 'Research library')}</span><h2>{t('按关心的问题进入报告', 'Enter through a research question')}</h2><p>{t('先浏览每项研究的结论和证据范围，再看结论对应的时间段与股票范围。打开专题后可以核对图表和数字；详细方法与数据口径收录在文档区。', 'Start with each study’s finding and sample, then open the topic to check the numbers. Full calculation rules, sources, and audit notes remain in the documentation.')}</p></div></div>
     </section>
     <section className="evidence-grid overview-evidence-grid" aria-label={t('各专题研究进展', 'Research progress by topic')}>
       <EvidenceCard domain="基本面与现金流" title="现金流" href={withBase(PUBLIC_ROUTES.cashflow, import.meta.env?.BASE_URL ?? "/")} status={cashflow ? '指数数据已检查' : '数据暂不可用'}
