@@ -47,13 +47,16 @@ def test_published_pages_have_reciprocal_language_links_and_shareable_routes() -
 
     assert config["theme"]["locale"] == "en"
     assert config["use_directory_urls"] is True
-    navigation = _navigation_paths(config["nav"])
+    english_nav, chinese_nav = config["nav"][:-1], config["nav"][-1]["简体中文"]
+    navigation = _navigation_paths(english_nav)
+    chinese_navigation = _navigation_paths(chinese_nav)
 
     for english_name, chinese_name in PUBLISHED_PAIRS:
         english = root / "docs" / english_name
         chinese = root / "docs" / chinese_name
         assert english.as_posix().removeprefix(f"{root.as_posix()}/docs/") in navigation
         assert chinese.is_file()
+        assert chinese_name in chinese_navigation
 
         english_text = english.read_text(encoding="utf-8")
         chinese_text = chinese.read_text(encoding="utf-8")
@@ -61,3 +64,4 @@ def test_published_pages_have_reciprocal_language_links_and_shareable_routes() -
         assert f"[English page]({english.name})" in chinese_text
 
     assert not any(path.endswith(".zh-CN.md") for path in navigation)
+    assert all(path.endswith(".zh-CN.md") for path in chinese_navigation)

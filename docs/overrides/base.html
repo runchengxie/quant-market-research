@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ config.theme.locale|default('en') }}" data-bs-theme="{{ config.theme.color_mode }}">
+<html lang="{{ 'zh-CN' if page and page.file and page.file.src_uri.endswith('.zh-CN.md') else config.theme.locale|default('en') }}" data-bs-theme="{{ config.theme.color_mode }}">
     <head>
       {%- block site_meta %}
         <meta charset="utf-8">
@@ -73,7 +73,7 @@
             <div class="container">
 
                 {%- block site_name %}
-                <a class="navbar-brand" href="{{ config.extra.public_site_url }}" aria-label="返回市场研究档案主页">市场研究档案</a>
+                <a class="navbar-brand" href="{{ config.extra.public_site_url }}" aria-label="{{ '返回市场研究档案主页' if page and page.file and page.file.src_uri.endswith('.zh-CN.md') else 'Back to Quant Market Research Archive' }}">{{ '市场研究档案' if page and page.file and page.file.src_uri.endswith('.zh-CN.md') else 'Quant Market Research Archive' }}</a>
                 {%- endblock %}
 
                 {%- if nav|length>1 or (page and (page.next_page or page.previous_page)) or config.repo_url %}
