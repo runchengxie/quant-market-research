@@ -11,6 +11,24 @@ test("research and documentation directories render English-first localized copy
   const docs = await fs.readFile(path.join(root, "pages/docs/index.astro"), "utf8");
   const copy = await fs.readFile(path.join(root, "content/locale-copy.ts"), "utf8");
 
+  assert.match(research, /data-locale-text data-en=\{topic\.en\} data-zh=\{topic\.zh\}/);
+  assert.doesNotMatch(research, /\{page\.topic\}/);
+  for (const label of [
+    "Cash-flow research",
+    "Micro-cap research",
+    "Style research",
+    "Low-turnover research",
+    "Index research",
+    "Liquidity research",
+    "现金流研究",
+    "微盘研究",
+    "风格研究",
+    "低换手研究",
+    "指数研究",
+    "流动性研究",
+  ]) {
+    assert.ok(copy.includes(label), `missing localized topic label ${label}`);
+  }
   assert.match(research, /titleEn="Research topics"/);
   assert.match(research, /data-en="Explore data and charts by research question"/);
   assert.match(research, /data-zh="从研究问题进入数据与图表"/);
