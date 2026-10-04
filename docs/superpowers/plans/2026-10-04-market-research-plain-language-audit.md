@@ -48,7 +48,7 @@
 ### Task 2: Explain overview, research, and market data displays
 
 **Files:**
-- Modify as needed: `web/src/pages/index.astro`, `web/src/pages/research/index.astro`, `web/src/pages/data-sources/index.astro`, `web/src/components/ResearchOverview.tsx`, `web/src/components/ResearchPage.astro`, `web/src/components/ResearchContext.astro`, route-specific page files in `web/src/pages/research/**`, and bilingual labels in `web/src/content/locale-copy.ts` / `web/src/conclusion-copy.ts`
+- Modify as needed: `web/src/pages/index.astro`, `web/src/pages/research/index.astro`, `web/src/pages/data-sources/index.astro`, `web/src/pages/search/index.astro`, `web/src/pages/docs/index.astro`, `web/src/pages/docs/[...slug].astro`, `web/src/components/ResearchOverview.tsx`, `web/src/components/ResearchPage.astro`, `web/src/components/ResearchContext.astro`, route-specific page files in `web/src/pages/research/**`, and bilingual labels in `web/src/content/locale-copy.ts` / `web/src/conclusion-copy.ts`
 - Update: the inventory from Task 1
 
 **Interfaces:**
@@ -64,7 +64,7 @@
 ### Task 3: Explain factor workbenches and calculations
 
 **Files:**
-- Modify as needed: `web/src/pages/research/style-factors-18y/index.astro`, factor workbench UI in `web/src/components/react/style-page.tsx`, `web/src/components/research/BarraFactorDictionary.astro`, `web/src/components/research/BarraNarrative.astro`, `web/src/components/react/cashflow-page.tsx`, `web/src/components/react/liquidity-page.tsx`, `web/src/components/react/microcap-page.tsx`, `web/src/lib/factor-implementations.ts`, and registered Barra/turnover/low-turnover/PB-ROE documents
+- Modify as needed: `web/src/pages/research/style-factors-18y/index.astro`, factor workbench UI in `web/src/components/react/style-page.tsx`, `web/src/components/research/BarraFactorDictionary.astro`, `web/src/components/research/BarraNarrative.astro`, `web/src/components/react/cashflow-page.tsx`, `web/src/components/react/liquidity-page.tsx`, `web/src/components/react/microcap-page.tsx`, `web/src/lib/factor-implementations.ts`, `docs/index.md`, `docs/index.zh-CN.md`, `docs/research-closeout-status.md`, `docs/research-closeout-status.zh-CN.md`, and registered factor/method documents
 - Update: the inventory from Task 1
 
 **Interfaces:**
