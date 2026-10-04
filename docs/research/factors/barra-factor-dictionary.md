@@ -10,6 +10,12 @@ A **descriptor** is a measured feature, such as company size or recent return. A
 
 The machine-readable descriptors are maintained in `studies/style_factors_18y/factor-descriptors.yml`. The public pages show only reviewed derived results; implementation details and source ownership remain linked to the relevant research and platform repositories.
 
+## Reading formulas and source fields
+
+In the current formulas, `ln` is the natural logarithm, `clip(x, a, b)` caps a value to the inclusive range from `a` to `b`, and `1 / PB` or `1 / PE_TTM` reverses the multiple so a lower positive valuation multiple receives a higher score. `PE_TTM` means price-to-earnings using trailing twelve-month earnings. A 21-day or 252-day window counts trading observations as defined by the source, not calendar days. `Cov` is covariance (whether two return series move together); `Var` is variance (how much one series varies); `rᵢ` is a stock return and `rₘ` is the sample's equal-weight market return in the current beta proxy. Percentile clipping limits extreme observations before standardization. A z-score expresses a value relative to the cross-sectional mean and standard deviation.
+
+Source identifiers such as `total_mv`, `turnover_rate`, `pct_chg`, `PE_TTM`, `netprofit_yoy`, and `debt_to_assets` remain unchanged so a reader can find them in the data contract. Their units, missing-value rules, and point-in-time availability follow the source table and the formula-specific notes below; a familiar field name alone does not establish those details. ROE means return on equity, ROA return on assets, and OCF operating cash flow. They are separate financial measures and are not interchangeable.
+
 ## Historical 19-factor snapshot
 
 The historical snapshot contains 19 factor identifiers. These are reviewed historical results, not 19 fully reconstructable commercial Barra factors. The current core dictionary and the historical source package have different provenance boundaries.
