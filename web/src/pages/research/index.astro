@@ -1,13 +1,27 @@
 ---
 import SiteLayout from "../../layouts/SiteLayout.astro";
-import { publicPages } from "../../content/public-registry";
+import { publicPages, type PublicPage, type TopicId } from "../../content/public-registry";
 import { withBase } from "../../lib/routes";
-import { englishCopy } from "../../content/locale-copy";
-const pages = publicPages.filter((page) => page.section === "research" && page.topic);
+import { englishCopy, topicLabel } from "../../content/locale-copy";
+const pages = publicPages.filter(
+  (page): page is PublicPage & { topic: TopicId } =>
+    page.section === "research" && page.topic !== undefined,
+);
 ---
 <SiteLayout title="研究专题" titleEn="Research topics" description="Browse public research by question." section="research">
   <section class="theme-heading"><div><span class="section-kicker" data-locale-text data-en="Research topics" data-zh="研究专题">Research topics</span><h1 data-locale-text data-en="Explore data and charts by research question" data-zh="从研究问题进入数据与图表">Explore data and charts by research question</h1><p data-locale-text data-en="Each topic presents key findings, date coverage, data definitions, methods, and outstanding checks." data-zh="每个专题先展示主要发现，再说明覆盖日期、数据口径、计算方法与尚未完成的核验。">Each topic presents key findings, date coverage, data definitions, methods, and outstanding checks.</p></div></section>
   <div class="research-grid directory-grid">
-    {pages.map((page) => { const en = englishCopy(page); return <a class="research-card" href={withBase(page.route, import.meta.env.BASE_URL)}><span class="section-kicker">{page.topic}</span><h2 data-locale-text data-en={en.title} data-zh={page.title}>{en.title}</h2><p data-locale-text data-en={en.summary} data-zh={page.summary}>{en.summary}</p><b data-locale-text data-en="View topic →" data-zh="进入专题 →">View topic →</b></a>; })}
+    {pages.map((page) => {
+      const en = englishCopy(page);
+      const topic = topicLabel(page.topic);
+      return (
+        <a class="research-card" href={withBase(page.route, import.meta.env.BASE_URL)}>
+          <span class="section-kicker" data-locale-text data-en={topic.en} data-zh={topic.zh}>{topic.en}</span>
+          <h2 data-locale-text data-en={en.title} data-zh={page.title}>{en.title}</h2>
+          <p data-locale-text data-en={en.summary} data-zh={page.summary}>{en.summary}</p>
+          <b data-locale-text data-en="View topic →" data-zh="进入专题 →">View topic →</b>
+        </a>
+      );
+    })}
   </div>
 </SiteLayout>

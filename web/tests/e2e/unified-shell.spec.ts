@@ -34,6 +34,22 @@ test('research topics switch between English and Chinese shell copy', async ({ p
   await expect(page.locator('main h1')).toHaveText('Cash-flow history');
 });
 
+test('research card category labels follow the selected locale', async ({ page }) => {
+  await page.goto('research/?lang=en-US');
+  const labels = page.locator('.research-card .section-kicker');
+  await expect(labels).toHaveText([
+    'Cash-flow research', 'Cash-flow research', 'Micro-cap research', 'Micro-cap research',
+    'Index research', 'Style research', 'Style research', 'Liquidity research', 'Low-turnover research',
+  ]);
+
+  await page.getByRole('button', { name: 'Switch to Chinese' }).click();
+  await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
+  await expect(labels).toHaveText([
+    '现金流研究', '现金流研究', '微盘研究', '微盘研究', '指数研究',
+    '风格研究', '风格研究', '流动性研究', '低换手研究',
+  ]);
+});
+
 test('a shared locale URL overrides a conflicting saved preference', async ({ page }) => {
   await page.addInitScript(() => localStorage.setItem('quant-market-research-locale', 'en-US'));
   await page.goto('research/cashflow/?lang=zh-CN');

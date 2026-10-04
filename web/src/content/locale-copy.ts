@@ -1,4 +1,17 @@
-import type { PublicPage } from "./public-registry";
+import type { PublicPage, TopicId } from "./public-registry";
+
+const topicLabels: Record<TopicId, { en: string; zh: string }> = {
+  cashflow: { en: "Cash-flow research", zh: "现金流研究" },
+  microcap: { en: "Micro-cap research", zh: "微盘研究" },
+  style: { en: "Style research", zh: "风格研究" },
+  "low-turnover": { en: "Low-turnover research", zh: "低换手研究" },
+  indices: { en: "Index research", zh: "指数研究" },
+  liquidity: { en: "Liquidity research", zh: "流动性研究" },
+};
+
+export function topicLabel(topic: TopicId) {
+  return topicLabels[topic];
+}
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
