@@ -484,6 +484,15 @@ def export(root, source, as_of):
     manifest["shared_snapshot_paths"] = {
         name: str((source / name).resolve()) for name in asset_names
     }
+    manifest["shared_asset_manifests"] = {
+        name: {
+            "path": str((source / name / "manifest.yml").resolve()),
+            "sha256": checksum(source / name / "manifest.yml"),
+            "content": (source / name / "manifest.yml").read_text(),
+        }
+        for name in asset_names
+        if (source / name / "manifest.yml").exists()
+    }
     source_files = [
         source / "instruments/a_share_all_instruments_latest.parquet",
         source / "namechange/a_share_all_namechange_latest.parquet",

@@ -53,7 +53,8 @@ uv run --locked --extra dividends python scripts/hk_dividend_fetch.py output <�
 腾讯补充的是原价与复权行情，不从价格变化猜测现金分红。
 
 `manifest.json` 记录代码提交与哈希、锁定环境版本、这些补充输入的哈希，
-以及共享资产 `latest` 实际解析到的版本目录和财务/名单/行业/年末行情输入哈希。
+以及共享资产 `latest` 实际解析到的目录、资产 manifest 的版本信息及哈希，
+还有财务/名单/行业/年末行情输入哈希。部分 `latest` 是实体目录，不能只用目录名当作版本证明。
 以后重算应恢复这些版本，而不是默认读取后来更新的 `latest`；供应商可能更正历史记录。
 复现本次结果可直接读取归档的 `a_all_years_base.parquet`、`a_volatility.parquet`、
 `selected_dividend_history.parquet` 与 H 缓存再导出，避免重复联网。
