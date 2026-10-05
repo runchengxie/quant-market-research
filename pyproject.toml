@@ -22,6 +22,7 @@ formal = [
     "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@5ae3766fe8141585a2fcdfba47d85e3e5fd7ed83#subdirectory=packages/research-contracts ; python_version >= '3.12'",
 ]
 yahoo = ["yfinance>=1.0"]
+dividends = ["requests>=2.32", "openpyxl>=3.1"]
 docs = ["mkdocs>=1.6,<2"]
 
 [project.scripts]
