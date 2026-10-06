@@ -4,6 +4,43 @@ import argparse
 from html.parser import HTMLParser
 from pathlib import Path
 
+PUBLISHED_PAIRS = (
+    ("index.md", "index.zh-CN.md"),
+    ("research-closeout-status.md", "research-closeout-status.zh-CN.md"),
+    ("research/factors/pb-roe.md", "research/factors/pb-roe.zh-CN.md"),
+    ("research/factors/low-turnover.md", "research/factors/low-turnover.zh-CN.md"),
+    ("research/factors/microcap.md", "research/factors/microcap.zh-CN.md"),
+    (
+        "research/experiments/microcap-execution-diagnostic-20260928.md",
+        "research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md",
+    ),
+    (
+        "research/factors/smallcap-turnover-history.md",
+        "research/factors/smallcap-turnover-history.zh-CN.md",
+    ),
+    (
+        "research/factors/barra-factor-dictionary.md",
+        "research/factors/barra-factor-dictionary.zh-CN.md",
+    ),
+    (
+        "research/factors/barra-source-inventory.md",
+        "research/factors/barra-source-inventory.zh-CN.md",
+    ),
+)
+
+
+def _rendered_path(site_dir: Path, source: str) -> Path:
+    if source == "index.md":
+        return site_dir / "index.html"
+    return site_dir / Path(source).with_suffix("") / "index.html"
+
+
+def _navigation_checks(site_dir: Path) -> tuple[tuple[Path, bool], ...]:
+    return tuple(
+        [(_rendered_path(site_dir, english), False) for english, _ in PUBLISHED_PAIRS]
+        + [(_rendered_path(site_dir, chinese), True) for _, chinese in PUBLISHED_PAIRS]
+    )
+
 
 class PrimaryNavigationParser(HTMLParser):
     def __init__(self) -> None:
@@ -49,15 +86,9 @@ def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--site-dir", type=Path, default=Path(".build/mkdocs-reference"))
     args = parser.parse_args()
-    checks = (
-        ("index.html", False),
-        ("research/factors/pb-roe/index.html", False),
-        ("index.zh-CN/index.html", True),
-        ("research/factors/pb-roe.zh-CN/index.html", True),
-    )
     errors = []
-    for relative, chinese in checks:
-        path = args.site_dir / relative
+    for path, chinese in _navigation_checks(args.site_dir):
+        relative = path.relative_to(args.site_dir).as_posix()
         if not path.is_file():
             errors.append(f"Missing built page: {path}")
             continue
@@ -78,7 +109,7 @@ def main() -> int:
             )
     if errors:
         raise SystemExit("\n".join(errors))
-    print("Verified English and Chinese MkDocs navigation on overview and factor pages.")
+    print("Verified English and Chinese MkDocs navigation across all published routes.")
     return 0
 
 

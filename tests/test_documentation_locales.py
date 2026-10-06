@@ -1,34 +1,19 @@
 from __future__ import annotations
 
+from importlib.util import module_from_spec, spec_from_file_location
 from pathlib import Path
 import re
 from typing import Any
 
 import yaml
 
-PUBLISHED_PAIRS = (
-    ("index.md", "index.zh-CN.md"),
-    ("research-closeout-status.md", "research-closeout-status.zh-CN.md"),
-    ("research/factors/pb-roe.md", "research/factors/pb-roe.zh-CN.md"),
-    ("research/factors/low-turnover.md", "research/factors/low-turnover.zh-CN.md"),
-    ("research/factors/microcap.md", "research/factors/microcap.zh-CN.md"),
-    (
-        "research/experiments/microcap-execution-diagnostic-20260928.md",
-        "research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md",
-    ),
-    (
-        "research/factors/smallcap-turnover-history.md",
-        "research/factors/smallcap-turnover-history.zh-CN.md",
-    ),
-    (
-        "research/factors/barra-factor-dictionary.md",
-        "research/factors/barra-factor-dictionary.zh-CN.md",
-    ),
-    (
-        "research/factors/barra-source-inventory.md",
-        "research/factors/barra-source-inventory.zh-CN.md",
-    ),
-)
+_CHECKER_PATH = Path(__file__).resolve().parents[1] / "scripts/check_mkdocs_locale_navigation.py"
+_CHECKER_SPEC = spec_from_file_location("check_mkdocs_locale_navigation", _CHECKER_PATH)
+assert _CHECKER_SPEC is not None and _CHECKER_SPEC.loader is not None
+_CHECKER = module_from_spec(_CHECKER_SPEC)
+_CHECKER_SPEC.loader.exec_module(_CHECKER)
+PUBLISHED_PAIRS = _CHECKER.PUBLISHED_PAIRS
+check_built_navigation = _CHECKER.main
 
 
 def _navigation_paths(node: Any) -> set[str]:
@@ -76,3 +61,39 @@ def test_chinese_overview_keeps_factor_links_on_chinese_pages() -> None:
     assert len(destinations) == 7
     assert all(destination.endswith(".zh-CN.md") for destination in destinations)
     assert all((root / "docs" / destination).is_file() for destination in destinations)
+
+
+def test_built_navigation_checker_covers_every_published_locale_route(
+    tmp_path: Path, monkeypatch: Any
+) -> None:
+    site_dir = tmp_path / "site"
+    expected_pages: list[tuple[Path, bool]] = []
+    for english_source, chinese_source in PUBLISHED_PAIRS:
+        for source, chinese in ((english_source, False), (chinese_source, True)):
+            route = Path(source).with_suffix("")
+            if source == "index.md":
+                rendered = site_dir / "index.html"
+            else:
+                rendered = site_dir / route / "index.html"
+            rendered.parent.mkdir(parents=True, exist_ok=True)
+            language = "zh-CN" if chinese else "en"
+            localized_link = "index.zh-CN/" if chinese else "index/"
+            rendered.write_text(
+                f'<html lang="{language}"><ul class="nav navbar-nav">'
+                f'<li><a href="{localized_link}">Home</a></li></ul></html>',
+                encoding="utf-8",
+            )
+            expected_pages.append((rendered, chinese))
+
+    assert len(expected_pages) == len(PUBLISHED_PAIRS) * 2
+    monkeypatch.setattr("sys.argv", ["check_mkdocs_locale_navigation", "--site-dir", str(site_dir)])
+    assert check_built_navigation() == 0
+
+    missing_path, _ = expected_pages[-1]
+    missing_path.unlink()
+    try:
+        check_built_navigation()
+    except SystemExit as error:
+        assert str(missing_path) in str(error)
+    else:
+        raise AssertionError("The checker accepted a missing locale route")
