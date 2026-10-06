@@ -19,7 +19,7 @@ test('reader only opens the explicit public document allowlist', async () => {
   assert.ok(docs.every((doc) => !doc.body.includes('INTERNAL_ONLY_SENTINEL')));
 });
 
-test('reader resolves published Chinese companion pages to their MkDocs locale paths', () => {
+test('reader resolves published Chinese companion pages to the Astro docs routes', () => {
   assert.equal(
     resolveDocLink('docs/index.md', 'index.zh-CN.md', '/quant-market-research'),
     '/quant-market-research/docs/index.zh-CN/',

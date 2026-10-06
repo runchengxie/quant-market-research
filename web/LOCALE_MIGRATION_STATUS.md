@@ -1,5 +1,7 @@
 # Web locale audit status
 
+Public documentation is now rendered and published by Astro from the reviewed Markdown registry. References below to MkDocs-rendered routes describe the historical migration baseline; MkDocs is no longer a build or runtime dependency.
+
 The public site defaults to English and retains a persistent Chinese switch. Static verification scans the visible text in every generated English HTML route, excluding locale-suffixed `.zh-CN` companion routes. Playwright separately checks client-hydrated text on the listed routes and preserves selected-factor state and metrics when switching locale.
 
 ## Hydrated browser audit

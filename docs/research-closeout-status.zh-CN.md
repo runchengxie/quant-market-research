@@ -37,4 +37,4 @@ uv run --locked --extra duckdb python scripts/analyze_microcap_history.py \
 
 ## 网页发布
 
-在 `web/` 目录执行 `npm run build:pages`，它按顺序构建 Astro、构建 MkDocs、创建 `.nojekyll`，最后运行静态路由和公开边界校验。该命令不会刷新仓库外行情，也不会自动把 pending 数据变成 published。
+在 `web/` 目录执行 `npm run build:pages`，它构建 Astro、创建 `.nojekyll`，最后运行静态路由和公开边界校验。公开说明也由 Astro 从审核过的 Markdown 清单生成。该命令不会刷新仓库外行情，也不会自动把 pending 数据变成 published。

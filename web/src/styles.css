@@ -1,4 +1,4 @@
-@import "../../docs/assets/theme-tokens.css";
+@import "./theme-tokens.css";
 .freshness-strip { display: grid; grid-template-columns: auto auto 1fr; gap: 8px 16px; align-items: center; margin: 22px 0 32px; border: 1px solid #d8d0c3; border-left: 3px solid #dba58f; padding: 13px 16px; background: #f8f5ef; }
 .freshness-strip strong { font: 500 12px var(--font-mono); color: var(--ink); }
 .freshness-status { justify-self: start; border: 1px solid #dba58f; padding: 4px 7px; color: #b64d33; font: 10px var(--font-mono); }

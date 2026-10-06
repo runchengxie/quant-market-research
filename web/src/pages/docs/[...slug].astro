@@ -10,7 +10,7 @@ import { legacyAnchorMap } from '../../content/legacy-anchor-map';
 import { resolve } from 'node:path';
 
 export async function getStaticPaths() {
-  return publicDocs.map((doc) => ({ params: { slug: doc.slug || undefined }, props: { id: doc.id } }));
+  return publicDocs.filter((doc) => doc.slug).map((doc) => ({ params: { slug: doc.slug }, props: { id: doc.id } }));
 }
 
 const { id } = Astro.props;

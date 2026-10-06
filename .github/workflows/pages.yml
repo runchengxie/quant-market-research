@@ -52,12 +52,6 @@ jobs:
           npm run report:bundle
           touch dist/.nojekyll
 
-      - name: Build public research documentation
-        run: uv run --locked --extra docs mkdocs build --strict
-
-      - name: Check language-specific documentation navigation
-        run: uv run --locked --extra docs python scripts/check_mkdocs_locale_navigation.py
-
       - name: Verify published site routes, assets, and public boundary
         working-directory: web
         run: npm run verify:static

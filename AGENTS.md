@@ -25,7 +25,6 @@
 ```bash
 uv run --locked --extra duckdb --extra dev pytest -q
 uv run --locked --extra dev ruff check src tests scripts
-uv run --locked --extra docs mkdocs build --strict
 git diff --check
 cd web
 npm ci
@@ -33,7 +32,7 @@ npm test
 npm run build
 ```
 
-构建 Astro 网站后还要运行 `npm run verify:static`，检查静态路由、资源、说明站和公开数据边界。完整本地检查需先构建 MkDocs，再运行 `npm run verify:static`。浏览器冒烟测试使用 `npm run e2e`，首次运行前执行 `npx playwright install chromium`。
+构建 Astro 网站后运行 `npm run verify:static`，检查静态路由、资源、说明页和公开数据边界。可用 `npm run build:pages` 完成构建与静态校验。浏览器冒烟测试使用 `npm run e2e`，首次运行前执行 `npx playwright install chromium`。
 
 按改动范围运行检查。文档修改应核对路径、命令和当前事实。算法修改先补回归测试。Ruff 用于 Python lint 检查，格式检查需等存量代码完成格式统一后再评估。
 

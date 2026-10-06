@@ -11,7 +11,7 @@
 ## 浏览研究
 
 - [研究网页](https://runchengxie.github.io/quant-market-research/)
-- [研究说明站](https://runchengxie.github.io/quant-market-research/docs/)
+- [研究方法与说明](https://runchengxie.github.io/quant-market-research/docs/)
 - [低换手研究](docs/research/factors/low-turnover.md)
 - [微盘股研究](docs/research/factors/microcap.md)
 
