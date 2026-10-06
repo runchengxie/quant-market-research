@@ -149,7 +149,7 @@ npm run e2e
 
 构建后可运行 `npm run report:bundle` 查看静态 HTML、CSS 和 JavaScript 的实际大小。该报告只记录当前结果，不把某个体积阈值当作研究网站的功能门槛。当前最大的文件通常是 ECharts 图表包，后续拆分专题时再比较变化。已发布的测量值见[网页静态产物基线](web-bundle-baseline.md)。
 
-Python、Ruff 和 MkDocs 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流会先构建 Astro 网站，再生成 MkDocs 说明站，检查路由、资源和公开数据边界，并运行浏览器冒烟测试。公开输出位于 `web/dist/`。
+Python 和 Ruff 检查命令见仓库根目录 `AGENTS.md`。GitHub Pages 工作流构建 Astro 网站和公开说明页，检查路由、资源和公开数据边界，并运行浏览器冒烟测试。公开输出位于 `web/dist/`。
 
 `scripts/sync_public_research_data.py` 仅用于迁移已经审查的指数派生快照，不属于当前发布流程。
 必须显式提供包含旧输出格式的来源目录，不再推断旧仓库位置：

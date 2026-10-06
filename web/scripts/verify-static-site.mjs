@@ -1,6 +1,8 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { publicDocs } from "../src/content/public-registry.ts";
+import { englishCopy } from "../src/content/locale-copy.ts";
 
 const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..");
 
@@ -18,22 +20,10 @@ const routes = [
   ["research/index.html", "Explore data and charts by research question"],
   ["data-sources/index.html", "Every public snapshot has its own dates and boundaries"],
   ["search/index.html", "Search research, methods, and factor definitions"],
-  ["docs/research-closeout-status/index.html", "Research closeout status"],
-  ["docs/research/factors/low-turnover/index.html", "Low turnover: what might it represent?"],
-  ["docs/research/factors/pb-roe/index.html", "PB and ROE: comparing valuation and profitability"],
-  ["docs/research/factors/microcap/index.html", "Microcaps: return evidence and underwater periods"],
-  ["docs/research/factors/smallcap-turnover-history/index.html", "Small-cap turnover history, 2008–2014"],
-  ["docs/research/factors/barra-factor-dictionary/index.html", "Barra factor dictionary"],
-  ["docs/research/factors/barra-source-inventory/index.html", "Barra research source inventory"],
-  ["docs/index.zh-CN/index.html", "Quant Market Research 研究说明"],
-  ["docs/research-closeout-status.zh-CN/index.html", "研究收口状态"],
-  ["docs/research/factors/low-turnover.zh-CN/index.html", "低换手：它可能反映哪些特征"],
-  ["docs/research/factors/pb-roe.zh-CN/index.html", "PB 与 ROE：怎样比较估值和盈利能力"],
-  ["docs/research/factors/microcap.zh-CN/index.html", "微盘股：收益证据与水下时间"],
-  ["docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN/index.html", "微盘组合公共执行模拟诊断"],
-  ["docs/research/factors/smallcap-turnover-history.zh-CN/index.html", "小市值成交活跃度补充"],
-  ["docs/research/factors/barra-factor-dictionary.zh-CN/index.html", "Barra 风格因子字典"],
-  ["docs/research/factors/barra-source-inventory.zh-CN/index.html", "Barra 风格研究资料清单"],
+  ...publicDocs.map((doc) => [
+    `docs/${doc.slug ? `${doc.slug}/` : ""}index.html`,
+    doc.id.endsWith("-zh-CN") ? doc.title : englishCopy(doc).title,
+  ]),
 ];
 
 function filesBelow(directory) {
