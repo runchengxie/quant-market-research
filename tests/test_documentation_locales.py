@@ -65,3 +65,14 @@ def test_published_pages_have_reciprocal_language_links_and_shareable_routes() -
 
     assert not any(path.endswith(".zh-CN.md") for path in navigation)
     assert all(path.endswith(".zh-CN.md") for path in chinese_navigation)
+
+
+def test_chinese_overview_keeps_factor_links_on_chinese_pages() -> None:
+    root = Path(__file__).resolve().parents[1]
+    overview = (root / "docs" / "index.zh-CN.md").read_text(encoding="utf-8")
+    factor_section = overview.split("## 因子研究", 1)[1].split("\n## ", 1)[0]
+    destinations = re.findall(r"\[[^\]]+\]\(([^)]+\.md)\)", factor_section)
+
+    assert len(destinations) == 7
+    assert all(destination.endswith(".zh-CN.md") for destination in destinations)
+    assert all((root / "docs" / destination).is_file() for destination in destinations)
