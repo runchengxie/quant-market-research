@@ -11,6 +11,7 @@ test("public routes and legacy hashes preserve every existing research entry", (
     "/research/microcap/cross-market-liquidity/",
     "/research/indices/",
     "/research/style-factors-18y/",
+    "/research/execution-costs/",
     "/research/liquidity/",
     "/research/factors/low-turnover/",
     "/research/factors/pb-roe/",

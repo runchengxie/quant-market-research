@@ -41,3 +41,5 @@ studies/              study configuration, methods, review records, and notebook
 web/                  Astro website with its own source, tests, and dependencies
 docs/                 runbooks, data documentation, and research methods
 ```
+
+Trading costs and capacity: [study protocol](studies/ashare_execution_costs/README.md) · [public topic](https://runchengxie.github.io/quant-market-research/research/execution-costs/). Scenario baseline only; L2 calibration pending.

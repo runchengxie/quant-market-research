@@ -1,0 +1,44 @@
+---
+import SiteLayout from "../../../layouts/SiteLayout.astro";
+import TopicNav from "../../../components/TopicNav.astro";
+import { executionCostCopy as copy } from "../../../content/execution-cost-copy";
+import { costScenarios } from "../../../lib/execution-costs";
+import { withBase } from "../../../lib/routes";
+const text = (key: keyof typeof copy) => copy[key];
+const links = [
+  ["https://github.com/runchengxie/quant-market-research/tree/main/studies/ashare_execution_costs", "method"],
+  [withBase("/docs/research/experiments/microcap-execution-diagnostic-20260928/", import.meta.env.BASE_URL), "microcap"],
+  [withBase("/research/liquidity/", import.meta.env.BASE_URL), "liquidity"],
+] as const;
+---
+<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.question[0]} section="research">
+<article class="research-report">
+<header class="theme-heading"><div><h1  data-locale-text data-en={text("title")[0]} data-zh={text("title")[1]}>{text("title")[0]}</h1>
+<p  data-locale-text data-en={text("question")[0]} data-zh={text("question")[1]}>{text("question")[0]}</p>
+</div></header>
+<section class="research-verdict"><span class="evidence-status" data-locale-text data-en={text("stage")[0]} data-zh={text("stage")[1]}>{text("stage")[0]}</span>
+<h2  data-locale-text data-en={text("conclusion")[0]} data-zh={text("conclusion")[1]}>{text("conclusion")[0]}</h2>
+<p  data-locale-text data-en={text("scope")[0]} data-zh={text("scope")[1]}>{text("scope")[0]}</p>
+</section>
+<TopicNav sections={[{id:"baseline",label:"成本基线",labelEn:"Cost baseline",available:true},{id:"evidence",label:"证据边界",labelEn:"Evidence limits",available:true},{id:"roadmap",label:"研究路线",labelEn:"Research roadmap",available:true},{id:"sources",label:"来源与方法",labelEn:"Sources and methods",available:true}]} />
+<section id="baseline" class="report-section"><h2  data-locale-text data-en={text("baseline")[0]} data-zh={text("baseline")[1]}>{text("baseline")[0]}</h2>
+<p  data-locale-text data-en={text("assumptions")[0]} data-zh={text("assumptions")[1]}>{text("assumptions")[0]}</p>
+<p  data-locale-text data-en={text("definition")[0]} data-zh={text("definition")[1]}>{text("definition")[0]}</p>
+<p  data-locale-text data-en={text("formula")[0]} data-zh={text("formula")[1]}>{text("formula")[0]}</p>
+<div style="overflow-x:auto"><table><thead><tr><th scope="col" data-locale-text data-en={text("slippage")[0]} data-zh={text("slippage")[1]}>{text("slippage")[0]}</th>
+<th scope="col" data-locale-text data-en={text("oneway")[0]} data-zh={text("oneway")[1]}>{text("oneway")[0]}</th>
+<th scope="col" data-locale-text data-en={text("twoway")[0]} data-zh={text("twoway")[1]}>{text("twoway")[0]}</th>
+</tr></thead><tbody>{costScenarios.map(row => <tr><th scope="row">{row.bp}</th><td>{(row.oneWay * 100).toFixed(2)}%</td><td>{(row.twoWay * 100).toFixed(2)}%</td></tr>)}</tbody></table></div><p  data-locale-text data-en={text("boundary")[0]} data-zh={text("boundary")[1]}>{text("boundary")[0]}</p>
+</section><section id="evidence" class="report-section"><h2  data-locale-text data-en={text("evidence")[0]} data-zh={text("evidence")[1]}>{text("evidence")[0]}</h2>
+<p  data-locale-text data-en={text("snapshots")[0]} data-zh={text("snapshots")[1]}>{text("snapshots")[0]}</p>
+<p  data-locale-text data-en={text("events")[0]} data-zh={text("events")[1]}>{text("events")[0]}</p>
+<p  data-locale-text data-en={text("fills")[0]} data-zh={text("fills")[1]}>{text("fills")[0]}</p>
+</section><section id="roadmap" class="report-section"><h2  data-locale-text data-en={text("roadmap")[0]} data-zh={text("roadmap")[1]}>{text("roadmap")[0]}</h2>
+<p  data-locale-text data-en={text("phase1")[0]} data-zh={text("phase1")[1]}>{text("phase1")[0]}</p>
+<p  data-locale-text data-en={text("phase2")[0]} data-zh={text("phase2")[1]}>{text("phase2")[0]}</p>
+<p  data-locale-text data-en={text("phase3")[0]} data-zh={text("phase3")[1]}>{text("phase3")[0]}</p>
+<p  data-locale-text data-en={text("gate")[0]} data-zh={text("gate")[1]}>{text("gate")[0]}</p>
+</section><details id="sources" class="panel research-source"><summary  data-locale-text data-en={text("sources")[0]} data-zh={text("sources")[1]}>{text("sources")[0]}</summary>
+<p  data-locale-text data-en={text("literature")[0]} data-zh={text("literature")[1]}>{text("literature")[0]}</p>
+<ul><li><a href="https://doi.org/10.1016/j.jfineco.2021.08.017">Machine learning in the Chinese stock market</a></li><li><a href="https://doi.org/10.1016/j.irfa.2023.102975">Factor models for Chinese A-shares</a></li><li><a href="https://doi.org/10.1016/j.pacfin.2021.101607">Anomalies in the China A-share market</a></li><li><a href="https://www.nber.org/papers/w20721">A Taxonomy of Anomalies and Their Trading Costs</a></li></ul>
+<nav class="report-links">{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></article></SiteLayout>

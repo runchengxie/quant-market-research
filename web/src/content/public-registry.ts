@@ -1,5 +1,5 @@
 export type SectionId = 'overview' | 'research' | 'docs' | 'data';
-export type TopicId = 'cashflow' | 'microcap' | 'style' | 'low-turnover' | 'indices' | 'liquidity';
+export type TopicId = 'cashflow' | 'microcap' | 'style' | 'low-turnover' | 'indices' | 'liquidity' | 'execution-costs';
 
 export type PublicPage = {
   id: string;
@@ -44,7 +44,7 @@ const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
   page({ id: 'overview', route: '/', title: '研究总览', summary: '每项研究发现了什么、数据覆盖哪些日期，还有哪些问题没有答案。', section: 'overview', aliases: ['/index.html'], related: ['research', 'docs', 'data-sources'], snapshotKeys: [] }),
-  page({ id: 'research', route: '/research/', title: '研究专题', summary: '从研究问题出发，先看结论，再查数据和证据限制。', section: 'research', aliases: [], related: ['cashflow', 'microcap', 'style', 'pb-roe', 'low-turnover', 'indices', 'liquidity'], snapshotKeys: [] }),
+  page({ id: 'research', route: '/research/', title: '研究专题', summary: '从研究问题出发，先看结论，再查数据和证据限制。', section: 'research', aliases: [], related: ['cashflow', 'microcap', 'style', 'pb-roe', 'low-turnover', 'indices', 'liquidity', 'execution-costs'], snapshotKeys: [] }),
   page({ id: 'cashflow', route: '/research/cashflow/', title: '现金流与分红', summary: '现金流和分红相关股票过去表现如何，经历下跌后多久回到前高。', section: 'research', topic: 'cashflow', aliases: [], related: ['cashflow-recovery', 'indices'], snapshotKeys: ['cashflow.performance'] }),
   page({ id: 'cashflow-recovery', route: '/research/cashflow/recovery/', title: '现金流恢复性', summary: '现金流研究中的回本时间、结果复核和实际交易限制。', section: 'research', topic: 'cashflow', aliases: [], related: ['cashflow'], snapshotKeys: ['cashflow.recovery'] }),
   page({ id: 'microcap', route: '/research/microcap/', title: '小微盘研究', summary: '小市值股票组合过去涨跌如何，数据缺口会怎样影响结果。', section: 'research', topic: 'microcap', aliases: [], related: ['cross-market-liquidity', 'low-turnover'], snapshotKeys: ['microcap.summary'] }),
@@ -52,7 +52,8 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'indices', route: '/research/indices/', title: '指数与长期回报', summary: '网站展示了哪些指数和 ETF，它们的历史收益为什么不能直接比较。', section: 'research', topic: 'indices', aliases: [], related: ['cashflow', 'style'], snapshotKeys: ['indices.returns'] }),
   page({ id: 'style', route: '/research/style-factors-18y/', title: '18 年风格因子', summary: '价值、规模等股票分组在不同年份和市场阶段的表现。', section: 'research', topic: 'style', aliases: [], related: ['low-turnover', 'indices'], snapshotKeys: ['barra.returns'] }),
   page({ id: 'pb-roe', route: '/research/factors/pb-roe/', title: 'PB 与 ROE 历史对照', summary: '在同一批股票中加入盈利指标后，估值排序的历史结果怎样变化。', section: 'research', topic: 'style', aliases: [], related: ['pb-roe-method', 'style'], snapshotKeys: [] }),
-  page({ id: 'liquidity', route: '/research/liquidity/', title: '流动性研究', summary: '样本股票交易有多活跃、数据覆盖有多完整，目前能得出什么结论。', section: 'research', topic: 'liquidity', aliases: [], related: ['cross-market-liquidity', 'microcap'], snapshotKeys: ['liquidity.summary'] }),
+  page({ id: 'execution-costs', route: '/research/execution-costs/', title: 'A股交易成本与策略容量', summary: '情景基线：60%日均单边换手的示例费用为10.5%/年。尚无L2实证样本；待验证订单规模如何影响净收益。', section: 'research', topic: 'execution-costs', aliases: [], related: ['liquidity', 'microcap-execution-diagnostic', 'low-turnover'], snapshotKeys: [] }),
+  page({ id: 'liquidity', route: '/research/liquidity/', title: '流动性研究', summary: '样本股票交易有多活跃、数据覆盖有多完整，目前能得出什么结论。', section: 'research', topic: 'liquidity', aliases: [], related: ['cross-market-liquidity', 'microcap', 'execution-costs'], snapshotKeys: ['liquidity.summary'] }),
   page({ id: 'low-turnover', route: '/research/factors/low-turnover/', title: '低换手因子', summary: '低换手股票过去表现如何，考虑其他股票特征后差距还剩多少。', section: 'research', topic: 'low-turnover', aliases: [], related: ['style', 'microcap'], snapshotKeys: ['low-turnover.ledger'] }),
   page({ id: 'docs', route: '/docs/', title: '方法与字典', summary: '研究方法、因子定义、数据来源与收尾状态。', section: 'docs', aliases: [], related: ['research', 'data-sources'], snapshotKeys: [] }),
   page({ id: 'research-closeout-status', route: '/docs/research-closeout-status/', title: '研究收尾状态', summary: '研究项目的完成度、边界与未完成事项。', section: 'docs', aliases: [], related: ['docs'], snapshotKeys: [] }),

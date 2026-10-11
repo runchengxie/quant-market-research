@@ -1,4 +1,6 @@
 ---
+import { executionCostCopy as costCopy } from "../content/execution-cost-copy";
+import { withBase } from "../lib/routes";
 import SiteLayout from "../layouts/SiteLayout.astro";
 import LegacyHashRedirect from "../components/LegacyHashRedirect.astro";
 import FreshnessStrip from "../components/FreshnessStrip.astro";
@@ -15,5 +17,12 @@ const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/m
 <SiteLayout title="研究总览" titleEn="Research overview" description="An overview of historical market research and public data." activeRoute="overview">
   <LegacyHashRedirect />
   <OverviewContent recovery={recovery} barra={barra} />
+  <section class="evidence-grid"><article class="evidence-card">
+    <span class="evidence-status" data-locale-text data-en={costCopy.stage[0]} data-zh={costCopy.stage[1]}>{costCopy.stage[0]}</span>
+    <h2><a href={withBase("/research/execution-costs/", import.meta.env.BASE_URL)} data-locale-text data-en={costCopy.title[0]} data-zh={costCopy.title[1]}>{costCopy.title[0]}</a></h2>
+    <p data-locale-text data-en={costCopy.conclusion[0]} data-zh={costCopy.conclusion[1]}>{costCopy.conclusion[0]}</p>
+    <p data-locale-text data-en={costCopy.scope[0]} data-zh={costCopy.scope[1]}>{costCopy.scope[0]}</p>
+    <small data-locale-text data-en={costCopy.question[0]} data-zh={costCopy.question[1]}>{costCopy.question[0]}</small>
+  </article></section>
   <FreshnessStrip snapshot={manifest.snapshots?.overview ?? {}} snapshotKey="overview" label="公开快照总览" />
 </SiteLayout>
