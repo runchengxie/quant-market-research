@@ -10,6 +10,7 @@ for (const route of [
   'research/microcap/',
   'research/cashflow/',
   'research/indices/',
+  'research/execution-costs/',
   'research/liquidity/',
   'research/microcap/cross-market-liquidity/',
   'research/cashflow/recovery/',

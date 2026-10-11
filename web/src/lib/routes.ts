@@ -6,6 +6,7 @@ export const PUBLIC_ROUTES = {
   crossMarketLiquidity: "/research/microcap/cross-market-liquidity/",
   indices: "/research/indices/",
   styleFactors: "/research/style-factors-18y/",
+  executionCosts: "/research/execution-costs/",
   liquidity: "/research/liquidity/",
   lowTurnover: "/research/factors/low-turnover/",
   pbRoe: "/research/factors/pb-roe/",

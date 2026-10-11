@@ -39,3 +39,5 @@ uv run market-research --help
 - `studies/`：各项研究的配置、方法说明、复核记录和 notebook，不存放 Python 包代码。
 - `web/`：独立的 Astro 网站应用，有自己的源码、脚本、测试和依赖。
 - `docs/`：运行手册、数据说明和研究方法文档。
+
+交易成本与策略容量：[专题协议](studies/ashare_execution_costs/README.zh-CN.md) · [公开专题](https://runchengxie.github.io/quant-market-research/research/execution-costs/)。现阶段为情景基线，L2实证校准待完成。

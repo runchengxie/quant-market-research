@@ -6,6 +6,7 @@ const topicLabels: Record<TopicId, { en: string; zh: string }> = {
   style: { en: "Style research", zh: "风格研究" },
   "low-turnover": { en: "Low-turnover research", zh: "低换手研究" },
   indices: { en: "Index research", zh: "指数研究" },
+  "execution-costs": { en: "Trading costs and capacity", zh: "交易成本与容量" },
   liquidity: { en: "Liquidity research", zh: "流动性研究" },
 };
 
@@ -14,6 +15,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Scenario baseline: illustrative fees at 60% daily one-way turnover total 10.5% yearly. No L2 sample yet; order-size effects on net returns remain open." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
   cashflow: { title: "Cash Flow and Dividends", summary: "What historical cash-flow groups returned, how long losses lasted, and which checks remain open." },

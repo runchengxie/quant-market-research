@@ -1,0 +1,15 @@
+study_id: ashare_execution_costs
+status: scenario_baseline
+evidence_status: illustrative_not_empirical
+local_l2_inspected: false
+real_order_calibration: false
+empirical_sample: null
+raw_data_in_git: false
+scenario:
+  sessions: 250
+  daily_one_way_turnover: 0.6
+  inclusive_commission_bp_per_side: 1
+  sell_tax_bp: 5
+  slippage_bp_per_side: [0, 1, 3, 5, 10]
+planned_capital_cny: [10000000, 100000000, 1000000000]
+public_route: /research/execution-costs/
