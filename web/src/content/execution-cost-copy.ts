@@ -4,8 +4,8 @@ export const executionCostCopy = {
     "A股交易成本与策略容量"
   ],
   "stage": [
-    "L2 sample audited · static costs measured locally",
-    "L2样本已审计 · 静态成本已在本地测量"
+    "L2 audit · local results",
+    "L2审计 · 结果留本地"
   ],
   "conclusion": [
     "A three-day L2 pilot is now measured. Time encoding and one-sided books must be checked before interpreting static execution costs.",
