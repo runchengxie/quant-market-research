@@ -13,3 +13,5 @@
 数据平台负责供应商标准化与L2治理；quant-platform负责通用执行模拟与成本归因；本仓库负责实证研究与审查后的聚合结果。校准完成后，因子观测站可展示净收益与容量摘要并链接主专题。
 
 复现时先在仓库外复制[输入示例](expansion.spec.example.json)，核实时间、价格和数量单位，再绑定本地源路径。[英文协议](README.md#reproduce-with-private-inputs)列出测量、复核、策略与聚合发布命令。运行结果与已执行笔记本保存在外部数据目录；公开页面只使用审查后的聚合结果。
+
+[真实订单输入与校准入口](../../docs/studies/execution-cost-calibration.zh-CN.md) · [回放门槛与盘口路径对照](../../docs/studies/execution-cost-replay.zh-CN.md) · [独立订单核验笔记本](calibration_review.ipynb)

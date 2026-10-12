@@ -21,6 +21,8 @@ export const snapshotTitleCopy: Record<string, readonly [string, string]> = {
   cashflow: ['Cash-flow indices', '现金流指数'],
   indices: ['Indices and ETFs', '指数与ETF'],
   liquidity: ['Liquidity', '流动性'],
+  execution_replay: ['Execution replay fitness and counterfactuals','执行回放质量与反事实'],
+  execution_calibration: ['Real-order calibration entry','真实订单校准入口'],
   execution_costs: ['Trading costs: static L2 study', '交易成本：静态盘口研究'],
   execution_strategy: ['Trading costs: strategy diagnostic', '交易成本：策略诊断'],
 };

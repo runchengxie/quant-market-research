@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-12T13:18:23+08:00",
+  "generated_at": "2026-10-12T16:12:00+08:00",
   "sources": [
     "market-research A-share rule reconstruction",
     "smallcap turnover clean, historical and overlap-audit summaries",
@@ -18,11 +18,11 @@
     "microcap_repair_files": 1,
     "smallcap_turnover_files": 1,
     "raw_data_published": false,
-    "execution_cost_files": 3
+    "execution_cost_files": 4
   },
   "snapshots": {
     "overview": {
-      "generated_at": "2026-10-12T13:18:23+08:00",
+      "generated_at": "2026-10-12T16:12:00+08:00",
       "coverage_end": "2026-09-07",
       "source": "reviewed public research snapshots",
       "quality_status": "derived"
@@ -141,6 +141,26 @@
         "56个交易日、三种资金规模、十八组模型情景；非真实容量或净超额收益验证。",
         "参考成本包含后续2026年观测，仅用于反事实敏感性；价格与流动性采用日频代理。",
         "固定成交费用替换出现资金缺口，不能视为可执行的净值路径。"
+      ]
+    },
+    "execution_replay": {
+      "generated_at": "2026-10-12T16:12:00+08:00",
+      "coverage_start": "2021-01-04",
+      "coverage_end": "2021-01-04",
+      "source": "深市事件质量核验与盘口路径反事实",
+      "quality_status": "exploratory",
+      "caveats": [
+        "完整事件回放仍受语义和跨流顺序限制，快照重建核对尚未运行。",
+        "12条盘口路径、1万股、五分钟的反事实未包含真实排队、自身冲击或参与率约束。"
+      ]
+    },
+    "execution_calibration": {
+      "generated_at": "2026-10-12T16:12:00+08:00",
+      "source": "真实订单校准入口的合成流程核验",
+      "quality_status": "pending",
+      "caveats": [
+        "80笔合成母单只验证程序与账目，不提供真实滑点证据；真实委托尚未接入。",
+        "市场调整响应和按日期留出误差不等于自身因果冲击识别。"
       ]
     }
   },
