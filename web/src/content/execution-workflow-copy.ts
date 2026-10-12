@@ -1,0 +1,15 @@
+export const workflowCopy = {
+ title:['From static books to execution calibration','从静态盘口推进到执行校准'],
+ replay:['Event replay: quality gate remains closed','事件回放：质量门槛尚未通过'],
+ replayNote:['Early Shenzhen reference lookup is audited, but event types, cancellation meanings and cross-stream exchange order remain unverified. A full book has not been reconstructed or reconciled to snapshots.','已核查早期深市订单引用，但事件类型、撤单语义和跨流交易所顺序仍待验证。完整订单簿尚未重建，也未与快照核对。'],
+ paths:['Snapshot-path counterfactual: 12 selected securities','盘口路径反事实：12只选定证券'],
+ pathsNote:['The first 12 saved Shenzhen securities in lexical order use 10,000-share orders and a five-minute horizon. Displayed depth refreshes independently of our hypothetical orders. Fees, round lots and own impact are absent; these fill counts do not rank live execution algorithms.','按代码顺序选择最前12只深市样本，每笔1万股，观察五分钟。盘口深度按后续快照刷新，不受假想订单影响；未包含税费、整手与自身冲击。这些完成数量不能用于评判实盘算法优劣。'],
+ participation:['Participation-constrained mode is unavailable until cumulative-volume units, resets, auctions and trailing intervals are verified. Passive queue fills remain unidentified; only crossing fills are simulated.','参与率约束模式暂不可用，需先核实累计成交量单位、重置、竞价及滞后区间口径。被动排队成交仍无法识别，目前只模拟价格交叉后的成交。'],
+ calibration:['Real-order entry is ready; actual calibration is pending','真实订单入口已实现；实盘校准仍待完成'],
+ calibrationNote:['Canonical orders, fills and past available quotes feed signed decision/arrival costs, unfilled opportunity cost and actual fees. Training parents must finish before the holdout starts. The 80-parent synthetic check verifies the pipeline, not real slippage. No actual order files have been supplied to this study.','标准母单、成交与当时可用的报价可用于分解决策价／到达价成本、未成交机会成本和实际税费。训练母单必须在验证期开始前结束。80笔合成订单只核验流程，不提供真实滑点证据；本专题尚未收到真实订单文件。'],
+ causal:['Market-adjusted terminal responses and chronological prediction errors are implemented in the research entry. They describe association; identifying causal own impact needs additional controls and reviewed execution-comparison evidence.','研究入口已实现市场调整后的订单结束时点响应，以及按日期验证的预测误差。它们描述关联；识别自身因果冲击仍需额外控制和经审查的执行对照证据。'],
+ mode:['Mode','方式'],buy:['Fully filled buy paths','买入完整成交路径'],sell:['Fully filled sell paths','卖出完整成交路径'],
+ market:['Immediate displayed-depth sweep','立即吃可见盘口'],twap:['Fixed-clock TWAP','固定时钟等量执行'],limit_wait:['Limit wait: crossings only','限价等待：仅价格交叉'],
+ replayProtocol:['Replay protocol and assumptions ↗','回放协议与假设 ↗'],calibrationProtocol:['Order input and calibration protocol ↗','订单输入与校准协议 ↗'],
+ download:['Download reviewed execution workflow','下载已审查的执行研究记录'],
+} as const;

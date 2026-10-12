@@ -1,4 +1,7 @@
 ---
+import ExecutionWorkflow from '../../../components/ExecutionWorkflow.astro';
+import ExecutionExpansion from "../../../components/ExecutionExpansion.astro";
+import { expansionCopy } from "../../../content/execution-expansion-copy";
 import ExecutionCostResults from "../../../components/research/ExecutionCostResults.astro";
 import SiteLayout from "../../../layouts/SiteLayout.astro";
 import TopicNav from "../../../components/TopicNav.astro";
@@ -20,6 +23,14 @@ const links = [
 <section class="research-verdict"><span class="evidence-status" data-locale-text data-en={text("stage")[0]} data-zh={text("stage")[1]}>{text("stage")[0]}</span>
 <h2  data-locale-text data-en={text("conclusion")[0]} data-zh={text("conclusion")[1]}>{text("conclusion")[0]}</h2>
 <p  data-locale-text data-en={text("scope")[0]} data-zh={text("scope")[1]}>{text("scope")[0]}</p>
+</section>
+<TopicNav sections={[{id:"expanded-results",label:"扩展盘口",labelEn:"Expanded books",available:true},{id:"common-comparison",label:"数据对照",labelEn:"Data comparison",available:true},{id:"strategy-diagnostic",label:"策略诊断",labelEn:"Strategy diagnostic",available:true},{id:"calibration-workflow",label:"执行校准",labelEn:"Execution calibration",available:true}]} />
+<ExecutionExpansion />
+<ExecutionWorkflow />
+<details class="prior-evidence"><summary data-locale-text data-en={expansionCopy.prior[0]} data-zh={expansionCopy.prior[1]}>{expansionCopy.prior[0]}</summary>
+<section class="prior-verdict"><span class="evidence-status" data-locale-text data-en={text("pilotStage")[0]} data-zh={text("pilotStage")[1]}>{text("pilotStage")[0]}</span>
+<h2  data-locale-text data-en={text("pilotConclusion")[0]} data-zh={text("pilotConclusion")[1]}>{text("pilotConclusion")[0]}</h2>
+<p  data-locale-text data-en={text("pilotScope")[0]} data-zh={text("pilotScope")[1]}>{text("pilotScope")[0]}</p>
 </section>
 <TopicNav sections={[{id:"pilot-results",label:"成本与覆盖率",labelEn:"Costs and coverage",available:true},{id:"pilot-audit",label:"样本审计",labelEn:"Sample audit",available:true},{id:"baseline",label:"成本基线",labelEn:"Cost baseline",available:true},{id:"evidence",label:"证据边界",labelEn:"Evidence limits",available:true},{id:"roadmap",label:"研究路线",labelEn:"Research roadmap",available:true},{id:"sources",label:"来源与方法",labelEn:"Sources and methods",available:true}]} />
 <ExecutionCostResults />
@@ -51,4 +62,4 @@ const links = [
 </section><details id="sources" class="panel research-source"><summary  data-locale-text data-en={text("sources")[0]} data-zh={text("sources")[1]}>{text("sources")[0]}</summary>
 <p  data-locale-text data-en={text("literature")[0]} data-zh={text("literature")[1]}>{text("literature")[0]}</p>
 <ul><li><a href="https://doi.org/10.1016/j.jfineco.2021.08.017">Machine learning in the Chinese stock market</a></li><li><a href="https://doi.org/10.1016/j.irfa.2023.102975">Factor models for Chinese A-shares</a></li><li><a href="https://doi.org/10.1016/j.pacfin.2021.101607">Anomalies in the China A-share market</a></li><li><a href="https://www.nber.org/papers/w20721">A Taxonomy of Anomalies and Their Trading Costs</a></li></ul>
-<nav class="report-links">{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></article></SiteLayout>
+<nav class="report-links">{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></details></article></SiteLayout>

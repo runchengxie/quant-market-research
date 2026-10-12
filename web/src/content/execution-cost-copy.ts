@@ -4,16 +4,16 @@ export const executionCostCopy = {
     "A股交易成本与策略容量"
   ],
   "stage": [
-    "Static L2 pilot · published",
-    "静态L2探索 · 已公开"
+    "Historical static L2 expansion · published",
+    "历史静态L2探索 · 已公开"
   ],
   "conclusion": [
-    "At CNY 100k, median static buy/sell costs are about 8.5 bp in this sample. At CNY 1m, full ten-level coverage falls to about 64%/67%.",
-    "本样本中，10万元订单的静态买卖成本中位数约8.5bp；到100万元，十档完整覆盖率降至约64%/67%。"
+    "Across ten selected dates, median static buy/sell costs at CNY 100k are 9.27/8.87 bp. At CNY 1m, full ten-level coverage is only 62.12%/67.68%.",
+    "十个选定交易日中，10万元静态买卖成本中位数为9.27/8.87基点；100万元订单的十档完整覆盖率仅62.12%/67.68%。"
   ],
   "scope": [
-    "Sample: 2026-04-16, 2026-04-24 and 2026-07-20; 98,072 valid two-sided security-minute books from a deterministic Shanghai/Shenzhen subset. These are descriptive static measurements; actual-order and dynamic-impact calibration remain incomplete.",
-    "样本为2026-04-16、2026-04-24与2026-07-20的沪深证券确定性子样本，共98,072条有效双边证券分钟盘口。这是描述性静态测量，真实委托与动态冲击仍待校准。"
+    "Ten predeclared dates in 2021, 2025 and 2026; 306,483 valid two-sided security-minute books. Order-flow association and a 56-session strategy diagnostic are reported separately. Actual orders and dynamic impact remain uncalibrated.",
+    "样本为2021、2025、2026年的十个预先指定交易日，共306,483条有效双边证券分钟盘口。订单流关联与56日策略诊断分别报告；真实委托与动态冲击仍待校准。"
   ],
   "question": [
     "How much predicted return survives execution, and how does this change with capital and turnover?",
@@ -192,8 +192,8 @@ export const executionCostCopy = {
     "方向"
   ],
   "coverage": [
-    "Full coverage",
-    "完整覆盖率"
+    "10 selected dates: January 2021, January 2025, April/July 2026",
+    "十个选定交易日：2021年1月、2025年1月、2026年4月及7月"
   ],
   "costUnit": [
     "Cost vs midpoint (bp)",
@@ -262,5 +262,17 @@ export const executionCostCopy = {
   "matchedValues": [
     "Exact values for the common subset",
     "共同样本的完整数值"
+  ],
+  "pilotStage": [
+    "Static L2 pilot · published",
+    "静态L2探索 · 已公开"
+  ],
+  "pilotConclusion": [
+    "At CNY 100k, median static buy/sell costs are about 8.5 bp in this sample. At CNY 1m, full ten-level coverage falls to about 64%/67%.",
+    "本样本中，10万元订单的静态买卖成本中位数约8.5bp；到100万元，十档完整覆盖率降至约64%/67%。"
+  ],
+  "pilotScope": [
+    "Sample: 2026-04-16, 2026-04-24 and 2026-07-20; 98,072 valid two-sided security-minute books from a deterministic Shanghai/Shenzhen subset. These are descriptive static measurements; actual-order and dynamic-impact calibration remain incomplete.",
+    "样本为2026-04-16、2026-04-24与2026-07-20的沪深证券确定性子样本，共98,072条有效双边证券分钟盘口。这是描述性静态测量，真实委托与动态冲击仍待校准。"
   ]
 } as const;

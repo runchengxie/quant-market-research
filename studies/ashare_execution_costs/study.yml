@@ -1,13 +1,12 @@
 study_id: ashare_execution_costs
-status: local_static_pilot_complete
-evidence_status: descriptive_static_pilot_not_execution_calibration
+status: interactive_evidence_and_calibration_entry_ready
+evidence_status: descriptive_static_and_counterfactual_not_execution_calibration
 local_l2_inspected: true
 real_order_calibration: false
 empirical_sample:
-  dates: [20260416, 20260424, 20260720]
-  source_rows_scanned: 65673625
-  sampled_snapshots: 100236
-  valid_two_sided_snapshots: 98072
+  dates: [20210104, 20210115, 20210129, 20250102, 20250115, 20250127, 20260407, 20260416, 20260424, 20260720]
+  sampled_snapshots: 311395
+  valid_two_sided_snapshots: 306483
   selection: stock_prefix_and_code_modulo_37
 publication_status: reviewed_aggregates_published
 aggregate_publication_permission:
@@ -23,3 +22,16 @@ scenario:
   slippage_bp_per_side: [0, 1, 3, 5, 10]
 planned_capital_cny: [10000000, 100000000, 1000000000]
 public_route: /research/execution-costs/
+strategy_diagnostic:
+  sessions: 56
+  start: 2025-01-03
+  end: 2025-03-31
+  modeled_scenarios: 18
+  real_capacity_verified: false
+execution_workflow:
+  full_event_replay_verified: false
+  snapshot_counterfactual_paths: 12
+  participation_contract_verified: false
+  real_order_entry_implemented: true
+  synthetic_validation_parents: 80
+  causal_own_impact_identified: false

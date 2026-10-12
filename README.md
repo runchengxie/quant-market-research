@@ -43,4 +43,4 @@ web/                  Astro website with its own source, tests, and dependencies
 docs/                 runbooks, data documentation, and research methods
 ```
 
-Trading costs and capacity: [study protocol](studies/ashare_execution_costs/README.md) · [public topic](https://runchengxie.github.io/quant-market-research/research/execution-costs/). Three-day L2 source audit and local static measurement complete; actual execution calibration pending.
+Trading costs and capacity: [study protocol](studies/ashare_execution_costs/README.md) · [public topic](https://runchengxie.github.io/quant-market-research/research/execution-costs/). Ten selected L2 dates and eighteen constrained strategy sensitivities are complete; actual execution calibration remains pending.

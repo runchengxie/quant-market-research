@@ -1,0 +1,92 @@
+{
+  "price_unit": "integer_cent",
+  "quantity_unit": "share",
+  "security_modulus": 37,
+  "snapshot_sources": [
+    {
+      "path": "/path/to/private/snapshot_202101.parquet",
+      "clock_profile": "relative_0930_ms",
+      "days": [
+        20210104,
+        20210115,
+        20210129
+      ]
+    },
+    {
+      "path": "/path/to/private/snapshot_202501.parquet",
+      "clock_profile": "relative_0930_ms",
+      "days": [
+        20250102,
+        20250115,
+        20250127
+      ]
+    },
+    {
+      "path": "/path/to/private/snapshot_20260407.parquet",
+      "clock_profile": "native_hhmmssmmm",
+      "days": [
+        20260407
+      ]
+    },
+    {
+      "path": "/path/to/private/snapshot_20260416.parquet",
+      "clock_profile": "native_hhmmssmmm",
+      "days": [
+        20260416
+      ]
+    },
+    {
+      "path": "/path/to/private/snapshot_20260424.parquet",
+      "clock_profile": "native_hhmmssmmm",
+      "days": [
+        20260424
+      ]
+    },
+    {
+      "path": "/path/to/private/snapshot_20260720.parquet",
+      "clock_profile": "native_hhmmssmmm",
+      "days": [
+        20260720
+      ]
+    }
+  ],
+  "comparison_days": [
+    20210104,
+    20260416
+  ],
+  "event_sources": [
+    {
+      "day": 20210104,
+      "order": {
+        "path": "/path/to/private/order_2021-01-04.parquet",
+        "clock_profile": "relative_0930_ms",
+        "day": 20210104
+      },
+      "preopen_order": {
+        "path": "/path/to/private/preopening_order_2021-01-04.parquet",
+        "clock_profile": "relative_0930_ms",
+        "day": 20210104
+      },
+      "deal": {
+        "path": "/path/to/private/trades_2021-01-04.parquet",
+        "clock_profile": "relative_0930_ms",
+        "day": 20210104
+      }
+    },
+    {
+      "day": 20260416,
+      "order": {
+        "path": "/path/to/private/order_20260416.parquet",
+        "clock_profile": "native_hhmmssmmm",
+        "day": 20260416
+      },
+      "deal": {
+        "path": "/path/to/private/deal_20260416.parquet",
+        "clock_profile": "native_hhmmssmmm",
+        "day": 20260416
+      }
+    }
+  ],
+  "daily_root": "/path/to/private/data",
+  "daily_basic_root": "/path/to/private/data"
+}

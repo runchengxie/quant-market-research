@@ -38,6 +38,7 @@ const docSources = new Set([
 const allowedSnapshotKeys = new Set([
   'cashflow.performance', 'cashflow.recovery', 'microcap.summary',
   'liquidity.cross-market', 'indices.returns', 'barra.returns', 'liquidity.summary', 'low-turnover.ledger',
+  'execution_costs', 'execution_strategy', 'execution_replay', 'execution_calibration',
 ]);
 
 const page = (value: PublicPage): PublicPage => value;
@@ -52,7 +53,7 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'indices', route: '/research/indices/', title: '指数与长期回报', summary: '网站展示了哪些指数和 ETF，它们的历史收益为什么不能直接比较。', section: 'research', topic: 'indices', aliases: [], related: ['cashflow', 'style'], snapshotKeys: ['indices.returns'] }),
   page({ id: 'style', route: '/research/style-factors-18y/', title: '18 年风格因子', summary: '价值、规模等股票分组在不同年份和市场阶段的表现。', section: 'research', topic: 'style', aliases: [], related: ['low-turnover', 'indices'], snapshotKeys: ['barra.returns'] }),
   page({ id: 'pb-roe', route: '/research/factors/pb-roe/', title: 'PB 与 ROE 历史对照', summary: '在同一批股票中加入盈利指标后，估值排序的历史结果怎样变化。', section: 'research', topic: 'style', aliases: [], related: ['pb-roe-method', 'style'], snapshotKeys: [] }),
-  page({ id: 'execution-costs', route: '/research/execution-costs/', title: 'A股交易成本与策略容量', summary: '三日L2静态成本与覆盖率已公开：10万元成本约8.5bp，100万元十档覆盖约64%/67%；真实滑点与容量仍待校准。', section: 'research', topic: 'execution-costs', aliases: [], related: ['liquidity', 'microcap-execution-diagnostic', 'low-turnover'], snapshotKeys: [] }),
+  page({ id: 'execution-costs', route: '/research/execution-costs/', title: 'A股交易成本与策略容量', summary: '十日静态探索与策略敏感性已公开：10万元买卖成本中位数9.27/8.87基点，100万元十档覆盖62.12%/67.68%；真实执行待校准。', section: 'research', topic: 'execution-costs', aliases: [], related: ['liquidity', 'microcap-execution-diagnostic', 'low-turnover'], snapshotKeys: ['execution_costs','execution_strategy'] }),
   page({ id: 'liquidity', route: '/research/liquidity/', title: '流动性研究', summary: '样本股票交易有多活跃、数据覆盖有多完整，目前能得出什么结论。', section: 'research', topic: 'liquidity', aliases: [], related: ['cross-market-liquidity', 'microcap', 'execution-costs'], snapshotKeys: ['liquidity.summary'] }),
   page({ id: 'low-turnover', route: '/research/factors/low-turnover/', title: '低换手因子', summary: '低换手股票过去表现如何，考虑其他股票特征后差距还剩多少。', section: 'research', topic: 'low-turnover', aliases: [], related: ['style', 'microcap'], snapshotKeys: ['low-turnover.ledger'] }),
   page({ id: 'docs', route: '/docs/', title: '方法与字典', summary: '研究方法、因子定义、数据来源与收尾状态。', section: 'docs', aliases: [], related: ['research', 'data-sources'], snapshotKeys: [] }),

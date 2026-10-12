@@ -15,7 +15,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
-  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Three L2 days: static costs at CNY 100k are about 8.5 bp; ten-level coverage at CNY 1m is about 64%/67%. Actual slippage and strategy capacity remain uncalibrated." },
+  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Ten selected L2 dates: CNY 100k median static costs are 9.27/8.87 bp; CNY 1m coverage is 62.12%/67.68%. Order-flow audit and strategy sensitivity are published; actual execution remains uncalibrated." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
   cashflow: { title: "Cash Flow and Dividends", summary: "What historical cash-flow groups returned, how long losses lasted, and which checks remain open." },
