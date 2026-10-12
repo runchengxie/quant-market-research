@@ -9,15 +9,15 @@ export const executionCostCopy = {
   ],
   "conclusion": [
     "Across ten selected dates, median static buy/sell costs at CNY 100k are 9.27/8.87 bp. At CNY 1m, full ten-level coverage is only 62.12%/67.68%.",
-    "十个选定交易日中，10万元静态买卖成本中位数为9.27/8.87基点；100万元订单的十档完整覆盖率仅62.12%/67.68%。"
+    "按十个选定交易日的挂单试算，10万元买入和卖出的成本中位数分别为9.27和8.87基点。金额增到100万元，只有约62%的买入盘口、68%的卖出盘口能靠十档挂单完成。"
   ],
   "scope": [
     "Ten predeclared dates in 2021, 2025 and 2026; 306,483 valid two-sided security-minute books. Order-flow association and a 56-session strategy diagnostic are reported separately. Actual orders and dynamic impact remain uncalibrated.",
-    "样本为2021、2025、2026年的十个预先指定交易日，共306,483条有效双边证券分钟盘口。订单流关联与56日策略诊断分别报告；真实委托与动态冲击仍待校准。"
+    "样本来自2021、2025、2026年的十个预先指定交易日，共306,483条有效盘口，每只股票每分钟取一条。成本只统计十档挂单足够的记录，按有效记录等权汇总。真实委托与动态冲击仍待校准。"
   ],
   "question": [
     "How much predicted return survives execution, and how does this change with capital and turnover?",
-    "预测收益在实际执行后能保留多少，资金规模与换手率如何改变结果？"
+    "按信号买卖，最后还能赚多少？资金越大、换仓越勤，会多付出多少成本？"
   ],
   "baseline": [
     "Turnover definitions and cost sensitivity",
@@ -25,7 +25,7 @@ export const executionCostCopy = {
   ],
   "assumptions": [
     "Illustrative assumptions: 250 sessions, constant NAV, no leverage, 1 bp inclusive commission on each side and 5 bp sell-side tax. Confirm the fee date and broker invoice before use; do not add included levies again. 1 bp = 0.01%.",
-    "示例假设：250个交易日、净值固定、无杠杆，买卖综合佣金各1bp，卖出税费5bp。使用前核对费率适用日期与交割单，佣金已含的规费不要重复添加。1bp = 0.01%。"
+    "举例按一年250个交易日、资金规模不变、无杠杆计算。买卖佣金各1基点，卖出另付5基点税费。1基点就是0.01%，10万元的1基点相当于10元。实际费用要核对适用日期和交割单，已经包含的费用不要再加一次。"
   ],
   "formula": [
     "Annual cost = days × [buy turnover × (buy fees + buy slippage) + sell turnover × (sell fees + sell slippage)]. Rates use decimals.",
@@ -33,7 +33,7 @@ export const executionCostCopy = {
   ],
   "definition": [
     "For balanced fully invested rebalances without flows: one-way turnover = half of the sum of absolute weight changes. A 60% sum means about 30% buying and 30% selling.",
-    "无资金流且满仓平衡调仓时：单边换手 = 权重变化绝对值之和的一半。绝对值之和60%，约对应买入30%、卖出30%。"
+    "如果没有资金进出，卖掉60%的持仓再买入等额股票，单边换手率就是60%。如果买入和卖出的金额合计只占60%，则两侧各约30%，费用也差一倍。"
   ],
   "slippage": [
     "Slippage on each side (bp)",
@@ -49,39 +49,39 @@ export const executionCostCopy = {
   ],
   "boundary": [
     "Slippage must use a named benchmark. Midpoint-based book walking already includes half-spread and depth cost: do not add spread or the same impact twice. Unfilled orders and opportunity costs require a separate ledger.",
-    "滑点必须指定参考价格。相对中间价的静态吃单已含半价差与深度成本，不要再重复叠加价差或同一冲击。未成交与机会成本需要单独记账。"
+    "计算滑点要先选参考价。这里用最高买价和最低卖价的平均值。按挂单逐档试算的价格已经包含买卖报价的差距，不要再加一次价差。没买到或没卖掉的部分要另记账。"
   ],
   "evidence": [
     "What Level-2 can establish",
-    "Level-2 能支持什么证据"
+    "这些数据能回答什么"
   ],
   "snapshots": [
     "Ten-level snapshots: measure quoted spread, depth and static buy/sell curves. Report P50/P90/P95 and depth coverage. Insufficient depth means incomplete coverage, never extrapolated fills.",
-    "十档快照：测量报价价差、深度和静态买卖成本曲线，报告P50/P90/P95与深度覆盖率。深度不足须标记未完整覆盖，不能外推成交。"
+    "十档盘口能告诉我们当时挂了多少单，以及按这些价格买卖要多花多少。挂单不足就记为无法算出完整成本，不能当作零成本，也不能假设十档之外还能按原价成交。"
   ],
   "events": [
     "Orders and trades: validate event order, units, cancellation links and zero-price semantics before estimating signed flow or price response. Historical replay cannot identify the causal impact of a fictional order.",
-    "逐笔委托与成交：先验证事件顺序、单位、撤单关联与零价格事件语义，再估计订单流和价格响应。历史回放无法识别虚构订单自身的因果冲击。"
+    "逐笔委托和成交能帮助还原交易过程。先要弄清事件顺序、计量单位、撤单对应关系和零价格记录的含义。历史价格变化本身不能证明是假想订单造成的。"
   ],
   "fills": [
     "Actual order and fill reports: calibrate implementation shortfall against the decision price, including partial fills, cancellations, fees and unfilled quantity. No such calibration is published here yet.",
-    "真实委托与成交回报：以决策价校准执行差额，覆盖部分成交、撤单、费用和未成交量。本专题尚未发布这种校准结果。"
+    "真实委托与成交记录能核对下单时的预期和最终结果，还要计入部分成交、撤单、费用和没成交的部分。本专题还没有收到这类真实订单文件。"
   ],
   "roadmap": [
     "Next experiments and publication gates",
-    "后续实验与发布条件"
+    "接下来还缺什么"
   ],
   "phase1": [
     "1 · Baseline: reconcile dated fees and cost ledgers with quant-platform; audit embedded slippage to prevent double charging. Separate turnover of a portfolio from trading activity of a stock.",
-    "1 · 成本基线：对齐quant-platform的分期费率与成本账本，审计内置滑点以防重复扣费。组合换手率与个股交易活跃程度须分开。"
+    "费用账目已经核对，原模拟中的5基点收费已移除，再加入新的费用假设。下一步用真实交割单核对费率和最低佣金。"
   ],
   "phase2": [
     "2 · L2 pilot: inspect local schema and coverage through quant-market-data-platform. Stratify by size, liquidity, volatility, session and market state; publish aggregate cost surfaces with exclusion rates and day/stock-clustered uncertainty.",
-    "2 · L2小样本：通过quant-market-data-platform核对本地字段与覆盖率。按规模、流动性、波动、时段和市场状态分组，公开聚合成本曲面、剔除比例及按日期/证券聚类的不确定性。"
+    "已扩大到十个日期并加入成交额、市值和波动分组。还要核查原始文件每分钟最早记录的选择，补上完全缺失的股票，并预先选定正常日和压力日继续比较。"
   ],
   "phase3": [
     "3 · Strategy sensitivity: compare gross, fee-only and modeled net returns at CNY 10m/100m/1bn. Map position-level orders to participation; test buffers, rebalance frequency and execution speed with signal decay, T+1, limits and suspensions. These are planned scenarios, not measured capacity.",
-    "3 · 策略敏感性：在1000万元、1亿元、10亿元情景下比较毛收益、仅扣费收益与模型净收益。逐股映射参与率，比较缓冲调仓、频率和执行速度，并纳入信号衰减、T+1、涨跌停和停牌。这些是计划情景，尚非实测容量。"
+    "已比较1000万元、1亿元和10亿元资金下的18组费用情景。后续需要真实订单检查分批成交、等待时间和未成交比例，再判断资金增大后是否还能执行。"
   ],
   "gate": [
     "Publish only after semantic checks, sample manifests, benchmark definitions, exclusions and time-based out-of-sample validation are reviewable. Raw vendor data and order records stay outside this repository.",
@@ -137,7 +137,7 @@ export const executionCostCopy = {
   ],
   "resultsNote": [
     "Reference notional = midpoint × target shares. Fractional analytical shares are allowed; these are not cash budgets or lot-sized executable orders. Costs are relative to the current midpoint, include half-spread and depth consumption, and exclude fees, latency and causal impact.",
-    "参考名义规模 = 中间价 × 分析股数；允许分析用的非整手股数，不是现金预算或真实整手委托。成本相对当前中间价，含半价差与吃档，不含税费、延迟和自身因果冲击。"
+    "订单规模按参考价乘股数计算，允许用于分析的碎股。它不等于真实现金预算或整手订单。试算价格与当时参考价的差额包含买卖价差和多档成交的影响，不含税费、等待和自身订单影响。"
   ],
   "conditionalTitle": [
     "Cost conditional on full ten-level coverage",
@@ -149,7 +149,7 @@ export const executionCostCopy = {
   ],
   "selectionWarning": [
     "Each size has a different fully covered population. Read cost quantiles with coverage and sample counts: the uncovered orders have missing full-order costs, not zero costs.",
-    "不同规模能完整覆盖的样本不同。成本分位数须与覆盖率和样本数一起看；未覆盖订单的完整成本是缺失值，不是零。"
+    "大订单的成本中位数只来自挂单够用的盘口。挂单不够的记录没有完整成本，不能拿这个中位数代替，更不能按零成本处理。"
   ],
   "matchedTitle": [
     "Compare order sizes using the same books",
@@ -193,7 +193,7 @@ export const executionCostCopy = {
   ],
   "coverage": [
     "10 selected dates: January 2021, January 2025, April/July 2026",
-    "十个选定交易日：2021年1月、2025年1月、2026年4月及7月"
+    "十个选定交易日，覆盖2021年1月、2025年1月、2026年4月及7月"
   ],
   "costUnit": [
     "Cost vs midpoint (bp)",

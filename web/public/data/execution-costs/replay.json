@@ -32,12 +32,12 @@
         "side": "buy",
         "mode": "limit_wait",
         "paths": 12,
-        "full_fill_paths": 8,
+        "full_fill_paths": 7,
         "median_fill_fraction": 1.0,
         "costs": {
           "execution_cost_cny": {
             "observed_paths": 12,
-            "conditional_p50": -159.0
+            "conditional_p50": -59.0
           },
           "opportunity_cost_cny": {
             "observed_paths": 12,
@@ -45,11 +45,11 @@
           },
           "total_shortfall_bp": {
             "observed_paths": 12,
-            "conditional_p50": -23.9326465347141
+            "conditional_p50": -9.443128916169824
           },
           "completion_duration_ms": {
-            "observed_paths": 8,
-            "conditional_p50": 61500.0
+            "observed_paths": 7,
+            "conditional_p50": 120000.0
           }
         }
       },
@@ -87,7 +87,7 @@
         "costs": {
           "execution_cost_cny": {
             "observed_paths": 12,
-            "conditional_p50": -109.0
+            "conditional_p50": -58.0
           },
           "opportunity_cost_cny": {
             "observed_paths": 12,
@@ -95,7 +95,7 @@
           },
           "total_shortfall_bp": {
             "observed_paths": 12,
-            "conditional_p50": -14.954964634255528
+            "conditional_p50": -7.625128288229892
           },
           "completion_duration_ms": {
             "observed_paths": 12,
@@ -116,7 +116,7 @@
           },
           "opportunity_cost_cny": {
             "observed_paths": 12,
-            "conditional_p50": 100.0000000000023
+            "conditional_p50": 99.99999999999787
           },
           "total_shortfall_bp": {
             "observed_paths": 12,
@@ -162,7 +162,7 @@
         "costs": {
           "execution_cost_cny": {
             "observed_paths": 12,
-            "conditional_p50": 230.0
+            "conditional_p50": 185.0
           },
           "opportunity_cost_cny": {
             "observed_paths": 12,
@@ -170,7 +170,7 @@
           },
           "total_shortfall_bp": {
             "observed_paths": 12,
-            "conditional_p50": 38.62044765204935
+            "conditional_p50": 25.358197169707875
           },
           "completion_duration_ms": {
             "observed_paths": 12,
@@ -185,7 +185,7 @@
       "needed_input": "verified cumulative-volume units, clock and reset contract with trailing realized-volume baseline"
     },
     "assumptions": [
-      "first 12 saved Shenzhen securities in lexical order",
+      "first 12 saved Shenzhen securities on TradingDay=20210104 in lexical order",
       "first quote per timestamp; displayed depth refreshes at each clock",
       "no own-impact, fees, lot rounding, queue reconstruction or participation cap",
       "TWAP releases five fixed quantity slices at 0,60,120,180,240 seconds; next quote executes",
@@ -200,7 +200,6 @@
     "confirmed_on": "2026-10-12",
     "scope": "aggregate_derived_statistics"
   },
-  "source_summary_sha256": "bb4419e78a22c5b4a319716bf8e75d524dd1ca3377f164d2cf51f7b5597b7ed1",
   "calibration_entry": {
     "status": "implemented_actual_inputs_missing",
     "actual_order_calibrated": false,
@@ -221,5 +220,12 @@
       "supplied_predictions_ex_ante_verified": false
     },
     "source_receipt_sha256": "7fedd8edf26ffc8a23607af57a46a664064a9d6086a617e42ebbb730b0455b90"
+  },
+  "source_summary_sha256": "49470377289ecf7b9f1b3e121f8fa49e630f500d30457a4fe0e6e08dc675f5da",
+  "correction": {
+    "reviewed_on": "2026-10-12",
+    "supersedes": "replay-v6",
+    "run": "replay-v7",
+    "reason": "Explicit TradingDay filter replaces mixed-date snapshot paths; 72 same-day paths and 234 fills independently reconciled."
   }
 }

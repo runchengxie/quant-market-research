@@ -42,3 +42,5 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
 export function englishCopy(page: Pick<PublicPage, "id" | "title" | "summary">) {
   return englishCopies[page.id] ?? { title: page.title, summary: page.summary };
 }
+
+export const navigationCopy = { menu: ['Menu', '菜单'], open: ['Open navigation', '展开主导航'] } as const;

@@ -49,6 +49,10 @@ def snapshot_path(frame, *, quantity, budget_cny, mode, side, horizon_ms=300000,
         raise ValueError('unsupported execution mode or side')
     if quantity <= 0 or int(quantity) != quantity or budget_cny < 0:
         raise ValueError('positive integer quantity and nonnegative cash required')
+    if 'TradingDay' in frame and (frame.TradingDay.isna().any() or frame.TradingDay.nunique() != 1):
+        raise ValueError('quote path must contain exactly one trading day')
+    if 'ticker' in frame and frame.ticker.nunique() != 1:
+        raise ValueError('quote path must contain exactly one security')
     path = frame.sort_values('time_ms', kind='stable').drop_duplicates('time_ms', keep='first')
     if path.empty:
         raise ValueError('empty quote path')

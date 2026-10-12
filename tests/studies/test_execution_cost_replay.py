@@ -233,3 +233,16 @@ def test_sell_zero_fill_limit_wait_has_signed_opportunity_cost():
     assert r["opportunity_cost_cny"] == pytest.approx(2)
     assert r["total_shortfall_bp"] == pytest.approx(1000)
     assert r["completion_duration_ms"] is None
+
+
+def test_mixed_trading_days_cannot_be_spliced_into_one_intraday_path():
+    frame = pd.DataFrame([{**book(0), 'TradingDay': 20210104},
+                          {**book(60, 80), 'TradingDay': 20210115}])
+    with pytest.raises(ValueError, match='exactly one trading day'):
+        snapshot_path(frame, quantity=20, budget_cny=100, mode='twap', side='buy')
+
+def test_mixed_securities_cannot_form_one_order_path():
+    frame = pd.DataFrame([{**book(0), 'ticker': '000001'},
+                          {**book(60), 'ticker': '000002'}])
+    with pytest.raises(ValueError, match='exactly one security'):
+        snapshot_path(frame, quantity=20, budget_cny=100, mode='twap', side='buy')

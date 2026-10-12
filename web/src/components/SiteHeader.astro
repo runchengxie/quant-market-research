@@ -1,4 +1,5 @@
 ---
+import { navigationCopy } from "../content/locale-copy";
 import ThemeToggle from "./react/ThemeToggle";
 import { withBase } from "../lib/routes";
 
@@ -28,7 +29,7 @@ const links = [
       <ThemeToggle client:load />
     </div>
   </div>
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label="Open navigation">Menu</button>
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-nav" aria-label={navigationCopy.open[0]} data-locale-aria data-aria-en={navigationCopy.open[0]} data-aria-zh={navigationCopy.open[1]}><span data-locale-text data-en={navigationCopy.menu[0]} data-zh={navigationCopy.menu[1]}>{navigationCopy.menu[0]}</span></button>
   <nav id="primary-nav" class="site-nav" aria-label="Primary navigation">
     {links.map((link) => <a class:list={{ active: resolvedSection === link.section }} href={withBase(link.href, import.meta.env.BASE_URL)}><span data-locale-text data-en={link.en} data-zh={link.zh}>{link.en}</span></a>)}
     <button class="locale-toggle" type="button" data-locale-toggle>中文</button>
