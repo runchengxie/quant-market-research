@@ -4,6 +4,8 @@ export const formatEvidenceNumber = (value: unknown): string =>
   ? value.toLocaleString('en-US', {maximumFractionDigits: 2}) : '—';
 export const formatEvidenceFraction = (value: unknown): string =>
  typeof value === 'number' && Number.isFinite(value) ? `${(value * 100).toFixed(2)}%` : '—';
+export const formatEvidenceNav = (value: unknown): string =>
+ typeof value === 'number' && Number.isFinite(value) ? value.toFixed(6) : '—';
 export function selectSurface(rows: any[], side: string, notional: number) {
  return rows.find(row => row.side === side && row.reference_notional_cny === notional);
 }

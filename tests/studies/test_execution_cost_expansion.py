@@ -3,7 +3,7 @@ import pandas as pd
 import pytest
 
 from market_research.studies.ashare_execution_costs.expansion import (
-    clock_ms, lagged_features, minute_coverage, reference_audit, stream_audit,
+    clock_ms, lagged_features, minute_coverage, reference_audit, stream_audit, validate_spec,
 )
 
 
@@ -52,6 +52,45 @@ def test_stream_audit_keeps_source_order_and_counts_regression_across_rows():
     assert result['timestamp_regressions'] == 1
     assert result['duplicate_event_rows'] == 2
     assert result['nonpositive_price_rows'] == 1
+
+
+def test_zero_business_indexes_are_not_treated_as_positive_sequence_duplicates():
+    rows = pd.DataFrame({'SecuCode':[1]*4,'time_ms_absolute':[1,2,3,4],
+        'Price':[100]*4,'Volume':[1]*4,'OrderID':[1,2,3,4],'BizIndex':[0,0,2,1]})
+    result = stream_audit(rows,'order')
+    assert result['nonpositive_sequence_rows'] == 2
+    assert result['duplicate_positive_sequence_rows'] == 0
+    assert result['positive_sequence_regressions'] == 1
+
+
+def test_duplicate_declared_dates_are_rejected_before_reading_or_writing():
+    spec = {'snapshot_sources':[{'days':[20210104,20210104]}],'comparison_days':[20210104,20260416]}
+    with pytest.raises(ValueError,match='duplicate'):
+        validate_spec(spec)
+    spec['snapshot_sources']=[{'days':[20210104]},{'days':[20210104,20260416]}]
+    with pytest.raises(ValueError,match='duplicate'):
+        validate_spec(spec)
+
+
+def test_sql_clock_gate_rejects_fractional_time_before_integer_cast():
+    import duckdb
+    from market_research.studies.ashare_execution_costs.expansion import _clock_sql
+    con = duckdb.connect()
+    result = con.execute('SELECT '+_clock_sql('t','relative_0930_ms')+' FROM (VALUES (0.5),(0.0)) v(t)').fetchall()
+    assert result == [(None,),(34200000,)]
+
+
+def test_saved_event_review_separates_zero_price_events_and_preopening_overlap():
+    from market_research.studies.ashare_execution_costs.review import event_diagnostics
+    orders = pd.DataFrame({'SecuCode':[1],'time_ms_absolute':[1],'Price':[100],
+        'Volume':[1],'OrderID':[10],'OrderType':[2]})
+    trades = pd.DataFrame({'SecuCode':[1,1],'time_ms_absolute':[2,1],
+        'Price':[100,0],'Volume':[1,1],'DealID':[1,2],'BuyID':[10,0],'SellID':[10,0]})
+    result = event_diagnostics(orders,trades,orders.copy())
+    assert result['trades']['timestamp_regressions'] == 1
+    assert result['positive_price_trades']['timestamp_regressions'] == 0
+    assert result['preopening_overlap_rows'] == 1
+    assert result['references'][0]['buy']['ambiguous'] == 1
 
 
 def test_lagged_features_exclude_decision_day_and_retain_incomplete_history():

@@ -9,6 +9,22 @@ export type SnapshotCard = {
 };
 
 const englishSnapshotCopy: Record<string, { source: string; caveats: string[] }> = {
+  execution_costs: {
+    source: "Reviewed historical L2 static aggregates and event-quality audit",
+    caveats: [
+      "Ten discrete dates, not continuous history; deterministic security selection is not market-representative.",
+      "Full-order costs condition on ten-level coverage; dynamic impact and actual orders remain uncalibrated.",
+      "Reconstructed lagged daily features lack historical release-time verification; common-security comparisons condition on survival.",
+    ],
+  },
+  execution_strategy: {
+    source: "Microcap strategy cost sensitivity through the shared execution simulator",
+    caveats: [
+      "56 sessions, three capital sizes and eighteen modeled scenarios do not establish real capacity or verified net alpha.",
+      "Cost assumptions include later 2026 observations for counterfactual sensitivity; prices and liquidity use daily proxies.",
+      "Replacing costs on fixed fills creates funding shortfalls, so those NAV paths are not feasible reexecution.",
+    ],
+  },
   microcap: {
     source: "Tushare A-share daily data with reconstructed trading rules",
     caveats: ["Membership, delistings, suspensions, and trading restrictions still require external audit."],

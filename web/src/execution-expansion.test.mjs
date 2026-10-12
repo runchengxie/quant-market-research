@@ -1,12 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {formatEvidenceNumber,formatEvidenceFraction,selectSurface} from './lib/execution-expansion.ts';
+import {formatEvidenceNumber,formatEvidenceFraction,formatEvidenceNav,selectSurface} from './lib/execution-expansion.ts';
 import {expansionCopy} from './content/execution-expansion-copy.ts';
 test('missing costs stay missing while published zero remains zero',()=>{
  for(const value of [null,undefined,NaN,Infinity,'0']) {
   assert.equal(formatEvidenceNumber(value),'—');assert.equal(formatEvidenceFraction(value),'—');
  }
  assert.equal(formatEvidenceNumber(0),'0');assert.equal(formatEvidenceFraction(.045),'4.50%');
+ assert.equal(formatEvidenceNav(1.30573632),'1.305736');
+ assert.equal(formatEvidenceNav(null),'—');
 });
 test('cost and coverage anchors select the same side and exact yuan amount',()=>{
  const rows=[{side:'buy',reference_notional_cny:10000},{side:'sell',reference_notional_cny:100000},{side:'buy',reference_notional_cny:100000},{side:'buy',reference_notional_cny:1000000}];

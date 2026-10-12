@@ -3,8 +3,9 @@ import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { expansionCopy as c } from '../content/execution-expansion-copy';
 import { withBase } from '../lib/routes';
-import { formatEvidenceNumber as n, formatEvidenceFraction as pct, selectSurface } from "../lib/execution-expansion";
+import { formatEvidenceNumber as n, formatEvidenceFraction as pct, formatEvidenceNav as nav, selectSurface } from "../lib/execution-expansion";
 import Table from './ExecutionEvidenceTable.astro';
+import Figure from './ExecutionStudyFigure.astro';
 const expansion=JSON.parse(await readFile(resolve(process.cwd(),'public/data/execution-costs/expansion.json'),'utf8'));
 const strategy=JSON.parse(await readFile(resolve(process.cwd(),'public/data/execution-costs/strategy.json'),'utf8'));
 const label=(k:string):readonly[string,string] => k in c?c[k as keyof typeof c]:[k,k];
@@ -12,38 +13,48 @@ const date=(k:string)=>/^\d{8}$/.test(k)?`${k.slice(0,4)}-${k.slice(4,6)}-${k.sl
 const groupLabel=(k:string)=> /^\d{8}$/.test(k)?[date(k),date(k)] as const:label(k);
 const surfaces=(groups:Record<string,any>)=>Object.entries(groups??{}).flatMap(([key,value])=>['buy','sell'].map(side=>{
  const rows=value.cost_surface??[];const small=selectSurface(rows,side,100000);const large=selectSurface(rows,side,1000000);
- return [groupLabel(key),label(side),n(value.snapshots),n(small?.full_order_cost_bp?.count),n(small?.full_order_cost_bp?.p90),pct(large?.full_coverage_rate)];
+ return [groupLabel(key),label(side),n(value.snapshots),n(small?.full_order_cost_bp?.count),n(small?.full_order_cost_bp?.p50),n(small?.full_order_cost_bp?.p90),pct(large?.full_coverage_rate)];
 }));
-const surfaceHeaders=[c.day,c.side,c.books,c.filled,c.cost,c.coverage];
+const surfaceHeaders=[c.day,c.side,c.books,c.filled,c.costMedian,c.cost,c.coverage];
 const auditRows=(expansion.audit??[]).map((r:any)=>[date(String(r.day)),n(r.sampled_securities),n(r.sampled_snapshots),n(r.valid_books),n(r.one_sided),n(r.expected_security_minutes),n(r.observed_security_minutes),n(r.missing_security_minutes)]);
 const comp=expansion.comparison;
-const eventRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[string,any])=>['orders','trades'].map(kind=>[date(day),label(kind),n(a[kind]?.rows),n(a[kind]?.nonpositive_price_rows),n(a[kind]?.duplicate_event_rows),n(a[kind]?.timestamp_regressions)]));
+const eventRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[string,any])=>['orders','trades','positive_price_trades'].map(kind=>[date(day),label(kind),n(a[kind]?.rows),n(a[kind]?.nonpositive_price_rows),n(a[kind]?.duplicate_event_rows),n(a[kind]?.timestamp_regressions),n(a[kind]?.nonpositive_sequence_rows),n(a[kind]?.positive_sequence_regressions)]));
 const referenceRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[string,any])=>(a.references??[]).flatMap((r:any)=>['buy','sell'].map(side=>[date(day),r.candidate,label(side),pct(r[side]?.match_rate),n(r[side]?.ambiguous)])));
+const marketRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[string,any])=>Object.entries(a.by_market??{}).flatMap(([market,m]:[string,any])=>(m.references??[]).flatMap((r:any)=>['buy','sell'].map(side=>[date(day),label(market),n(m.orders?.rows),n(r.eligible_positive_trade_rows),r.candidate,label(side),pct(r[side]?.match_rate)]))));
 const modeled=Array.isArray(strategy.modeled)?strategy.modeled:strategy.modeled?.rows??[];
 const overlays=strategy.overlays??[];
 const stress=Array.isArray(strategy.stress)?strategy.stress:strategy.stress?.rows??[];
 ---
 <section id="expanded-results" class="report-section">
+<p class="report-links"><a href="https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/execution-cost-expansion-20261012.md" data-locale-link data-href-en="https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/execution-cost-expansion-20261012.md" data-href-zh="https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/execution-cost-expansion-20261012.zh-CN.md" data-locale-text data-en="Full findings and reproduction record ↗" data-zh="完整研究报告与复现记录 ↗">Full findings and reproduction record ↗</a></p>
 <h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
 <p data-locale-text data-en={c.scope[0]} data-zh={c.scope[1]}>{c.scope[0]}</p>
 <p data-locale-text data-en={c.limits[0]} data-zh={c.limits[1]}>{c.limits[0]}</p>
+<p data-locale-text data-en={c.costDefinition[0]} data-zh={c.costDefinition[1]}>{c.costDefinition[0]}</p>
+<Figure name="expanded-daily" caption={c.dailyFigure} />
 <Table headers={surfaceHeaders} rows={surfaces(expansion.by_day)} />
 <h3 data-locale-text data-en={c.adv[0]} data-zh={c.adv[1]}>{c.adv[0]}</h3>
+<p data-locale-text data-en={c.advNote[0]} data-zh={c.advNote[1]}>{c.advNote[0]}</p>
 <Table headers={surfaceHeaders} rows={surfaces(expansion.by_adv_group)} />
+<Figure name="expanded-size-groups" caption={c.sizeFigure} />
 <details><summary data-locale-text data-en={c.extra[0]} data-zh={c.extra[1]}>{c.extra[0]}</summary>{[[c.cap,expansion.by_cap_group],[c.vol,expansion.by_volatility_group],[c.time,expansion.by_time_bucket]].map(([title,groups]:any)=><><h3 data-locale-text data-en={title[0]} data-zh={title[1]}>{title[0]}</h3><Table headers={surfaceHeaders} rows={surfaces(groups)} /></>)}</details>
-<details id="expanded-audit"><summary data-locale-text data-en={c.audit[0]} data-zh={c.audit[1]}>{c.audit[0]}</summary><Table headers={[c.day,c.securities,c.snapshots,c.valid,c.oneSided,c.expected,c.observed,c.missing]} rows={auditRows}/></details>
+<details id="expanded-audit"><summary data-locale-text data-en={c.audit[0]} data-zh={c.audit[1]}>{c.audit[0]}</summary><p data-locale-text data-en={c.auditNote[0]} data-zh={c.auditNote[1]}>{c.auditNote[0]}</p><Table headers={[c.day,c.securities,c.snapshots,c.valid,c.oneSided,c.expected,c.observed,c.missing]} rows={auditRows}/></details>
 </section>
 <section id="common-comparison" class="report-section"><h2 data-locale-text data-en={c.comparison[0]} data-zh={c.comparison[1]}>{c.comparison[0]}</h2><p data-locale-text data-en={c.comparisonNote[0]} data-zh={c.comparisonNote[1]}>{c.comparisonNote[0]}</p>
+<p data-locale-text data-en={c.commonFinding[0]} data-zh={c.commonFinding[1]}>{c.commonFinding[0]}</p>
 <Table headers={[c.common,c.paired]} rows={[[n(comp.common_securities),n(comp.paired_valid_security_minutes)]]}/>
 <Table headers={[c.day,c.expected,c.observed,c.missing]} rows={Object.entries(comp.minute_coverage??{}).map(([day,r]:[string,any])=>[date(day),n(r.expected_security_minutes),n(r.observed_security_minutes),n(r.missing_security_minutes)])}/>
 <Table headers={surfaceHeaders} rows={surfaces(comp.common_security_results)}/>
 <h3 data-locale-text data-en={c.pairedResults[0]} data-zh={c.pairedResults[1]}>{c.pairedResults[0]}</h3><Table headers={surfaceHeaders} rows={surfaces(comp.paired_results)}/>
-<details><summary data-locale-text data-en={c.events[0]} data-zh={c.events[1]}>{c.events[0]}</summary><p data-locale-text data-en={c.clock[0]} data-zh={c.clock[1]}>{c.clock[0]}</p><p data-locale-text data-en={c.limits[0]} data-zh={c.limits[1]}>{c.limits[0]}</p><Table headers={[c.day,c.scenario,c.rows,c.nonpositive,c.duplicates,c.regressions]} rows={eventRows}/><Table headers={[c.day,c.referenceCandidate,c.side,c.match,c.ambiguous]} rows={referenceRows}/></details>
+<details><summary data-locale-text data-en={c.events[0]} data-zh={c.events[1]}>{c.events[0]}</summary><p data-locale-text data-en={c.clock[0]} data-zh={c.clock[1]}>{c.clock[0]}</p><p data-locale-text data-en={c.referenceScope[0]} data-zh={c.referenceScope[1]}>{c.referenceScope[0]}</p><p data-locale-text data-en={c.limits[0]} data-zh={c.limits[1]}>{c.limits[0]}</p><Table headers={[c.day,c.scenario,c.rows,c.nonpositive,c.duplicates,c.regressions,c.zeroSequence,c.positiveRegressions]} rows={eventRows}/><Table headers={[c.day,c.referenceCandidate,c.side,c.match,c.ambiguous]} rows={referenceRows}/><Table headers={[c.day,c.market,c.orders,c.eligibleTrades,c.referenceCandidate,c.side,c.match]} rows={marketRows}/></details>
 </section>
 <section id="strategy-diagnostic" class="report-section"><h2 data-locale-text data-en={c.strategy[0]} data-zh={c.strategy[1]}>{c.strategy[0]}</h2><p data-locale-text data-en={c.strategyNote[0]} data-zh={c.strategyNote[1]}>{c.strategyNote[0]}</p>
-<Table headers={[c.capital,c.scenario,c.nav,c.totalCost,c.turnover]} rows={modeled.map((r:any)=>[n(r.capital_cny),label(r.scenario),n(r.terminal_nav),n(r.transaction_cost_cny),pct(r.mean_one_way_turnover)])}/>
+<p data-locale-text data-en={c.feeNote[0]} data-zh={c.feeNote[1]}>{c.feeNote[0]}</p>
+<Figure name="strategy-capital" caption={c.strategyFigure} />
+<Table headers={[c.capital,c.scenario,c.nav,c.totalCost,c.turnover]} rows={modeled.map((r:any)=>[n(r.capital_cny),label(r.scenario),nav(r.terminal_nav),n(r.transaction_cost_cny),pct(r.mean_one_way_turnover)])}/>
+<p data-locale-text data-en={c.unfilledNote[0]} data-zh={c.unfilledNote[1]}>{c.unfilledNote[0]}</p>
 <Table headers={[c.capital,c.scenario,c.unfilledBuy,c.unfilledSell,c.negative]} rows={modeled.map((r:any)=>[n(r.capital_cny),label(r.scenario),n(r.unfilled_buy_cny),n(r.unfilled_sell_cny),n(r.negative_cash_sessions)])}/>
-<details><summary data-locale-text data-en={c.overlay[0]} data-zh={c.overlay[1]}>{c.overlay[0]}</summary><p data-locale-text data-en={c.stressNote[0]} data-zh={c.stressNote[1]}>{c.stressNote[0]}</p><Table headers={[c.capital,c.anchor,c.nav,c.negative,c.shortfall]} rows={overlays.map((r:any)=>[n(r.capital_cny),n(r.anchor_notional_cny),n(r.fee_static_terminal_nav),n(r.fee_static_negative_cash_sessions),n(r.fee_static_max_funding_shortfall_cny)])}/></details>
+<details><summary data-locale-text data-en={c.overlay[0]} data-zh={c.overlay[1]}>{c.overlay[0]}</summary><p data-locale-text data-en={c.overlayNote[0]} data-zh={c.overlayNote[1]}>{c.overlayNote[0]}</p><Table headers={[c.capital,c.anchor,c.nav,c.negative,c.shortfall]} rows={overlays.map((r:any)=>[n(r.capital_cny),n(r.anchor_notional_cny),nav(r.fee_static_terminal_nav),n(r.fee_static_negative_cash_sessions),n(r.fee_static_max_funding_shortfall_cny)])}/></details>
 <details><summary data-locale-text data-en={c.stress[0]} data-zh={c.stress[1]}>{c.stress[0]}</summary><p data-locale-text data-en={c.stressNote[0]} data-zh={c.stressNote[1]}>{c.stressNote[0]}</p><Table headers={[c.capital,c.anchor,c.linear,c.compound]} rows={stress.map((r:any)=>[n(r.capital_cny),n(r.anchor_notional_cny),pct(r.linear_cost_fraction),pct(r.compounded_cost_fraction)])}/></details>
 <p>{['expansion','strategy'].map(name=><a download href={withBase(`/data/execution-costs/${name}.json`,import.meta.env.BASE_URL)} data-locale-text data-en={`${c.download[0]} (${name})`} data-zh={`${c.download[1]}（${name==='expansion'?'扩展证据':'策略诊断'}）`}>{c.download[0]} ({name})</a>)}</p>
 </section>

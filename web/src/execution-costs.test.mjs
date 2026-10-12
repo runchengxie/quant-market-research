@@ -10,9 +10,9 @@ test('turnover definitions produce the stated fee and slippage sensitivities', (
  assert.equal(annualCost(0,0,10),0);
  assert.throws(()=>annualCost(.6,.6,NaN),RangeError);
 });
-test('topic is discoverable without claiming an empirical snapshot', () => {
+test('topic exposes reviewed descriptive snapshots without claiming calibration', () => {
  const topic=publicPages.find(p=>p.id==='execution-costs');
  assert.equal(topic.route,'/research/execution-costs/');
- assert.deepEqual(topic.snapshotKeys,[]);
+ assert.deepEqual(topic.snapshotKeys,['execution_costs','execution_strategy']);
  assert.ok(publicPages.find(p=>p.id==='research').related.includes(topic.id));
 });

@@ -40,4 +40,4 @@ uv run market-research --help
 - `web/`：独立的 Astro 网站应用，有自己的源码、脚本、测试和依赖。
 - `docs/`：运行手册、数据说明和研究方法文档。
 
-交易成本与策略容量：[专题协议](studies/ashare_execution_costs/README.zh-CN.md) · [公开专题](https://runchengxie.github.io/quant-market-research/research/execution-costs/)。已完成三日L2源数据审计与本地静态测量，真实执行校准待完成。
+交易成本与策略容量：[专题协议](studies/ashare_execution_costs/README.zh-CN.md) · [公开专题](https://runchengxie.github.io/quant-market-research/research/execution-costs/)。已完成十个交易日的盘口扩展与18组受约束策略诊断，真实执行校准仍待完成。

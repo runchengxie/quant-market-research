@@ -7,6 +7,7 @@ No queue, cancellation, causal impact or generic execution engine is added.
 from __future__ import annotations
 
 import argparse
+from datetime import datetime
 import hashlib
 import json
 from pathlib import Path
@@ -22,6 +23,24 @@ from market_research.studies.ashare_execution_costs.pilot import COLUMNS, measur
 OPEN_MS = 34_200_000
 PREFIXES = (0, 1, 2, 3, 300, 301, 600, 601, 603, 605, 688, 689)
 PROFILES = ('native_hhmmssmmm', 'relative_0930_ms')
+
+
+def validate_spec(spec: dict):
+    days = [int(day) for source in spec['snapshot_sources'] for day in source['days']]
+    if len(days) != len(set(days)):
+        raise ValueError('duplicate declared snapshot day would double-weight evidence')
+    for day in days:
+        datetime.strptime(str(day),'%Y%m%d')
+    comparison = list(map(int,spec['comparison_days']))
+    if len(comparison)!=2 or len(set(comparison))!=2 or not set(comparison).issubset(days):
+        raise ValueError('comparison requires two unique declared snapshot days')
+    events = [int(row['day']) for row in spec.get('event_sources',[])]
+    if len(events)!=len(set(events)) or not set(events).issubset(days):
+        raise ValueError('event days must be unique declared snapshot days')
+    for row in spec.get('event_sources',[]):
+        for kind in ('order','deal','preopen_order'):
+            if kind in row and int(row[kind]['day'])!=int(row['day']):
+                raise ValueError('event binding day mismatch')
 
 
 def clock_ms(values, profile: str) -> np.ndarray:
@@ -70,6 +89,11 @@ def stream_audit(frame: pd.DataFrame, kind: str) -> dict:
         sequence = frame.groupby(groups, dropna=False, sort=False).BizIndex.diff()
         result['sequence_regressions'] = int(sequence.lt(0).sum())
         result['duplicate_sequence_rows'] = int(frame.duplicated([*groups, 'BizIndex'], keep=False).sum())
+        positive = frame.loc[frame.BizIndex.notna() & frame.BizIndex.gt(0)]
+        result['nonpositive_sequence_rows'] = int(frame.BizIndex.le(0).sum())
+        result['null_sequence_rows'] = int(frame.BizIndex.isna().sum())
+        result['positive_sequence_regressions'] = int(positive.groupby(groups,dropna=False,sort=False).BizIndex.diff().lt(0).sum())
+        result['duplicate_positive_sequence_rows'] = int(positive.duplicated([*groups,'BizIndex'],keep=False).sum())
     for category in ('OrderType', 'Side'):
         if category in frame:
             result[category + '_counts'] = {str(key): int(count) for key, count in frame[category].value_counts(dropna=False).items()}
@@ -93,6 +117,7 @@ def reference_audit(orders: pd.DataFrame, trades: pd.DataFrame, candidate: str) 
                         'unique': int(joined.order_rows.eq(1).sum()),
                         'ambiguous': int(joined.order_rows.gt(1).sum()),
                         'missing': int((~match).sum()),
+                        'nonpositive_or_null_reference_rows':int((eligible[column].isna()|eligible[column].le(0)).sum()),
                         'match_rate': float(match.mean()) if len(joined) else None}
     return result
 
@@ -147,9 +172,11 @@ def _binding(profile: str, kind: str):
 
 def _clock_sql(column: str, profile: str) -> str:
     value = f'TRY_CAST("{column}" AS BIGINT)'
+    raw = f'TRY_CAST("{column}" AS DOUBLE)'
+    integral = f'{raw}=trunc({raw})'
     if profile == 'relative_0930_ms':
-        return f'CASE WHEN {value}+{OPEN_MS} BETWEEN 0 AND 86399999 THEN {value}+{OPEN_MS} END'
-    return (f'CASE WHEN {value}>=0 AND {value}//10000000<24 AND ({value}//100000)%100<60 '
+        return f'CASE WHEN {integral} AND {value}+{OPEN_MS} BETWEEN 0 AND 86399999 THEN {value}+{OPEN_MS} END'
+    return (f'CASE WHEN {integral} AND {value}>=0 AND {value}//10000000<24 AND ({value}//100000)%100<60 '
             f'AND ({value}//1000)%100<60 THEN ({value}//10000000)*3600000 '
             f'+(({value}//100000)%100)*60000+(({value}//1000)%100)*1000+{value}%1000 END')
 
@@ -289,6 +316,7 @@ def _aggregate_groups(frame: pd.DataFrame, column: str):
 
 def run(spec_path: Path, output_root: Path):
     spec = json.loads(spec_path.read_text())
+    validate_spec(spec)
     if spec.get('price_unit') != 'integer_cent' or spec.get('quantity_unit') != 'share':
         raise ValueError('explicit integer-cent/share units required')
     output = resolve_output_root({'output_root': str(output_root)})
@@ -326,6 +354,10 @@ def run(spec_path: Path, output_root: Path):
             frames.append(measured)
             print(f'{day}: {len(sample)} sampled, {len(measured)} valid books', flush=True)
     combined = pd.concat(frames, ignore_index=True)
+    if combined.duplicated(['TradingDay','SecuCode','minute']).any():
+        raise ValueError('duplicate measured security/day/minute')
+    for receipt in receipts+feature_receipts:
+        _source_unchanged(receipt)
     day_a, day_b = map(int, spec['comparison_days'])
     common = sorted(set(all_books[day_a].SecuCode) & set(all_books[day_b].SecuCode))
     common_frames = {str(day): combined.loc[combined.TradingDay.eq(day) & combined.SecuCode.isin(common)]

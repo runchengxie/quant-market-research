@@ -55,7 +55,7 @@ function overviewTree({recovery, barra}: OverviewProps, locale: 'en-US' | 'zh-CN
         title={costCopy.title[englishLocale() ? 0 : 1]} status={costCopy.stage[englishLocale() ? 0 : 1]}
         href={withBase('/research/execution-costs/', import.meta.env?.BASE_URL ?? '/')}
         conclusion={costCopy.conclusion[englishLocale() ? 0 : 1]}
-        date={englishLocale() ? '2026-04-16, 2026-04-24 and 2026-07-20' : '2026-04-16、2026-04-24与2026-07-20'}
+        date={costCopy.coverage[englishLocale() ? 0 : 1]}
         scope={costCopy.scope[englishLocale() ? 0 : 1]} />
     </section>
     <div className="fine-print"><span className="section-kicker">{text('readingLabel')}</span><p>{text('readingNote')}</p></div>

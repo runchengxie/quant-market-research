@@ -25,7 +25,12 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(page.locator('.prior-evidence')).not.toHaveAttribute('open', '');
   await page.goto('research/execution-costs/?lang=zh-CN');
   await expect(page.locator('#expanded-results h2')).toHaveText('扩展盘口证据与策略诊断');
+  await expect(page.getByRole('link', {name: '完整研究报告与复现记录 ↗'})).toHaveAttribute('href', /execution-cost-expansion-20261012\.zh-CN\.md$/);
   await expect(page.locator('#strategy-diagnostic')).toContainText('这些结果不能证明真实容量或净超额收益');
+  await expect(page.locator('#strategy-diagnostic table').first().locator('tbody tr')).toHaveCount(18);
+  await expect(page.locator('img[data-locale-image]').first()).toHaveAttribute('src', /expanded-daily\.zh\.svg$/);
+  await page.setViewportSize({ width: 320, height: 700 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   await page.locator('#strategy-diagnostic details').last().locator('summary').click();
   await expect(page.locator('#strategy-diagnostic details').last()).toContainText('线性成本比例');
   await expect(page.locator('#strategy-diagnostic details').last()).toContainText('复利成本比例');
