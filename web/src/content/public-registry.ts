@@ -38,7 +38,7 @@ const docSources = new Set([
 const allowedSnapshotKeys = new Set([
   'cashflow.performance', 'cashflow.recovery', 'microcap.summary',
   'liquidity.cross-market', 'indices.returns', 'barra.returns', 'liquidity.summary', 'low-turnover.ledger',
-  'execution_costs', 'execution_strategy',
+  'execution_costs', 'execution_strategy', 'execution_replay', 'execution_calibration',
 ]);
 
 const page = (value: PublicPage): PublicPage => value;

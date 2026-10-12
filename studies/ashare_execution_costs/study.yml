@@ -1,5 +1,5 @@
 study_id: ashare_execution_costs
-status: expanded_static_and_strategy_diagnostics_complete
+status: interactive_evidence_and_calibration_entry_ready
 evidence_status: descriptive_static_and_counterfactual_not_execution_calibration
 local_l2_inspected: true
 real_order_calibration: false
@@ -28,3 +28,10 @@ strategy_diagnostic:
   end: 2025-03-31
   modeled_scenarios: 18
   real_capacity_verified: false
+execution_workflow:
+  full_event_replay_verified: false
+  snapshot_counterfactual_paths: 12
+  participation_contract_verified: false
+  real_order_entry_implemented: true
+  synthetic_validation_parents: 80
+  causal_own_impact_identified: false

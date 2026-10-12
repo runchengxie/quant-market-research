@@ -1,0 +1,225 @@
+{
+  "schema_version": 2,
+  "data_quality": {
+    "full_book_replay": "blocked",
+    "snapshot_reconciliation": "not_run",
+    "reasons": [
+      "vendor order-type, side and cancellation meanings unverified",
+      "cross-stream exchange order unverified"
+    ],
+    "causal_impact": "not_identified",
+    "actual_slippage": "not_measured"
+  },
+  "observed_diagnostics": {
+    "shenzhen_reference_coverage": {
+      "trade_rows": 838079,
+      "buy_reference_rate": 0.9968320408935196,
+      "sell_reference_rate": 0.9975288725764516,
+      "reference_after_trade_count": 0.0
+    },
+    "shared_security_timestamp_pairs": 441806,
+    "numeric_order_types_are_unmapped": true
+  },
+  "simulation": {
+    "status": "snapshot_counterfactual_only",
+    "sample_paths": 12,
+    "day": "2021-01-04",
+    "requested_quantity_share": 10000,
+    "horizon_seconds": 300,
+    "buy_budget_cny": 1000000,
+    "aggregate_results": [
+      {
+        "side": "buy",
+        "mode": "limit_wait",
+        "paths": 12,
+        "full_fill_paths": 8,
+        "median_fill_fraction": 1.0,
+        "costs": {
+          "execution_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": -159.0
+          },
+          "opportunity_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 0.0
+          },
+          "total_shortfall_bp": {
+            "observed_paths": 12,
+            "conditional_p50": -23.9326465347141
+          },
+          "completion_duration_ms": {
+            "observed_paths": 8,
+            "conditional_p50": 61500.0
+          }
+        }
+      },
+      {
+        "side": "buy",
+        "mode": "market",
+        "paths": 12,
+        "full_fill_paths": 11,
+        "median_fill_fraction": 1.0,
+        "costs": {
+          "execution_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 201.99999999999454
+          },
+          "opportunity_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 0.0
+          },
+          "total_shortfall_bp": {
+            "observed_paths": 12,
+            "conditional_p50": 27.782021899668052
+          },
+          "completion_duration_ms": {
+            "observed_paths": 11,
+            "conditional_p50": 0.0
+          }
+        }
+      },
+      {
+        "side": "buy",
+        "mode": "twap",
+        "paths": 12,
+        "full_fill_paths": 12,
+        "median_fill_fraction": 1.0,
+        "costs": {
+          "execution_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": -109.0
+          },
+          "opportunity_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 0.0
+          },
+          "total_shortfall_bp": {
+            "observed_paths": 12,
+            "conditional_p50": -14.954964634255528
+          },
+          "completion_duration_ms": {
+            "observed_paths": 12,
+            "conditional_p50": 240000.0
+          }
+        }
+      },
+      {
+        "side": "sell",
+        "mode": "limit_wait",
+        "paths": 12,
+        "full_fill_paths": 6,
+        "median_fill_fraction": 0.5,
+        "costs": {
+          "execution_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": -25.0
+          },
+          "opportunity_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 100.0000000000023
+          },
+          "total_shortfall_bp": {
+            "observed_paths": 12,
+            "conditional_p50": 7.052053680109053
+          },
+          "completion_duration_ms": {
+            "observed_paths": 6,
+            "conditional_p50": 60000.0
+          }
+        }
+      },
+      {
+        "side": "sell",
+        "mode": "market",
+        "paths": 12,
+        "full_fill_paths": 12,
+        "median_fill_fraction": 1.0,
+        "costs": {
+          "execution_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 62.0
+          },
+          "opportunity_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 0.0
+          },
+          "total_shortfall_bp": {
+            "observed_paths": 12,
+            "conditional_p50": 13.637128478118775
+          },
+          "completion_duration_ms": {
+            "observed_paths": 12,
+            "conditional_p50": 0.0
+          }
+        }
+      },
+      {
+        "side": "sell",
+        "mode": "twap",
+        "paths": 12,
+        "full_fill_paths": 12,
+        "median_fill_fraction": 1.0,
+        "costs": {
+          "execution_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 230.0
+          },
+          "opportunity_cost_cny": {
+            "observed_paths": 12,
+            "conditional_p50": 0.0
+          },
+          "total_shortfall_bp": {
+            "observed_paths": 12,
+            "conditional_p50": 38.62044765204935
+          },
+          "completion_duration_ms": {
+            "observed_paths": 12,
+            "conditional_p50": 240000.0
+          }
+        }
+      }
+    ],
+    "participation": {
+      "status": "unavailable",
+      "reason": "saved TotalVolume has no audited interval-volume contract or reset/auction treatment for a causal cap",
+      "needed_input": "verified cumulative-volume units, clock and reset contract with trailing realized-volume baseline"
+    },
+    "assumptions": [
+      "first 12 saved Shenzhen securities in lexical order",
+      "first quote per timestamp; displayed depth refreshes at each clock",
+      "no own-impact, fees, lot rounding, queue reconstruction or participation cap",
+      "TWAP releases five fixed quantity slices at 0,60,120,180,240 seconds; next quote executes",
+      "limit wait uses arrival same-side best price; marketable crossing only",
+      "passive fill lower bound zero; upper bound requested quantity, no inferred cash",
+      "shortfall uses arrival mid and fixed-horizon past mid with 60-second freshness; fees zero excluded",
+      "future quotes are execution outcomes at their clock, never signal features"
+    ]
+  },
+  "publication_permission": {
+    "confirmed_by_owner": true,
+    "confirmed_on": "2026-10-12",
+    "scope": "aggregate_derived_statistics"
+  },
+  "source_summary_sha256": "bb4419e78a22c5b4a319716bf8e75d524dd1ca3377f164d2cf51f7b5597b7ed1",
+  "calibration_entry": {
+    "status": "implemented_actual_inputs_missing",
+    "actual_order_calibrated": false,
+    "causal_own_impact_identified": false,
+    "validation_fixture_kind": "synthetic",
+    "validation_fixture_parents": 80,
+    "validation": {
+      "status": "evaluated",
+      "train_orders": 56,
+      "purged_training_orders": 0,
+      "test_orders": 24,
+      "baseline": "training_side_median",
+      "baseline_test_mae_bp": 0.49188577992048677,
+      "baseline_test_bias_bp": -0.09982648421354619,
+      "baseline_test_p90_absolute_error_bp": 0.6065197724561822,
+      "supplied_prediction_test_orders": 24,
+      "supplied_prediction_test_mae_bp": 0.49188577992048677,
+      "supplied_predictions_ex_ante_verified": false
+    },
+    "source_receipt_sha256": "7fedd8edf26ffc8a23607af57a46a664064a9d6086a617e42ebbb730b0455b90"
+  }
+}

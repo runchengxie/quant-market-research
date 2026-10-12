@@ -19,7 +19,7 @@ const figureUrl=(lang:string)=>withBase(`/data/execution-costs/${name}.${lang}.s
  <p class="chart-key" hidden={kind==='strategy'}><span data-locale-text data-en={c.chartP50[0]} data-zh={c.chartP50[1]}>{c.chartP50[0]}</span> · <span data-locale-text data-en={c.chartP90[0]} data-zh={c.chartP90[1]}>{c.chartP90[0]}</span></p>
  <div class="chart-canvas" role="img" aria-label={caption[0]} data-locale-aria data-aria-en={caption[0]} data-aria-zh={caption[1]}></div>
  <figcaption data-locale-text data-en={caption[0]} data-zh={caption[1]}>{caption[0]}</figcaption>
- <noscript><p data-locale-text data-en={c.chartNoJs[0]} data-zh={c.chartNoJs[1]}>{c.chartNoJs[0]}</p></noscript>
+ <noscript><p>{c.chartNoJs[0]}</p></noscript>
  <p><a download data-locale-link data-href-en={figureUrl('en')} data-href-zh={figureUrl('zh')} href={figureUrl('en')} data-locale-text data-en={c.chartExport[0]} data-zh={c.chartExport[1]}>{c.chartExport[0]}</a></p>
  <details open class="selected-values"><summary data-locale-text data-en={c.chartTable[0]} data-zh={c.chartTable[1]}>{c.chartTable[0]}</summary><div class="compact-table"><table><thead><tr>{columns.map(col=><th scope="col" data-locale-text data-en={col[0]} data-zh={col[1]}>{col[0]}</th>)}</tr></thead><tbody>{defaultRows.map(r=><tr>{rowValues(r).map(value=><td {...(Array.isArray(value)?{'data-locale-text':true,'data-en':value[0],'data-zh':value[1]}:{})}>{Array.isArray(value)?value[0]:value}</td>)}</tr>)}</tbody></table></div></details>
 </figure>

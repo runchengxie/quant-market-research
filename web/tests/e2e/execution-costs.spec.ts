@@ -82,3 +82,13 @@ test('English charts have no visible Han text and no-JS tables retain evidence',
  await expect(staticPage.locator('#daily-evidence')).toHaveAttribute('open','');
  await context.close();
 });
+
+test('execution workflow separates blocked replay and synthetic entry from actual calibration',async({page})=>{
+ await page.goto('research/execution-costs/?lang=zh-CN');
+ const workflow=page.locator('#calibration-workflow');
+ await expect(workflow).toContainText('真实订单入口已实现；实盘校准仍待完成');
+ await workflow.locator('summary').click();
+ await expect(workflow).toContainText('参与率约束模式暂不可用');
+ await expect(workflow.locator('tbody tr')).toHaveCount(3);
+ await expect(workflow.getByRole('link',{name:'回放协议与假设 ↗'})).toHaveAttribute('href',/execution-cost-replay\.zh-CN\.md$/);
+});

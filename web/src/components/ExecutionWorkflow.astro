@@ -1,0 +1,25 @@
+---
+import {readFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {workflowCopy as c} from '../content/execution-workflow-copy';
+import Table from './ExecutionEvidenceTable.astro';
+import {withBase} from '../lib/routes';
+const replay=JSON.parse(await readFile(resolve(process.cwd(),'public/data/execution-costs/replay.json'),'utf8'));
+const modes=['market','twap','limit_wait'] as const;
+const count=(mode:string,side:string)=>{const r=replay.simulation.aggregate_results.find((r:any)=>r.mode===mode&&r.side===side);return r?`${r.full_fill_paths} / ${r.paths}`:'—';};
+const github='https://github.com/runchengxie/quant-market-research/blob/main/docs/studies/';
+---
+<section id="calibration-workflow" class="report-section">
+<h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+<h3 data-locale-text data-en={c.replay[0]} data-zh={c.replay[1]}>{c.replay[0]}</h3>
+<p data-locale-text data-en={c.replayNote[0]} data-zh={c.replayNote[1]}>{c.replayNote[0]}</p>
+<details><summary data-locale-text data-en={c.paths[0]} data-zh={c.paths[1]}>{c.paths[0]}</summary>
+<p data-locale-text data-en={c.pathsNote[0]} data-zh={c.pathsNote[1]}>{c.pathsNote[0]}</p>
+<Table headers={[c.mode,c.buy,c.sell]} rows={modes.map(mode=>[c[mode],count(mode,'buy'),count(mode,'sell')])}/>
+<p data-locale-text data-en={c.participation[0]} data-zh={c.participation[1]}>{c.participation[0]}</p>
+</details>
+<h3 data-locale-text data-en={c.calibration[0]} data-zh={c.calibration[1]}>{c.calibration[0]}</h3>
+<p data-locale-text data-en={c.calibrationNote[0]} data-zh={c.calibrationNote[1]}>{c.calibrationNote[0]}</p>
+<p data-locale-text data-en={c.causal[0]} data-zh={c.causal[1]}>{c.causal[0]}</p>
+<nav class="report-links">{[['execution-cost-replay',c.replayProtocol],['execution-cost-calibration',c.calibrationProtocol]].map(([name,copy]:any)=><a href={`${github}${name}.md`} data-locale-link data-href-en={`${github}${name}.md`} data-href-zh={`${github}${name}.zh-CN.md`} data-locale-text data-en={copy[0]} data-zh={copy[1]}>{copy[0]}</a>)}<a download href={withBase('/data/execution-costs/replay.json',import.meta.env.BASE_URL)} data-locale-text data-en={c.download[0]} data-zh={c.download[1]}>{c.download[0]}</a></nav>
+</section>

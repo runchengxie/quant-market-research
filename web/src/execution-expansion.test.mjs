@@ -28,3 +28,16 @@ test('strategy comparison selects reviewed capital and only main scenarios',asyn
  const {strategyChartRows}=await import('./lib/execution-chart.ts');
  assert.deepEqual(strategyChartRows([{capital_cny:10,scenario:'gross',terminal_nav:1},{capital_cny:10,scenario:'fee_static_10k',terminal_nav:2},{capital_cny:20,scenario:'fee_only',terminal_nav:3}],10).map(r=>r.scenario),['gross']);
 });
+
+test('published workflow retains blocked replay and synthetic-only calibration evidence',async()=>{
+ const {readFile}=await import('node:fs/promises');
+ const workflow=JSON.parse(await readFile(new URL('../public/data/execution-costs/replay.json',import.meta.url),'utf8'));
+ assert.equal(workflow.data_quality.full_book_replay,'blocked');
+ assert.equal(workflow.data_quality.actual_slippage,'not_measured');
+ assert.equal(workflow.calibration_entry.actual_order_calibrated,false);
+ assert.equal(workflow.calibration_entry.validation_fixture_kind,'synthetic');
+ assert.equal(workflow.simulation.participation.status,'unavailable');
+ assert.equal(workflow.simulation.aggregate_results.length,6);
+ assert.equal(workflow.simulation.sample_paths,12);
+ assert.ok(!JSON.stringify(workflow).match(/\/home\/|\/mnt\/|SecuCode|parent_order_id/));
+});

@@ -35,9 +35,8 @@ const stress=Array.isArray(strategy.stress)?strategy.stress:strategy.stress?.row
 <details id="daily-evidence"><summary data-locale-text data-en={c.chartDetails[0]} data-zh={c.chartDetails[1]}>{c.chartDetails[0]}</summary>
 <Table headers={surfaceHeaders} rows={surfaces(expansion.by_day)} />
 </details>
-<h3 data-locale-text data-en={c.adv[0]} data-zh={c.adv[1]}>{c.adv[0]}</h3>
-<p data-locale-text data-en={c.advNote[0]} data-zh={c.advNote[1]}>{c.advNote[0]}</p>
-<Interactive kind="groups" data={{by_adv_group:expansion.by_adv_group,by_cap_group:expansion.by_cap_group,by_volatility_group:expansion.by_volatility_group}} name="expanded-size-groups" caption={c.advNote} />
+<h3 data-locale-text data-en={c.chartGroups[0]} data-zh={c.chartGroups[1]}>{c.chartGroups[0]}</h3>
+<Interactive kind="groups" data={{by_adv_group:expansion.by_adv_group,by_cap_group:expansion.by_cap_group,by_volatility_group:expansion.by_volatility_group}} name="expanded-size-groups" caption={c.chartGroupsNote} />
 <details><summary data-locale-text data-en={c.chartDetails[0]} data-zh={c.chartDetails[1]}>{c.chartDetails[0]}</summary><Table headers={surfaceHeaders} rows={surfaces(expansion.by_adv_group)} /></details>
 <details><summary data-locale-text data-en={c.extra[0]} data-zh={c.extra[1]}>{c.extra[0]}</summary>{[[c.cap,expansion.by_cap_group],[c.vol,expansion.by_volatility_group],[c.time,expansion.by_time_bucket]].map(([title,groups]:any)=><><h3 data-locale-text data-en={title[0]} data-zh={title[1]}>{title[0]}</h3><Table headers={surfaceHeaders} rows={surfaces(groups)} /></>)}</details>
 <details id="expanded-audit"><summary data-locale-text data-en={c.audit[0]} data-zh={c.audit[1]}>{c.audit[0]}</summary><p data-locale-text data-en={c.auditNote[0]} data-zh={c.auditNote[1]}>{c.auditNote[0]}</p><Table headers={[c.day,c.securities,c.snapshots,c.valid,c.oneSided,c.expected,c.observed,c.missing]} rows={auditRows}/></details>
@@ -52,7 +51,7 @@ const stress=Array.isArray(strategy.stress)?strategy.stress:strategy.stress?.row
 </section>
 <section id="strategy-diagnostic" class="report-section"><h2 data-locale-text data-en={c.strategy[0]} data-zh={c.strategy[1]}>{c.strategy[0]}</h2><p data-locale-text data-en={c.strategyNote[0]} data-zh={c.strategyNote[1]}>{c.strategyNote[0]}</p>
 <p data-locale-text data-en={c.feeNote[0]} data-zh={c.feeNote[1]}>{c.feeNote[0]}</p>
-<Interactive kind="strategy" data={modeled} name="strategy-capital" caption={c.strategyFigure} />
+<Interactive kind="strategy" data={modeled} name="strategy-capital" caption={c.chartStrategyNote} />
 <details id="strategy-evidence"><summary data-locale-text data-en={c.chartDetails[0]} data-zh={c.chartDetails[1]}>{c.chartDetails[0]}</summary>
 <Table headers={[c.capital,c.scenario,c.nav,c.totalCost,c.turnover]} rows={modeled.map((r:any)=>[n(r.capital_cny),label(r.scenario),nav(r.terminal_nav),n(r.transaction_cost_cny),pct(r.mean_one_way_turnover)])}/>
 <p data-locale-text data-en={c.unfilledNote[0]} data-zh={c.unfilledNote[1]}>{c.unfilledNote[0]}</p>
