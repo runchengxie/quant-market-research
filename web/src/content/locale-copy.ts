@@ -15,7 +15,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
-  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Scenario baseline: illustrative fees at 60% daily one-way turnover total 10.5% yearly. No L2 sample yet; order-size effects on net returns remain open." },
+  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Three L2 days audited; static cost curves remain local. Actual-order calibration, liquidity groups and strategy capacity remain open." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
   cashflow: { title: "Cash Flow and Dividends", summary: "What historical cash-flow groups returned, how long losses lasted, and which checks remain open." },

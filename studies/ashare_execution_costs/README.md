@@ -2,7 +2,7 @@
 
 [中文](README.zh-CN.md) · [Public topic](https://runchengxie.github.io/quant-market-research/research/execution-costs/)
 
-Current conclusion: arithmetic scenarios establish why high turnover needs precise execution assumptions. They do not establish observed slippage or executable capacity. No local Level-2 files or real orders have been inspected for this study yet.
+Current conclusion: arithmetic scenarios establish why high turnover needs precise execution assumptions. They do not establish observed slippage or executable capacity. The first three-day local L2 audit and static measurement are complete; real-order calibration is still absent. [Pilot findings](pilot_findings.md) record the sample and remaining gates.
 
 At 250 sessions, daily buys and sells each equal to 60% of NAV, illustrative inclusive commission of 1 bp per side and sell tax of 5 bp, annual fee expenditure / constant NAV is 10.5%. Additional slippage of 1 bp per side adds 3 percentage points. If 60% denotes buys plus sells, both figures halve. This is a simple expenditure ratio, not a compounded performance deduction. Fees are scenario inputs, not a verified current fee schedule.
 

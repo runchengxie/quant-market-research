@@ -4,16 +4,16 @@ export const executionCostCopy = {
     "A股交易成本与策略容量"
   ],
   "stage": [
-    "Scenario baseline · L2 calibration pending",
-    "情景基线 · Level-2 校准待完成"
+    "L2 sample audited · static costs measured locally",
+    "L2样本已审计 · 静态成本已在本地测量"
   ],
   "conclusion": [
-    "At 60% daily one-way turnover, illustrative fees alone total 10.5% per year; each additional 1 bp per side adds 3 percentage points.",
-    "日均单边换手60%时，示例显性费用简单年化为10.5%；买卖每侧滑点再增加1bp，年成本增加3个百分点。"
+    "A three-day L2 pilot is now measured. Time encoding and one-sided books must be checked before interpreting static execution costs.",
+    "三日L2探索已完成首轮测量。时间编码与单边盘口须先核对，静态成本才能正确解释。"
   ],
   "scope": [
-    "Scope: arithmetic scenarios only, with no securities or date sample. These are not observed A-share slippage estimates or compounded return losses.",
-    "样本范围：仅有算术情景，没有证券与日期样本。这不是A股实测滑点，也不是复利净值损失。"
+    "Sample: 2026-04-16, 2026-04-24 and 2026-07-20; a deterministic Shanghai/Shenzhen security subset. Static cost figures remain local pending vendor permission for aggregate derivatives. No actual-order or dynamic-impact calibration is claimed.",
+    "样本为2026-04-16、2026-04-24与2026-07-20的沪深证券确定性子样本。静态成本数值先保留本地，待确认聚合衍生结果的公开许可；尚无真实委托或动态冲击校准。"
   ],
   "question": [
     "How much predicted return survives execution, and how does this change with capital and turnover?",
@@ -106,5 +106,29 @@ export const executionCostCopy = {
   "liquidity": [
     "Cross-market liquidity context",
     "跨市场流动性背景"
+  ],
+  "auditTitle": [
+    "First local sample audit",
+    "首轮本地样本审计"
+  ],
+  "auditScope": [
+    "65,673,625 source rows scanned. Code modulo 37 selects stock-like Shanghai/Shenzhen prefixes; the earliest source timestamp in each continuous-trading security-minute is retained. This is a convenience pilot, not a probability sample or point-in-time eligibility screen.",
+    "共扫描65,673,625行源快照。按沪深股票代码前缀与数值代码模37筛选，每个连续竞价证券分钟选最早源时间戳。这是便利性探索样本，不是概率抽样，也未完成时点证券资格核验。"
+  ],
+  "auditCounts": [
+    "100,236 sampled snapshots across 427 selected security-days; 98,072 valid two-sided books across 426 security-days. The 2,164 exclusions are one-sided books. Date and clock checks cover all source rows; detailed book checks cover only sampled snapshots.",
+    "427个选中证券日共选出100,236条分钟快照；其中426个证券日的98,072条为有效双边盘口，另有2,164条单边盘口被排除。日期与时钟检查覆盖全部源记录，详细盘口检查仅覆盖抽样快照。"
+  ],
+  "auditClock": [
+    "Some lake copies encode time_ms as milliseconds relative to 09:30. A renamed TickTime is not automatically an HHMMSSmmm clock. This run used sources with explicit native SecuCode and TickTime columns and rejected mere aliases.",
+    "部分数据湖副本的time_ms是相对09:30的毫秒数。把它改名为TickTime，不等于完成HHMMSSmmm时钟转换。本次使用含原生SecuCode与TickTime的源文件，拒绝仅靠别名推断时钟。"
+  ],
+  "auditFiltering": [
+    "The earlier 2026-04-24 canonical pilot has 403,373 fewer snapshot rows than its source. Empty-level filtering can alter the sampled population; this study therefore retained the source rows and logged exclusions explicitly. Original files and published aliases were unchanged.",
+    "已有2026-04-24标准层pilot比源文件少403,373条快照。空档位过滤可能改变样本分布，因此本次保留源记录并明确记录剔除原因；原始文件和发布别名保持不变。"
+  ],
+  "auditNext": [
+    "Static buy/sell curves for CNY 10k, 100k, 1m and 10m have been computed with full-depth coverage and a matched-population comparison. Missing depth is never extrapolated. Next: confirm publication terms, add point-in-time eligibility and lagged liquidity groups, and expand preselected dates before calibration.",
+    "已在本地计算1万、10万、100万和1000万元的静态买卖成本曲线，同时报告十档覆盖率与同一批盘口的规模对照，深度不足不外推。下一步确认发布条款，补充时点证券资格与滞后流动性分组，并按预先确定的日期扩展样本。"
   ]
 } as const;
