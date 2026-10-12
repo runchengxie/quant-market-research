@@ -14,6 +14,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  execution-provider:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install uv
+        uses: astral-sh/setup-uv@v10.0.1
+        with:
+          python-version: "3.13"
+          enable-cache: false
+      - name: Check out repository
+        uses: actions/checkout@v7
+      - name: Verify installed shared matching provider and accounting
+        run: |
+          uv run --locked --extra formal --extra duckdb --extra dev python -c "import importlib.metadata; importlib.metadata.distribution('quant-platform')"
+          uv run --locked --extra formal --extra duckdb --extra dev pytest -q tests/studies/test_execution_cost_replay.py
+
   build:
     runs-on: ubuntu-latest
     permissions:
@@ -92,7 +107,7 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
-    needs: build
+    needs: [build, execution-provider]
     permissions:
       contents: read
       pages: write
