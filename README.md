@@ -31,6 +31,7 @@ Before running a report, follow the [local runbook](docs/runbook-local.md), conf
 - [Documentation index](docs/index.md): research and data topics.
 - The public Markdown allowlist is rendered directly by Astro. MkDocs is no longer part of the site build or runtime dependencies.
 - [Local runbook](docs/runbook-local.md): data setup, reports, and website checks.
+- [Browser verification](docs/runbook-browser.md): isolated preview servers and layout checks.
 - [Compatibility and ownership](docs/compatibility.md): repository responsibilities and migration boundaries.
 - [Snapshot migration](docs/snapshot-migration.md): explicit inputs and safeguards for the legacy reviewed snapshot copier.
 

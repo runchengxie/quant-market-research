@@ -30,6 +30,7 @@ uv run market-research --help
 
 - [文档首页](docs/index.md)：按主题查找研究和数据说明
 - [本地运行手册](docs/runbook-local.md)：配置数据、运行报告和网页检查
+- [浏览器验证](docs/runbook-browser.md)：独立预览服务器和布局检查，中文步骤见本地运行手册
 - [兼容与职责说明](docs/compatibility.md)：查看仓库职责和迁移边界
 
 ## 目录说明

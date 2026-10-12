@@ -140,12 +140,16 @@ MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs \
   node web/scripts/build-smallcap-turnover-public.mjs
 ```
 
-更新代码后可在 `web/` 目录运行 `npm test` 和 `npm run build`。需要验证所有页面直达、刷新与交互时，先安装 Chromium：
+更新代码后，在 `web/` 目录运行 `npm test`、`npm run build` 和 `npm run verify:static`。浏览器检查的英文说明见[本地浏览器验证](runbook-browser.md)。安装 Chromium 后，选择一个未占用的本地端口运行：
 
 ```bash
 npx playwright install chromium
-npm run e2e
+PORT=54387 npm run e2e -- --workers=2 --output=/tmp/quant-market-research-browser
 ```
+
+`PORT` 同时控制静态预览服务器和 Playwright URL，默认值为 `4321`。Playwright 始终启动自己的服务器，端口已占用时会失败，不复用其他检出的预览服务器。保留其他 worktree 的服务器，改用不同端口。示例将浏览器产物保存在仓库之外。
+
+布局测试覆盖七个路由与五种宽度（`320`、`390`、`768`、`1280`、`1440`）的全部组合。每个路由和宽度组合独立执行，使用标准的 30 秒超时，继续检查正文标题唯一、没有横向溢出、页面边距对齐及没有页面错误。
 
 构建后可运行 `npm run report:bundle` 查看静态 HTML、CSS 和 JavaScript 的实际大小。该报告只记录当前结果，不把某个体积阈值当作研究网站的功能门槛。当前最大的文件通常是 ECharts 图表包，后续拆分专题时再比较变化。已发布的测量值见[网页静态产物基线](web-bundle-baseline.md)。
 
