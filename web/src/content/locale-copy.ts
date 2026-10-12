@@ -15,7 +15,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
-  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Three L2 days audited; static cost curves remain local. Actual-order calibration, liquidity groups and strategy capacity remain open." },
+  "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Three L2 days: static costs at CNY 100k are about 8.5 bp; ten-level coverage at CNY 1m is about 64%/67%. Actual slippage and strategy capacity remain uncalibrated." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
   cashflow: { title: "Cash Flow and Dividends", summary: "What historical cash-flow groups returned, how long losses lasted, and which checks remain open." },

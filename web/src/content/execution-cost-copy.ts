@@ -4,16 +4,16 @@ export const executionCostCopy = {
     "A股交易成本与策略容量"
   ],
   "stage": [
-    "L2 audit · local results",
-    "L2审计 · 结果留本地"
+    "Static L2 pilot · published",
+    "静态L2探索 · 已公开"
   ],
   "conclusion": [
-    "A three-day L2 pilot is now measured. Time encoding and one-sided books must be checked before interpreting static execution costs.",
-    "三日L2探索已完成首轮测量。时间编码与单边盘口须先核对，静态成本才能正确解释。"
+    "At CNY 100k, median static buy/sell costs are about 8.5 bp in this sample. At CNY 1m, full ten-level coverage falls to about 64%/67%.",
+    "本样本中，10万元订单的静态买卖成本中位数约8.5bp；到100万元，十档完整覆盖率降至约64%/67%。"
   ],
   "scope": [
-    "Sample: 2026-04-16, 2026-04-24 and 2026-07-20; a deterministic Shanghai/Shenzhen security subset. Static cost figures remain local pending vendor permission for aggregate derivatives. No actual-order or dynamic-impact calibration is claimed.",
-    "样本为2026-04-16、2026-04-24与2026-07-20的沪深证券确定性子样本。静态成本数值先保留本地，待确认聚合衍生结果的公开许可；尚无真实委托或动态冲击校准。"
+    "Sample: 2026-04-16, 2026-04-24 and 2026-07-20; 98,072 valid two-sided security-minute books from a deterministic Shanghai/Shenzhen subset. These are descriptive static measurements; actual-order and dynamic-impact calibration remain incomplete.",
+    "样本为2026-04-16、2026-04-24与2026-07-20的沪深证券确定性子样本，共98,072条有效双边证券分钟盘口。这是描述性静态测量，真实委托与动态冲击仍待校准。"
   ],
   "question": [
     "How much predicted return survives execution, and how does this change with capital and turnover?",
@@ -128,7 +128,139 @@ export const executionCostCopy = {
     "已有2026-04-24标准层pilot比源文件少403,373条快照。空档位过滤可能改变样本分布，因此本次保留源记录并明确记录剔除原因；原始文件和发布别名保持不变。"
   ],
   "auditNext": [
-    "Static buy/sell curves for CNY 10k, 100k, 1m and 10m have been computed with full-depth coverage and a matched-population comparison. Missing depth is never extrapolated. Next: confirm publication terms, add point-in-time eligibility and lagged liquidity groups, and expand preselected dates before calibration.",
-    "已在本地计算1万、10万、100万和1000万元的静态买卖成本曲线，同时报告十档覆盖率与同一批盘口的规模对照，深度不足不外推。下一步确认发布条款，补充时点证券资格与滞后流动性分组，并按预先确定的日期扩展样本。"
+    "Aggregate publication permission was confirmed by the owner on 2026-10-12. Next: add point-in-time eligibility and lagged liquidity groups, and expand preselected dates before calibration.",
+    "研究者于2026-10-12确认已获得聚合结果公开许可。下一步补充时点证券资格与滞后流动性分组，并按预先确定的日期扩展样本后再校准。"
+  ],
+  "resultsTitle": [
+    "Static costs and ten-level coverage",
+    "静态成本与十档覆盖率"
+  ],
+  "resultsNote": [
+    "Reference notional = midpoint × target shares. Fractional analytical shares are allowed; these are not cash budgets or lot-sized executable orders. Costs are relative to the current midpoint, include half-spread and depth consumption, and exclude fees, latency and causal impact.",
+    "参考名义规模 = 中间价 × 分析股数；允许分析用的非整手股数，不是现金预算或真实整手委托。成本相对当前中间价，含半价差与吃档，不含税费、延迟和自身因果冲击。"
+  ],
+  "conditionalTitle": [
+    "Cost conditional on full ten-level coverage",
+    "仅在十档完整覆盖时的成本"
+  ],
+  "coverageTitle": [
+    "Full coverage among valid two-sided books",
+    "有效双边盘口的完整覆盖率"
+  ],
+  "selectionWarning": [
+    "Each size has a different fully covered population. Read cost quantiles with coverage and sample counts: the uncovered orders have missing full-order costs, not zero costs.",
+    "不同规模能完整覆盖的样本不同。成本分位数须与覆盖率和样本数一起看；未覆盖订单的完整成本是缺失值，不是零。"
+  ],
+  "matchedTitle": [
+    "Compare order sizes using the same books",
+    "在同一批盘口中比较订单规模"
+  ],
+  "matchedNote": [
+    "The common subset contains 8,480 snapshots where both buy and sell orders at every size are fully covered. It helps separate size effects from changing populations, but remains a selected subset and does not establish strategy capacity.",
+    "共同子样本包含8,480条快照，买卖所有规模均能完整覆盖。它帮助区分订单规模与样本变化的影响，但仍是筛选后的子集，不能据此认定策略容量。"
+  ],
+  "download": [
+    "Download reviewed aggregate JSON",
+    "下载经审查的聚合JSON"
+  ],
+  "extraTitle": [
+    "Daily and depth-group comparisons",
+    "按日与深度分组比较"
+  ],
+  "extraNote": [
+    "The three dates are not a continuous time series. Depth groups use same-day median ten-level value; they are not market-cap groups or lagged signals. All quantiles are snapshot-weighted sample distributions, not population confidence intervals.",
+    "三个日期不是连续时间序列。深度组按同日十档金额中位数划分，不是市值组，也不是滞后信号。所有分位数按快照计权，描述样本分布，不是全市场置信区间。"
+  ],
+  "buy": [
+    "Buy",
+    "买入"
+  ],
+  "sell": [
+    "Sell",
+    "卖出"
+  ],
+  "size": [
+    "Reference notional (CNY)",
+    "参考名义规模（元）"
+  ],
+  "count": [
+    "Fully covered books",
+    "完整覆盖盘口数"
+  ],
+  "side": [
+    "Side",
+    "方向"
+  ],
+  "coverage": [
+    "Full coverage",
+    "完整覆盖率"
+  ],
+  "costUnit": [
+    "Cost vs midpoint (bp)",
+    "相对中间价成本（bp）"
+  ],
+  "coverageUnit": [
+    "Fully covered books (%)",
+    "完整覆盖盘口（%）"
+  ],
+  "logAxis": [
+    "Notional increases tenfold at each step",
+    "每档名义规模扩大10倍"
+  ],
+  "p50": [
+    "P50 cost (bp)",
+    "P50成本（bp）"
+  ],
+  "p90": [
+    "P90 cost (bp)",
+    "P90成本（bp）"
+  ],
+  "p95": [
+    "P95 cost (bp)",
+    "P95成本（bp）"
+  ],
+  "day": [
+    "Day / depth group",
+    "日期 / 深度组"
+  ],
+  "books": [
+    "Valid books",
+    "有效盘口数"
+  ],
+  "spread": [
+    "Median quoted spread (bp)",
+    "报价价差中位数（bp）"
+  ],
+  "shallow": [
+    "Shallow",
+    "浅档组"
+  ],
+  "middle": [
+    "Middle",
+    "中档组"
+  ],
+  "deep": [
+    "Deep",
+    "深档组"
+  ],
+  "tick10k": [
+    "10k",
+    "1万"
+  ],
+  "tick100k": [
+    "100k",
+    "10万"
+  ],
+  "tick1m": [
+    "1m",
+    "100万"
+  ],
+  "tick10m": [
+    "10m",
+    "1000万"
+  ],
+  "matchedValues": [
+    "Exact values for the common subset",
+    "共同样本的完整数值"
   ]
 } as const;

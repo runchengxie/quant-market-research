@@ -1,4 +1,5 @@
 ---
+import ExecutionCostResults from "../../../components/research/ExecutionCostResults.astro";
 import SiteLayout from "../../../layouts/SiteLayout.astro";
 import TopicNav from "../../../components/TopicNav.astro";
 import { executionCostCopy as copy } from "../../../content/execution-cost-copy";
@@ -20,7 +21,8 @@ const links = [
 <h2  data-locale-text data-en={text("conclusion")[0]} data-zh={text("conclusion")[1]}>{text("conclusion")[0]}</h2>
 <p  data-locale-text data-en={text("scope")[0]} data-zh={text("scope")[1]}>{text("scope")[0]}</p>
 </section>
-<TopicNav sections={[{id:"pilot-audit",label:"样本审计",labelEn:"Sample audit",available:true},{id:"baseline",label:"成本基线",labelEn:"Cost baseline",available:true},{id:"evidence",label:"证据边界",labelEn:"Evidence limits",available:true},{id:"roadmap",label:"研究路线",labelEn:"Research roadmap",available:true},{id:"sources",label:"来源与方法",labelEn:"Sources and methods",available:true}]} />
+<TopicNav sections={[{id:"pilot-results",label:"成本与覆盖率",labelEn:"Costs and coverage",available:true},{id:"pilot-audit",label:"样本审计",labelEn:"Sample audit",available:true},{id:"baseline",label:"成本基线",labelEn:"Cost baseline",available:true},{id:"evidence",label:"证据边界",labelEn:"Evidence limits",available:true},{id:"roadmap",label:"研究路线",labelEn:"Research roadmap",available:true},{id:"sources",label:"来源与方法",labelEn:"Sources and methods",available:true}]} />
+<ExecutionCostResults />
 <section id="pilot-audit" class="report-section">
 <h2 data-locale-text data-en={text("auditTitle")[0]} data-zh={text("auditTitle")[1]}>{text("auditTitle")[0]}</h2>
 <p data-locale-text data-en={text("auditScope")[0]} data-zh={text("auditScope")[1]}>{text("auditScope")[0]}</p>

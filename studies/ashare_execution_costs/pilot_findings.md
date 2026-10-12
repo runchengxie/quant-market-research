@@ -2,7 +2,7 @@
 
 [中文](pilot_findings.zh-CN.md)
 
-The first local measurement is complete. It establishes a reproducible static-book exploration, not a general A-share slippage calibration. Numerical cost curves, security-level measurements and executed notebooks remain local pending confirmation of the supplier's aggregate-derivative publication terms.
+The first local measurement is complete. It establishes a reproducible static-book exploration, not a general A-share slippage calibration. The owner confirmed aggregate-derivative publication permission on 2026-10-12. Reviewed aggregate costs and coverage are now public; security-level measurements, raw sources and executed private notebooks remain outside Git.
 
 ## Sample and audit
 
@@ -46,4 +46,17 @@ PYTHONPATH="$MDP_SOURCE/src:src" uv run --locked --extra dev python \
 
 4. Set `EXECUTION_COST_PILOT_RUN` to the output directory and execute `pilot_review.ipynb` using a kernel with pandas, pyarrow, matplotlib, nbformat and nbclient. The notebook independently reconciles recorded measurements and renders conditional costs beside coverage and a fixed-population comparison. Keep executed outputs outside Git.
 
-Next gates: supplier publication terms, point-in-time eligibility, price-limit states, lagged ADV/market cap, more predeclared dates, and actual orders before claiming calibrated impact or strategy capacity.
+Next gates: point-in-time eligibility, price-limit states, lagged ADV/market cap, more predeclared dates, and actual orders before claiming calibrated impact or strategy capacity.
+
+## Public aggregate release
+
+The reviewed JSON is `web/public/data/execution-costs/pilot.json`; the [public topic](https://runchengxie.github.io/quant-market-research/research/execution-costs/) displays conditional costs, full coverage and a common-population comparison. The export allowlist excludes private paths, raw schemas, input specs and security/time identifiers. It retains input/code/source-summary SHA256s, aggregate counts and definitions. Permission is recorded as owner-confirmed on 2026-10-12; this is not a license for raw data or actual orders.
+
+```bash
+PYTHONPATH=src uv run --locked python \
+  -m market_research.studies.ashare_execution_costs.publication \
+  --summary "$PILOT_RUN/summary.json" --confirmed-on 2026-10-12 \
+  --output web/public/data/execution-costs/pilot.json
+```
+
+Published reference-notional buy/sell P50 costs are 5.48/5.45 bp at CNY 10k, 8.48/8.37 bp at CNY 100k and 16.29/16.16 bp at CNY 1m. At CNY 1m, the full-coverage rates are only 64.41%/67.11%; at CNY 10m they are 12.49%/12.85%. Quantiles at each size are conditional on coverage and use different populations. The common subset has 8,480 snapshots; it is also selected, not a capacity estimate.

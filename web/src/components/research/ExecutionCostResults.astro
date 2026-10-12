@@ -1,0 +1,31 @@
+---
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { executionCostCopy as copy } from '../../content/execution-cost-copy';
+import { withBase } from '../../lib/routes';
+import ExecutionCostCurve from './ExecutionCostCurve.astro';
+const pilot=JSON.parse(await readFile(resolve(process.cwd(),'public/data/execution-costs/pilot.json'),'utf8'));
+const rows=pilot.pooled.cost_surface;
+const costCeiling=Math.ceil(Math.max(...rows.map((r:any)=>r.full_order_cost_bp.p90 ?? 0))/20)*20;
+const matched=pilot.pooled.common_full_subset.cost_surface;
+const pct=(v:number|null)=>v===null?'—':`${(v*100).toFixed(2)}%`;
+const bp=(v:number|null)=>v===null?'—':v.toFixed(2);
+const text=(key:keyof typeof copy)=>copy[key];
+const groups=[...Object.entries(pilot.by_day).map(([key,value])=>({key,value:value as any,en:key.slice(0,4)+'-'+key.slice(4,6)+'-'+key.slice(6),zh:key.slice(0,4)+'-'+key.slice(4,6)+'-'+key.slice(6)})),...Object.entries(pilot.by_depth_group).map(([key,value])=>({key,value:value as any,en:copy[key as 'shallow'|'middle'|'deep'][0],zh:copy[key as 'shallow'|'middle'|'deep'][1]}))];
+---
+<section id="pilot-results" class="report-section">
+<h2 data-locale-text data-en={text('resultsTitle')[0]} data-zh={text('resultsTitle')[1]}>{text('resultsTitle')[0]}</h2>
+<p data-locale-text data-en={text('resultsNote')[0]} data-zh={text('resultsNote')[1]}>{text('resultsNote')[0]}</p>
+<p data-locale-text data-en={text('selectionWarning')[0]} data-zh={text('selectionWarning')[1]}>{text('selectionWarning')[0]}</p>
+<div class="cost-charts"><ExecutionCostCurve rows={rows} metric="cost" ceiling={costCeiling} titleKey="conditionalTitle" id="conditional-cost"/><ExecutionCostCurve rows={rows} metric="coverage" titleKey="coverageTitle" id="depth-coverage"/></div>
+<div class="cost-table"><table><thead><tr>{['size','side','count','coverage','p50','p90','p95'].map(k=><th scope="col" data-locale-text data-en={copy[k as keyof typeof copy][0]} data-zh={copy[k as keyof typeof copy][1]}>{copy[k as keyof typeof copy][0]}</th>)}</tr></thead><tbody>{rows.map((r:any)=><tr><th scope="row">{r.reference_notional_cny.toLocaleString('en-US')}</th><td data-locale-text data-en={copy[r.side as 'buy'|'sell'][0]} data-zh={copy[r.side as 'buy'|'sell'][1]}>{copy[r.side as 'buy'|'sell'][0]}</td><td>{r.full_order_cost_bp.count.toLocaleString('en-US')}</td><td>{pct(r.full_coverage_rate)}</td><td>{bp(r.full_order_cost_bp.p50)}</td><td>{bp(r.full_order_cost_bp.p90)}</td><td>{bp(r.full_order_cost_bp.p95)}</td></tr>)}</tbody></table></div>
+<p><a download href={withBase('/data/execution-costs/pilot.json',import.meta.env.BASE_URL)} data-locale-text data-en={text('download')[0]} data-zh={text('download')[1]}>{text('download')[0]}</a></p>
+<h3 data-locale-text data-en={text('matchedTitle')[0]} data-zh={text('matchedTitle')[1]}>{text('matchedTitle')[0]}</h3>
+<p data-locale-text data-en={text('matchedNote')[0]} data-zh={text('matchedNote')[1]}>{text('matchedNote')[0]}</p>
+<ExecutionCostCurve rows={matched} metric="cost" ceiling={costCeiling} titleKey="matchedTitle" id="matched-cost"/>
+<details><summary data-locale-text data-en={copy.matchedValues[0]} data-zh={copy.matchedValues[1]}>{copy.matchedValues[0]}</summary><div class="cost-table"><table><thead><tr>{['size','side','count','coverage','p50','p90','p95'].map(k=><th scope="col" data-locale-text data-en={copy[k as keyof typeof copy][0]} data-zh={copy[k as keyof typeof copy][1]}>{copy[k as keyof typeof copy][0]}</th>)}</tr></thead><tbody>{matched.map((r:any)=><tr><th scope="row">{r.reference_notional_cny.toLocaleString('en-US')}</th><td data-locale-text data-en={copy[r.side as 'buy'|'sell'][0]} data-zh={copy[r.side as 'buy'|'sell'][1]}>{copy[r.side as 'buy'|'sell'][0]}</td><td>{r.full_order_cost_bp.count.toLocaleString('en-US')}</td><td>{pct(r.full_coverage_rate)}</td><td>{bp(r.full_order_cost_bp.p50)}</td><td>{bp(r.full_order_cost_bp.p90)}</td><td>{bp(r.full_order_cost_bp.p95)}</td></tr>)}</tbody></table></div></details>
+<details><summary data-locale-text data-en={text('extraTitle')[0]} data-zh={text('extraTitle')[1]}>{text('extraTitle')[0]}</summary><p data-locale-text data-en={text('extraNote')[0]} data-zh={text('extraNote')[1]}>{text('extraNote')[0]}</p>
+<div class="cost-table"><table><thead><tr>{['day','books','spread'].map(k=><th scope="col" data-locale-text data-en={copy[k as keyof typeof copy][0]} data-zh={copy[k as keyof typeof copy][1]}>{copy[k as keyof typeof copy][0]}</th>)}</tr></thead><tbody>{groups.map(g=><tr><th scope="row" data-locale-text data-en={g.en} data-zh={g.zh}>{g.en}</th><td>{g.value.snapshots.toLocaleString('en-US')}</td><td>{bp(g.value.spread_bp.p50)}</td></tr>)}</tbody></table></div>
+</details>
+</section>
+<style>.cost-charts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.cost-table{overflow-x:auto;max-width:100%}table{min-width:650px;font-size:13px}@media(max-width:800px){.cost-charts{grid-template-columns:1fr}}</style>

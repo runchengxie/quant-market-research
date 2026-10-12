@@ -9,7 +9,11 @@ empirical_sample:
   sampled_snapshots: 100236
   valid_two_sided_snapshots: 98072
   selection: stock_prefix_and_code_modulo_37
-publication_status: audit_only_cost_figures_local_pending_permission
+publication_status: reviewed_aggregates_published
+aggregate_publication_permission:
+  status: confirmed_by_owner
+  confirmed_on: 2026-10-12
+  scope: aggregate_derived_statistics
 raw_data_in_git: false
 scenario:
   sessions: 250

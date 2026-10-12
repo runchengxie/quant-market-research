@@ -1,0 +1,2334 @@
+{
+  "schema_version": "ashare_execution_costs.public_pilot.v1",
+  "study_id": "ashare_execution_costs",
+  "evidence": "descriptive_static_book_pilot",
+  "permission": {
+    "status": "confirmed_by_owner",
+    "confirmed_on": "2026-10-12",
+    "scope": "aggregate_derived_statistics"
+  },
+  "measurement_code_sha256": "a976afc070ebc326b70b9f0581cdc2323a2165f9be8b04838f88530a65943e8d",
+  "source_inputs": [
+    {
+      "day": 20260416,
+      "sha256": "1c9f8ea056b8401b48220414092a9bf34c4b6a7c81719783e9e128b3dec84182",
+      "bytes": 2015660275
+    },
+    {
+      "day": 20260424,
+      "sha256": "064281d4d0472de9e581a02765e1f5151b860c690e424cea07a221cd1927265d",
+      "bytes": 2116525530
+    },
+    {
+      "day": 20260720,
+      "sha256": "8e3a9c28b658d69be807d3805a544ac0344a8303c559a235c8726b79103c6342",
+      "bytes": 2253429045
+    }
+  ],
+  "audit": [
+    {
+      "day": 20260416,
+      "rows_read": 21075449,
+      "sampled_securities": 142,
+      "sampled_snapshots": 32694,
+      "valid_books": 32341,
+      "excluded_books": 353,
+      "one_sided": 353,
+      "crossed_or_locked": 0,
+      "malformed": 0,
+      "invalid_clock": 0,
+      "day_mismatch": 0,
+      "outside_continuous_session": 988299,
+      "null_clock_or_identity": 0
+    },
+    {
+      "day": 20260424,
+      "rows_read": 21886053,
+      "sampled_securities": 143,
+      "sampled_snapshots": 33889,
+      "valid_books": 33186,
+      "excluded_books": 703,
+      "one_sided": 703,
+      "crossed_or_locked": 0,
+      "malformed": 0,
+      "invalid_clock": 0,
+      "day_mismatch": 0,
+      "outside_continuous_session": 999415,
+      "null_clock_or_identity": 0
+    },
+    {
+      "day": 20260720,
+      "rows_read": 22712123,
+      "sampled_securities": 142,
+      "sampled_snapshots": 33653,
+      "valid_books": 32545,
+      "excluded_books": 1108,
+      "one_sided": 1108,
+      "crossed_or_locked": 0,
+      "malformed": 0,
+      "invalid_clock": 0,
+      "day_mismatch": 0,
+      "outside_continuous_session": 960978,
+      "null_clock_or_identity": 0
+    }
+  ],
+  "pooled": {
+    "snapshots": 98072,
+    "security_days": 426,
+    "spread_bp": {
+      "count": 98072,
+      "p50": 9.637393225032223,
+      "p90": 27.129189278820082,
+      "p95": 34.90401396160639
+    },
+    "bid_depth_cny": {
+      "count": 98072,
+      "p50": 1775712.275,
+      "p90": 12381120.000000032,
+      "p95": 25813900.499999996
+    },
+    "ask_depth_cny": {
+      "count": 98072,
+      "p50": 1644465.5,
+      "p90": 12363204.400000002,
+      "p95": 23325478.49799995
+    },
+    "cost_surface": [
+      {
+        "side": "buy",
+        "reference_notional_cny": 10000,
+        "full_coverage_rate": 1.0,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 98072,
+          "p50": 5.479452054795164,
+          "p90": 14.675689396202362,
+          "p95": 19.723865877712132
+        }
+      },
+      {
+        "side": "buy",
+        "reference_notional_cny": 100000,
+        "full_coverage_rate": 0.9935353617750224,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 97438,
+          "p50": 8.481764206955678,
+          "p90": 27.43890342816613,
+          "p95": 40.48582995951566
+        }
+      },
+      {
+        "side": "buy",
+        "reference_notional_cny": 1000000,
+        "full_coverage_rate": 0.6440880169671261,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 63167,
+          "p50": 16.28518744550833,
+          "p90": 48.49640738827877,
+          "p95": 70.24251269415437
+        }
+      },
+      {
+        "side": "buy",
+        "reference_notional_cny": 10000000,
+        "full_coverage_rate": 0.12487764091687739,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 0.163793725,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 12247,
+          "p50": 44.39162811565423,
+          "p90": 108.42346871775766,
+          "p95": 135.6176712304088
+        }
+      },
+      {
+        "side": "sell",
+        "reference_notional_cny": 10000,
+        "full_coverage_rate": 0.9999388204584387,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 98066,
+          "p50": 5.449591280655142,
+          "p90": 14.471780028944004,
+          "p95": 19.56947162426559
+        }
+      },
+      {
+        "side": "sell",
+        "reference_notional_cny": 100000,
+        "full_coverage_rate": 0.9981136308018599,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 97887,
+          "p50": 8.369429423459307,
+          "p90": 23.686709816293178,
+          "p95": 33.96156253579804
+        }
+      },
+      {
+        "side": "sell",
+        "reference_notional_cny": 1000000,
+        "full_coverage_rate": 0.6710579982054001,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 1.0,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 65812,
+          "p50": 16.16373204837762,
+          "p90": 46.30856592999866,
+          "p95": 61.19698770382262
+        }
+      },
+      {
+        "side": "sell",
+        "reference_notional_cny": 10000000,
+        "full_coverage_rate": 0.12849743045925444,
+        "coverage_fraction": {
+          "count": 98072,
+          "p50": 0.17830374999999998,
+          "p90": 1.0,
+          "p95": 1.0
+        },
+        "full_order_cost_bp": {
+          "count": 12602,
+          "p50": 36.86910567863411,
+          "p90": 77.38908705576571,
+          "p95": 95.30361041863421
+        }
+      }
+    ],
+    "common_full_subset": {
+      "snapshots": 8480,
+      "security_days": 77,
+      "spread_bp": {
+        "count": 8480,
+        "p50": 19.940179461614733,
+        "p90": 34.90401396160639,
+        "p95": 79.68127490039849
+      },
+      "bid_depth_cny": {
+        "count": 8480,
+        "p50": 27469598.0,
+        "p90": 121135526.80000003,
+        "p95": 154898371.45
+      },
+      "ask_depth_cny": {
+        "count": 8480,
+        "p50": 26797770.375,
+        "p90": 174122248.757,
+        "p95": 205950760.57849994
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 9.970089730806375,
+            "p90": 17.574692442883233,
+            "p95": 39.84063745019917
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 9.990009990010762,
+            "p90": 19.516454724057883,
+            "p95": 39.84063745019917
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 12.360939431397266,
+            "p90": 36.10108303249149,
+            "p95": 40.16064257027941
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 39.84063745019917,
+            "p90": 88.08866117002094,
+            "p95": 102.9930464843627
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 9.970089730807485,
+            "p90": 17.56999370612844,
+            "p95": 39.84063745019806
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 9.990009990009652,
+            "p90": 18.950508357940333,
+            "p95": 39.84063745019806
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 12.360939431396156,
+            "p90": 35.39600241256781,
+            "p95": 40.160642570281624
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 8480,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8480,
+            "p50": 36.68696945632877,
+            "p90": 75.40344227574158,
+            "p95": 94.11274080814744
+          }
+        }
+      ]
+    }
+  },
+  "by_day": {
+    "20260416": {
+      "snapshots": 32341,
+      "security_days": 142,
+      "spread_bp": {
+        "count": 32341,
+        "p50": 7.555723460521184,
+        "p90": 21.528525296018678,
+        "p95": 28.28854314002894
+      },
+      "bid_depth_cny": {
+        "count": 32341,
+        "p50": 2495603.0,
+        "p90": 16175177.0,
+        "p95": 35035225.0
+      },
+      "ask_depth_cny": {
+        "count": 32341,
+        "p50": 2657299.44,
+        "p90": 16476207.0,
+        "p95": 28732955.4
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32341,
+            "p50": 3.941663381947791,
+            "p90": 11.223344556676729,
+            "p95": 14.556040756914523
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9998144769796852,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32335,
+            "p50": 6.019628472793137,
+            "p90": 14.871942871881776,
+            "p95": 19.723865877712132
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.7898642589901363,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 25545,
+            "p50": 12.610340479193294,
+            "p90": 30.776897158344863,
+            "p95": 36.83341356452362
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.16517732908691754,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 0.2649645,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 5342,
+            "p50": 37.19171719875125,
+            "p90": 96.62063012357326,
+            "p95": 126.60167603888327
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32341,
+            "p50": 3.944773175544869,
+            "p90": 11.220196353436407,
+            "p95": 14.419203747071396
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9998763179864568,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32337,
+            "p50": 6.357279084551193,
+            "p90": 15.48707028727981,
+            "p95": 19.723865877713244
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.758232584026468,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 24522,
+            "p50": 12.970168612191912,
+            "p90": 34.731755945125116,
+            "p95": 43.14298003781794
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.17386599053832597,
+          "coverage_fraction": {
+            "count": 32341,
+            "p50": 0.25061975,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 5623,
+            "p50": 34.86641709276817,
+            "p90": 72.60462138203793,
+            "p95": 87.65310717541666
+          }
+        }
+      ],
+      "common_full_subset": {
+        "snapshots": 4076,
+        "security_days": 39,
+        "spread_bp": {
+          "count": 4076,
+          "p50": 17.3761946133793,
+          "p90": 33.16749585406379,
+          "p95": 72.20216606498202
+        },
+        "bid_depth_cny": {
+          "count": 4076,
+          "p50": 22104932.0,
+          "p90": 119090197.0,
+          "p95": 146970387.64999998
+        },
+        "ask_depth_cny": {
+          "count": 4076,
+          "p50": 23046221.22,
+          "p90": 166540533.98,
+          "p95": 197219691.60250002
+        },
+        "cost_surface": [
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 8.703220191470518,
+              "p90": 16.583747927032544,
+              "p95": 36.101083032493705
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 9.233610341643494,
+              "p90": 16.638935108153063,
+              "p95": 36.10108303249149
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 11.884462788891437,
+              "p90": 24.358741704715303,
+              "p95": 36.10108303249149
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 36.10108303249149,
+              "p90": 74.66156581827144,
+              "p95": 93.61943303841048
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 8.703220191470518,
+              "p90": 16.583747927031432,
+              "p95": 36.10108303249038
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 9.233610341643494,
+              "p90": 16.638935108153063,
+              "p95": 36.10108303249038
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 11.33579121517625,
+              "p90": 22.951914893616365,
+              "p95": 36.10108303249038
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 4076,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 4076,
+              "p50": 34.54751281011082,
+              "p90": 64.1197114095038,
+              "p95": 77.55388599133938
+            }
+          }
+        ]
+      }
+    },
+    "20260424": {
+      "snapshots": 33186,
+      "security_days": 142,
+      "spread_bp": {
+        "count": 33186,
+        "p50": 8.233841086866848,
+        "p90": 21.52852529601836,
+        "p95": 28.77697841726557
+      },
+      "bid_depth_cny": {
+        "count": 33186,
+        "p50": 2146251.0,
+        "p90": 14655574.129999999,
+        "p95": 24769408.5
+      },
+      "ask_depth_cny": {
+        "count": 33186,
+        "p50": 1589359.0,
+        "p90": 10705332.3,
+        "p95": 18774422.0575
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33186,
+            "p50": 4.326507156613424,
+            "p90": 12.269938650306678,
+            "p95": 15.410012612719349
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9996685349243657,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33175,
+            "p50": 7.127174174896833,
+            "p90": 18.65995840199198,
+            "p95": 25.058848637566687
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.6554571204724884,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 21752,
+            "p50": 16.463610328458778,
+            "p90": 42.29519829650275,
+            "p95": 55.32213295447223
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.10856987886458146,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 0.15835763149999998,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 3603,
+            "p50": 43.9352953985761,
+            "p90": 100.63055373523345,
+            "p95": 118.91170092325005
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33186,
+            "p50": 4.301075268817733,
+            "p90": 12.23990208078285,
+            "p95": 15.471975446149644
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9997589344904477,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33178,
+            "p50": 7.047961555886051,
+            "p90": 17.806241061668945,
+            "p95": 23.866348448686736
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.7203338757307298,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 23905,
+            "p50": 14.556040756913413,
+            "p90": 39.84063745019806,
+            "p95": 48.64614131634526
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.15003314650756344,
+          "coverage_fraction": {
+            "count": 33186,
+            "p50": 0.2152776,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 4979,
+            "p50": 39.006869209810006,
+            "p90": 71.62589317156964,
+            "p95": 83.35575677896473
+          }
+        }
+      ],
+      "common_full_subset": {
+        "snapshots": 2633,
+        "security_days": 22,
+        "spread_bp": {
+          "count": 2633,
+          "p50": 18.639328984156172,
+          "p90": 33.72681281618965,
+          "p95": 79.68127490039849
+        },
+        "bid_depth_cny": {
+          "count": 2633,
+          "p50": 26160275.0,
+          "p90": 154539662.8,
+          "p95": 173006162.60000005
+        },
+        "ask_depth_cny": {
+          "count": 2633,
+          "p50": 27077915.39,
+          "p90": 173792813.868,
+          "p95": 195400914.02200007
+        },
+        "cost_surface": [
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 9.319664492077884,
+              "p90": 17.352441164157106,
+              "p95": 39.84063745019917
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 9.514747859180606,
+              "p90": 23.866348448688957,
+              "p95": 39.84063745019917
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 12.391573729864103,
+              "p90": 39.525691699604515,
+              "p95": 39.9941060847149
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 40.36844392523386,
+              "p90": 86.50778994916176,
+              "p95": 97.2407899161163
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 9.319664492077884,
+              "p90": 17.500909277069496,
+              "p95": 39.84063745019806
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 9.514747859181716,
+              "p90": 23.866348448686736,
+              "p95": 39.84063745019806
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 12.422360248449671,
+              "p90": 36.505111394793936,
+              "p95": 39.84063745019806
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 2633,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 2633,
+              "p50": 39.84063745019806,
+              "p90": 71.0143201234581,
+              "p95": 80.91795958950111
+            }
+          }
+        ]
+      }
+    },
+    "20260720": {
+      "snapshots": 32545,
+      "security_days": 142,
+      "spread_bp": {
+        "count": 32545,
+        "p50": 14.524328249818137,
+        "p90": 36.29105604734258,
+        "p95": 44.74272930648872
+      },
+      "bid_depth_cny": {
+        "count": 32545,
+        "p50": 1094666.0,
+        "p90": 7350802.800000003,
+        "p95": 11336854.299999997
+      },
+      "ask_depth_cny": {
+        "count": 32545,
+        "p50": 956723.0,
+        "p90": 10244324.400000008,
+        "p95": 16881655.809999995
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32545,
+            "p50": 8.149959250205452,
+            "p90": 20.490511439237753,
+            "p95": 26.20362766195505
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.981041634659702,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 31928,
+            "p50": 14.120466332140369,
+            "p90": 47.70767477038062,
+            "p95": 64.77938207538368
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.4876325088339223,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 0.950286,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 15870,
+            "p50": 27.344156650059848,
+            "p90": 89.334350877194,
+            "p95": 121.45621612200482
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.10145951759102781,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 0.0950286,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 3302,
+            "p50": 61.79217340450572,
+            "p90": 130.2362378833839,
+            "p95": 155.94776827241475
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 0.9998156398832386,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32539,
+            "p50": 7.917656373712667,
+            "p90": 19.884510464311514,
+            "p95": 24.826524693378754
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9946842833000461,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32372,
+            "p50": 12.914158504007123,
+            "p90": 37.126399741070244,
+            "p95": 48.8661998250007
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.5341834383161777,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 17385,
+            "p50": 26.488401110889015,
+            "p90": 69.81719859201397,
+            "p95": 89.39063675404155
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.06145337225380243,
+          "coverage_fraction": {
+            "count": 32545,
+            "p50": 0.11022620000000002,
+            "p90": 0.7424045300000005,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 2000,
+            "p50": 45.95585834845206,
+            "p90": 114.01935860113501,
+            "p95": 131.16094600002933
+          }
+        }
+      ],
+      "common_full_subset": {
+        "snapshots": 1771,
+        "security_days": 16,
+        "spread_bp": {
+          "count": 1771,
+          "p50": 28.530670470755457,
+          "p90": 91.32420091324208,
+          "p95": 92.1658986175116
+        },
+        "bid_depth_cny": {
+          "count": 1771,
+          "p50": 37961040.0,
+          "p90": 93716882.88,
+          "p95": 105593080.80000001
+        },
+        "ask_depth_cny": {
+          "count": 1771,
+          "p50": 46677694.0,
+          "p90": 215745826.5,
+          "p95": 263829988.025
+        },
+        "cost_surface": [
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 14.265335235377208,
+              "p90": 45.66210045662045,
+              "p95": 46.08294930875667
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 14.306151645206988,
+              "p90": 45.66210045662045,
+              "p95": 46.08294930875667
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 16.86340640809636,
+              "p90": 45.66210045662045,
+              "p95": 46.51162790697549
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 50.47966087866173,
+              "p90": 104.8415113876966,
+              "p95": 125.255600206301
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 14.265335235376098,
+              "p90": 45.66210045662156,
+              "p95": 46.08294930875445
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 14.306151645206988,
+              "p90": 45.66210045662156,
+              "p95": 46.08294930875445
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 16.750418760470566,
+              "p90": 46.08294930875445,
+              "p95": 46.511627906977715
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 1771,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 1771,
+              "p50": 46.08294930875445,
+              "p90": 111.5386752362968,
+              "p95": 126.68763929624683
+            }
+          }
+        ]
+      }
+    }
+  },
+  "by_depth_group": {
+    "deep": {
+      "snapshots": 32069,
+      "security_days": 141,
+      "spread_bp": {
+        "count": 32069,
+        "p50": 16.99235344095121,
+        "p90": 33.388981636059384,
+        "p95": 40.56795131845936
+      },
+      "bid_depth_cny": {
+        "count": 32069,
+        "p50": 7624907.0,
+        "p90": 39691832.65000002,
+        "p95": 81158013.59999987
+      },
+      "ask_depth_cny": {
+        "count": 32069,
+        "p50": 7031113.52,
+        "p90": 44556474.720000006,
+        "p95": 74462581.01799993
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32069,
+            "p50": 8.53970964987072,
+            "p90": 16.86340640809636,
+            "p95": 20.703933747412417
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32069,
+            "p50": 8.88888888888939,
+            "p90": 19.80198019801982,
+            "p95": 26.703805259480337
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.9756774455081231,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 31289,
+            "p50": 15.836937370956594,
+            "p90": 47.431284663423504,
+            "p95": 66.81359037580047
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.3693598178926689,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 0.6975950000000001,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 11845,
+            "p50": 45.73509523809527,
+            "p90": 109.22495402726632,
+            "p95": 136.54561724097468
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32069,
+            "p50": 8.53970964987294,
+            "p90": 16.86340640809414,
+            "p95": 20.703933747411305
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32069,
+            "p50": 8.841732979664174,
+            "p90": 19.646365422396617,
+            "p95": 25.24795999077489
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.9847204465371543,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 31579,
+            "p50": 14.513788098694524,
+            "p90": 41.845534413656125,
+            "p95": 54.06781719352392
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.3803361501761826,
+          "coverage_fraction": {
+            "count": 32069,
+            "p50": 0.7683191999999999,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 12197,
+            "p50": 37.740043290040994,
+            "p90": 77.79557898208034,
+            "p95": 96.25956065630915
+          }
+        }
+      ],
+      "common_full_subset": {
+        "snapshots": 8462,
+        "security_days": 69,
+        "spread_bp": {
+          "count": 8462,
+          "p50": 19.940179461614733,
+          "p90": 34.90401396160639,
+          "p95": 79.68127490039849
+        },
+        "bid_depth_cny": {
+          "count": 8462,
+          "p50": 27566554.12,
+          "p90": 121218568.9,
+          "p95": 154921304.35
+        },
+        "ask_depth_cny": {
+          "count": 8462,
+          "p50": 26864085.485,
+          "p90": 174151469.057,
+          "p95": 205994339.81149998
+        },
+        "cost_surface": [
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 9.970089730806375,
+              "p90": 17.574692442883233,
+              "p95": 39.84063745019917
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 9.996800836215014,
+              "p90": 19.650767195504628,
+              "p95": 39.84063745019917
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 12.360939431397266,
+              "p90": 36.10108303249149,
+              "p95": 40.16064257027941
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 39.84063745019917,
+              "p90": 88.20816944716326,
+              "p95": 103.00327942932608
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 9.970089730807485,
+              "p90": 17.574692442882125,
+              "p95": 39.84063745019806
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 9.990009990009652,
+              "p90": 18.975332068310593,
+              "p95": 39.84063745019806
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 12.360939431396156,
+              "p90": 35.442253200568274,
+              "p95": 40.160642570281624
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 8462,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 8462,
+              "p50": 36.78044439216266,
+              "p90": 75.41974469997515,
+              "p95": 94.1670007279407
+            }
+          }
+        ]
+      }
+    },
+    "middle": {
+      "snapshots": 32722,
+      "security_days": 141,
+      "spread_bp": {
+        "count": 32722,
+        "p50": 7.00263156242044,
+        "p90": 20.19386188928194,
+        "p95": 30.211480362537117
+      },
+      "bid_depth_cny": {
+        "count": 32722,
+        "p50": 1781970.5,
+        "p90": 4489619.95,
+        "p95": 5883701.999999999
+      },
+      "ask_depth_cny": {
+        "count": 32722,
+        "p50": 1589818.5,
+        "p90": 4454729.000000001,
+        "p95": 6212473.893999999
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32722,
+            "p50": 3.72717107715248,
+            "p90": 11.350737797957144,
+            "p95": 17.041629803173464
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9988692622700324,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32685,
+            "p50": 5.882458386685663,
+            "p90": 22.900593680935007,
+            "p95": 33.803363398461784
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.7198826477599168,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 23556,
+            "p50": 16.240360948083232,
+            "p90": 55.33829047869921,
+            "p95": 82.96637903822956
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.012101949758572214,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 0.15823587500000003,
+            "p90": 0.44418593280000007,
+            "p95": 0.6186282332999999
+          },
+          "full_order_cost_bp": {
+            "count": 396,
+            "p50": 17.14232307461372,
+            "p90": 38.391288561648864,
+            "p95": 43.7813179028651
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 0.9999388790416234,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32720,
+            "p50": 3.7217687808316358,
+            "p90": 11.273957158964842,
+            "p95": 16.706072108294663
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9996638347289285,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32711,
+            "p50": 5.736981446736733,
+            "p90": 20.17218777679353,
+            "p95": 27.720319030610785
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.774066377360797,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 25329,
+            "p50": 16.819390457156747,
+            "p90": 50.25951624076441,
+            "p95": 66.60460890614158
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.012101949758572214,
+          "coverage_fraction": {
+            "count": 32722,
+            "p50": 0.17895412500000002,
+            "p90": 0.45034180500000043,
+            "p95": 0.5903501004999999
+          },
+          "full_order_cost_bp": {
+            "count": 396,
+            "p50": 16.250612780091544,
+            "p90": 42.941748103777485,
+            "p95": 67.26470077623587
+          }
+        }
+      ],
+      "common_full_subset": {
+        "snapshots": 18,
+        "security_days": 8,
+        "spread_bp": {
+          "count": 18,
+          "p50": 2.557544798855216,
+          "p90": 5.434474315382389,
+          "p95": 7.126327024187059
+        },
+        "bid_depth_cny": {
+          "count": 18,
+          "p50": 19533014.15,
+          "p90": 24542441.26,
+          "p95": 25336041.699999996
+        },
+        "ask_depth_cny": {
+          "count": 18,
+          "p50": 11546400.0,
+          "p90": 16511858.230000002,
+          "p95": 21041210.585499976
+        },
+        "cost_surface": [
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 1.2787723994278632,
+              "p90": 2.717237157691344,
+              "p95": 3.5631635120945093
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 1.278935925310698,
+              "p90": 3.127533460151044,
+              "p95": 3.674250955340348
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 1.836923908082877,
+              "p90": 3.9545077422034063,
+              "p95": 7.029172239946232
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 11.093352271694945,
+              "p90": 21.28906628490613,
+              "p95": 32.790116929358824
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 1.2787723994273081,
+              "p90": 2.717237157691455,
+              "p95": 3.563163512092622
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 1.2787723994273081,
+              "p90": 2.717237157691455,
+              "p95": 4.351249816032508
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 2.417498596577472,
+              "p90": 7.090389843968482,
+              "p95": 9.362076840218375
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": 1.0,
+            "coverage_fraction": {
+              "count": 18,
+              "p50": 1.0,
+              "p90": 1.0,
+              "p95": 1.0
+            },
+            "full_order_cost_bp": {
+              "count": 18,
+              "p50": 12.414134588716873,
+              "p90": 17.503049817194416,
+              "p95": 22.92484570462329
+            }
+          }
+        ]
+      }
+    },
+    "shallow": {
+      "snapshots": 33281,
+      "security_days": 144,
+      "spread_bp": {
+        "count": 33281,
+        "p50": 7.81555295037246,
+        "p90": 23.37042117563372,
+        "p95": 32.42366927857266
+      },
+      "bid_depth_cny": {
+        "count": 33281,
+        "p50": 639785.0,
+        "p90": 1591294.0,
+        "p95": 2076834.0
+      },
+      "ask_depth_cny": {
+        "count": 33281,
+        "p50": 559259.44,
+        "p90": 1706646.0,
+        "p95": 2254980.7300000004
+      },
+      "cost_surface": [
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 1.0,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33281,
+            "p50": 4.599939200484737,
+            "p90": 14.56823920265915,
+            "p95": 19.842293906811026
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9820618370842222,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 32684,
+            "p50": 10.082502261203885,
+            "p90": 40.18954607519465,
+            "p95": 59.39859418985804
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.2500525825546107,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 0.55690405,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8322,
+            "p50": 17.641903914503708,
+            "p90": 39.72168828608049,
+            "p95": 50.08293827775922
+          }
+        },
+        {
+          "side": "buy",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.0001802830443796761,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 0.055690405,
+            "p90": 0.170129046,
+            "p95": 0.225002232
+          },
+          "full_order_cost_bp": {
+            "count": 6,
+            "p50": 34.534790248540446,
+            "p90": 111.05113191515747,
+            "p95": 134.50484181964651
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000,
+          "full_coverage_rate": 0.9998798113037469,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33277,
+            "p50": 4.514657980455583,
+            "p90": 14.152174709612499,
+            "p95": 18.954779312212455
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 100000,
+          "full_coverage_rate": 0.9947717917129894,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 1.0,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 33107,
+            "p50": 10.03770606804566,
+            "p90": 31.127490491462023,
+            "p95": 42.769617802079416
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 1000000,
+          "full_coverage_rate": 0.2675400378594393,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 0.6421344999999999,
+            "p90": 1.0,
+            "p95": 1.0
+          },
+          "full_order_cost_bp": {
+            "count": 8904,
+            "p50": 20.50399384863011,
+            "p90": 51.79222381796089,
+            "p95": 67.65378024852886
+          }
+        },
+        {
+          "side": "sell",
+          "reference_notional_cny": 10000000,
+          "full_coverage_rate": 0.00027042456656951413,
+          "coverage_fraction": {
+            "count": 33281,
+            "p50": 0.06421344999999999,
+            "p90": 0.1597805,
+            "p95": 0.208361248
+          },
+          "full_order_cost_bp": {
+            "count": 9,
+            "p50": 10.068913481815489,
+            "p90": 24.685204456843977,
+            "p95": 37.08843501769165
+          }
+        }
+      ],
+      "common_full_subset": {
+        "snapshots": 0,
+        "security_days": 0,
+        "spread_bp": {
+          "count": 0,
+          "p50": null,
+          "p90": null,
+          "p95": null
+        },
+        "bid_depth_cny": {
+          "count": 0,
+          "p50": null,
+          "p90": null,
+          "p95": null
+        },
+        "ask_depth_cny": {
+          "count": 0,
+          "p50": null,
+          "p90": null,
+          "p95": null
+        },
+        "cost_surface": [
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "buy",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 100000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 1000000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          },
+          {
+            "side": "sell",
+            "reference_notional_cny": 10000000,
+            "full_coverage_rate": null,
+            "coverage_fraction": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            },
+            "full_order_cost_bp": {
+              "count": 0,
+              "p50": null,
+              "p90": null,
+              "p95": null
+            }
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "price_unit": "CNY",
+    "quantity_unit": "share",
+    "benchmark": "contemporaneous_midpoint",
+    "reference_notional": "midpoint_times_target_shares_fractional_shares_allowed",
+    "weights": "one_earliest_snapshot_per_selected_security_minute",
+    "sampling": "Shanghai_Shenzhen_stocklike_prefixes_security_code_modulo_37_equals_zero",
+    "uncovered_orders": "full_order_cost_missing_no_extrapolation",
+    "depth_groups": "same_day_median_depth_terciles_not_lagged_signals",
+    "uncertainty": "sample_quantiles_not_population_confidence_intervals",
+    "fees_included": false,
+    "dynamic_impact_calibrated": false,
+    "actual_order_calibrated": false
+  },
+  "source_summary_sha256": "718c4d4e717f29e7eada195a230dbed92bcde9436624c370367cac3111fb69ab"
+}
