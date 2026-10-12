@@ -1,0 +1,28 @@
+# Early Shenzhen replay fitness and snapshot execution scenarios
+
+Full historical book replay is blocked. Saved January 4, 2021 orders do not establish vendor-defined order-type, side or cancellation meanings, and lack a shared exchange sequence/channel. A timestamp merge cannot prove cross-stream ordering. Snapshot reconciliation errors are therefore **not measured**, rather than assigned artificial zero values. MDP owns normalization and ordering provenance; quant-platform owns the reusable matching mechanism; this study owns evidence checks and scenario orchestration.
+
+The saved common sample contains 838,079 Shenzhen trades. With preopening orders included, buy and sell order-reference coverage is 99.6832% and 99.7529%; no matched reference first appears after its trade clock. These existence checks neither prove event semantics nor establish sequence. Across the combined common sample there are 441,806 shared security/timestamp pairs between orders and trades. Eight numeric order-type codes remain unmapped. Repeated security/order identifiers may encode lifecycle events: the audit reports them and does not delete them. Shanghai order absence must not be conflated with missing Shenzhen references. The saved standardized source-clock checks are diagnostic only; they cannot certify original exchange order.
+
+The independent snapshot experiment uses the first 12 saved Shenzhen securities in lexical order, the first five minutes of the continuous session, a fixed 10,000-share request, and a CNY 1 million buy cash budget. It compares immediate displayed-depth consumption, five fixed TWAP releases at 0/60/120/180/240 seconds (executed on the next available quote), and a fixed arrival-price limit that consumes depth only when marketable. Future quotes enter as execution outcomes at their own clock; their count does not determine the schedule. Every timestamp supplies depth once, and a duplicate timestamp does not refresh it again. This is a conditional counterfactual that refreshes historical displayed liquidity independently of our fills. It does not infer resilience or causal own-impact.
+
+Participation-constrained execution is explicitly unavailable: saved `TotalVolume` lacks an audited interval-volume, reset and auction contract for a causal cap. It requires verified cumulative-volume units/clock and a trailing realized-volume baseline; the study never borrows future interval volume.
+
+The passive queue lower bound is zero additional passive shares; the optimistic upper bound is the requested quantity. No passive cash or price is inferred from that uninformative bound. Limit-wait crossing fills are observable scenario mechanisms, not evidence that a resting order would actually receive them. Fees, round lots, participation constraints, hidden liquidity, and historical order priority are absent. Partial fills remain partial; they are not priced as completed orders. Median cash amounts across securities are descriptive and cannot rank algorithm costs.
+
+In the final bounded run, full-fill counts (buy/sell, each out of 12 paths) are immediate market **11/12**, TWAP **12/12**, and crossing-only limit wait **8/6**. Every TWAP path completes within the sampled five minutes under the independent snapshot refresh assumption. These counts describe the selected paths and are not an estimate of live algorithm performance.
+
+The provider is `ticknet.simulator.matching.LimitOrderBook` in the installed `quant-platform` distribution. Its multi-level return value aggregates volume at the final price, so this research calls the provider once per displayed level and sums exact cash. A small source loader avoids unrelated training imports requiring torch; it executes the installed provider files and records their version and matching-source hash. No replacement general order-book engine is introduced. A future provider API that exposes all fills can replace this adapter.
+
+Run with the repository environment:
+
+```bash
+PYTHONPATH=src python scripts/run_execution_cost_replay.py \
+  --saved "$DATA_ROOT/quant/quant-market-research/ashare_execution_costs/expansion-20261012/l2-run-v1" \
+  --output "$DATA_ROOT/quant/quant-market-research/ashare_execution_costs/calibration-20261012/replay-new"
+python -m pytest tests/studies/test_execution_cost_replay.py -q
+```
+
+The output must be new or empty. `private-audit.json` retains input paths/hashes, code categories, per-security reference counts and stream diagnostics; `private-paths.json` retains every scenario's clocked fills and identities. `replay.proposed.json` contains explicitly selected aggregate fields, separate data-quality and simulation labels, and no security IDs or raw paths. It is a proposed review artifact, not automatically published website content. The final audited run is `calibration-20261012/replay-v5`; earlier v1/v2 are superseded because their provisional TWAP schedule used snapshot count. Future-book effects remain excluded from signal formation.
+
+Next evidence required for event replay: vendor order-type/side/cancel specification, exchange ordering provenance across streams, and verified auction-to-continuous initialization. Once available, reconstruct with the shared provider and report best-price, level-quantity, crossed-book and cancellation-conservation errors against snapshots. High reference coverage alone does not unlock this gate.
