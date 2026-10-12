@@ -25,7 +25,7 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(expanded).toContainText('Order-flow association has not passed the dynamic replay gate');
   await expect(page.locator('.prior-evidence')).not.toHaveAttribute('open', '');
   await page.goto('research/execution-costs/?lang=zh-CN');
-  await expect(page.locator('#expanded-results h2')).toHaveText('十日盘口试算与策略费用比较');
+  await expect(page.locator('#expanded-results h2')).toHaveText('按挂单试算，要多花多少钱');
   await expect(page.getByRole('link', {name: '完整研究报告与复现记录 ↗'})).toHaveAttribute('href', /execution-cost-expansion-20261012\.zh-CN\.md$/);
   await expect(page.locator('#strategy-diagnostic')).toContainText('不能证明真实容量或净超额收益');
   await expect(page.locator('#strategy-evidence table').first().locator('tbody tr')).toHaveCount(18);
@@ -36,7 +36,7 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(page.locator('#strategy-diagnostic details').last()).toContainText('线性成本比例');
   await expect(page.locator('#strategy-diagnostic details').last()).toContainText('复利成本比例');
   await page.reload();
-  await expect(page.locator('#expanded-results h2')).toHaveText('十日盘口试算与策略费用比较');
+  await expect(page.locator('#expanded-results h2')).toHaveText('按挂单试算，要多花多少钱');
 });
 
 
@@ -98,7 +98,7 @@ test('execution workflow separates blocked replay and synthetic entry from actua
 test('data fitness preserves missing benchmarks and explains flat costs',async({page})=>{
  await page.goto('research/execution-costs/?lang=zh-CN');
  const fitness=page.locator('#data-fitness');
- await expect(fitness).toContainText('现有数据已经推进到哪里');
+ await expect(fitness).toContainText('这些数字核查到哪一步了');
  await expect(fitness.locator('table').first().locator('tbody tr')).toHaveCount(2);
  await expect(fitness.locator('table').first()).toContainText('960');
  await fitness.locator('summary').last().click();
@@ -107,4 +107,14 @@ test('data fitness preserves missing benchmarks and explains flat costs',async({
  await expect(fitness).toContainText('不是实际净值损失');
  await page.setViewportSize({width:320,height:700});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});
+
+
+test('execution report keeps detailed values available without opening them by default',async({page})=>{
+ await page.goto('research/execution-costs/?lang=zh-CN');
+ await expect(page.locator('.research-verdict .reading-lead')).toContainText('约90元');
+ const values=page.locator('[data-execution-chart="daily"] .selected-values');
+ await expect(values).not.toHaveAttribute('open','');
+ await values.locator('summary').click();
+ await expect(values.locator('tbody tr')).toHaveCount(10);
 });
