@@ -81,13 +81,13 @@ def main():
           FROM (SELECT time_ms_absolute-lag(time_ms_absolute) OVER
           (PARTITION BY SecuCode ORDER BY source_row) dt FROM {stream})''').df().iloc[0].to_dict()
     securities = con.sql('''SELECT DISTINCT ticker FROM selected_books_20210104
-                          WHERE ticker LIKE '0%' OR ticker LIKE '3%'
+                          WHERE TradingDay=20210104 AND (ticker LIKE '0%' OR ticker LIKE '3%')
                           ORDER BY ticker LIMIT 12''').df().ticker.tolist()
     rows = []
     for ticker in securities:
-        path = con.execute('SELECT * FROM selected_books_20210104 WHERE ticker=? '
+        path = con.execute('SELECT * FROM selected_books_20210104 WHERE ticker=? AND TradingDay=? '
                            'AND time_ms BETWEEN 0 AND 300000 ORDER BY time_ms,source_row',
-                           [ticker]).df()
+                           [ticker, 20210104]).df()
         if path.empty:
             continue
         for side in ('buy', 'sell'):
@@ -134,7 +134,7 @@ def main():
                              'participation': {'status': 'unavailable',
                                 'reason': 'saved TotalVolume has no audited interval-volume contract or reset/auction treatment for a causal cap',
                                 'needed_input': 'verified cumulative-volume units, clock and reset contract with trailing realized-volume baseline'},
-                             'assumptions': ['first 12 saved Shenzhen securities in lexical order',
+                             'assumptions': ['first 12 saved Shenzhen securities on TradingDay=20210104 in lexical order',
                                 'first quote per timestamp; displayed depth refreshes at each clock',
                                 'no own-impact, fees, lot rounding, queue reconstruction or participation cap',
                                 'TWAP releases five fixed quantity slices at 0,60,120,180,240 seconds; next quote executes',

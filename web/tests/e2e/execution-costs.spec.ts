@@ -25,9 +25,9 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(expanded).toContainText('Order-flow association has not passed the dynamic replay gate');
   await expect(page.locator('.prior-evidence')).not.toHaveAttribute('open', '');
   await page.goto('research/execution-costs/?lang=zh-CN');
-  await expect(page.locator('#expanded-results h2')).toHaveText('扩展盘口证据与策略诊断');
+  await expect(page.locator('#expanded-results h2')).toHaveText('十日盘口试算与策略费用比较');
   await expect(page.getByRole('link', {name: '完整研究报告与复现记录 ↗'})).toHaveAttribute('href', /execution-cost-expansion-20261012\.zh-CN\.md$/);
-  await expect(page.locator('#strategy-diagnostic')).toContainText('这些结果不能证明真实容量或净超额收益');
+  await expect(page.locator('#strategy-diagnostic')).toContainText('不能证明真实容量或净超额收益');
   await expect(page.locator('#strategy-evidence table').first().locator('tbody tr')).toHaveCount(18);
   await expect(page.locator('[data-execution-chart="daily"] a[download]')).toHaveAttribute('href', /expanded-daily\.zh\.svg$/);
   await page.setViewportSize({ width: 320, height: 700 });
@@ -36,7 +36,7 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(page.locator('#strategy-diagnostic details').last()).toContainText('线性成本比例');
   await expect(page.locator('#strategy-diagnostic details').last()).toContainText('复利成本比例');
   await page.reload();
-  await expect(page.locator('#expanded-results h2')).toHaveText('扩展盘口证据与策略诊断');
+  await expect(page.locator('#expanded-results h2')).toHaveText('十日盘口试算与策略费用比较');
 });
 
 
@@ -88,7 +88,9 @@ test('execution workflow separates blocked replay and synthetic entry from actua
  const workflow=page.locator('#calibration-workflow');
  await expect(workflow).toContainText('真实订单入口已实现；实盘校准仍待完成');
  await workflow.locator('summary').click();
- await expect(workflow).toContainText('参与率约束模式暂不可用');
+ await expect(workflow).toContainText('还不能按成交量比例限制下单');
  await expect(workflow.locator('tbody tr')).toHaveCount(3);
+ await expect(workflow.locator('tbody tr').last()).toContainText('7 / 12');
+ await expect(workflow).toContainText('旧版本混入其他日期盘口');
  await expect(workflow.getByRole('link',{name:'回放协议与假设 ↗'})).toHaveAttribute('href',/execution-cost-replay\.zh-CN\.md$/);
 });
