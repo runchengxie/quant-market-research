@@ -1,12 +1,20 @@
+import { cloneElement, isValidElement, type ReactElement, type ReactNode } from 'react';
+import { overviewCopy, overviewLabels } from '../content/overview-copy';
+import { executionCostCopy as costCopy } from '../content/execution-cost-copy';
 import type { Snapshot } from './recovery-data';
 import { PUBLIC_ROUTES, withBase } from '../lib/routes';
 
 type BarraEvidence = {legacy_barra_result?: {coverage_start?: string; coverage_end?: string; factor_count?: number}};
-const englishLocale = () => typeof document === 'undefined' || document.documentElement.lang === 'en-US';
-const dayCount = (value: number | null) => value == null ? t('尚未观察到完整回本区间', 'No complete recovery interval observed') : `${value.toLocaleString(englishLocale() ? 'en-US' : 'zh-CN')} ${t('个自然日', 'calendar days')}`;
-const t = (zh: string, en: string) => englishLocale() ? en : zh;
+type OverviewProps = {recovery: Snapshot | null; barra: BarraEvidence | null};
 
-export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; barra: BarraEvidence | null}) {
+export function OverviewContent(props: OverviewProps) {
+  return bilingualOverview(overviewTree(props, 'en-US'), overviewTree(props, 'zh-CN'));
+}
+
+function overviewTree({recovery, barra}: OverviewProps, locale: 'en-US' | 'zh-CN') {
+  const englishLocale = () => locale === 'en-US';
+  const text = (key: keyof typeof overviewCopy) => overviewCopy[key][englishLocale() ? 0 : 1];
+  const dayCount = (value: number | null) => value == null ? text('noRecovery') : `${value.toLocaleString(locale)} ${text('calendarDays')}`;
   const available = (group: string) => !recovery?.issues.some(issue => !issue.group || issue.group === group);
   const cashflow = available('cashflow_price') ? recovery?.series.find(row => row.ts_code === '932368.CSI' && row.group === 'cashflow_price') : undefined;
   const microcap = available('microcap_vendor_close') ? recovery?.series.find(row => row.ts_code === '883418.TI' && row.group === 'microcap_vendor_close') : undefined;
@@ -15,44 +23,80 @@ export function OverviewContent({recovery, barra}: {recovery: Snapshot | null; b
     && typeof history.factor_count === 'number' && Number.isInteger(history.factor_count) && history.factor_count > 0;
   return <>
     <div className="theme-heading"><div><span className="section-kicker" data-locale-text data-en="Research overview" data-zh="研究总览">Research overview</span><h1 data-locale-text data-en="Start with the main findings" data-zh="从主要发现开始了解这些研究">Start with the main findings</h1><p data-locale-text data-en="Review each study's conclusion and evidence scope before opening its data, charts, and calculation methods." data-zh="先浏览每项研究的结论和证据范围，再进入专题查看数据、图表与计算方法。">Review each study's conclusion and evidence scope before opening its data, charts, and calculation methods.</p></div><span className="asof" data-locale-text data-en="Dates are marked by topic" data-zh="数据日期按专题分别标注">Dates are marked by topic</span></div>
-    <section className="featured-study" aria-label={t('重点研究：18 年 A 股风格因子', 'Featured study: 18-year A-share style factors')}>
+    <section className="featured-study" aria-label={text('featuredLabel')}>
       <div>
-        <span className="section-kicker">{t('重点研究 · Barra 风格因子', 'Featured study · Barra-style factors')}</span>
-        <h2>{t('18 年 A 股风格因子动态：收益、稳定性与市场阶段', '18-year A-share style factors: returns, stability, and market regimes')}</h2>
-        <p>{t('这些历史对照显示不同股票特征对应的收益差异，但还不能证明它们能预测未来。财务数据的历史可用时间、未参与研究的新时期，以及实际交易结果仍待核查。', 'These historical comparisons show return differences between groups of stocks, but do not prove that the factors predict future returns. Historical financial-data availability, newer periods not used in the research, and actual trading results still need checking.')}</p>
-        <div className="featured-facts" aria-label={t('研究范围', 'Research scope')}><span><strong>{t('18 年', '18 years')}</strong>{t('历史样本', ' of history')}</span><span><strong>{t('19 个', '19')}</strong>{t('历史因子', ' historical factors')}</span><span><strong>{t('分年度', 'Annual')}</strong>{t('和分阶段比较', ' and regime comparisons')}</span></div>
+        <span className="section-kicker">{text('featuredKicker')}</span>
+        <h2>{text('featuredTitle')}</h2>
+        <p>{text('featuredConclusion')}</p>
+        <div className="featured-facts" aria-label={text('researchScope')}><span><strong>{text('historyYears')}</strong>{text('historyLabel')}</span><span><strong>{text('factorCount')}</strong>{text('factorsLabel')}</span><span><strong>{text('annualLabel')}</strong>{text('regimesLabel')}</span></div>
       </div>
-      <a href={withBase(PUBLIC_ROUTES.styleFactors, import.meta.env?.BASE_URL ?? "/")}>{t('进入风格因子研究 ↗', 'Open style-factor research ↗')}</a>
+      <a href={withBase(PUBLIC_ROUTES.styleFactors, import.meta.env?.BASE_URL ?? "/")}>{text('styleLink')}</a>
     </section>
-    <section className="research-library" aria-label={t('研究目录', 'Research library')}>
-      <div className="theme-heading library-heading"><div><span className="section-kicker">{t('研究目录', 'Research library')}</span><h2>{t('按关心的问题进入报告', 'Enter through a research question')}</h2><p>{t('先浏览每项研究的结论和证据范围，再看结论对应的时间段与股票范围。打开专题后可以核对图表和数字；详细方法与数据口径收录在文档区。', 'Start with each study’s finding and sample, then open the topic to check the numbers. Full calculation rules, sources, and audit notes remain in the documentation.')}</p></div></div>
+    <section className="research-library" aria-label={text('libraryLabel')}>
+      <div className="theme-heading library-heading"><div><span className="section-kicker">{text('libraryLabel')}</span><h2>{text('libraryTitle')}</h2><p>{text('libraryDescription')}</p></div></div>
     </section>
-    <section className="evidence-grid overview-evidence-grid" aria-label={t('各专题研究进展', 'Research progress by topic')}>
-      <EvidenceCard domain="基本面与现金流" title="现金流" href={withBase(PUBLIC_ROUTES.cashflow, import.meta.env?.BASE_URL ?? "/")} status={cashflow ? '指数数据已检查' : '数据暂不可用'}
-        conclusion={cashflow ? cashflow.longest_completed_underwater_calendar_days == null ? t('800现金流价格指数在样本内尚无完整的回本记录。', 'The 800 cash-flow price index has no complete recovery record in this sample.') : `${t('800现金流价格指数在样本内，最长一次从高点跌落后等待了', 'For the 800 cash-flow price index, the longest wait from a peak to recovery was')} ${dayCount(cashflow.longest_completed_underwater_calendar_days)}.` : t('数据恢复后显示回本统计。', 'Recovery statistics will appear when data is restored.')}
-        date={cashflow ? `${cashflow.start} ${t('至', 'to')} ${cashflow.end}` : t('数据暂不可用', 'Data unavailable')}
-        scope={t('供应商指数表现，价格回报与税前全收益分开比较。', 'Vendor index performance; price and gross total return are compared separately.')}/>
-      <EvidenceCard domain="规模与微盘" title="小微盘" href={withBase(PUBLIC_ROUTES.microcap, import.meta.env?.BASE_URL ?? "/")} status={microcap ? '参考指数可供研究' : '数据暂不可用'}
-        conclusion={microcap ? microcap.longest_completed_underwater_calendar_days == null ? t('同花顺微盘在样本内尚无完整的回本记录。', 'The vendor micro-cap reference has no complete recovery record in this sample.') : `${t('同花顺微盘在样本内，最长一次完整回本等待为', 'For the vendor micro-cap reference, the longest complete recovery wait was')} ${dayCount(microcap.longest_completed_underwater_calendar_days)}.` : t('数据恢复后显示微盘参考指数统计。', 'Micro-cap reference statistics will appear when data is restored.')}
-        date={microcap ? `${microcap.start} ${t('至', 'to')} ${microcap.end}` : t('数据暂不可用', 'Data unavailable')}
-        scope={t('同花顺微盘用于观察微盘表现，中证2000和国证2000作为小盘对照。', 'The vendor micro-cap series describes micro-cap performance; CSI 2000 and SZSE 2000 provide small-cap comparisons.')}/>
-      <EvidenceCard domain="市场与板块" title="长期风格" href={withBase(PUBLIC_ROUTES.indices, import.meta.env?.BASE_URL ?? "/")} status={styleAvailable ? '历史结果供研究参考' : '数据暂不可用'}
-        conclusion={styleAvailable ? `${t('已整理', 'Historical results are available for')} ${history.factor_count} ${t('个因子的历史结果，用于观察不同风格在各阶段的表现。', 'factors, to compare style performance across market regimes.')}` : t('数据恢复后显示长期风格研究范围。', 'Long-run style coverage will appear when data is restored.')}
-        date={styleAvailable ? `${t('Barra 历史研究截至', 'Barra historical research through')} ${history.coverage_end}` : t('数据暂不可用', 'Data unavailable')}
-        scope={t('指数和 ETF 反映市场表现，风格研究观察高分组与低分组的收益差异。', 'Indices and ETFs describe market performance; style research compares returns between high- and low-scoring groups.')}/>
-      <EvidenceCard domain="因子与风格" title="低换手因子" href={withBase(PUBLIC_ROUTES.lowTurnover, import.meta.env?.BASE_URL ?? "/")} status="探索性研究"
-        conclusion={t('低换手在控制规模、低波动和现有特征后仍保留历史条件相关性，但尚未证明能稳定转化为净收益。', 'Low turnover retains historical conditional association after controls for size, low volatility, and existing features, but stable conversion into net returns has not been demonstrated.')}
-        date={t('共同样本 2019-05 至 2026-06', 'Common sample: 2019-05 to 2026-06')} scope={t('比较原始换手、低波动、流动性和组合执行之间的关系。', 'Compares raw turnover, low volatility, liquidity, and portfolio execution.')}/>
+    <section className="evidence-grid overview-evidence-grid" aria-label={text('progressLabel')}>
+      <EvidenceCard locale={locale} domain="基本面与现金流" title="现金流" href={withBase(PUBLIC_ROUTES.cashflow, import.meta.env?.BASE_URL ?? "/")} status={cashflow ? '指数数据已检查' : '数据暂不可用'}
+        conclusion={cashflow ? cashflow.longest_completed_underwater_calendar_days == null ? text('cashflowNoRecovery') : `${text('cashflowRecoveryPrefix')} ${dayCount(cashflow.longest_completed_underwater_calendar_days)}${englishLocale() ? '.' : '。'}` : text('cashflowUnavailable')}
+        date={cashflow ? `${cashflow.start} ${text('rangeSeparator')} ${cashflow.end}` : text('unavailable')}
+        scope={text('cashflowScope')}/>
+      <EvidenceCard locale={locale} domain="规模与微盘" title="小微盘" href={withBase(PUBLIC_ROUTES.microcap, import.meta.env?.BASE_URL ?? "/")} status={microcap ? '参考指数可供研究' : '数据暂不可用'}
+        conclusion={microcap ? microcap.longest_completed_underwater_calendar_days == null ? text('microcapNoRecovery') : `${text('microcapRecoveryPrefix')} ${dayCount(microcap.longest_completed_underwater_calendar_days)}${englishLocale() ? '.' : '。'}` : text('microcapUnavailable')}
+        date={microcap ? `${microcap.start} ${text('rangeSeparator')} ${microcap.end}` : text('unavailable')}
+        scope={text('microcapScope')}/>
+      <EvidenceCard locale={locale} domain="市场与板块" title="长期风格" href={withBase(PUBLIC_ROUTES.indices, import.meta.env?.BASE_URL ?? "/")} status={styleAvailable ? '历史结果供研究参考' : '数据暂不可用'}
+        conclusion={styleAvailable ? `${text('factorsPrefix')} ${history.factor_count} ${text('factorsConclusionSuffix')}` : text('styleUnavailable')}
+        date={styleAvailable ? `${text('styleCoveragePrefix')} ${history.coverage_end}` : text('unavailable')}
+        scope={text('styleScope')}/>
+      <EvidenceCard locale={locale} domain="因子与风格" title="低换手因子" href={withBase(PUBLIC_ROUTES.lowTurnover, import.meta.env?.BASE_URL ?? "/")} status="探索性研究"
+        conclusion={text('lowTurnoverConclusion')}
+        date={text('lowTurnoverCoverage')} scope={text('lowTurnoverScope')}/>
+      <EvidenceCard locale={locale} domain={englishLocale() ? 'Execution and liquidity' : '交易执行与流动性'}
+        title={costCopy.title[englishLocale() ? 0 : 1]} status={costCopy.stage[englishLocale() ? 0 : 1]}
+        href={withBase('/research/execution-costs/', import.meta.env?.BASE_URL ?? '/')}
+        conclusion={costCopy.conclusion[englishLocale() ? 0 : 1]}
+        date={englishLocale() ? '2026-04-16, 2026-04-24 and 2026-07-20' : '2026-04-16、2026-04-24与2026-07-20'}
+        scope={costCopy.scope[englishLocale() ? 0 : 1]} />
     </section>
-    <div className="fine-print"><span className="section-kicker">{t('阅读提示', 'Reading note')}</span><p>{t('各专题的样本时间不同，历史最长等待也会受到样本范围影响。页面保留尚未回本和数据缺失的记录。历史结果仅供研究参考。', 'Sample windows differ by topic, so the longest historical wait depends on coverage. Unrecovered and missing-data records remain visible. Historical results are for research only.')}</p></div>
+    <div className="fine-print"><span className="section-kicker">{text('readingLabel')}</span><p>{text('readingNote')}</p></div>
   </>;
 }
 
-function EvidenceCard({domain, title, href, status, conclusion, date, scope}: {
+function EvidenceCard({locale, domain, title, href, status, conclusion, date, scope}: {
+  locale: 'en-US' | 'zh-CN';
   domain: string; title: string; href: string; status: string; conclusion: string; date: string; scope: string;
 }) {
-  const labels: Record<string, string> = { '基本面与现金流': 'Fundamentals and cash flow', '规模与微盘': 'Size and micro-caps', '市场与板块': 'Markets and segments', '因子与风格': 'Factors and style', 现金流: 'Cash flow', 小微盘: 'Micro-caps', 长期风格: 'Long-run style', 低换手因子: 'Low-turnover factor', '指数数据已检查': 'Index data checked', '参考指数可供研究': 'Reference index available', '历史结果供研究参考': 'Historical results for research', 探索性研究: 'Exploratory research', '数据暂不可用': 'Data unavailable' };
-  const localized = (value: string) => englishLocale() ? labels[value] ?? value : value;
+  const text = (key: keyof typeof overviewCopy) => overviewCopy[key][locale === 'en-US' ? 0 : 1];
+  const localized = (value: string) => overviewLabels[value] ? text(overviewLabels[value]) : value;
   return <article className="evidence-card"><span className="section-kicker">{localized(domain)}</span><span className="tag warm">{localized(status)}</span><h3>{localized(title)}</h3><p className="evidence-conclusion">{conclusion}</p>
-    <dl><dt>{t('数据范围', 'Coverage')}</dt><dd>{date}</dd><dt>{t('观察什么', 'What it shows')}</dt><dd>{scope}</dd></dl><a href={href}>{t('查看', 'Open ')}{localized(title)}{t('专题 ↗', ' study ↗')}</a></article>;
+    <dl><dt>{text('coverageLabel')}</dt><dd>{date}</dd><dt>{text('scopeLabel')}</dt><dd>{scope}</dd></dl><a href={href}>{text('openPrefix')}{localized(title)}{text('studySuffix')}</a></article>;
+}
+
+// Pair both build-time renderings so dynamic evidence uses the same locale contract
+// as Astro text, without shipping a React island or duplicating visible content.
+function bilingualOverview(en: ReactNode, zh: ReactNode): ReactNode {
+  if (typeof en === 'string' && typeof zh === 'string') {
+    return en === zh ? en : <span data-locale-text data-en={en} data-zh={zh}>{en}</span>;
+  }
+  if (Array.isArray(en) && Array.isArray(zh)) return en.map((node, index) => bilingualOverview(node, zh[index]));
+  if (!isValidElement(en) || !isValidElement(zh)) return en;
+  const english = en as ReactElement<Record<string, unknown> & {children?: ReactNode; 'aria-label'?: string}>;
+  const chinese = zh as ReactElement<Record<string, unknown> & {children?: ReactNode; 'aria-label'?: string}>;
+  if (english.type === EvidenceCard && chinese.type === EvidenceCard) {
+    return bilingualOverview(EvidenceCard(english.props as Parameters<typeof EvidenceCard>[0]), EvidenceCard(chinese.props as Parameters<typeof EvidenceCard>[0]));
+  }
+  const attributes: Record<string, unknown> = {};
+  const textOnly = (value: ReactNode): string | null => typeof value === 'string' ? value
+    : Array.isArray(value) && value.every(node => typeof node === 'string') ? value.join('') : null;
+  const englishText = textOnly(english.props.children);
+  const chineseText = textOnly(chinese.props.children);
+  if (typeof english.props['aria-label'] === 'string' && english.props['aria-label'] !== chinese.props['aria-label']) {
+    attributes['data-locale-aria'] = true;
+    attributes['data-aria-en'] = english.props['aria-label'];
+    attributes['data-aria-zh'] = chinese.props['aria-label'];
+  }
+  if (englishText !== null && chineseText !== null && englishText !== chineseText) {
+    return cloneElement(english, {...attributes, 'data-locale-text': true, 'data-en': englishText, 'data-zh': chineseText}, englishText);
+  }
+  return cloneElement(english, attributes, bilingualOverview(english.props.children, chinese.props.children));
 }

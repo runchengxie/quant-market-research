@@ -12,3 +12,5 @@ At 250 sessions, daily buys and sells each equal to 60% of NAV, illustrative inc
 - [Study declaration](study.yml): stable identity, evidence stage and proposed scenarios.
 
 The market-data platform owns vendor normalization and L2 governance. quant-platform owns general execution simulation and TCA. This study owns empirical methods and reviewed aggregate results. The factor observatory can consume reviewed net-return and capacity summaries after calibration; it does not receive a new L2 engine from this change.
+
+[Earlier book and order-flow inventory](historical_data_audit.md) · [早期订单簿与订单流核查](historical_data_audit.zh-CN.md)

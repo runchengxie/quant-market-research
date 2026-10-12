@@ -72,6 +72,10 @@ const pageTitle = `${titleEn} · Quant Market Research`;
         const value = node.getAttribute(locale === "en-US" ? "data-en" : "data-zh");
         if (value) node.textContent = value;
       });
+      document.querySelectorAll("[data-locale-aria]").forEach((node) => {
+        const value = node.getAttribute(locale === "en-US" ? "data-aria-en" : "data-aria-zh");
+        if (value) node.setAttribute("aria-label", value);
+      });
       const toggle = document.querySelector("[data-locale-toggle]");
       if (toggle) {
         toggle.textContent = locale === "en-US" ? "中文" : "English";
