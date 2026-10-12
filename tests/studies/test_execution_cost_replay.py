@@ -70,3 +70,68 @@ def test_twap_release_does_not_use_future_snapshot_count():
     b = snapshot_path(pd.DataFrame([book(0), book(5), book(10)]), quantity=20,
                       budget_cny=100, mode='twap', side='buy', horizon_ms=20, interval_ms=10)
     assert a['fills'][0]['quantity'] == b['fills'][0]['quantity'] == 10
+
+
+@pytest.mark.parametrize('side,execution,opportunity,total', [
+    ('buy', .1, 1, 550), ('sell', .1, -1, -450)])
+def test_partial_shortfall_signed_accounting(side, execution, opportunity, total):
+    terminal = book(100, 111)
+    terminal['BidPrice1'] = 109
+    r = snapshot_path(pd.DataFrame([book(0), terminal]), quantity=20,
+                      budget_cny=100, mode='market', side=side, horizon_ms=100)
+    assert r['execution_cost_cny'] == pytest.approx(execution)
+    assert r['opportunity_cost_cny'] == pytest.approx(opportunity)
+    assert r['total_shortfall_bp'] == pytest.approx(total)
+    assert r['completion_duration_ms'] is None
+
+
+def test_zero_fill_has_opportunity_cost_and_no_completion_time():
+    terminal = book(100, 111)
+    terminal['BidPrice1'] = 109
+    r = snapshot_path(pd.DataFrame([book(0), terminal]), quantity=20,
+                      budget_cny=0, mode='market', side='buy', horizon_ms=100)
+    assert r['execution_cost_cny'] == 0
+    assert r['opportunity_cost_cny'] == pytest.approx(2)
+    assert r['total_shortfall_bp'] == pytest.approx(1000)
+    assert r['completion_duration_ms'] is None
+
+
+@pytest.mark.parametrize('terminal', [book(100), book(100, 90),
+    {'time_ms':100, 'AskPrice1':0, 'AskVolume1':0, 'BidPrice1':99, 'BidVolume1':10}])
+def test_stale_or_invalid_terminal_keeps_opportunity_cost_missing(terminal):
+    horizon = 100000 if terminal['AskPrice1'] == 101 else 100
+    r = snapshot_path(pd.DataFrame([book(0), terminal]), quantity=20,
+                      budget_cny=100, mode='market', side='buy', horizon_ms=horizon)
+    assert r['execution_cost_cny'] == pytest.approx(.1)
+    assert r['opportunity_cost_cny'] is None
+    assert r['total_shortfall_bp'] is None
+
+
+def test_future_evaluation_quote_changes_only_market_opportunity_cost():
+    low, high = book(100, 103), book(100, 111)
+    low['BidPrice1'], high['BidPrice1'] = 101, 109
+    values = [snapshot_path(pd.DataFrame([book(0), t]), quantity=20,
+                           budget_cny=100, mode='market', side='buy', horizon_ms=100)
+              for t in (low, high)]
+    assert values[0]['fills'] == values[1]['fills']
+    assert values[0]['execution_cost_cny'] == values[1]['execution_cost_cny']
+    assert values[0]['opportunity_cost_cny'] != values[1]['opportunity_cost_cny']
+
+
+def test_full_fill_completion_duration_and_zero_unfilled_cost():
+    r = snapshot_path(pd.DataFrame([book(0), book(10)]), quantity=20,
+                      budget_cny=100, mode='twap', side='buy', horizon_ms=20, interval_ms=10)
+    assert r['completion_duration_ms'] == 10
+    assert r['opportunity_cost_cny'] == 0
+
+
+def test_sell_zero_fill_limit_wait_has_signed_opportunity_cost():
+    terminal = book(100, 91)
+    terminal['BidPrice1'] = 89
+    r = snapshot_path(pd.DataFrame([book(0), terminal]), quantity=20,
+                      budget_cny=100, mode='limit_wait', side='sell', horizon_ms=100)
+    assert r['filled_quantity'] == 0
+    assert r['execution_cost_cny'] == 0
+    assert r['opportunity_cost_cny'] == pytest.approx(2)
+    assert r['total_shortfall_bp'] == pytest.approx(1000)
+    assert r['completion_duration_ms'] is None

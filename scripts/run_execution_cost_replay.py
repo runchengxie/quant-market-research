@@ -118,8 +118,12 @@ def main():
         aggregates.append({'side': side, 'mode': mode, 'paths': len(group),
                            'full_fill_paths': int((group.remaining_quantity == 0).sum()),
                            'median_fill_fraction': float((group.filled_quantity / 10000).median()),
-                           'median_cash_cny': float(group.cash_cny.median())})
-    public = {'schema_version': 1, 'data_quality': audit['gate'],
+                           'costs': {key: {'observed_paths': int(group[key].notna().sum()),
+                               'conditional_p50': float(group[key].dropna().median())
+                               if group[key].notna().any() else None}
+                               for key in ('execution_cost_cny', 'opportunity_cost_cny',
+                                           'total_shortfall_bp', 'completion_duration_ms')}})
+    public = {'schema_version': 2, 'data_quality': audit['gate'],
               'observed_diagnostics': {'shenzhen_reference_coverage': sz_coverage,
                   'shared_security_timestamp_pairs': int(ties['shared_security_timestamp_pairs']),
                   'numeric_order_types_are_unmapped': True},
@@ -136,6 +140,7 @@ def main():
                                 'TWAP releases five fixed quantity slices at 0,60,120,180,240 seconds; next quote executes',
                                 'limit wait uses arrival same-side best price; marketable crossing only',
                                 'passive fill lower bound zero; upper bound requested quantity, no inferred cash',
+                                'shortfall uses arrival mid and fixed-horizon past mid with 60-second freshness; fees zero excluded',
                                 'future quotes are execution outcomes at their clock, never signal features']}}
     (args.output / 'replay.proposed.json').write_text(json.dumps(public, indent=2)+'\n')
     print(json.dumps(public, indent=2))

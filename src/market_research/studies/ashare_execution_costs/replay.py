@@ -58,6 +58,18 @@ def snapshot_path(frame, *, quantity, budget_cny, mode, side, horizon_ms=300000,
     path = path[path.time_ms <= start_ms + horizon_ms]
     slices = math.ceil(horizon_ms / interval_ms)
     first = path.iloc[0]
+    def valid_mid(row):
+        bid, ask = row.get('BidPrice1', 0), row.get('AskPrice1', 0)
+        bq, aq = row.get('BidVolume1', 0), row.get('AskVolume1', 0)
+        if (not all(math.isfinite(v) for v in (bid, ask, bq, aq))
+                or bid <= 0 or ask <= 0 or bq <= 0 or aq <= 0 or bid > ask):
+            return None
+        return (bid + ask) / 200
+
+    arrival_mid = valid_mid(first)
+    terminal = path.iloc[-1]
+    terminal_age_ms = start_ms + horizon_ms - int(terminal.time_ms)
+    terminal_mid = valid_mid(terminal) if terminal_age_ms <= 60000 else None
     limit = int(first['BidPrice1'] if side == 'buy' else first['AskPrice1'])
     if mode == 'market':
         path = path.iloc[:1]
@@ -97,7 +109,18 @@ def snapshot_path(frame, *, quantity, budget_cny, mode, side, horizon_ms=300000,
             child -= take
             fills.append({'time_ms': int(row.time_ms), 'price_cent': trade.price,
                           'quantity': take, 'cash_cny': amount})
-    return {'mode': mode, 'side': side, 'requested_quantity': quantity,
+    filled = quantity - remaining
+    execution = sign * (cash - filled * arrival_mid) if arrival_mid is not None else None
+    opportunity = (sign * remaining * (terminal_mid - arrival_mid)
+                   if terminal_mid is not None and arrival_mid is not None else None)
+    shortfall = ((execution + opportunity) / (quantity * arrival_mid) * 10000
+                 if execution is not None and opportunity is not None else None)
+    completion = int(fills[-1]['time_ms']) - start_ms if remaining == 0 else None
+    return {'arrival_mid_cny': arrival_mid, 'terminal_mid_cny': terminal_mid,
+            'terminal_quote_age_ms': terminal_age_ms, 'terminal_max_age_ms': 60000,
+            'execution_cost_cny': execution, 'opportunity_cost_cny': opportunity,
+            'total_shortfall_bp': shortfall, 'completion_duration_ms': completion,
+            'fee_cny': 0, 'fees_included': False, 'mode': mode, 'side': side, 'requested_quantity': quantity,
             'filled_quantity': quantity - remaining, 'remaining_quantity': remaining,
             'cash_cny': cash, 'instants': len(path), 'fills': fills,
             'optimistic_passive_quantity_upper_bound': quantity if mode == 'limit_wait' else None,
