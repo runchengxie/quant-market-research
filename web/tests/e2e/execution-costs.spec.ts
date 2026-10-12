@@ -74,7 +74,7 @@ test('English charts have no visible Han text and no-JS tables retain evidence',
  expect(visible).not.toMatch(/[\p{Script=Han}]/u);
  const context=await browser.newContext({javaScriptEnabled:false});
  const staticPage=await context.newPage();
- await staticPage.goto('http://127.0.0.1:4321/quant-market-research/research/execution-costs/');
+ await staticPage.goto(page.url());
  await expect(staticPage.locator('[data-execution-chart="daily"] tbody tr')).toHaveCount(10);
  await expect(staticPage.locator('[data-execution-chart="daily"] tbody tr').first()).toContainText('9.18');
  await staticPage.locator('#daily-evidence summary').click();
