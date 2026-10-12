@@ -94,3 +94,17 @@ test('execution workflow separates blocked replay and synthetic entry from actua
  await expect(workflow).toContainText('旧版本混入其他日期盘口');
  await expect(workflow.getByRole('link',{name:'回放协议与假设 ↗'})).toHaveAttribute('href',/execution-cost-replay\.zh-CN\.md$/);
 });
+
+test('data fitness preserves missing benchmarks and explains flat costs',async({page})=>{
+ await page.goto('research/execution-costs/?lang=zh-CN');
+ const fitness=page.locator('#data-fitness');
+ await expect(fitness).toContainText('现有数据已经推进到哪里');
+ await expect(fitness.locator('table').first().locator('tbody tr')).toHaveCount(2);
+ await expect(fitness.locator('table').first()).toContainText('960');
+ await fitness.locator('summary').last().click();
+ await expect(fitness).toContainText('43');
+ await expect(fitness).toContainText('120%');
+ await expect(fitness).toContainText('不是实际净值损失');
+ await page.setViewportSize({width:320,height:700});
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+});

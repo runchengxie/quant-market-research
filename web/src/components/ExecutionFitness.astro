@@ -1,0 +1,40 @@
+---
+import {readFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {fitnessCopy as c,flatCostCopy as f} from '../content/execution-fitness-copy';
+import Table from './ExecutionEvidenceTable.astro';
+import {withBase} from '../lib/routes';
+const data=JSON.parse(await readFile(resolve(process.cwd(),'public/data/execution-costs/fitness.json'),'utf8'));
+const recent=data.raw_selection.find((r:any)=>r.day==='20260416');
+const finding=c.finding.map(text=>text.replace('{missing}',String(recent.coverage.missing_minutes)).replace('{stocks}',String(recent.coverage.securities_with_any_missing_minute)));
+const number=(v:number|null)=>v==null?'—':v.toFixed(2);
+const local=(key:string)=>c[key as keyof typeof c];
+const modes: Record<string, readonly [string,string]>={market:c.marketMode,twap:c.twap,limit_wait:c.limit_wait};
+const sourceRows=data.raw_selection.map((r:any)=>[r.day,String(r.selection.saved_bins),String(r.selection.wrong_earliest_bins+r.selection.missing_saved_bins+r.selection.extra_saved_bins),String(r.coverage.missing_minutes),String(r.coverage.daily_traded_but_no_continuous_raw_quotes)]);
+const eventRows=data.event_timing.flatMap((r:any)=>r.reference_candidates.flatMap((a:any)=>['buy','sell'].map(side=>[r.day,local(r.market),a.candidate,local(side),...['eligible_trades','unique_key_available_by_trade','ambiguous_key_available_by_trade','key_only_after_trade','missing_key','first_timestamp_equal_trade'].map(key=>String(a[side][key]))])));
+const pathRows=data.path_aggregates.map((r:any)=>[r.day,String(r.quantity),local(r.side),modes[r.mode],String(r.paths),String(r.full_fill_paths),String(r.cost_observed_paths),number(r.shortfall_p50_bp)]);
+const report='https://github.com/runchengxie/quant-market-research/blob/main/docs/studies/execution-data-fitness-20261012';
+---
+<section id="data-fitness" class="report-section">
+<h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+<p data-locale-text data-en={finding[0]} data-zh={finding[1]}>{finding[0]}</p>
+<p data-locale-text data-en={c.scope[0]} data-zh={c.scope[1]}>{c.scope[0]}</p>
+<h3 data-locale-text data-en={c.source[0]} data-zh={c.source[1]}>{c.source[0]}</h3>
+<p data-locale-text data-en={c.sourceNote[0]} data-zh={c.sourceNote[1]}>{c.sourceNote[0]}</p>
+<Table headers={[c.day,c.selected,c.wrong,c.missing,c.absent]} rows={sourceRows}/>
+<details><summary data-locale-text data-en={c.events[0]} data-zh={c.events[1]}>{c.events[0]}</summary>
+<p data-locale-text data-en={c.eventNote[0]} data-zh={c.eventNote[1]}>{c.eventNote[0]}</p>
+<Table headers={[c.day,c.market,c.candidate,c.side,c.eligible,c.unique,c.ambiguous,c.future,c.unmatched,c.ties]} rows={eventRows}/>
+</details>
+<details><summary data-locale-text data-en={c.paths[0]} data-zh={c.paths[1]}>{c.paths[0]}</summary>
+<p data-locale-text data-en={c.pathNote[0]} data-zh={c.pathNote[1]}>{c.pathNote[0]}</p>
+<Table headers={[c.day,c.candidates,c.included,c.invalid,c.fresh]} rows={data.path_scope.map((r:any)=>[r.day,String(r.requested_securities),String(r.included_securities),String(r.invalid_book_securities),String(r.fresh_terminal_benchmark_securities)])}/>
+<Table headers={[c.day,c.quantity,c.side,c.mode,c.total,c.filled,c.costCount,c.median]} rows={pathRows}/>
+</details>
+<h3 data-locale-text data-en={f.title[0]} data-zh={f.title[1]}>{f.title[0]}</h3>
+<p data-locale-text data-en={f.note[0]} data-zh={f.note[1]}>{f.note[0]}</p>
+<Table headers={[f.cost,f.linear]} rows={[[f.side,'120%'],[f.round,'60%']]}/>
+<p data-locale-text data-en={f.warning[0]} data-zh={f.warning[1]}>{f.warning[0]}</p>
+<p data-locale-text data-en={c.nextNote[0]} data-zh={c.nextNote[1]}>{c.nextNote[0]}</p>
+<nav class="report-links"><a href={`${report}.md`} data-locale-link data-href-en={`${report}.md`} data-href-zh={`${report}.zh-CN.md`} data-locale-text data-en={c.report[0]} data-zh={c.report[1]}>{c.report[0]}</a><a download href={withBase('/data/execution-costs/fitness.json',import.meta.env.BASE_URL)} data-locale-text data-en={c.download[0]} data-zh={c.download[1]}>{c.download[0]}</a></nav>
+</section>
