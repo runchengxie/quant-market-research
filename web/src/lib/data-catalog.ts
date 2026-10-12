@@ -9,7 +9,7 @@ export type SnapshotCard = {
 };
 
 const englishSnapshotCopy: Record<string, { source: string; caveats: string[] }> = {
-  execution_replay: {source: "Shenzhen event-quality review and snapshot-path counterfactuals", caveats: ["Full event replay remains blocked by semantics and cross-stream ordering; snapshot reconstruction reconciliation has not run.", "Twelve paths, 10,000-share orders and five minutes exclude real queues, own impact and participation caps."]},
+  execution_replay: {source: "Shenzhen event-quality review and snapshot-path counterfactuals", caveats: ["Full event replay remains blocked by semantics and cross-stream ordering; snapshot reconstruction reconciliation has not run.", "Twelve paths, 10,000-share orders and five minutes exclude real queues, own impact and participation caps.", "The missing-date-filter error is corrected; mixed-date paths are superseded by a single-day rerun."]},
   execution_calibration: {source: "Synthetic pipeline verification for the real-order entry", caveats: ["Eighty synthetic parents validate code and accounting, not real slippage; actual orders have not been connected.", "Market-adjusted responses and chronological holdout errors do not identify causal own impact."]},
   execution_costs: {
     source: "Reviewed historical L2 static aggregates and event-quality audit",
