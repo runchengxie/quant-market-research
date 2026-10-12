@@ -1,4 +1,6 @@
 ---
+import ExecutionExpansion from "../../../components/ExecutionExpansion.astro";
+import { expansionCopy } from "../../../content/execution-expansion-copy";
 import ExecutionCostResults from "../../../components/research/ExecutionCostResults.astro";
 import SiteLayout from "../../../layouts/SiteLayout.astro";
 import TopicNav from "../../../components/TopicNav.astro";
@@ -17,6 +19,8 @@ const links = [
 <header class="theme-heading"><div><h1  data-locale-text data-en={text("title")[0]} data-zh={text("title")[1]}>{text("title")[0]}</h1>
 <p  data-locale-text data-en={text("question")[0]} data-zh={text("question")[1]}>{text("question")[0]}</p>
 </div></header>
+<ExecutionExpansion />
+<details class="prior-evidence"><summary data-locale-text data-en={expansionCopy.prior[0]} data-zh={expansionCopy.prior[1]}>{expansionCopy.prior[0]}</summary>
 <section class="research-verdict"><span class="evidence-status" data-locale-text data-en={text("stage")[0]} data-zh={text("stage")[1]}>{text("stage")[0]}</span>
 <h2  data-locale-text data-en={text("conclusion")[0]} data-zh={text("conclusion")[1]}>{text("conclusion")[0]}</h2>
 <p  data-locale-text data-en={text("scope")[0]} data-zh={text("scope")[1]}>{text("scope")[0]}</p>
@@ -51,4 +55,4 @@ const links = [
 </section><details id="sources" class="panel research-source"><summary  data-locale-text data-en={text("sources")[0]} data-zh={text("sources")[1]}>{text("sources")[0]}</summary>
 <p  data-locale-text data-en={text("literature")[0]} data-zh={text("literature")[1]}>{text("literature")[0]}</p>
 <ul><li><a href="https://doi.org/10.1016/j.jfineco.2021.08.017">Machine learning in the Chinese stock market</a></li><li><a href="https://doi.org/10.1016/j.irfa.2023.102975">Factor models for Chinese A-shares</a></li><li><a href="https://doi.org/10.1016/j.pacfin.2021.101607">Anomalies in the China A-share market</a></li><li><a href="https://www.nber.org/papers/w20721">A Taxonomy of Anomalies and Their Trading Costs</a></li></ul>
-<nav class="report-links">{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></article></SiteLayout>
+<nav class="report-links">{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></details></article></SiteLayout>
