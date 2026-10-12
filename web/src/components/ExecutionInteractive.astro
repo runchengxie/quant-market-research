@@ -1,0 +1,32 @@
+---
+import { expansionCopy as c } from '../content/execution-expansion-copy';
+import { surfaceChartRows, strategyChartRows } from '../lib/execution-chart';
+import { formatEvidenceNumber as n, formatEvidenceFraction as pct, formatEvidenceNav as nav } from '../lib/execution-expansion';
+import { withBase } from '../lib/routes';
+interface Props {kind:'daily'|'groups'|'strategy'; data:any; name:string; caption:readonly[string,string]}
+const {kind,data,name,caption}=Astro.props;
+const text=(key:string)=>c[key as keyof typeof c]??[key,key];
+const defaultRows=kind==='strategy'?strategyChartRows(data,10000000):surfaceChartRows(kind==='daily'?data:data.by_adv_group,'buy',100000);
+const columns=kind==='strategy'?[c.scenario,c.nav,c.totalCost]:[c.day,c.chartP50,c.chartP90,c.chartCoverageValue,c.books,c.chartFilled];
+const options=kind==='strategy'?[['capital',c.capital,[...new Set(data.map((r:any)=>r.capital_cny))].map(v=>[String(v),[n(v),n(v)]])]]:[...(kind==='groups'?[['group',c.chartGroup,[['by_adv_group',c.adv],['by_cap_group',c.cap],['by_volatility_group',c.vol]]]]:[]),['side',c.chartSide,[['buy',c.buy],['sell',c.sell]]],['notional',c.chartNotional,[10000,100000,1000000,10000000].map(v=>[String(v),[n(v),n(v)]])],['metric',c.chartMetric,[['cost',c.chartCost],['coverage',c.chartCoverage]]]];
+const groupLabel=(key:string)=>/^\d{8}$/.test(key)?[`${key.slice(0,4)}-${key.slice(4,6)}-${key.slice(6)}`,`${key.slice(0,4)}-${key.slice(4,6)}-${key.slice(6)}`]:text(key);
+const rowValues=(r:any)=>kind==='strategy'?[text(r.scenario),nav(r.terminal_nav),n(r.transaction_cost_cny)]:[groupLabel(r.key),n(r.p50),n(r.p90),pct(r.coverage),n(r.books),n(r.filled)];
+const figureUrl=(lang:string)=>withBase(`/data/execution-costs/${name}.${lang}.svg`,import.meta.env.BASE_URL);
+---
+<figure class="execution-interactive" data-execution-chart={kind}>
+ <script type="application/json" class="chart-data" set:html={JSON.stringify(data).replace(/</g,'\\u003c')} />
+ <div class="chart-controls">{options.map(([key,label,values]:any)=><label><span data-locale-text data-en={label[0]} data-zh={label[1]}>{label[0]}</span><select data-chart-control={key} aria-label={label[0]}>{values.map(([value,copy]:any)=><option value={value} selected={key==='notional'?value==='100000':key==='capital'?value==='10000000':false} data-locale-text data-en={copy[0]} data-zh={copy[1]}>{copy[0]}</option>)}</select></label>)}</div>
+ <p class="chart-key" hidden={kind==='strategy'}><span data-locale-text data-en={c.chartP50[0]} data-zh={c.chartP50[1]}>{c.chartP50[0]}</span> · <span data-locale-text data-en={c.chartP90[0]} data-zh={c.chartP90[1]}>{c.chartP90[0]}</span></p>
+ <div class="chart-canvas" role="img" aria-label={caption[0]} data-locale-aria data-aria-en={caption[0]} data-aria-zh={caption[1]}></div>
+ <figcaption data-locale-text data-en={caption[0]} data-zh={caption[1]}>{caption[0]}</figcaption>
+ <noscript><p data-locale-text data-en={c.chartNoJs[0]} data-zh={c.chartNoJs[1]}>{c.chartNoJs[0]}</p></noscript>
+ <p><a download data-locale-link data-href-en={figureUrl('en')} data-href-zh={figureUrl('zh')} href={figureUrl('en')} data-locale-text data-en={c.chartExport[0]} data-zh={c.chartExport[1]}>{c.chartExport[0]}</a></p>
+ <details open class="selected-values"><summary data-locale-text data-en={c.chartTable[0]} data-zh={c.chartTable[1]}>{c.chartTable[0]}</summary><div class="compact-table"><table><thead><tr>{columns.map(col=><th scope="col" data-locale-text data-en={col[0]} data-zh={col[1]}>{col[0]}</th>)}</tr></thead><tbody>{defaultRows.map(r=><tr>{rowValues(r).map(value=><td {...(Array.isArray(value)?{'data-locale-text':true,'data-en':value[0],'data-zh':value[1]}:{})}>{Array.isArray(value)?value[0]:value}</td>)}</tr>)}</tbody></table></div></details>
+</figure>
+<script>
+import { mountExecutionCharts } from './execution-interactive';
+mountExecutionCharts();
+</script>
+<style>
+.execution-interactive{margin:1.2rem 0;max-width:100%;min-width:0}.chart-controls{display:flex;gap:.65rem;flex-wrap:wrap}.chart-controls label{display:grid;gap:.2rem;font-size:12px;flex:1;min-width:120px}.chart-controls select{width:100%;min-width:0;max-width:100%;padding:.45rem;color:var(--text);background:var(--surface);border:1px solid var(--border)}.chart-key{margin:.5rem 0 0;font-size:12px}.chart-key span:first-child{color:#3677bd}.chart-key span:last-child{color:#ba7953}.chart-canvas{width:100%;height:330px;min-width:0}figcaption{font-size:13px;color:var(--text-muted);line-height:1.6}.compact-table{max-width:100%;overflow:auto}table{width:100%;font-size:12px}td,th{padding:.4rem;text-align:right}td:first-child,th:first-child{text-align:left}p{font-size:13px}@media(max-width:420px){.chart-canvas{height:310px}}
+</style>

@@ -17,3 +17,14 @@ test('cost and coverage anchors select the same side and exact yuan amount',()=>
 test('published cohort keys and scenarios have both locale labels',()=>{
  for(const key of ['low','middle','high','unavailable','opening','late_morning','early_afternoon','late_afternoon','gross','fee_only','fee_static_10k','fee_static_1m','fee_expanded_100k','fee_expanded_1m']) assert.ok(expansionCopy[key].every(value=>value.length>0));
 });
+
+test('interactive surface selection keeps conditional costs, coverage and counts together', async()=>{
+ const {surfaceChartRows}=await import('./lib/execution-chart.ts');
+ const groups={low:{snapshots:3,cost_surface:[{side:'sell',reference_notional_cny:10000,full_coverage_rate:0,full_order_cost_bp:{count:0,p50:null,p90:null}}]}};
+ assert.deepEqual(surfaceChartRows(groups,'sell',10000),[{key:'low',books:3,filled:0,p50:null,p90:null,coverage:0}]);
+ assert.equal(surfaceChartRows(groups,'buy',10000)[0].coverage,null);
+});
+test('strategy comparison selects reviewed capital and only main scenarios',async()=>{
+ const {strategyChartRows}=await import('./lib/execution-chart.ts');
+ assert.deepEqual(strategyChartRows([{capital_cny:10,scenario:'gross',terminal_nav:1},{capital_cny:10,scenario:'fee_static_10k',terminal_nav:2},{capital_cny:20,scenario:'fee_only',terminal_nav:3}],10).map(r=>r.scenario),['gross']);
+});
