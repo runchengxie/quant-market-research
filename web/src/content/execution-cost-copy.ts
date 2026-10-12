@@ -9,11 +9,11 @@ export const executionCostCopy = {
   ],
   "conclusion": [
     "Across ten selected dates, median static buy/sell costs at CNY 100k are 9.27/8.87 bp. At CNY 1m, full ten-level coverage is only 62.12%/67.68%.",
-    "按十个选定交易日的挂单试算，10万元买入和卖出的成本中位数分别为9.27和8.87基点。金额增到100万元，只有约62%的买入盘口、68%的卖出盘口能靠十档挂单完成。"
+    "在这批样本里，10万元订单按当时挂单试算，买入成本中位数为9.27基点，卖出为8.87基点，每侧折合约90元。金额增加到100万元，只有约62%的买入盘口、68%的卖出盘口能靠十档挂单完成。"
   ],
   "scope": [
     "Ten predeclared dates in 2021, 2025 and 2026; 306,483 valid two-sided security-minute books. Order-flow association and a 56-session strategy diagnostic are reported separately. Actual orders and dynamic impact remain uncalibrated.",
-    "样本来自2021、2025、2026年的十个预先指定交易日，共306,483条有效盘口，每只股票每分钟取一条。成本只统计十档挂单足够的记录，按有效记录等权汇总。真实委托与动态冲击仍待校准。"
+    "样本覆盖2021、2025、2026年的十个选定交易日，共306,483条有效双边分钟盘口。成本只统计挂单足够的记录，按每条记录等权汇总。真实委托与动态冲击仍待校准。"
   ],
   "question": [
     "How much predicted return survives execution, and how does this change with capital and turnover?",
