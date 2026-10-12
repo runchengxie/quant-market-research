@@ -1,0 +1,731 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-10-12T15:04:31.420010+00:00",
+  "scope": {
+    "days": [
+      "20210104",
+      "20260416"
+    ],
+    "common_observed_securities": 106,
+    "whole_warehouse_audited": false,
+    "actual_order_calibrated": false,
+    "event_semantics_verified": false,
+    "causal_impact_identified": false
+  },
+  "raw_selection": [
+    {
+      "day": "20210104",
+      "source_metadata_rows": 301715217,
+      "raw_declared_day_rows": 15447250,
+      "null_identity_or_clock_rows": 0,
+      "selection": {
+        "expected_bins": 26070,
+        "saved_bins": 26070,
+        "missing_saved_bins": 0,
+        "extra_saved_bins": 0,
+        "wrong_earliest_bins": 0,
+        "matched_bins": 26070
+      },
+      "coverage": {
+        "securities_with_any_missing_minute": 0,
+        "expected_minutes_for_observed_securities": 26070,
+        "missing_minutes": 0,
+        "daily_positive_amount_sampled_securities": 110,
+        "daily_traded_but_no_continuous_raw_quotes": 0,
+        "deficient_minute_counts": {}
+      }
+    },
+    {
+      "day": "20260416",
+      "source_metadata_rows": 21075449,
+      "raw_declared_day_rows": 21075449,
+      "null_identity_or_clock_rows": 0,
+      "selection": {
+        "expected_bins": 32694,
+        "saved_bins": 32694,
+        "missing_saved_bins": 0,
+        "extra_saved_bins": 0,
+        "wrong_earliest_bins": 0,
+        "matched_bins": 32694
+      },
+      "coverage": {
+        "securities_with_any_missing_minute": 80,
+        "expected_minutes_for_observed_securities": 33654,
+        "missing_minutes": 960,
+        "daily_positive_amount_sampled_securities": 142,
+        "daily_traded_but_no_continuous_raw_quotes": 0,
+        "deficient_minute_counts": {
+          "572": 62,
+          "573": 62,
+          "574": 62,
+          "575": 62,
+          "576": 62,
+          "594": 62,
+          "595": 62,
+          "596": 62,
+          "597": 62,
+          "598": 62,
+          "599": 62,
+          "600": 62
+        }
+      }
+    }
+  ],
+  "event_timing": [
+    {
+      "day": "20210104",
+      "market": "shanghai",
+      "trade_rows": 758422,
+      "nonpositive_price_rows": 0,
+      "reference_candidates": [
+        {
+          "candidate": "OrderID",
+          "scope": "security_only",
+          "buy": {
+            "eligible_trades": 758422,
+            "unique_key_available_by_trade": 0,
+            "ambiguous_key_available_by_trade": 0,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 0,
+            "missing_key": 758422,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          },
+          "sell": {
+            "eligible_trades": 758422,
+            "unique_key_available_by_trade": 0,
+            "ambiguous_key_available_by_trade": 0,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 0,
+            "missing_key": 758422,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          }
+        }
+      ]
+    },
+    {
+      "day": "20210104",
+      "market": "shenzhen",
+      "trade_rows": 838079,
+      "nonpositive_price_rows": 0,
+      "reference_candidates": [
+        {
+          "candidate": "OrderID",
+          "scope": "security_only",
+          "buy": {
+            "eligible_trades": 838079,
+            "unique_key_available_by_trade": 815437,
+            "ambiguous_key_available_by_trade": 19987,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 397467,
+            "missing_key": 2655,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          },
+          "sell": {
+            "eligible_trades": 838079,
+            "unique_key_available_by_trade": 812929,
+            "ambiguous_key_available_by_trade": 23079,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 431274,
+            "missing_key": 2071,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          }
+        }
+      ]
+    },
+    {
+      "day": "20260416",
+      "market": "shanghai",
+      "trade_rows": 1618196,
+      "nonpositive_price_rows": 0,
+      "reference_candidates": [
+        {
+          "candidate": "OrderID",
+          "scope": "security_channel",
+          "buy": {
+            "eligible_trades": 1618196,
+            "unique_key_available_by_trade": 883497,
+            "ambiguous_key_available_by_trade": 30054,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 91211,
+            "missing_key": 704645,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          },
+          "sell": {
+            "eligible_trades": 1618196,
+            "unique_key_available_by_trade": 863624,
+            "ambiguous_key_available_by_trade": 31292,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 89592,
+            "missing_key": 723280,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          }
+        },
+        {
+          "candidate": "DBOrderID",
+          "scope": "security_channel",
+          "buy": {
+            "eligible_trades": 1618196,
+            "unique_key_available_by_trade": 6309,
+            "ambiguous_key_available_by_trade": 0,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 0,
+            "missing_key": 1611887,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          },
+          "sell": {
+            "eligible_trades": 1618196,
+            "unique_key_available_by_trade": 6442,
+            "ambiguous_key_available_by_trade": 0,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 0,
+            "missing_key": 1611754,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          }
+        }
+      ]
+    },
+    {
+      "day": "20260416",
+      "market": "shenzhen",
+      "trade_rows": 2571122,
+      "nonpositive_price_rows": 715285,
+      "reference_candidates": [
+        {
+          "candidate": "OrderID",
+          "scope": "security_channel",
+          "buy": {
+            "eligible_trades": 1855837,
+            "unique_key_available_by_trade": 1821412,
+            "ambiguous_key_available_by_trade": 34425,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 914699,
+            "missing_key": 0,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          },
+          "sell": {
+            "eligible_trades": 1855837,
+            "unique_key_available_by_trade": 1819963,
+            "ambiguous_key_available_by_trade": 35874,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 935442,
+            "missing_key": 0,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          }
+        },
+        {
+          "candidate": "DBOrderID",
+          "scope": "security_channel",
+          "buy": {
+            "eligible_trades": 1855837,
+            "unique_key_available_by_trade": 0,
+            "ambiguous_key_available_by_trade": 0,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 0,
+            "missing_key": 1855837,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          },
+          "sell": {
+            "eligible_trades": 1855837,
+            "unique_key_available_by_trade": 0,
+            "ambiguous_key_available_by_trade": 0,
+            "key_only_after_trade": 0,
+            "first_timestamp_equal_trade": 0,
+            "missing_key": 1855837,
+            "nonpositive_reference": 0,
+            "unknown_clock": 0
+          }
+        }
+      ]
+    }
+  ],
+  "path_scope": [
+    {
+      "requested_securities": 106,
+      "included_securities": 105,
+      "missing_opening_securities": 0,
+      "late_arrival_securities": 0,
+      "invalid_book_securities": 1,
+      "max_arrival_delay_ms": 60000,
+      "day": "20210104",
+      "fresh_terminal_benchmark_securities": 105
+    },
+    {
+      "requested_securities": 106,
+      "included_securities": 106,
+      "missing_opening_securities": 0,
+      "late_arrival_securities": 0,
+      "invalid_book_securities": 0,
+      "max_arrival_delay_ms": 60000,
+      "day": "20260416",
+      "fresh_terminal_benchmark_securities": 43
+    }
+  ],
+  "path_aggregates": [
+    {
+      "day": "20210104",
+      "quantity": 1000,
+      "side": "buy",
+      "mode": "limit_wait",
+      "paths": 105,
+      "full_fill_paths": 65,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": -14.30615164520744,
+      "shortfall_p90_bp": 73.47538520582526
+    },
+    {
+      "day": "20210104",
+      "quantity": 1000,
+      "side": "buy",
+      "mode": "market",
+      "paths": 105,
+      "full_fill_paths": 105,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 12.51564455569462,
+      "shortfall_p90_bp": 57.03613913022665
+    },
+    {
+      "day": "20210104",
+      "quantity": 1000,
+      "side": "buy",
+      "mode": "twap",
+      "paths": 105,
+      "full_fill_paths": 104,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 0.0,
+      "shortfall_p90_bp": 81.22984075303266
+    },
+    {
+      "day": "20210104",
+      "quantity": 1000,
+      "side": "sell",
+      "mode": "limit_wait",
+      "paths": 105,
+      "full_fill_paths": 45,
+      "median_fill_fraction": 0.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 2.2872827081422713,
+      "shortfall_p90_bp": 117.77638299864358
+    },
+    {
+      "day": "20210104",
+      "quantity": 1000,
+      "side": "sell",
+      "mode": "market",
+      "paths": 105,
+      "full_fill_paths": 105,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 11.77856301531213,
+      "shortfall_p90_bp": 64.21738213388016
+    },
+    {
+      "day": "20210104",
+      "quantity": 1000,
+      "side": "sell",
+      "mode": "twap",
+      "paths": 105,
+      "full_fill_paths": 104,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 19.820377825952306,
+      "shortfall_p90_bp": 72.02138262208936
+    },
+    {
+      "day": "20210104",
+      "quantity": 10000,
+      "side": "buy",
+      "mode": "limit_wait",
+      "paths": 105,
+      "full_fill_paths": 59,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": -14.162832566513304,
+      "shortfall_p90_bp": 86.0027487049376
+    },
+    {
+      "day": "20210104",
+      "quantity": 10000,
+      "side": "buy",
+      "mode": "market",
+      "paths": 105,
+      "full_fill_paths": 95,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 23.52941176470588,
+      "shortfall_p90_bp": 100.97283342134602
+    },
+    {
+      "day": "20210104",
+      "quantity": 10000,
+      "side": "buy",
+      "mode": "twap",
+      "paths": 105,
+      "full_fill_paths": 104,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 2.014098690835851,
+      "shortfall_p90_bp": 87.86634316331931
+    },
+    {
+      "day": "20210104",
+      "quantity": 10000,
+      "side": "sell",
+      "mode": "limit_wait",
+      "paths": 105,
+      "full_fill_paths": 41,
+      "median_fill_fraction": 0.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 19.436345966957802,
+      "shortfall_p90_bp": 117.77638299864358
+    },
+    {
+      "day": "20210104",
+      "quantity": 10000,
+      "side": "sell",
+      "mode": "market",
+      "paths": 105,
+      "full_fill_paths": 98,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 22.82003710575139,
+      "shortfall_p90_bp": 99.78919692430098
+    },
+    {
+      "day": "20210104",
+      "quantity": 10000,
+      "side": "sell",
+      "mode": "twap",
+      "paths": 105,
+      "full_fill_paths": 104,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 23.16076294277929,
+      "shortfall_p90_bp": 76.9056399324883
+    },
+    {
+      "day": "20210104",
+      "quantity": 100000,
+      "side": "buy",
+      "mode": "limit_wait",
+      "paths": 105,
+      "full_fill_paths": 39,
+      "median_fill_fraction": 0.202,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": -19.084406294706724,
+      "shortfall_p90_bp": 86.0027487049376
+    },
+    {
+      "day": "20210104",
+      "quantity": 100000,
+      "side": "buy",
+      "mode": "market",
+      "paths": 105,
+      "full_fill_paths": 45,
+      "median_fill_fraction": 0.786,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 35.58599695585981,
+      "shortfall_p90_bp": 108.4546239327241
+    },
+    {
+      "day": "20210104",
+      "quantity": 100000,
+      "side": "buy",
+      "mode": "twap",
+      "paths": 105,
+      "full_fill_paths": 86,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 16.22573426573446,
+      "shortfall_p90_bp": 107.5563100028827
+    },
+    {
+      "day": "20210104",
+      "quantity": 100000,
+      "side": "sell",
+      "mode": "limit_wait",
+      "paths": 105,
+      "full_fill_paths": 22,
+      "median_fill_fraction": 0.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 29.420716740305483,
+      "shortfall_p90_bp": 117.77638299864357
+    },
+    {
+      "day": "20210104",
+      "quantity": 100000,
+      "side": "sell",
+      "mode": "market",
+      "paths": 105,
+      "full_fill_paths": 41,
+      "median_fill_fraction": 0.727,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 39.37865612648078,
+      "shortfall_p90_bp": 112.09778145690946
+    },
+    {
+      "day": "20210104",
+      "quantity": 100000,
+      "side": "sell",
+      "mode": "twap",
+      "paths": 105,
+      "full_fill_paths": 88,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 105,
+      "shortfall_p50_bp": 38.49114703618168,
+      "shortfall_p90_bp": 93.02551075146968
+    },
+    {
+      "day": "20260416",
+      "quantity": 1000,
+      "side": "buy",
+      "mode": "limit_wait",
+      "paths": 106,
+      "full_fill_paths": 53,
+      "median_fill_fraction": 0.55,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": -20.578954589106875,
+      "shortfall_p90_bp": 51.89516819485787
+    },
+    {
+      "day": "20260416",
+      "quantity": 1000,
+      "side": "buy",
+      "mode": "market",
+      "paths": 106,
+      "full_fill_paths": 106,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 9.99000999000999,
+      "shortfall_p90_bp": 24.612748525776205
+    },
+    {
+      "day": "20260416",
+      "quantity": 1000,
+      "side": "buy",
+      "mode": "twap",
+      "paths": 106,
+      "full_fill_paths": 40,
+      "median_fill_fraction": 0.4,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": -1.6783216783216783,
+      "shortfall_p90_bp": 45.573075060772965
+    },
+    {
+      "day": "20260416",
+      "quantity": 1000,
+      "side": "sell",
+      "mode": "limit_wait",
+      "paths": 106,
+      "full_fill_paths": 44,
+      "median_fill_fraction": 0.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": -6.872852233676976,
+      "shortfall_p90_bp": 100.38355384990011
+    },
+    {
+      "day": "20260416",
+      "quantity": 1000,
+      "side": "sell",
+      "mode": "market",
+      "paths": 106,
+      "full_fill_paths": 106,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 9.65561635017702,
+      "shortfall_p90_bp": 23.185508364311424
+    },
+    {
+      "day": "20260416",
+      "quantity": 1000,
+      "side": "sell",
+      "mode": "twap",
+      "paths": 106,
+      "full_fill_paths": 40,
+      "median_fill_fraction": 0.4,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 9.950248756218905,
+      "shortfall_p90_bp": 72.92435110832342
+    },
+    {
+      "day": "20260416",
+      "quantity": 10000,
+      "side": "buy",
+      "mode": "limit_wait",
+      "paths": 106,
+      "full_fill_paths": 41,
+      "median_fill_fraction": 0.055,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": -13.036963036963037,
+      "shortfall_p90_bp": 51.89516819485786
+    },
+    {
+      "day": "20260416",
+      "quantity": 10000,
+      "side": "buy",
+      "mode": "market",
+      "paths": 106,
+      "full_fill_paths": 98,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 18.587360594795538,
+      "shortfall_p90_bp": 62.61495816197685
+    },
+    {
+      "day": "20260416",
+      "quantity": 10000,
+      "side": "buy",
+      "mode": "twap",
+      "paths": 106,
+      "full_fill_paths": 40,
+      "median_fill_fraction": 0.4,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 4.282597751300553,
+      "shortfall_p90_bp": 55.56649837341515
+    },
+    {
+      "day": "20260416",
+      "quantity": 10000,
+      "side": "sell",
+      "mode": "limit_wait",
+      "paths": 106,
+      "full_fill_paths": 36,
+      "median_fill_fraction": 0.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": -6.840620592383671,
+      "shortfall_p90_bp": 100.38355384990011
+    },
+    {
+      "day": "20260416",
+      "quantity": 10000,
+      "side": "sell",
+      "mode": "market",
+      "paths": 106,
+      "full_fill_paths": 103,
+      "median_fill_fraction": 1.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 16.683022571148182,
+      "shortfall_p90_bp": 69.06152966933158
+    },
+    {
+      "day": "20260416",
+      "quantity": 10000,
+      "side": "sell",
+      "mode": "twap",
+      "paths": 106,
+      "full_fill_paths": 40,
+      "median_fill_fraction": 0.4,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 9.950248756218905,
+      "shortfall_p90_bp": 72.92435110832342
+    },
+    {
+      "day": "20260416",
+      "quantity": 100000,
+      "side": "buy",
+      "mode": "limit_wait",
+      "paths": 106,
+      "full_fill_paths": 27,
+      "median_fill_fraction": 0.0055,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": -10.594433627305005,
+      "shortfall_p90_bp": 54.33064496906248
+    },
+    {
+      "day": "20260416",
+      "quantity": 100000,
+      "side": "buy",
+      "mode": "market",
+      "paths": 106,
+      "full_fill_paths": 46,
+      "median_fill_fraction": 0.7284999999999999,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 17.471685542971123,
+      "shortfall_p90_bp": 67.45845183399278
+    },
+    {
+      "day": "20260416",
+      "quantity": 100000,
+      "side": "buy",
+      "mode": "twap",
+      "paths": 106,
+      "full_fill_paths": 33,
+      "median_fill_fraction": 0.4,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 9.146685472496474,
+      "shortfall_p90_bp": 66.86787658802174
+    },
+    {
+      "day": "20260416",
+      "quantity": 100000,
+      "side": "sell",
+      "mode": "limit_wait",
+      "paths": 106,
+      "full_fill_paths": 18,
+      "median_fill_fraction": 0.0,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 0.0,
+      "shortfall_p90_bp": 100.38355384990011
+    },
+    {
+      "day": "20260416",
+      "quantity": 100000,
+      "side": "sell",
+      "mode": "market",
+      "paths": 106,
+      "full_fill_paths": 47,
+      "median_fill_fraction": 0.8240000000000001,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 33.10861423220974,
+      "shortfall_p90_bp": 105.64575457625719
+    },
+    {
+      "day": "20260416",
+      "quantity": 100000,
+      "side": "sell",
+      "mode": "twap",
+      "paths": 106,
+      "full_fill_paths": 33,
+      "median_fill_fraction": 0.4,
+      "cost_observed_paths": 43,
+      "shortfall_p50_bp": 23.59298245614042,
+      "shortfall_p90_bp": 111.54128866234483
+    }
+  ],
+  "assumptions": [
+    "Saved events belong to declared extraction days; keys show candidate presence only.",
+    "Daily positive-amount records are an observed trading comparison, not an eligibility master.",
+    "Fixed 09:30\u201309:35 window; arrival delay at most 60 seconds; last quote freshness at most 60 seconds.",
+    "Common securities condition on survival; no market-wide temporal trend is identified.",
+    "Three share quantities, no fees, lots, own impact, passive queue or participation limit; independent snapshot refresh."
+  ],
+  "review_status": "reviewed_aggregate",
+  "publication_permission": {
+    "confirmed_by_owner": true,
+    "confirmed_on": "2026-10-12",
+    "scope": "aggregate_derived_statistics"
+  },
+  "independent_review": {
+    "paths_independently_recomputed": 3798,
+    "fill_events_recomputed": 20867,
+    "aggregate_cells_reconciled": 36,
+    "date_and_freshness_checked": true,
+    "reference_categories_conserve_eligible_trades": true,
+    "raw_selection_reconciliation_all_zero_mismatch": true,
+    "actual_execution_or_vendor_semantics_verified": false
+  },
+  "source_receipt_sha256": "49b0c196f11984b7c09838c5ef55fe5a447d0e9b37f651bff5eed10873f476b2"
+}
