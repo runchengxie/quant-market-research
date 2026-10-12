@@ -1,0 +1,12 @@
+{
+  "price_unit": "integer_cent",
+  "quantity_unit": "share",
+  "clock_encoding": "HHMMSSmmm",
+  "security_modulus": 37,
+  "batch_size": 65536,
+  "inputs": [
+    {"day": 20260416, "path": "/path/to/native/snapshot_20260416.parquet"},
+    {"day": 20260424, "path": "/path/to/native/snapshot_20260424.parquet"},
+    {"day": 20260720, "path": "/path/to/native/snapshot_20260720.parquet"}
+  ]
+}

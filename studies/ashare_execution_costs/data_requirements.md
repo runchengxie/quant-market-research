@@ -1,6 +1,6 @@
 # Local data audit and release gate
 
-No L2 inspection or empirical result has been completed for this study. Prior pilot counts and special-event percentages mentioned in the conversation are unverified here and must not be used as sample evidence.
+The first three-day local source audit and static measurements are complete; see pilot_findings.md. No actual-order calibration or dynamic-impact identification is complete. Static numerical results remain local pending vendor publication permission. Historical deal special-event percentages were not revalidated by this snapshot-only study.
 
 Before a pilot, resolve configured workspace roots and the authoritative market-data platform dataset. Inspect its manifests, symlinks/current aliases, schema, exchange coverage, security/date coverage and quality reports read-only. Do not move data or rerun ingestion as part of presentation work.
 

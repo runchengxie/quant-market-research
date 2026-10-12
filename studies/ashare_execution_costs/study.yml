@@ -1,9 +1,15 @@
 study_id: ashare_execution_costs
-status: scenario_baseline
-evidence_status: illustrative_not_empirical
-local_l2_inspected: false
+status: local_static_pilot_complete
+evidence_status: descriptive_static_pilot_not_execution_calibration
+local_l2_inspected: true
 real_order_calibration: false
-empirical_sample: null
+empirical_sample:
+  dates: [20260416, 20260424, 20260720]
+  source_rows_scanned: 65673625
+  sampled_snapshots: 100236
+  valid_two_sided_snapshots: 98072
+  selection: stock_prefix_and_code_modulo_37
+publication_status: audit_only_cost_figures_local_pending_permission
 raw_data_in_git: false
 scenario:
   sessions: 250

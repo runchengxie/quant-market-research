@@ -1,6 +1,6 @@
 import { expect, test } from '@playwright/test';
 
-const routes = ['./', 'research/style-factors-18y/', 'research/factors/low-turnover/', 'research/factors/pb-roe/', 'research/microcap/', 'docs/research/factors/barra-factor-dictionary/'];
+const routes = ['./', 'research/execution-costs/', 'research/style-factors-18y/', 'research/factors/low-turnover/', 'research/factors/pb-roe/', 'research/microcap/', 'docs/research/factors/barra-factor-dictionary/'];
 for (const width of [320, 390, 768, 1280, 1440]) {
   test(`unified layout at ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
