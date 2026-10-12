@@ -11,7 +11,7 @@ const [source, overview, routes, pages] = await Promise.all([
     "./components/react/liquidity-page.tsx",
     "./components/ReplicationSection.tsx",
   ].map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))).then((files) => files.join("\n")),
-  readFileSync(new URL("./components/ResearchOverview.tsx", import.meta.url), "utf8"),
+  ["./components/ResearchOverview.tsx", "./content/overview-copy.ts"].map(file => readFileSync(new URL(file, import.meta.url), "utf8")).join("\n"),
   readFileSync(new URL("./lib/routes.ts", import.meta.url), "utf8"),
   Promise.all([
     "./pages/research/cashflow/index.astro",
