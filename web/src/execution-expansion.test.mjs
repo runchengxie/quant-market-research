@@ -15,5 +15,5 @@ test('cost and coverage anchors select the same side and exact yuan amount',()=>
  assert.equal(selectSurface(rows,'buy',100000),rows[2]);assert.equal(selectSurface(rows,'buy',1000000),rows[3]);assert.equal(selectSurface(rows,'sell',1000000),undefined);
 });
 test('published cohort keys and scenarios have both locale labels',()=>{
- for(const key of ['low','middle','high','unavailable','opening','late_morning','early_afternoon','late_afternoon','gross','fee_only','fee_static_10k','fee_static_1m']) assert.ok(expansionCopy[key].every(value=>value.length>0));
+ for(const key of ['low','middle','high','unavailable','opening','late_morning','early_afternoon','late_afternoon','gross','fee_only','fee_static_10k','fee_static_1m','fee_expanded_100k','fee_expanded_1m']) assert.ok(expansionCopy[key].every(value=>value.length>0));
 });

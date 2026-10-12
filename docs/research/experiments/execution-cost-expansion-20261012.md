@@ -52,7 +52,7 @@ Twelve baseline scenarios use the prior three-day cost anchors; six additional s
 
 All eighteen constrained runs maintain nonnegative daily cash. Gross modeled cumulative buy completion falls from 95.3% at CNY 10m to 68.6% at CNY 1bn; the ratio uses total executed/(executed+unfilled) order amounts, not terminal backlog. Mean one-way executed turnover is about 4.74% at CNY 10m and 4.31% at CNY 1bn. This differs from the separate 60% stress assumption. Cost changes alter later funded orders, so terminal-NAV differences are not just summed cash fees, and lower total unfilled amounts need not mean improved fillability.
 
-Twelve frozen-path overlays replace fees on original fills while retaining holdings P&L and missed fills. They expose negative counterfactual cash rather than pretending feasible reexecution. The 250-session/60%-each-side cost-only stress separately reports linear expenditure and compounding; neither is realized strategy return or an annualized version of this 56-day diagnostic.
+Twelve frozen-path overlays replace fees on original fills while retaining holdings P&L and missed fills. They expose negative counterfactual cash rather than pretending feasible reexecution. The prior-three-day-anchor, 250-session/60%-each-side cost-only stress separately reports linear expenditure and compounding; neither is realized strategy return or an annualized version of this 56-day diagnostic.
 
 ## Reproduction and next gates
 
