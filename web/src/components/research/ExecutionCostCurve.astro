@@ -1,0 +1,42 @@
+---
+import { executionCostCopy as copy } from '../../content/execution-cost-copy';
+interface Row { side: string; reference_notional_cny: number; full_coverage_rate: number | null; full_order_cost_bp: {p50: number | null; p90: number | null} }
+interface Props { rows: Row[]; metric: 'cost' | 'coverage'; titleKey: 'conditionalTitle' | 'coverageTitle' | 'matchedTitle'; id: string; ceiling?: number; }
+const { rows, metric, titleKey, id, ceiling } = Astro.props;
+const sizes = [10000,100000,1000000,10000000];
+const series = ['buy','sell'].flatMap(side => (metric === 'coverage' ? ['coverage'] : ['p50','p90']).map(q => ({side,q,values:sizes.map(size => { const row=rows.find(r=>r.side===side&&r.reference_notional_cny===size); return metric==='coverage' ? row?.full_coverage_rate == null ? null : row.full_coverage_rate*100 : q==='p50' ? row?.full_order_cost_bp.p50 ?? null : row?.full_order_cost_bp.p90 ?? null; })})));
+const max = ceiling ?? (metric === 'coverage' ? 100 : Math.max(10,Math.ceil(Math.max(...series.flatMap(s=>s.values.filter((v):v is number=>v!==null)))/10)*10));
+const x=(i:number)=>52+i*88;
+const y=(v:number)=>185-v/max*150;
+const label = metric==='coverage' ? copy.coverageUnit : copy.costUnit;
+---
+<figure class="cost-figure" aria-labelledby={`${id}-title`}>
+  <figcaption id={`${id}-title`} data-locale-text data-en={copy[titleKey][0]} data-zh={copy[titleKey][1]}>{copy[titleKey][0]}</figcaption>
+  <small id={`${id}-unit`} data-locale-text data-en={label[0]} data-zh={label[1]}>{label[0]}</small>
+  <svg viewBox="0 0 360 220" role="img" aria-labelledby={`${id}-title ${id}-unit`}>
+    {[0,1,2,3,4].map(i=><g><line x1="52" x2="316" y1={y(i*max/4)} y2={y(i*max/4)} class="grid"/><text x="42" y={y(i*max/4)+4} text-anchor="end">{(i*max/4).toLocaleString('en-US',{maximumFractionDigits:1})}</text></g>)}
+    {series.map(s=><g class:list={[s.side,{tail:s.q==='p90'}]}>
+      {s.values.slice(1).map((v,i)=>v!==null&&s.values[i]!==null&&<line x1={x(i)} y1={y(s.values[i]!)} x2={x(i+1)} y2={y(v)}/>)}
+      {s.values.map((v,i)=>v!==null&&<circle cx={x(i)} cy={y(v)} r="4"/>)}
+    </g>)}
+    {(['tick10k','tick100k','tick1m','tick10m'] as const).map((key,i)=><text x={x(i)} y="211" text-anchor="middle" data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</text>)}
+  </svg>
+  <p class="axis-note" data-locale-text data-en={copy.logAxis[0]} data-zh={copy.logAxis[1]}>{copy.logAxis[0]}</p>
+  <div class="cost-legend">{series.map(s=><span class:list={[s.side,{tail:s.q==='p90'}]}><i aria-hidden="true"></i><b data-locale-text data-en={copy[s.side as 'buy'|'sell'][0]} data-zh={copy[s.side as 'buy'|'sell'][1]}>{copy[s.side as 'buy'|'sell'][0]}</b>{s.q!=='coverage'&&<span>{s.q.toUpperCase()}</span>}</span>)}</div>
+</figure>
+<style>
+.cost-figure { margin:24px 0; padding:16px; border:1px solid var(--rule); min-width:0; max-width:480px; }
+figcaption { font-weight:600; margin-bottom:12px; }
+svg { width:100%; height:auto; display:block; }
+text { fill:var(--ink); font:16px var(--font-body); }
+.axis-note {font-size:13px;margin:4px 0 12px;} small{display:block;font-size:13px;}
+.grid { stroke:var(--rule); stroke-width:1; }
+.buy { color:var(--accent); }
+.sell { color:var(--ink); }
+g.buy line { stroke:var(--accent); } g.buy circle { fill:var(--accent); }
+g.sell line { stroke:var(--ink); } g.sell circle { fill:var(--ink); }
+g line { stroke-width:2; } g.tail line { stroke-dasharray:6 4; } g.tail circle { r:2; }
+.cost-legend { display:flex; gap:16px; flex-wrap:wrap; font-size:13px; }
+.cost-legend > span { display:flex; align-items:center; gap:5px; }
+.cost-legend i { width:20px; border-top:2px solid currentColor; }.cost-legend .tail i { border-top-style:dashed; }
+</style>
