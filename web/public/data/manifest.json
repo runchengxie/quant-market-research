@@ -1,9 +1,10 @@
 {
-  "generated_at": "2026-09-18T15:35:19.472826+08:00",
+  "generated_at": "2026-10-12T13:18:23+08:00",
   "sources": [
     "market-research A-share rule reconstruction",
     "smallcap turnover clean, historical and overlap-audit summaries",
-    "reviewed public research snapshots"
+    "reviewed public research snapshots",
+    "reviewed historical L2 aggregates and diagnostic strategy cost sensitivity"
   ],
   "markets": {
     "a_share": "published",
@@ -16,11 +17,12 @@
     "index_research_files": 22,
     "microcap_repair_files": 1,
     "smallcap_turnover_files": 1,
-    "raw_data_published": false
+    "raw_data_published": false,
+    "execution_cost_files": 3
   },
   "snapshots": {
     "overview": {
-      "generated_at": "2026-09-12T00:00:00+08:00",
+      "generated_at": "2026-10-12T13:18:23+08:00",
       "coverage_end": "2026-09-07",
       "source": "reviewed public research snapshots",
       "quality_status": "derived"
@@ -115,6 +117,30 @@
       },
       "caveats": [
         "各市场数据日期不同。日本尚未发布可比分组"
+      ]
+    },
+    "execution_costs": {
+      "generated_at": "2026-10-12T13:18:23+08:00",
+      "coverage_start": "2021-01-04",
+      "coverage_end": "2026-07-20",
+      "source": "已审核的历史L2静态聚合与事件质量审计",
+      "quality_status": "derived",
+      "caveats": [
+        "十个离散交易日，不是连续历史；证券代码确定性子样本，不代表全市场。",
+        "完整订单成本以十档足够覆盖为条件；动态冲击和真实委托尚未校准。",
+        "滞后日频特征重建未验证历史发布时点；共同证券比较有存续筛选。"
+      ]
+    },
+    "execution_strategy": {
+      "generated_at": "2026-10-12T13:18:23+08:00",
+      "coverage_start": "2025-01-03",
+      "coverage_end": "2025-03-31",
+      "source": "共享执行模拟器的微盘策略成本敏感性诊断",
+      "quality_status": "derived",
+      "caveats": [
+        "56个交易日、三种资金规模、十八组模型情景；非真实容量或净超额收益验证。",
+        "参考成本包含后续2026年观测，仅用于反事实敏感性；价格与流动性采用日频代理。",
+        "固定成交费用替换出现资金缺口，不能视为可执行的净值路径。"
       ]
     }
   },

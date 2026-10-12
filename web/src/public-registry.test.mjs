@@ -36,3 +36,9 @@ test('every published English document has a reciprocal Chinese Astro route', as
     assert.ok(translated.body.includes(meta.source.split('/').at(-1)), `${translated.meta.source} must link to English`);
   }
 });
+
+test('execution topic binds the two reviewed aggregate snapshots', () => {
+  const topic = publicPages.find((page) => page.id === 'execution-costs');
+  assert.deepEqual(topic.snapshotKeys, ['execution_costs', 'execution_strategy']);
+  assert.doesNotThrow(() => validateRegistry(publicPages, publicDocs));
+});

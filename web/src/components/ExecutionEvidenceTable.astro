@@ -1,0 +1,6 @@
+---
+interface Props { headers: readonly (readonly [string,string])[]; rows: (string | readonly [string,string])[][]; }
+const {headers,rows}=Astro.props;
+---
+<div class="evidence-table"><table><thead><tr>{headers.map(h=><th scope="col" data-locale-text data-en={h[0]} data-zh={h[1]}>{h[0]}</th>)}</tr></thead><tbody>{rows.map(row=><tr>{row.map((cell,i)=>Array.isArray(cell)? i===0?<th scope="row" data-locale-text data-en={cell[0]} data-zh={cell[1]}>{cell[0]}</th>:<td data-locale-text data-en={cell[0]} data-zh={cell[1]}>{cell[0]}</td>:i===0?<th scope="row">{cell}</th>:<td>{cell}</td>)}</tr>)}</tbody></table></div>
+<style>.evidence-table{overflow-x:auto;max-width:100%;margin-block:1rem}table{font-size:13px;min-width:600px}th,td{white-space:nowrap}</style>
