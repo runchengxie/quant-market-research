@@ -62,3 +62,25 @@ queues, book resilience, permanent impact or true capacity. Original orders do
 not encode why an amount remained unfilled, so limit and suspension attribution
 is not fabricated. The later 2026 pilot is borrowed across dates and securities;
 its covered-order medians cannot establish realized execution or net alpha.
+
+## Expanded static reference
+
+Pass `--expanded-public` with the reviewed
+`ashare_execution_costs.expansion.public.v1` aggregate JSON to run six additional
+shared-engine cases: `fee_expanded_100k` and `fee_expanded_1m` at each of the three
+capitals. Use a separate new output directory to preserve the baseline cases.
+The runner requires owner permission and the review's source-summary hash, then
+validates both sides' conditional P50 and coverage at each anchor. It exports
+those exact anchor values and coverage rates alongside the modeled results.
+
+The expanded sample mixes 2021, 2025 and 2026 observations. These are borrowed
+sensitivity assumptions and cannot be an ex ante prediction of Q1 2025 costs.
+They change the model's cash debits and therefore its subsequent funded orders;
+compare both executed and unfilled notional, rather than interpreting the NAV
+difference as a constant drag on an unchanged trading path.
+
+Expanded receipts retain all static reference dates, the reference file hash,
+source-frame hashes, runtime request and input hashes, simulator version,
+execution module hashes, fee-model hash, runner hash and generated CSV hashes.
+The content-addressed original runtime inputs are checked against their digests
+before either baseline or expanded scenarios run.

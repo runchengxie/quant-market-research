@@ -1,4 +1,6 @@
 import argparse
+import inspect
+import importlib.metadata
 import hashlib
 import json
 from pathlib import Path
@@ -13,18 +15,22 @@ from market_research.studies.ashare_execution_costs.strategy import (
     accounting_overlay,
     anchor_exceedance,
     turnover_stress,
+    expanded_scenarios,
 )
 
 parser = argparse.ArgumentParser(description="Diagnostic existing-strategy cost sensitivity")
 parser.add_argument("--source", type=Path, required=True)
 parser.add_argument("--pilot", type=Path, required=True)
 parser.add_argument("--output", type=Path, required=True)
+parser.add_argument("--expanded-public", type=Path)
 args = parser.parse_args()
 src, pilot, out = args.source, args.pilot, args.output
 if out.exists() and any(out.iterdir()):
     raise FileExistsError("output directory must be new or empty")
 out.mkdir(parents=True, exist_ok=True)
-anchors = json.loads(pilot.read_text())["pooled"]["cost_surface"]
+reference = json.loads((args.expanded_public or pilot).read_text())
+anchors = reference["pooled"]["cost_surface"]
+expanded = expanded_scenarios(reference) if args.expanded_public else None
 frames = [
     pd.read_parquet(src / f"{n}.parquet")
     for n in ("daily_ledger", "fills", "orders", "performance")
@@ -39,6 +45,9 @@ def artifact(key):
     return src / ".runtime/artifacts/sha256" / request["inputs"][key].split("/")[-1]
 
 
+for key, ref in request["inputs"].items():
+    if hashlib.sha256(artifact(key).read_bytes()).hexdigest() != ref.split("/")[-1]:
+        raise ValueError("runtime content-addressed input hash mismatch")
 positions = pd.read_parquet(artifact("positions_ref"))
 pricing = pd.read_parquet(artifact("pricing_ref"))
 base_cfg = dict(request["execution"]["ledger_config"])
@@ -55,7 +64,7 @@ rows = []
 stress = []
 reruns = []
 for capital in (10_000_000, 100_000_000, 1_000_000_000):
-    for size in (10_000, 100_000, 1_000_000, 10_000_000):
+    for size in () if expanded else (10_000, 100_000, 1_000_000, 10_000_000):
         a = {r["side"]: r for r in anchors if r["reference_notional_cny"] == size}
         buy = a["buy"]["full_order_cost_bp"]["p50"]
         sell = a["sell"]["full_order_cost_bp"]["p50"]
@@ -84,12 +93,14 @@ for capital in (10_000_000, 100_000_000, 1_000_000_000):
         t["anchor_notional_cny"] = size
         stress.append(t)
     # actual modeled execution: gross, assumed fees, borrowed10k and1m anchors
-    for variant, size in [
-        ("gross", 0),
-        ("fee_only", 0),
-        ("fee_static_10k", 10_000),
-        ("fee_static_1m", 1_000_000),
-    ]:
+    scenarios = expanded or [
+        {"scenario": "gross", "anchor_notional_cny": 0},
+        {"scenario": "fee_only", "anchor_notional_cny": 0},
+        {"scenario": "fee_static_10k", "anchor_notional_cny": 10_000},
+        {"scenario": "fee_static_1m", "anchor_notional_cny": 1_000_000},
+    ]
+    for scenario in scenarios:
+        variant, size = scenario["scenario"], scenario["anchor_notional_cny"]
         cfg = dict(request["execution"]["ledger_config"])
         cfg["portfolio_value"] = capital
         cfg["liquidity_cols"] = tuple(cfg["liquidity_cols"])
@@ -160,10 +171,15 @@ for capital in (10_000_000, 100_000_000, 1_000_000_000):
             ((orders.filled_notional > 0) & (orders.unfilled_notional > 1e-6)).sum()
         )
         row["zero_fill_orders"] = int((orders.filled_notional <= 1e-6).sum())
+        if expanded:
+            row.update(
+                {k: v for k, v in scenario.items() if k not in ("scenario", "anchor_notional_cny")}
+            )
         reruns.append(row)
         pd.DataFrame(reruns).to_csv(out / "modeled-summary.csv", index=False)
-pd.DataFrame(rows).to_csv(out / "overlay-summary.csv", index=False)
-pd.DataFrame(stress).to_csv(out / "turnover-stress.csv", index=False)
+if not expanded:
+    pd.DataFrame(rows).to_csv(out / "overlay-summary.csv", index=False)
+    pd.DataFrame(stress).to_csv(out / "turnover-stress.csv", index=False)
 pd.DataFrame(reruns).to_csv(out / "modeled-summary.csv", index=False)
 receipt = {
     "evidence": "diagnostic_shared_simulator_and_frozen_path_sensitivity",
@@ -172,7 +188,33 @@ receipt = {
     "simulator_configuration": base_cfg,
     "original_simulator_cost_bp_replaced": 5.0,
     "modeled_rerun_transaction_cost_bp": 0.0,
-    "pilot_period": ["20260416", "20260424", "20260720"],
+    "static_reference_dates": sorted(reference.get("by_day", {})),
+    "static_reference_sha256": hashlib.sha256(
+        (args.expanded_public or pilot).read_bytes()
+    ).hexdigest(),
+    "expanded_reference": bool(expanded),
+    "conditional_static_anchors": expanded,
+    "script_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+    "engine_modules_sha256": {
+        p.name: hashlib.sha256(p.read_bytes()).hexdigest()
+        for p in Path(inspect.getfile(simulate_execution_adjusted_nav)).parent.glob("*.py")
+    },
+    "fee_model_module_sha256": hashlib.sha256(
+        Path(inspect.getfile(TradeFeeModel)).read_bytes()
+    ).hexdigest(),
+    "engine_module_sha256": hashlib.sha256(
+        Path(inspect.getfile(simulate_execution_adjusted_nav)).read_bytes()
+    ).hexdigest(),
+    "simulator_distribution_version": importlib.metadata.version("quant-platform"),
+    "runtime_request_sha256": hashlib.sha256(
+        (src / ".runtime/microcap-request.json").read_bytes()
+    ).hexdigest(),
+    "runtime_input_sha256": {
+        key: hashlib.sha256(artifact(key).read_bytes()).hexdigest() for key in request["inputs"]
+    },
+    "output_sha256": {
+        p.name: hashlib.sha256(p.read_bytes()).hexdigest() for p in out.glob("*.csv")
+    },
     "source_sha256": {
         n: hashlib.sha256((src / f"{n}.parquet").read_bytes()).hexdigest()
         for n in ("daily_ledger", "fills", "orders", "performance", "positions")
@@ -188,7 +230,7 @@ receipt = {
     },
     "limitations": [
         "Original diagnostic input release times, corporate actions and delisting settlement unverified.",
-        "Pilot medians condition on complete ten-level coverage and are borrowed across stocks and dates.",
+        "Static reference medians condition on complete ten-level coverage and are borrowed across stocks and dates; not an ex ante Q1 2025 prediction.",
         "No impact, resilience, queue, intraday path or net-alpha inference.",
         "Capital overlays freeze fills; modeled reruns use shared5% daily amount participation proxy.",
         "Zero minimum commission and inclusive flat commission are sensitivity assumptions; source includes Beijing and venue-specific fee handling is absent.",

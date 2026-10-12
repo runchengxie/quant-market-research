@@ -131,3 +131,59 @@ def test_invalid_stress_inputs(sessions, buy_bp):
         module().turnover_stress(
             100.0, sessions=sessions, one_way_turnover=0.6, buy_bp=buy_bp, sell_bp=0.0
         )
+
+
+def expanded_reference():
+    return {
+        "schema_version": "ashare_execution_costs.expansion.public.v1",
+        "permission": {"status": "confirmed_by_owner"},
+        "review": {"source_summary_sha256": "a" * 64},
+        "pooled": {
+            "cost_surface": [
+                {
+                    "side": side,
+                    "reference_notional_cny": size,
+                    "full_order_cost_bp": {"p50": bp},
+                    "full_coverage_rate": coverage,
+                }
+                for side, size, bp, coverage in [
+                    ("buy", 100000, 9.0, 0.99),
+                    ("sell", 100000, 8.0, 0.98),
+                    ("buy", 1000000, 21.0, 0.6),
+                    ("sell", 1000000, 20.0, 0.7),
+                ]
+            ]
+        },
+    }
+
+
+def test_expanded_reference_retains_conditional_medians_and_coverage():
+    rows = module().expanded_scenarios(expanded_reference())
+    assert [(r["scenario"], r["anchor_notional_cny"]) for r in rows] == [
+        ("fee_expanded_100k", 100000),
+        ("fee_expanded_1m", 1000000),
+    ]
+    assert rows[1]["buy_static_bp"] == 21.0
+    assert rows[1]["sell_static_bp"] == 20.0
+    assert rows[1]["buy_reference_full_coverage_rate"] == 0.6
+
+
+@pytest.mark.parametrize(
+    "damage", ["unreviewed", "permission", "missing", "duplicate", "nan", "coverage"]
+)
+def test_expanded_reference_rejects_unreviewed_or_invalid_anchor(damage):
+    reference = expanded_reference()
+    if damage == "unreviewed":
+        reference["review"] = {}
+    elif damage == "permission":
+        reference["permission"]["status"] = "unknown"
+    elif damage == "missing":
+        reference["pooled"]["cost_surface"].pop()
+    elif damage == "duplicate":
+        reference["pooled"]["cost_surface"].append(reference["pooled"]["cost_surface"][0])
+    elif damage == "nan":
+        reference["pooled"]["cost_surface"][0]["full_order_cost_bp"]["p50"] = float("nan")
+    else:
+        reference["pooled"]["cost_surface"][0]["full_coverage_rate"] = 1.1
+    with pytest.raises(ValueError):
+        module().expanded_scenarios(reference)

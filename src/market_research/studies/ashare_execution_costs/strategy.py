@@ -208,3 +208,37 @@ def anchor_exceedance(orders: pd.DataFrame, *, scale: float, reference_notional:
             float(notionals.loc[notionals > reference_notional].sum() / total) if total else 0.0
         )
     return result
+
+
+def expanded_scenarios(reference: dict) -> list[dict]:
+    """Select reviewed descriptive anchors without interpreting them as forecasts."""
+    if (
+        reference.get("schema_version") != "ashare_execution_costs.expansion.public.v1"
+        or reference.get("permission", {}).get("status") != "confirmed_by_owner"
+        or len(reference.get("review", {}).get("source_summary_sha256", "")) != 64
+    ):
+        raise ValueError("expanded reference must be reviewed with owner permission")
+    result = []
+    for label, size in [("100k", 100_000), ("1m", 1_000_000)]:
+        row = {"scenario": f"fee_expanded_{label}", "anchor_notional_cny": size}
+        for side in ("buy", "sell"):
+            matches = [
+                r
+                for r in reference.get("pooled", {}).get("cost_surface", [])
+                if r.get("side") == side and r.get("reference_notional_cny") == size
+            ]
+            if len(matches) != 1:
+                raise ValueError("expanded reference must have exactly one anchor per side/size")
+            anchor = matches[0]
+            bp = anchor.get("full_order_cost_bp", {}).get("p50")
+            coverage = anchor.get("full_coverage_rate")
+            if not isinstance(bp, (int, float)) or not isinstance(coverage, (int, float)):
+                raise ValueError("expanded anchor requires numeric P50 and coverage")
+            _positive(bp, "conditional static P50", zero=True)
+            _positive(coverage, "reference full coverage", zero=True)
+            if coverage > 1:
+                raise ValueError("reference coverage must not exceed one")
+            row[f"{side}_static_bp"] = bp
+            row[f"{side}_reference_full_coverage_rate"] = coverage
+        result.append(row)
+    return result
