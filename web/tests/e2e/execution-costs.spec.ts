@@ -15,3 +15,20 @@ test('cost topic exposes scenario arithmetic and persists Chinese locale', async
   await page.reload();
   await expect(page.locator('h1')).toHaveText('A股交易成本与策略容量');
 });
+
+test('expanded evidence leads the page and translates diagnostic boundaries', async ({ page }) => {
+  await page.goto('research/execution-costs/');
+  const expanded = page.locator('#expanded-results');
+  await expect(expanded.getByRole('heading').first()).toHaveText('Expanded snapshot evidence and strategy diagnostics');
+  await expect(expanded.locator('table').first().locator('tbody tr')).toHaveCount(20);
+  await expect(expanded).toContainText('Order-flow association has not passed the dynamic replay gate');
+  await expect(page.locator('.prior-evidence')).not.toHaveAttribute('open', '');
+  await page.goto('research/execution-costs/?lang=zh-CN');
+  await expect(page.locator('#expanded-results h2')).toHaveText('扩展盘口证据与策略诊断');
+  await expect(page.locator('#strategy-diagnostic')).toContainText('这些结果不能证明真实容量或净超额收益');
+  await page.locator('#strategy-diagnostic details').last().locator('summary').click();
+  await expect(page.locator('#strategy-diagnostic details').last()).toContainText('线性成本比例');
+  await expect(page.locator('#strategy-diagnostic details').last()).toContainText('复利成本比例');
+  await page.reload();
+  await expect(page.locator('#expanded-results h2')).toHaveText('扩展盘口证据与策略诊断');
+});
