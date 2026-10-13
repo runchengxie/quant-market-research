@@ -13,6 +13,7 @@ import duckdb
 import pandas as pd
 
 from market_research.microcap_execution import load_clean_panel
+from market_research.studies.ashare_execution_costs.factor_evidence import validate_factor_evidence
 from market_research.studies.ashare_execution_costs.minute import (
     add_suspension_marks, apply_dividend_overrides, assert_unowned_events, audit_adjustment_events,
     build_targets, measure_arrival_shortfall, normalize_dividends, prepare_minute_bars,
@@ -81,6 +82,7 @@ def prepare(args):
     con = duckdb.connect()
     con.execute("SET memory_limit='2GB'")
     con.execute('SET threads=2')
+    con.execute('SET temp_directory = ?', [str(output / 'duckdb-spill')])
     con.register('selected', selected)
     base = None
     if args.base_prepared:
@@ -96,7 +98,7 @@ def prepare(args):
             if sha(path) != base['source_manifest_sha256'][key]:
                 raise ValueError('cached source manifest differs')
     try:
-        marks = con.execute('''SELECT d.ts_code,d.trade_date,d.close,d.up_limit,d.down_limit,d.is_suspended,d.adj_factor
+        marks = con.execute('''SELECT d.ts_code,d.trade_date,d.open,d.high,d.low,d.close,d.pre_close,d.up_limit,d.down_limit,d.is_suspended,d.adj_factor
                                FROM read_parquet(?) d JOIN selected s USING(ts_code)
                                WHERE trade_date BETWEEN ? AND ?''',
                             [str(daily_asset / 'data/*.parquet'), args.start, args.end]).df()
@@ -158,7 +160,14 @@ def prepare(args):
         raise ValueError('unknown implemented ex date')
     explained = {(row['symbol'], row['ex_date']) for row in events + blocked}
     explained.update((row['symbol'], row['ex_date']) for row in overrides['overrides'])
-    adjustment_audit = audit_adjustment_events(marks, explained)
+    if args.factor_evidence:
+        adjustment_audit = validate_factor_evidence(
+            marks, explained, args.factor_evidence,
+            daily_manifest_sha256=sha(daily_asset / 'manifest.yml'),
+            dividend_sha256=sha(args.dividends))
+        write_json(output / 'factor-evidence.json', json.loads(args.factor_evidence.read_text()))
+    else:
+        adjustment_audit = audit_adjustment_events(marks, explained)
     suspensions = pd.read_parquet(args.suspensions)
     bars, suspension_audit = add_suspension_marks(bars, suspensions, days, events)
     bars.to_parquet(output / 'bars.parquet', index=False)
@@ -189,8 +198,8 @@ def prepare(args):
     print('minute inputs prepared', receipt['bar_audit'], flush=True)
 
 
-def scenarios():
-    return [
+def scenarios(names=None):
+    matrix = [
         ('gross_1m', 'daily', 1_000_000, 330, 1, 0., 0.),
         ('fees_1m', 'daily', 1_000_000, 330, 1, 1., 6.),
         ('fees_10m', 'daily', 10_000_000, 330, 1, 1., 6.),
@@ -201,6 +210,30 @@ def scenarios():
         ('buffer_10m', 'buffer', 10_000_000, 330, 1, 1., 6.),
         ('minimum_1m', 'daily', 1_000_000, 330, 1, 1., 6.),
     ]
+
+    if names is None:
+        return matrix
+    if not names or len(names) != len(set(names)) or set(names) - {row[0] for row in matrix}:
+        raise ValueError('unknown, duplicate or empty scenario selection')
+    return [row for row in matrix if row[0] in names]
+
+
+def build_proposal(inputs, summaries, implementation_hashes):
+    names = [row['scenario'] for row in summaries]
+    full = {row[0] for row in scenarios()}
+    if len(names) != len(set(names)) or set(names) - full:
+        raise ValueError('invalid scenario result matrix')
+    return {
+        'schema_version': 'execution-minute-results.v1',
+        'evidence': 'modeled_bar_execution_not_live_capacity', 'published': False,
+        'complete': set(names) == full, 'expected_scenarios': len(full),
+        'inputs': inputs, 'scenarios': summaries,
+        'implementation_sha256': implementation_hashes,
+        'limits': ['reconstructed_PIT_not_revision_safe', 'bounded_bar_execution_not_fill_evidence',
+                   'no_queue_or_self_impact', 'fee_rates_and_parent_minimum_are_assumptions',
+                   'zero_dividend_withholding', 'wall_clock_execution_windows',
+                   'confirmed_suspensions_use_nontradable_carried_valuation'],
+    }
 
 
 def run(args):
@@ -221,8 +254,10 @@ def run(args):
         'engine': engine_hash, 'runner': source_hash,
         'corporate_contract': sha(Path(inspect.getfile(CorporateAction))),
         'research_methods': sha(Path(inspect.getfile(build_targets))),
+        'factor_evidence': sha(Path(inspect.getfile(validate_factor_evidence))),
     }
-    for name, variant, capital, minutes, slices, buy, sell in scenarios():
+    selected = scenarios(args.scenario)
+    for name, variant, capital, minutes, slices, buy, sell in selected:
         target = pd.read_parquet(output / f'targets-{variant}.parquet')
         config = MinuteExecutionConfig(initial_cash=capital, participation_rate=.05,
                                        buy_fee_bp=buy, sell_fee_bp=sell, execution_minutes=minutes,
@@ -292,30 +327,14 @@ def run(args):
                    'implementation_sha256': implementation_hashes,
                    'output_sha256': {p.name: sha(p) for p in private.glob('*.parquet')}})
         private.rename(final)
-        proposal = {
-            'schema_version': 'execution-minute-results.v1',
-            'evidence': 'modeled_bar_execution_not_live_capacity', 'published': False,
-            'complete': len(summaries) == len(scenarios()), 'expected_scenarios': len(scenarios()),
-            'inputs': inputs, 'scenarios': summaries,
-            'limits': ['reconstructed_PIT_not_revision_safe', 'bounded_bar_VWAP_not_fill_evidence',
-                       'no_queue_or_self_impact', 'fee_rates_are_assumptions',
-                       'zero_dividend_withholding', 'wall_clock_execution_windows']}
-        write_json(output / 'summary.proposed.json', proposal)
+        write_json(output / 'summary.proposed.json',
+                   build_proposal(inputs, summaries, implementation_hashes))
         print(name, 'complete', summary['terminal_nav'], flush=True)
-    if len(summaries) != len(scenarios()):
-        raise ValueError('incomplete scenario matrix')
-    # Also rewrite when every completed scenario was resumed through continue.
-    write_json(output / 'summary.proposed.json', {
-        'schema_version': 'execution-minute-results.v1',
-        'evidence': 'modeled_bar_execution_not_live_capacity', 'published': False,
-        'complete': True, 'expected_scenarios': len(scenarios()),
-        'inputs': inputs, 'scenarios': summaries,
-        'implementation_sha256': implementation_hashes,
-        'limits': ['reconstructed_PIT_not_revision_safe', 'bounded_bar_execution_not_fill_evidence',
-                   'no_queue_or_self_impact', 'fee_rates_and_parent_minimum_are_assumptions',
-                   'zero_dividend_withholding', 'wall_clock_execution_windows',
-                   'confirmed_suspensions_use_nontradable_carried_valuation'],
-    })
+    if len(summaries) != len(selected):
+        raise ValueError('incomplete requested scenario run')
+    # Also rewrite when every requested scenario resumed through continue.
+    write_json(output / 'summary.proposed.json',
+               build_proposal(inputs, summaries, implementation_hashes))
 
 
 def main():
@@ -325,6 +344,8 @@ def main():
     parser.add_argument('--dividends', type=Path)
     parser.add_argument('--dividend-coverage', type=Path)
     parser.add_argument('--action-overrides', type=Path)
+    parser.add_argument('--factor-evidence', type=Path)
+    parser.add_argument('--scenario', action='append', choices=[row[0] for row in scenarios()])
     parser.add_argument('--suspensions', type=Path)
     parser.add_argument('--base-prepared', type=Path)
     parser.add_argument('--start')
@@ -333,6 +354,7 @@ def main():
     parser.add_argument('--prepare-only', action='store_true')
     parser.add_argument('--run-prepared', action='store_true')
     args = parser.parse_args()
+    scenarios(args.scenario)
     if not args.run_prepared:
         if any(v is None for v in (args.data_root, args.dividends, args.dividend_coverage,
                                    args.suspensions, args.start, args.end)):
