@@ -29,9 +29,14 @@ test("publishes the historical Barra report datasets", () => {
   const factors = JSON.parse(fs.readFileSync(path.join(root, "barra/historical_factor_summary.json"), "utf8"));
   const yearly = fs.readFileSync(path.join(root, "barra/factor_yearly.csv"), "utf8");
   const correlations = JSON.parse(fs.readFileSync(path.join(root, "barra/factor_correlation.json"), "utf8"));
+  const reportPath = path.join(root, "barra/historical_report.md");
+  const report = fs.readFileSync(reportPath, "utf8");
   assert.equal(factors.length, 19);
   assert.match(yearly, /year,factor,days,period_start/);
   assert.ok(correlations.size);
+  for (const [, imagePath] of report.matchAll(/!\[[^\]]*\]\(([^)]+)\)/g)) {
+    assert.ok(fs.existsSync(path.resolve(path.dirname(reportPath), imagePath)), `missing report image: ${imagePath}`);
+  }
 });
 
 test("publishes the explicitly scoped Quality component diagnostic", () => {
