@@ -218,12 +218,12 @@ def scenarios(names=None):
     return [row for row in matrix if row[0] in names]
 
 
-def build_proposal(inputs, summaries, implementation_hashes):
+def build_proposal(inputs, summaries, implementation_hashes, valuation_policy=None):
     names = [row['scenario'] for row in summaries]
     full = {row[0] for row in scenarios()}
     if len(names) != len(set(names)) or set(names) - full:
         raise ValueError('invalid scenario result matrix')
-    return {
+    proposal = {
         'schema_version': 'execution-minute-results.v1',
         'evidence': 'modeled_bar_execution_not_live_capacity', 'published': False,
         'complete': set(names) == full, 'expected_scenarios': len(full),
@@ -234,6 +234,10 @@ def build_proposal(inputs, summaries, implementation_hashes):
                    'zero_dividend_withholding', 'wall_clock_execution_windows',
                    'confirmed_suspensions_use_nontradable_carried_valuation'],
     }
+    if valuation_policy is not None:
+        proposal['valuation_policy'] = valuation_policy
+        proposal['limits'].append('declared_nontrading_valuation_not_cash_disposal')
+    return proposal
 
 
 def run(args):
@@ -248,6 +252,31 @@ def run(args):
     actions = [CorporateAction(**row) for row in json.loads((output / 'corporate-actions.json').read_text())]
     bars = pd.read_parquet(output / 'bars.parquet')
     summaries = []
+    valuation_events, valuation_policy, valuation_policy_digest = [], None, None
+    packet_path = getattr(args, 'valuation_source_packet', None)
+    mode = getattr(args, 'valuation_mode', None)
+    if (packet_path is None) != (mode is None):
+        raise ValueError('valuation source packet and mode must be specified together')
+    if packet_path is not None:
+        from portfolio_backtester.minute_execution import ValuationEvent
+        from market_research.studies.ashare_execution_costs.delist_valuation import build_valuation_policy
+        bound_inputs = dict(
+            inputs, selected_symbols=json.loads((output / 'symbols.json').read_text()),
+            session_dates=sorted(
+                pd.Timestamp(day).strftime('%Y%m%d')
+                for day in bars.time.dt.tz_convert('Asia/Shanghai').dt.normalize().unique()))
+        rows, valuation_policy = build_valuation_policy(packet_path, bound_inputs, mode)
+        valuation_events = [ValuationEvent(**row) for row in rows]
+        policy_receipt = {'source_packet_sha256': sha(packet_path), 'events': rows,
+                          'audit': valuation_policy}
+        valuation_policy_digest = hashlib.sha256(
+            json.dumps(policy_receipt, sort_keys=True, allow_nan=False).encode()).hexdigest()
+        policy_path = output / 'valuation-policy.json'
+        if policy_path.exists() and json.loads(policy_path.read_text()) != policy_receipt:
+            raise ValueError('valuation policy changed: use a new run directory')
+        write_json(policy_path, policy_receipt)
+    elif (output / 'valuation-policy.json').exists():
+        raise ValueError('existing declared valuation requires its original policy arguments')
     engine_hash = sha(Path(inspect.getfile(simulate_minute_execution)))
     source_hash = sha(Path(__file__))
     implementation_hashes = {
@@ -256,6 +285,9 @@ def run(args):
         'research_methods': sha(Path(inspect.getfile(build_targets))),
         'factor_evidence': sha(Path(inspect.getfile(validate_factor_evidence))),
     }
+    if packet_path is not None:
+        implementation_hashes['valuation_contract'] = sha(Path(inspect.getfile(ValuationEvent)))
+        implementation_hashes['valuation_policy'] = sha(Path(inspect.getfile(build_valuation_policy)))
     selected = scenarios(args.scenario)
     for name, variant, capital, minutes, slices, buy, sell in selected:
         target = pd.read_parquet(output / f'targets-{variant}.parquet')
@@ -269,7 +301,8 @@ def run(args):
             if (receipt['config'] != asdict(config) or receipt['engine_sha256'] != engine_hash
                     or receipt['inputs_sha256'] != sha(output / 'inputs.json')
                     or receipt['runner_sha256'] != source_hash
-                    or receipt.get('implementation_sha256') != implementation_hashes):
+                    or receipt.get('implementation_sha256') != implementation_hashes
+                    or receipt.get('valuation_policy_sha256') != valuation_policy_digest):
                 raise ValueError('completed scenario provenance differs: use a new run directory')
             for filename, digest in receipt['output_sha256'].items():
                 if sha(final / filename) != digest:
@@ -277,11 +310,14 @@ def run(args):
             summaries.append(receipt['summary'])
             print(name, 'verified existing scenario', flush=True)
             continue
-        result = simulate_minute_execution(target, bars, config, corporate_actions=actions)
+        kwargs = {'valuation_events': valuation_events} if packet_path is not None else {}
+        result = simulate_minute_execution(target, bars, config, corporate_actions=actions, **kwargs)
         private = output / f'.{name}-inprogress-{uuid.uuid4().hex[:8]}'
         private.mkdir(exist_ok=False)
         for field in ('daily', 'orders', 'fills', 'holdings'):
             getattr(result, field).to_parquet(private / f'{field}.parquet', index=False)
+        if packet_path is not None:
+            result.valuation_ledger.to_parquet(private / 'valuation-ledger.parquet', index=False)
         daily = result.daily
         blocked = json.loads((output / 'unverified-corporate-actions.json').read_text())
         unowned = assert_unowned_events(result.holdings,
@@ -318,6 +354,9 @@ def run(args):
                        clipped_vwap_bars=result.summary['clipped_vwap_bars'],
                        fractional_position_count=len(result.summary['fractional_positions']),
                        negative_cash_sessions=int(daily.cash.lt(-1e-6).sum()))
+        if valuation_policy is not None:
+            summary['valuation_policy_mode'] = valuation_policy['mode']
+            summary['valuation_events'] = len(result.valuation_ledger)
         summary['unowned_unverified_events'] = unowned
         summary.update(shortfall)
         summaries.append(summary)
@@ -325,16 +364,17 @@ def run(args):
                    'engine_sha256': engine_hash, 'runner_sha256': source_hash,
                    'inputs_sha256': sha(output / 'inputs.json'),
                    'implementation_sha256': implementation_hashes,
+                   'valuation_policy_sha256': valuation_policy_digest,
                    'output_sha256': {p.name: sha(p) for p in private.glob('*.parquet')}})
         private.rename(final)
         write_json(output / 'summary.proposed.json',
-                   build_proposal(inputs, summaries, implementation_hashes))
+                   build_proposal(inputs, summaries, implementation_hashes, valuation_policy))
         print(name, 'complete', summary['terminal_nav'], flush=True)
     if len(summaries) != len(selected):
         raise ValueError('incomplete requested scenario run')
     # Also rewrite when every requested scenario resumed through continue.
     write_json(output / 'summary.proposed.json',
-               build_proposal(inputs, summaries, implementation_hashes))
+               build_proposal(inputs, summaries, implementation_hashes, valuation_policy))
 
 
 def main():
@@ -345,6 +385,10 @@ def main():
     parser.add_argument('--dividend-coverage', type=Path)
     parser.add_argument('--action-overrides', type=Path)
     parser.add_argument('--factor-evidence', type=Path)
+    parser.add_argument('--valuation-source-packet', type=Path)
+    parser.add_argument('--valuation-mode', choices=['full_impairment', 'impairment_then_observed',
+                        'termination_decision_full_impairment',
+                        'termination_decision_impairment_then_observed'])
     parser.add_argument('--scenario', action='append', choices=[row[0] for row in scenarios()])
     parser.add_argument('--suspensions', type=Path)
     parser.add_argument('--base-prepared', type=Path)

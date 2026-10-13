@@ -25,3 +25,12 @@ def test_selected_pilots_preserve_full_matrix_completion_gate():
 def test_unknown_duplicate_or_empty_scenario_selection_rejects(names):
     with pytest.raises(ValueError):
         runner.scenarios(names)
+
+
+def test_valuation_pilots_keep_hypothesis_visible_and_matrix_incomplete():
+    policy = {"mode": "full_impairment", "hypothesis": True, "quote_verified": False}
+    proposal = runner.build_proposal({}, [{"scenario": "fees_1m"}], {}, policy)
+    assert proposal["valuation_policy"] == policy
+    assert proposal["complete"] is False
+    assert proposal["published"] is False
+    assert "declared_nontrading_valuation_not_cash_disposal" in proposal["limits"]

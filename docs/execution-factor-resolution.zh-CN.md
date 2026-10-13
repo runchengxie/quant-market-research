@@ -25,3 +25,5 @@
 来源：[600321终止上市公告](https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2024-06-21/600321_20240621_6WSY.pdf)、[002621终止上市公告](https://disc.static.szse.cn/disc/disk03/finalpage/2024-08-02/3bfda236-6bb2-4350-b232-b1e99494fd8b.PDF)、[000982终止上市公告](https://disc.static.szse.cn/download/disc/disk03/finalpage/2024-08-12/c552bbd6-8940-49ef-bbd0-c2c83a3ece6d.PDF)。
 
 现有数据没有可核验的后续报价、实际成交或现金处置流水。不能删除持仓、凭空填零或一直沿用最后价格来让回测通过。下一步应补充退市板块的估值和处置证据，或另行定义并披露保守减值情景。减值假设必须从账户执行过程中生效并重新运行，因为后续资金分配会受估值影响；不能只在结果末尾修补净值。失败运行的输入、实现、配置及台账哈希保留在外部研究记录中，已公开18组结果保持原样。
+
+后续已加入[独立非交易估值情景](execution-delist-valuation.zh-CN.md)，用于明确假设下的敏感性探索。原严格门槛和失败记录保留。
