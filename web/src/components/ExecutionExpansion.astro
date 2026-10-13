@@ -22,8 +22,6 @@ const eventRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[stri
 const referenceRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[string,any])=>(a.references??[]).flatMap((r:any)=>['buy','sell'].map(side=>[date(day),r.candidate,label(side),pct(r[side]?.match_rate),n(r[side]?.ambiguous)])));
 const marketRows=Object.entries(expansion.event_audit??{}).flatMap(([day,a]:[string,any])=>Object.entries(a.by_market??{}).flatMap(([market,m]:[string,any])=>(m.references??[]).flatMap((r:any)=>['buy','sell'].map(side=>[date(day),label(market),n(m.orders?.rows),n(r.eligible_positive_trade_rows),r.candidate,label(side),pct(r[side]?.match_rate)]))));
 const modeled=Array.isArray(strategy.modeled)?strategy.modeled:strategy.modeled?.rows??[];
-const overlays=strategy.overlays??[];
-const stress=Array.isArray(strategy.stress)?strategy.stress:strategy.stress?.rows??[];
 ---
 <section id="expanded-results" class="report-section">
 
@@ -49,8 +47,6 @@ const stress=Array.isArray(strategy.stress)?strategy.stress:strategy.stress?.row
 <p data-locale-text data-en={c.unfilledNote[0]} data-zh={c.unfilledNote[1]}>{c.unfilledNote[0]}</p>
 <Table headers={[c.capital,c.scenario,c.unfilledBuy,c.unfilledSell,c.negative]} rows={modeled.map((r:any)=>[n(r.capital_cny),label(r.scenario),n(r.unfilled_buy_cny),n(r.unfilled_sell_cny),n(r.negative_cash_sessions)])}/>
 </details>
-<details><summary data-locale-text data-en={c.overlay[0]} data-zh={c.overlay[1]}>{c.overlay[0]}</summary><p data-locale-text data-en={c.overlayNote[0]} data-zh={c.overlayNote[1]}>{c.overlayNote[0]}</p><Table headers={[c.capital,c.anchor,c.nav,c.negative,c.shortfall]} rows={overlays.map((r:any)=>[n(r.capital_cny),n(r.anchor_notional_cny),nav(r.fee_static_terminal_nav),n(r.fee_static_negative_cash_sessions),n(r.fee_static_max_funding_shortfall_cny)])}/></details>
-<details><summary data-locale-text data-en={c.stress[0]} data-zh={c.stress[1]}>{c.stress[0]}</summary><p data-locale-text data-en={c.stressNote[0]} data-zh={c.stressNote[1]}>{c.stressNote[0]}</p><Table headers={[c.capital,c.anchor,c.linear,c.compound]} rows={stress.map((r:any)=>[n(r.capital_cny),n(r.anchor_notional_cny),pct(r.linear_cost_fraction),pct(r.compounded_cost_fraction)])}/></details>
 <p>{['expansion','strategy'].map(name=><a download href={withBase(`/data/execution-costs/${name}.json`,import.meta.env.BASE_URL)} data-locale-text data-en={`${c.download[0]} (${name})`} data-zh={`${c.download[1]}（${name==='expansion'?'扩展证据':'策略诊断'}）`}>{c.download[0]} ({name})</a>)}</p>
 </section>
 <section id="common-comparison" class="report-section"><h2 data-locale-text data-en={c.comparison[0]} data-zh={c.comparison[1]}>{c.comparison[0]}</h2><p data-locale-text data-en={c.comparisonNote[0]} data-zh={c.comparisonNote[1]}>{c.comparisonNote[0]}</p>

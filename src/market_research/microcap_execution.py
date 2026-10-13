@@ -59,7 +59,8 @@ def load_clean_panel(asset: Path, instruments: Path, start: str, end: str) -> pd
     if (
         manifest.get("schema_version") != "tushare.a_share.daily_clean.v2"
         or (manifest.get("inputs") or {}).get("st_history_receipt_schema")
-        != "market-data-platform.reconstructed-st-history.v2"
+        not in {"market-data-platform.reconstructed-st-history.v2",
+                "market-data-platform.tushare-reference.v1"}
         or (manifest.get("contracts") or {}).get("st_availability")
         != "daily_clean.st_available_from.v1"
     ):
@@ -69,10 +70,16 @@ def load_clean_panel(asset: Path, instruments: Path, start: str, end: str) -> pd
     if not st_path.is_file() or not receipt_path.is_file():
         raise FileNotFoundError(f"published ST history or receipt is missing: {st_path}")
     st_receipt = json.loads(receipt_path.read_text(encoding="utf-8"))
+    direct = st_receipt.get("schema_version") == "market-data-platform.reconstructed-st-history.v2"
+    published = (
+        st_receipt.get("schema_version") == "market-data-platform.tushare-reference.v1"
+        and st_receipt.get("source_receipt_schema_version")
+        == "market-data-platform.reconstructed-st-history.v2"
+        and st_receipt.get("source_quality_status") == "complete"
+    )
     if (
         st_receipt.get("quality_status") != "complete"
-        or st_receipt.get("schema_version")
-        != "market-data-platform.reconstructed-st-history.v2"
+        or not (direct or published)
     ):
         raise ValueError("published ST history receipt is not complete v2")
     if not instruments.is_file():

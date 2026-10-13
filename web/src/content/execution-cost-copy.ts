@@ -1,18 +1,24 @@
 export const executionCostCopy = {
+  "navExpanded": ["Expanded books", "扩展盘口"],
+  "navStrategy": ["Strategy diagnostic", "策略诊断"],
+  "navComparison": ["Data comparison", "数据对照"],
+  "navFitness": ["Data fitness", "数据可用性"],
+  "navCalibration": ["Execution calibration", "执行校准"],
+  "history": ["Archived three-day pilot and earlier assumptions ↗", "历史三日探索与早期假设记录 ↗"],
   "title": [
     "A-share trading costs and capacity",
     "A股交易成本与策略容量"
   ],
   "stage": [
-    "Historical static L2 expansion · published",
-    "历史静态L2探索 · 已公开"
+    "Historical static L2 and modeled minute execution · published",
+    "历史静态L2与分钟执行模拟 · 已公开"
   ],
   "conclusion": [
     "Across ten selected dates, median static buy/sell costs at CNY 100k are 9.27/8.87 bp. At CNY 1m, full ten-level coverage is only 62.12%/67.68%.",
     "在这批样本里，10万元订单按当时挂单试算，买入成本中位数为9.27基点，卖出为8.87基点，每侧折合约90元。金额增加到100万元，只有约62%的买入盘口、68%的卖出盘口能靠十档挂单完成。"
   ],
   "scope": [
-    "Ten predeclared dates in 2021, 2025 and 2026; 306,483 valid two-sided security-minute books. Order-flow association and a 56-session strategy diagnostic are reported separately. Actual orders and dynamic impact remain uncalibrated.",
+    "Ten predeclared dates in 2021, 2025 and 2026; 306,483 valid two-sided security-minute books. Order-flow association and a 56-session strategy diagnostic are reported separately. Costs are equal-weighted across fully covered records; actual orders and dynamic impact remain uncalibrated.",
     "样本覆盖2021、2025、2026年的十个选定交易日，共306,483条有效双边分钟盘口。成本只统计挂单足够的记录，按每条记录等权汇总。真实委托与动态冲击仍待校准。"
   ],
   "question": [
@@ -28,8 +34,8 @@ export const executionCostCopy = {
     "举例按一年250个交易日、资金规模不变、无杠杆计算。买卖佣金各1基点，卖出另付5基点税费。1基点就是0.01%，10万元的1基点相当于10元。实际费用要核对适用日期和交割单，已经包含的费用不要再加一次。"
   ],
   "formula": [
-    "Annual cost = days × [buy turnover × (buy fees + buy slippage) + sell turnover × (sell fees + sell slippage)]. Rates use decimals.",
-    "年成本 = 交易日数 × [买入换手 ×（买入费用 + 买入滑点）+ 卖出换手 ×（卖出费用 + 卖出滑点）]。费率使用小数。"
+    "Annual linear cost expenditure = days × [buy turnover × (buy fees + buy slippage) + sell turnover × (sell fees + sell slippage)]. Rates use decimals.",
+    "全年线性成本支出 = 交易日数 × [买入换手 ×（买入费用 + 买入滑点）+ 卖出换手 ×（卖出费用 + 卖出滑点）]。费率使用小数。"
   ],
   "definition": [
     "For balanced fully invested rebalances without flows: one-way turnover = half of the sum of absolute weight changes. A 60% sum means about 30% buying and 30% selling.",
@@ -48,16 +54,16 @@ export const executionCostCopy = {
     "买入30% + 卖出30%"
   ],
   "boundary": [
-    "Slippage must use a named benchmark. Midpoint-based book walking already includes half-spread and depth cost: do not add spread or the same impact twice. Unfilled orders and opportunity costs require a separate ledger.",
-    "计算滑点要先选参考价。这里用最高买价和最低卖价的平均值。按挂单逐档试算的价格已经包含买卖报价的差距，不要再加一次价差。没买到或没卖掉的部分要另记账。"
+    "This table is arithmetic sensitivity, not observed annual return or NAV loss; trading frequency and funding are not simulated. Slippage must use a named benchmark. Midpoint-based book walking already includes half-spread and depth cost: do not add spread or the same impact twice. Unfilled orders and opportunity costs require a separate ledger.",
+    "这张表是假设费用的算术比较，不是实测年收益或净值损失，也没有模拟成交与资金安排。计算滑点要先选参考价。这里用最高买价和最低卖价的平均值。按挂单逐档试算的价格已经包含买卖报价的差距，不要再加一次价差。没买到或没卖掉的部分要另记账。"
   ],
   "evidence": [
     "What Level-2 can establish",
     "这些数据能回答什么"
   ],
   "snapshots": [
-    "Ten-level snapshots: measure quoted spread, depth and static buy/sell curves. Report P50/P90/P95 and depth coverage. Insufficient depth means incomplete coverage, never extrapolated fills.",
-    "十档盘口能告诉我们当时挂了多少单，以及按这些价格买卖要多花多少。挂单不足就记为无法算出完整成本，不能当作零成本，也不能假设十档之外还能按原价成交。"
+    "Ten-level snapshots measure quoted spread, depth and static buy/sell benchmarks. Own-order impact remains uncalibrated. Report P50/P90/P95 and depth coverage. Insufficient depth means incomplete coverage, never extrapolated fills.",
+    "十档盘口能告诉我们当时挂了多少单，以及按这些价格买卖的静态基准成本。自身订单造成的冲击仍未校准。挂单不足就记为无法算出完整成本，不能当作零成本，也不能假设十档之外还能按原价成交。"
   ],
   "events": [
     "Orders and trades: validate event order, units, cancellation links and zero-price semantics before estimating signed flow or price response. Historical replay cannot identify the causal impact of a fictional order.",
@@ -72,16 +78,16 @@ export const executionCostCopy = {
     "接下来还缺什么"
   ],
   "phase1": [
-    "1 · Baseline: reconcile dated fees and cost ledgers with quant-platform; audit embedded slippage to prevent double charging. Separate turnover of a portfolio from trading activity of a stock.",
+    "The original simulator’s 5 bp charge has been removed before applying the new fee assumptions. Next, reconcile dated fee rates and minimum commissions against actual broker statements.",
     "费用账目已经核对，原模拟中的5基点收费已移除，再加入新的费用假设。下一步用真实交割单核对费率和最低佣金。"
   ],
   "phase2": [
-    "2 · L2 pilot: inspect local schema and coverage through quant-market-data-platform. Stratify by size, liquidity, volatility, session and market state; publish aggregate cost surfaces with exclusion rates and day/stock-clustered uncertainty.",
+    "Ten dates and trading-amount, market-value and volatility groups are published. Next, verify earliest source records per minute, historically eligible securities that are entirely absent, and predeclared normal and stressed sessions.",
     "已扩大到十个日期并加入成交额、市值和波动分组。还要核查原始文件每分钟最早记录的选择，补上完全缺失的股票，并预先选定正常日和压力日继续比较。"
   ],
   "phase3": [
-    "3 · Strategy sensitivity: compare gross, fee-only and modeled net returns at CNY 10m/100m/1bn. Map position-level orders to participation; test buffers, rebalance frequency and execution speed with signal decay, T+1, limits and suspensions. These are planned scenarios, not measured capacity.",
-    "已比较1000万元、1亿元和10亿元资金下的18组费用情景。后续需要真实订单检查分批成交、等待时间和未成交比例，再判断资金增大后是否还能执行。"
+    "The earlier eighteen fee scenarios remain available. A separate 40-security diagnostic now reports eighteen funded minute scenarios across 2024 H2 and 2025, including fixed splitting and unfilled orders. Real orders are needed for execution calibration before estimating live capacity.",
+    "原有18组费用情景仍保留。另用40只主板股票完成2024下半年、2025年的18组资金约束分钟模拟，纳入固定拆单与未成交账目。仍需真实订单校准执行，才能判断实盘容量。"
   ],
   "gate": [
     "Publish only after semantic checks, sample manifests, benchmark definitions, exclusions and time-based out-of-sample validation are reviewable. Raw vendor data and order records stay outside this repository.",
