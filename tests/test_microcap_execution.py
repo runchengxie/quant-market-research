@@ -138,23 +138,28 @@ def test_clean_panel_requires_dated_st_lineage(tmp_path) -> None:
         load_clean_panel(asset, instruments, "20250102", "20250106")
 
 
-def test_clean_panel_reads_versioned_st_availability(tmp_path) -> None:
+@pytest.mark.parametrize('published', [False, True])
+def test_clean_panel_reads_versioned_st_availability(tmp_path, published) -> None:
     asset = tmp_path / "daily"
     data = asset / "data"
     data.mkdir(parents=True)
     st_history = tmp_path / "st_history_reconstructed.parquet"
     st_history.touch()
-    st_history.with_suffix(".receipt.json").write_text(
-        json.dumps({
+    receipt = {
             "quality_status": "complete",
             "schema_version": "market-data-platform.reconstructed-st-history.v2",
-        }), encoding="utf-8"
-    )
+        }
+    if published:
+        receipt.update(schema_version='market-data-platform.tushare-reference.v1',
+                       source_receipt_schema_version='market-data-platform.reconstructed-st-history.v2',
+                       source_quality_status='complete')
+    st_history.with_suffix(".receipt.json").write_text(json.dumps(receipt), encoding="utf-8")
+    schema = receipt['schema_version']
     (asset / "manifest.yml").write_text(
         "schema_version: tushare.a_share.daily_clean.v2\n"
         "status: completed\n"
         f"inputs:\n  st_history_file: {st_history}\n"
-        "  st_history_receipt_schema: market-data-platform.reconstructed-st-history.v2\n"
+        f"  st_history_receipt_schema: {schema}\n"
         "contracts:\n  st_availability: daily_clean.st_available_from.v1\n",
         encoding="utf-8",
     )
@@ -172,6 +177,11 @@ def test_clean_panel_reads_versioned_st_availability(tmp_path) -> None:
     panel = load_clean_panel(asset, instruments, "20250102", "20250102")
 
     assert panel.loc[0, "st_available_from"] == "20250103"
+    if published:
+        receipt['source_quality_status'] = 'partial'
+        st_history.with_suffix('.receipt.json').write_text(json.dumps(receipt))
+        with pytest.raises(ValueError, match='receipt'):
+            load_clean_panel(asset, instruments, '20250102', '20250102')
 
 
 def test_clean_panel_requires_versioned_st_availability(tmp_path) -> None:

@@ -1,0 +1,29 @@
+---
+import evidence from '../data/execution-minute-reviewed.json';
+import {minuteCopy as c} from '../content/execution-minute-copy';
+import Table from './ExecutionEvidenceTable.astro';
+const data=evidence as any;
+const label=(key:string):readonly[string,string] => c[key as keyof typeof c]??[key,key];
+const number=(value:unknown,digits=2):readonly[string,string]=>['en-US','zh-CN'].map(locale=>typeof value==='number'&&Number.isFinite(value)?new Intl.NumberFormat(locale,{minimumFractionDigits:digits===4?4:0,maximumFractionDigits:digits}).format(value):'—') as unknown as readonly[string,string];
+const fraction=(value:unknown):readonly[string,string]=>['en-US','zh-CN'].map(locale=>typeof value==='number'&&Number.isFinite(value)?new Intl.NumberFormat(locale,{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2}).format(value):'—') as unknown as readonly[string,string];
+const text=(copy:readonly[string,string])=>({'data-locale-text':true,'data-en':copy[0],'data-zh':copy[1]});
+---
+<section id="minute-execution" class="report-section" data-minute-schema={data.schema_version} data-minute-published={String(data.published)}>
+<h2 {...text(c.title)}>{c.title[0]}</h2>
+<p {...text(c.scope)}>{c.scope[0]}</p>
+<p {...text(c.blocked)}>{c.blocked[0]}</p>
+{!data.published?<p {...text(c.pending)}>{c.pending[0]}</p>:data.windows.map((window:any)=><section data-minute-window={window.id}>
+<h3>{window.start} – {window.end}</h3>
+<p class="minute-staleness"><strong {...text(c.staleness)}>{c.staleness[0]}</strong>: <span {...text(number(window.max_calendar_staleness_days))}>{number(window.max_calendar_staleness_days)[0]}</span></p>
+<Table headers={[c.sessions,c.bars,c.synthetic,c.events]} rows={[[number(window.sessions),number(window.observed_bars),number(window.synthetic_suspension_marks),number(window.corporate_events)]]}/>
+<Table headers={[c.scenario,c.capital,c.nav,c.turnover,c.completion,c.p90]} rows={window.scenarios.map((row:any)=>[label(row.scenario),number(row.capital_cny),number(row.terminal_nav,4),fraction(row.mean_one_way_turnover),fraction(row.target_notional_completion),number(row.arrival_shortfall_p90_bp)])}/>
+<details><summary {...text(c.diagnostics)}>{c.diagnostics[0]}</summary><Table headers={[c.scenario,c.cost,c.unavailable,c.orders,c.zero,c.partial]} rows={window.scenarios.map((row:any)=>[label(row.scenario),number(row.transaction_cost_cny),number(row.cost_unavailable_orders),number(row.orders),number(row.zero_fill_orders),number(row.partial_fill_orders)])}/><Table headers={[c.scenario,c.executionMinutes,c.slices,c.commissionMinimum,c.negative]} rows={window.scenarios.map((row:any)=>[label(row.scenario),number(row.execution_minutes),number(row.release_slices),number(row.commission_minimum_cny),number(row.negative_cash_sessions)])}/></details>
+<nav class="report-links"><a href="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-minute-study.md" data-locale-link data-href-en="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-minute-study.md" data-href-zh="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-minute-study.zh-CN.md" data-locale-text data-en={c.method[0]} data-zh={c.method[1]}>{c.method[0]}</a></nav>
+</section>)}
+<p {...text(c.completionNote)}>{c.completionNote[0]}</p>
+<p {...text(c.assumptions)}>{c.assumptions[0]}</p>
+<p {...text(c.minimum)}>{c.minimum[0]}</p>
+<p {...text(c.shortfall)}>{c.shortfall[0]}</p>
+<nav class="report-links"><a href="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-minute-study.md" data-locale-link data-href-en="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-minute-study.md" data-href-zh="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-minute-study.zh-CN.md" data-locale-text data-en={c.method[0]} data-zh={c.method[1]}>{c.method[0]}</a></nav>
+</section>
+<style>.minute-staleness{padding:.7rem;border-left:2px solid var(--rule)}</style>

@@ -9,10 +9,9 @@ test('cost topic exposes scenario arithmetic and persists Chinese locale', async
   await page.goto('research/execution-costs/?lang=zh-CN');
   await expect(page.locator('h1')).toHaveText('A股交易成本与策略容量');
   await expect(page.locator('.research-verdict')).toContainText('真实委托与动态冲击仍待校准');
-  await expect(page.locator('#pilot-audit')).toContainText('65,673,625');
-  await expect(page.locator('#pilot-results')).toContainText('8.48');
-  await expect(page.locator('#pilot-results')).toContainText('64.41%');
-  await expect(page.locator('#pilot-results svg')).toHaveCount(3);
+  await expect(page.locator('#pilot-audit')).toHaveCount(0);
+  await expect(page.locator('#pilot-results')).toHaveCount(0);
+  await expect(page.locator('#baseline')).toBeVisible();
   await page.reload();
   await expect(page.locator('h1')).toHaveText('A股交易成本与策略容量');
 });
@@ -23,7 +22,7 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(expanded.getByRole('heading').first()).toHaveText('Expanded snapshot evidence and strategy diagnostics');
   await expect(expanded.locator('#daily-evidence table').locator('tbody tr')).toHaveCount(20);
   await expect(expanded).toContainText('Order-flow association has not passed the dynamic replay gate');
-  await expect(page.locator('.prior-evidence')).not.toHaveAttribute('open', '');
+  await expect(page.locator('.prior-evidence')).toHaveCount(0);
   await page.goto('research/execution-costs/?lang=zh-CN');
   await expect(page.locator('#expanded-results h2')).toHaveText('按挂单试算，要多花多少钱');
   await expect(page.getByRole('link', {name: '完整研究报告与复现记录 ↗'})).toHaveAttribute('href', /execution-cost-expansion-20261012\.zh-CN\.md$/);
@@ -32,9 +31,9 @@ test('expanded evidence leads the page and translates diagnostic boundaries', as
   await expect(page.locator('[data-execution-chart="daily"] a[download]')).toHaveAttribute('href', /expanded-daily\.zh\.svg$/);
   await page.setViewportSize({ width: 320, height: 700 });
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
-  await page.locator('#strategy-diagnostic details').last().locator('summary').click();
-  await expect(page.locator('#strategy-diagnostic details').last()).toContainText('线性成本比例');
-  await expect(page.locator('#strategy-diagnostic details').last()).toContainText('复利成本比例');
+  await expect(page.locator('#baseline')).toBeVisible();
+  await expect(page.locator('#evidence')).toContainText('静态基准');
+  await expect(page.locator('#roadmap')).toBeVisible();
   await page.reload();
   await expect(page.locator('#expanded-results h2')).toHaveText('按挂单试算，要多花多少钱');
 });
@@ -74,7 +73,7 @@ test('English charts have no visible Han text and no-JS tables retain evidence',
  expect(visible).not.toMatch(/[\p{Script=Han}]/u);
  const context=await browser.newContext({javaScriptEnabled:false});
  const staticPage=await context.newPage();
- await staticPage.goto(page.url());
+ await staticPage.goto(page.url(), {waitUntil:'domcontentloaded'});
  await expect(staticPage.locator('[data-execution-chart="daily"] tbody tr')).toHaveCount(10);
  await expect(staticPage.locator('[data-execution-chart="daily"] tbody tr').first()).toContainText('9.18');
  await staticPage.locator('#daily-evidence summary').click();
@@ -117,4 +116,41 @@ test('execution report keeps detailed values available without opening them by d
  await expect(values).not.toHaveAttribute('open','');
  await values.locator('summary').click();
  await expect(values.locator('tbody tr')).toHaveCount(10);
+});
+
+
+test('minute study preserves independent windows, boundaries and mobile locale', async ({page,browser})=>{
+ await page.goto('research/execution-costs/?lang=en-US');
+ const section=page.locator('#minute-execution');
+ await expect(section).toHaveAttribute('data-minute-schema','execution-minute-public.v1');
+ await expect(section).toContainText('40 main-board securities');
+ await expect(section).toContainText('21 unresolved');
+ await expect(section).toContainText('not causal own-order impact');
+ await expect(section).toContainText('weighted by each order’s target notional');
+ await page.setViewportSize({width:320,height:700});
+ await page.evaluate(()=>document.fonts.ready);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ expect(await section.innerText()).not.toMatch(/[\p{Script=Han}]/u);
+ if(await section.getAttribute('data-minute-published')==='true'){
+  await expect(section.locator('[data-minute-window]')).toHaveCount(2);
+  await expect(section.locator('[data-minute-window="2024h2"]')).toContainText('2024-07');
+  await expect(section.locator('[data-minute-window="2025"]')).toContainText('2025-01');
+  for(const id of ['2024h2','2025']){
+   const window=section.locator(`[data-minute-window="${id}"]`);
+   await expect(window.locator('table').nth(1).locator('tbody tr')).toHaveCount(9);
+   await expect(window.locator('.minute-staleness')).toBeVisible();
+  }
+ }
+ const context=await browser.newContext({javaScriptEnabled:false,viewport:{width:320,height:700}});
+ const staticPage=await context.newPage();
+ await staticPage.goto(page.url(), {waitUntil:'domcontentloaded'});
+ await expect(staticPage.locator('#minute-execution [data-minute-window]')).toHaveCount(2);
+ await expect(staticPage.locator('#minute-execution [data-minute-window="2024h2"] table').nth(1).locator('tbody tr')).toHaveCount(9);
+ expect(await staticPage.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await context.close();
+ await page.goto('research/execution-costs/?lang=zh-CN');
+ await expect(section).toContainText('40只主板股票');
+ await expect(section).toContainText('不能证明冲击是主要损耗');
+ await page.setViewportSize({width:320,height:700});
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });

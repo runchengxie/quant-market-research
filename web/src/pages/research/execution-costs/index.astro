@@ -1,9 +1,9 @@
 ---
+import ExecutionMinute from "../../../components/ExecutionMinute.astro";
+import {minuteCopy} from "../../../content/execution-minute-copy";
 import ExecutionFitness from "../../../components/ExecutionFitness.astro";
 import ExecutionWorkflow from '../../../components/ExecutionWorkflow.astro';
 import ExecutionExpansion from "../../../components/ExecutionExpansion.astro";
-import { expansionCopy } from "../../../content/execution-expansion-copy";
-import ExecutionCostResults from "../../../components/research/ExecutionCostResults.astro";
 import SiteLayout from "../../../layouts/SiteLayout.astro";
 import TopicNav from "../../../components/TopicNav.astro";
 import { executionCostCopy as copy } from "../../../content/execution-cost-copy";
@@ -25,25 +25,11 @@ const links = [
 <p class="reading-lead" data-locale-text data-en={text("conclusion")[0]} data-zh={text("conclusion")[1]}>{text("conclusion")[0]}</p>
 <p  data-locale-text data-en={text("scope")[0]} data-zh={text("scope")[1]}>{text("scope")[0]}</p>
 </section>
-<TopicNav sections={[{id:"expanded-results",label:"扩展盘口",labelEn:"Expanded books",available:true},{id:"strategy-diagnostic",label:"策略诊断",labelEn:"Strategy diagnostic",available:true},{id:"common-comparison",label:"数据对照",labelEn:"Data comparison",available:true},{id:"data-fitness",label:"数据可用性",labelEn:"Data fitness",available:true},{id:"calibration-workflow",label:"执行校准",labelEn:"Execution calibration",available:true}]} />
+<TopicNav sections={[{id:"expanded-results",label:copy.navExpanded[1],labelEn:copy.navExpanded[0],available:true},{id:"strategy-diagnostic",label:copy.navStrategy[1],labelEn:copy.navStrategy[0],available:true},{id:"common-comparison",label:copy.navComparison[1],labelEn:copy.navComparison[0],available:true},{id:"minute-execution",label:minuteCopy.title[1],labelEn:minuteCopy.title[0],available:true},{id:"data-fitness",label:copy.navFitness[1],labelEn:copy.navFitness[0],available:true},{id:"calibration-workflow",label:copy.navCalibration[1],labelEn:copy.navCalibration[0],available:true},{id:"baseline",label:copy.baseline[1],labelEn:copy.baseline[0],available:true},{id:"evidence",label:copy.evidence[1],labelEn:copy.evidence[0],available:true},{id:"roadmap",label:copy.roadmap[1],labelEn:copy.roadmap[0],available:true},{id:"sources",label:copy.sources[1],labelEn:copy.sources[0],available:true}]} />
 <ExecutionExpansion />
+<ExecutionMinute />
 <ExecutionFitness />
 <ExecutionWorkflow />
-<details class="prior-evidence"><summary data-locale-text data-en={expansionCopy.prior[0]} data-zh={expansionCopy.prior[1]}>{expansionCopy.prior[0]}</summary>
-<section class="prior-verdict"><span class="evidence-status" data-locale-text data-en={text("pilotStage")[0]} data-zh={text("pilotStage")[1]}>{text("pilotStage")[0]}</span>
-<h2  data-locale-text data-en={text("pilotConclusion")[0]} data-zh={text("pilotConclusion")[1]}>{text("pilotConclusion")[0]}</h2>
-<p  data-locale-text data-en={text("pilotScope")[0]} data-zh={text("pilotScope")[1]}>{text("pilotScope")[0]}</p>
-</section>
-<TopicNav sections={[{id:"pilot-results",label:"成本与覆盖率",labelEn:"Costs and coverage",available:true},{id:"pilot-audit",label:"样本审计",labelEn:"Sample audit",available:true},{id:"baseline",label:"成本基线",labelEn:"Cost baseline",available:true},{id:"evidence",label:"证据边界",labelEn:"Evidence limits",available:true},{id:"roadmap",label:"研究路线",labelEn:"Research roadmap",available:true},{id:"sources",label:"来源与方法",labelEn:"Sources and methods",available:true}]} />
-<ExecutionCostResults />
-<section id="pilot-audit" class="report-section">
-<h2 data-locale-text data-en={text("auditTitle")[0]} data-zh={text("auditTitle")[1]}>{text("auditTitle")[0]}</h2>
-<p data-locale-text data-en={text("auditScope")[0]} data-zh={text("auditScope")[1]}>{text("auditScope")[0]}</p>
-<p data-locale-text data-en={text("auditCounts")[0]} data-zh={text("auditCounts")[1]}>{text("auditCounts")[0]}</p>
-<p data-locale-text data-en={text("auditClock")[0]} data-zh={text("auditClock")[1]}>{text("auditClock")[0]}</p>
-<p data-locale-text data-en={text("auditFiltering")[0]} data-zh={text("auditFiltering")[1]}>{text("auditFiltering")[0]}</p>
-<p data-locale-text data-en={text("auditNext")[0]} data-zh={text("auditNext")[1]}>{text("auditNext")[0]}</p>
-</section>
 <section id="baseline" class="report-section"><h2  data-locale-text data-en={text("baseline")[0]} data-zh={text("baseline")[1]}>{text("baseline")[0]}</h2>
 <p  data-locale-text data-en={text("assumptions")[0]} data-zh={text("assumptions")[1]}>{text("assumptions")[0]}</p>
 <p  data-locale-text data-en={text("definition")[0]} data-zh={text("definition")[1]}>{text("definition")[0]}</p>
@@ -64,11 +50,11 @@ const links = [
 </section><details id="sources" class="panel research-source"><summary  data-locale-text data-en={text("sources")[0]} data-zh={text("sources")[1]}>{text("sources")[0]}</summary>
 <p  data-locale-text data-en={text("literature")[0]} data-zh={text("literature")[1]}>{text("literature")[0]}</p>
 <ul><li><a href="https://doi.org/10.1016/j.jfineco.2021.08.017">Machine learning in the Chinese stock market</a></li><li><a href="https://doi.org/10.1016/j.irfa.2023.102975">Factor models for Chinese A-shares</a></li><li><a href="https://doi.org/10.1016/j.pacfin.2021.101607">Anomalies in the China A-share market</a></li><li><a href="https://www.nber.org/papers/w20721">A Taxonomy of Anomalies and Their Trading Costs</a></li></ul>
-<nav class="report-links">{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></details></article></SiteLayout>
+<nav class="report-links"><a href="https://github.com/runchengxie/quant-market-research/blob/main/studies/ashare_execution_costs/pilot_findings.md" data-locale-link data-href-en="https://github.com/runchengxie/quant-market-research/blob/main/studies/ashare_execution_costs/pilot_findings.md" data-href-zh="https://github.com/runchengxie/quant-market-research/blob/main/studies/ashare_execution_costs/pilot_findings.zh-CN.md" data-locale-text data-en={copy.history[0]} data-zh={copy.history[1]}>{copy.history[0]}</a>{links.map(([href,key]) => <a href={href} data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</a>)}</nav></details></article></SiteLayout>
 
 <style>
 :global(body:has(.execution-reading) .site-masthead){padding-block:1.2rem;gap:1.5rem}:global(body:has(.execution-reading) .site-brand){font-size:1.8rem;line-height:1.35}:global(body:has(.execution-reading) .site-deck){font-size:.875rem}
 
-.execution-reading{max-width:960px;margin-inline:auto}.execution-reading :global(.report-section){margin-block:1.5rem;padding-block:1.5rem;border-bottom:1px solid var(--rule)}.execution-reading :global(h2){font-family:inherit;font-size:1.45rem;line-height:1.5;letter-spacing:0;margin-block:0 1rem}.execution-reading :global(h3){font-family:inherit;font-size:1.08rem;line-height:1.6;margin-block:1.6rem .6rem}.execution-reading :global(p){line-height:1.85;max-width:76ch}.execution-reading :global(.research-verdict){border:0;border-left:2px solid var(--rule);border-radius:0;background:transparent;padding:0 0 0 1.3rem;margin-block:1.5rem 2rem}.reading-lead{font-size:1.15rem;font-weight:500;line-height:1.9}.execution-reading :global(.evidence-status){border:0;padding:0;color:var(--muted);font-size:12px}.execution-reading :global(details){margin-block:.8rem}.execution-reading :global(summary){font-size:14px;font-weight:500;line-height:1.7;padding-block:.35rem}.execution-reading :global(.report-links){font-size:13px;display:flex;gap:.7rem 1.3rem;flex-wrap:wrap;margin-block:1rem}.execution-reading :global(a){text-underline-offset:3px}.execution-reading :global(.chart-controls select){border-radius:3px}.execution-reading :global(.chart-canvas){height:300px}.execution-reading :global(figcaption){line-height:1.7}.execution-reading :global(.selected-values){margin-top:.8rem}.execution-reading :global(.prior-evidence){margin-block:2rem}
+.execution-reading{max-width:960px;margin-inline:auto}.execution-reading :global(.report-section){margin-block:1.5rem;padding-block:1.5rem;border-bottom:1px solid var(--rule)}.execution-reading :global(h2){font-family:inherit;font-size:1.45rem;line-height:1.5;letter-spacing:0;margin-block:0 1rem}.execution-reading :global(h3){font-family:inherit;font-size:1.08rem;line-height:1.6;margin-block:1.6rem .6rem}.execution-reading :global(p){line-height:1.85;max-width:76ch}.execution-reading :global(.research-verdict){border:0;border-left:2px solid var(--rule);border-radius:0;background:transparent;padding:0 0 0 1.3rem;margin-block:1.5rem 2rem}.reading-lead{font-size:1.15rem;font-weight:500;line-height:1.9}.execution-reading :global(.evidence-status){white-space:normal;max-width:100%;border:0;padding:0;color:var(--muted);font-size:12px}.execution-reading :global(details){margin-block:.8rem}.execution-reading :global(summary){font-size:14px;font-weight:500;line-height:1.7;padding-block:.35rem}.execution-reading :global(.report-links){font-size:13px;display:flex;gap:.7rem 1.3rem;flex-wrap:wrap;margin-block:1rem}.execution-reading :global(a){text-underline-offset:3px}.execution-reading :global(.chart-controls select){border-radius:3px}.execution-reading :global(.chart-canvas){height:300px}.execution-reading :global(figcaption){line-height:1.7}.execution-reading :global(.selected-values){margin-top:.8rem}
 @media(max-width:600px){.reading-lead{font-size:1.02rem}.execution-reading :global(h2){font-size:1.25rem}.execution-reading :global(.report-section){padding-block:1.5rem}.execution-reading :global(.chart-canvas){height:310px}.execution-reading :global(.research-verdict){padding-left:.8rem}}
 </style>
