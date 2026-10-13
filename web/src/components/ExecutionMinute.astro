@@ -13,6 +13,8 @@ const text=(copy:readonly[string,string])=>({'data-locale-text':true,'data-en':c
 <p {...text(c.scope)}>{c.scope[0]}</p>
 <p {...text(c.blocked)}>{c.blocked[0]}</p>
 <nav class="report-links"><a href="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-factor-resolution.md" data-locale-link data-href-en="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-factor-resolution.md" data-href-zh="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-factor-resolution.zh-CN.md" data-locale-text data-en={c.factorResolution[0]} data-zh={c.factorResolution[1]}>{c.factorResolution[0]}</a></nav>
+<p {...text(c.valuationNote)}>{c.valuationNote[0]}</p>
+<nav class="report-links"><a href="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-delist-valuation.md" data-locale-link data-href-en="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-delist-valuation.md" data-href-zh="https://github.com/runchengxie/quant-market-research/blob/main/docs/execution-delist-valuation.zh-CN.md" {...text(c.valuationScenarios)}>{c.valuationScenarios[0]}</a></nav>
 {!data.published?<p {...text(c.pending)}>{c.pending[0]}</p>:data.windows.map((window:any)=><section data-minute-window={window.id}>
 <h3>{window.start} – {window.end}</h3>
 <p class="minute-staleness"><strong {...text(c.staleness)}>{c.staleness[0]}</strong>: <span {...text(number(window.max_calendar_staleness_days))}>{number(window.max_calendar_staleness_days)[0]}</span></p>
