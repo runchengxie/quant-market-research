@@ -7,7 +7,7 @@ function walk(directory) {
   for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
     const file = path.join(directory, entry.name);
     if (entry.isDirectory()) walk(file);
-    else if (/\.(?:js|css|html)$/.test(entry.name)) files.push(file);
+    else if (entry.isFile()) files.push(file);
   }
 }
 walk(dist);
