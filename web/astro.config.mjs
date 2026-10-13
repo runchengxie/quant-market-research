@@ -11,6 +11,17 @@ export default defineConfig({
   // Keep streaming/Suspense and identifierPrefix, using its Web Streams renderer.
   // https://github.com/react/react/issues/31134
   vite: {
+    build: {
+      rolldownOptions: {
+        output: {
+          codeSplitting: {
+            // ZRender is ECharts' lower-level renderer. Keep its dependency
+            // closure together so splitting does not create circular chunks.
+            groups: [{ name: "chart-renderer", test: /[\\/]node_modules[\\/]zrender[\\/]/ }],
+          },
+        },
+      },
+    },
     resolve: {
       alias: [{ find: /^react-dom\/server$/, replacement: "react-dom/server.browser" }],
     },
