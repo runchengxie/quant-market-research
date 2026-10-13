@@ -127,6 +127,9 @@ test('minute study preserves independent windows, boundaries and mobile locale',
  await expect(section).toContainText('21 unresolved');
  await expect(section).toContainText('not causal own-order impact');
  await expect(section).toContainText('weighted by each order’s target notional');
+ await page.setViewportSize({width:320,height:700});
+ await page.evaluate(()=>document.fonts.ready);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  expect(await section.innerText()).not.toMatch(/[\p{Script=Han}]/u);
  if(await section.getAttribute('data-minute-published')==='true'){
   await expect(section.locator('[data-minute-window]')).toHaveCount(2);
