@@ -124,7 +124,10 @@ test('minute study preserves independent windows, boundaries and mobile locale',
  const section=page.locator('#minute-execution');
  await expect(section).toHaveAttribute('data-minute-schema','execution-minute-public.v1');
  await expect(section).toContainText('40 main-board securities');
- await expect(section).toContainText('21 unresolved');
+ await expect(section).toContainText('fee pilots are incomplete');
+ await expect(section).toContainText('three held delisted securities (600321, 002621 and 000982)');
+ await expect(section).toContainText('historical revisions remain unverified');
+ await expect(section.getByRole('link',{name:'Factor evidence and incomplete full-year pilots'})).toHaveAttribute('href',/execution-factor-resolution\.md$/);
  await expect(section).toContainText('not causal own-order impact');
  await expect(section).toContainText('weighted by each order’s target notional');
  await page.setViewportSize({width:320,height:700});
@@ -150,6 +153,8 @@ test('minute study preserves independent windows, boundaries and mobile locale',
  await context.close();
  await page.goto('research/execution-costs/?lang=zh-CN');
  await expect(section).toContainText('40只主板股票');
+ await expect(section).toContainText('两组含费用试跑仍不完整');
+ await expect(section.getByRole('link',{name:'因子证据与全年试跑缺口'})).toHaveAttribute('href',/execution-factor-resolution\.zh-CN\.md$/);
  await expect(section).toContainText('不能证明冲击是主要损耗');
  await page.setViewportSize({width:320,height:700});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
