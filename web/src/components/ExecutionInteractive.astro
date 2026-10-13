@@ -14,7 +14,7 @@ const rowValues=(r:any)=>kind==='strategy'?[text(r.scenario),nav(r.terminal_nav)
 const figureUrl=(lang:string)=>withBase(`/data/execution-costs/${name}.${lang}.svg`,import.meta.env.BASE_URL);
 ---
 <figure class="execution-interactive" data-execution-chart={kind}>
- <script type="application/json" class="chart-data" set:html={JSON.stringify(data).replace(/</g,'\\u003c')} />
+ <script is:inline type="application/json" class="chart-data" set:html={JSON.stringify(data).replace(/</g,'\\u003c')} />
  <div class="chart-controls">{options.map(([key,label,values]:any)=><label><span data-locale-text data-en={label[0]} data-zh={label[1]}>{label[0]}</span><select data-chart-control={key} aria-label={label[0]}>{values.map(([value,copy]:any)=><option value={value} selected={key==='notional'?value==='100000':key==='capital'?value==='10000000':false} data-locale-text data-en={copy[0]} data-zh={copy[1]}>{copy[0]}</option>)}</select></label>)}</div>
  <p class="chart-key" hidden={kind==='strategy'}><span data-locale-text data-en={c.chartP50[0]} data-zh={c.chartP50[1]}>{c.chartP50[0]}</span> · <span data-locale-text data-en={c.chartP90[0]} data-zh={c.chartP90[1]}>{c.chartP90[0]}</span></p>
  <div class="chart-canvas" role="img" aria-label={caption[0]} data-locale-aria data-aria-en={caption[0]} data-aria-zh={caption[1]}></div>
