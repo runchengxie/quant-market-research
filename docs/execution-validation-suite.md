@@ -86,3 +86,5 @@ PYTHONPATH=src python scripts/prepare_execution_market_regimes.py \
 For 2025 use `baseline`, `price_only`, `st_only` or `price_st`, without the 2024 announcement packet. The explicitly documented daily-manifest revision requires `--allow-daily-manifest-revision` and exact original selected-row and target checks. Diagnostic entry points are `diagnostics.analyze_run`, `analysis_summary.compare_reports` and `analysis_summary.market_regime_summary`; these are research tools rather than live-order interfaces.
 
 Next priorities are complete 2025 announcement evidence and a pre-fixed test on a genuinely unseen period. Revision-safe historical data, executable post-delisting quotes, queue behavior and own market impact remain unresolved. This study's checks do not replace that evidence.
+
+See the [next-stage data-gap and holdout plan](execution-validation-next-stage.md) and the [frozen prospective protocol](execution-validation-followup-protocol.json).

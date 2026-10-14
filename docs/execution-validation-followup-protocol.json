@@ -1,0 +1,67 @@
+{
+  "schema": "execution-validation-prospective-protocol.v1",
+  "recorded_utc": "2026-10-14T09:37:06.417122+00:00",
+  "start_rule": "first SSE or SZSE open session after this protocol is merged; roll to next open session when closed",
+  "duration_trade_sessions": 252,
+  "sample_class": "prospective_unseen_only_if_no_performance_peek_or_parameter_change_after_start",
+  "primary_comparison": {
+    "baseline": "original_strategy_and_eligibility",
+    "treatment": "prior_unadjusted_close_below_CNY1_excluded",
+    "capital_cny": 10000000,
+    "scenario": "after_fees_terminal_account_return_difference_treatment_minus_baseline"
+  },
+  "secondary_capital_cny": 1000000,
+  "execution_config": {
+    "participation_rate": 0.05,
+    "release_window_elapsed_minutes": 330,
+    "release_slices": 1,
+    "latency_minutes": 1,
+    "buy_fee_bp": 1.0,
+    "sell_fee_bp": 6.0,
+    "sell_tax_bp": 5.0,
+    "commission_minimum_cny": 0.0,
+    "lot_size": 100
+  },
+  "secondary_guards": [
+    "ST availability using source-bound announcement/publication time",
+    "confirmed termination notice after source coverage audit"
+  ],
+  "metrics": [
+    "after_fee_return_difference_primary",
+    "maximum_drawdown",
+    "target_notional_completion",
+    "transaction_cost_cny",
+    "zero_fill_sell_orders",
+    "retained_legal_inventory"
+  ],
+  "uncertainty": "95 percent calendar-month block bootstrap interval for primary paired daily return difference",
+  "support_rule": "primary return difference > 0 and lower 95 percent interval bound > 0; otherwise unsupported or inconclusive; no retuning against this window",
+  "interim_visibility": "data-quality completeness only; no strategy NAV, return, drawdown or capacity outcome inspection/publication",
+  "daily_archive": [
+    "full candidate universe before selection",
+    "targets and decision/entry timestamps",
+    "input source/version manifests and SHA-256",
+    "announcement and ST source evidence/availability time",
+    "minute data manifest",
+    "execution engine and configuration fingerprints",
+    "complete cash/holdings/orders/fills/valuation ledgers"
+  ],
+  "storage": "external project DATA_ROOT, immutable versioned directories; corrections are new versions and retain prior inputs",
+  "missing_data_rules": {
+    "empty_event_table": "does not establish complete event coverage",
+    "unknown_intraday_announcement_time": "available from next exchange session",
+    "unresolved_terminal_mark_or_proceeds": "final NAV incomplete; no annual performance publication",
+    "incomplete_candidate_wide_announcement_coverage": "termination guard not evaluable"
+  },
+  "prohibitions": [
+    "no threshold or parameter changes during holdout",
+    "no interim performance peeking",
+    "no replacing prior input files",
+    "no deleting legal shares or inventing disposal cash"
+  ],
+  "known_limitations": [
+    "does not measure queue priority or own market impact",
+    "does not prove live capacity",
+    "252 sessions may provide limited statistical power"
+  ]
+}
