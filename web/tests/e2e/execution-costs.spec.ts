@@ -129,6 +129,7 @@ test('minute study preserves independent windows, boundaries and mobile locale',
  await expect(section).toContainText('historical revisions remain unverified');
  await expect(section.getByRole('link',{name:'Factor evidence and incomplete full-year pilots'})).toHaveAttribute('href',/execution-factor-resolution\.md$/);
  await expect(section.getByRole('link',{name:'Explicit nontrading valuation scenarios'})).toHaveAttribute('href',/execution-delist-valuation\.md$/);
+ await expect(section.getByRole('link',{name:'Causal risk guards and executable exits'})).toHaveAttribute('href',/execution-risk-guards\.md$/);
  await expect(section).toContainText('without creating disposal cash');
  await expect(section).toContainText('not causal own-order impact');
  await expect(section).toContainText('weighted by each order’s target notional');
@@ -158,6 +159,7 @@ test('minute study preserves independent windows, boundaries and mobile locale',
  await expect(section).toContainText('两组含费用试跑仍不完整');
  await expect(section.getByRole('link',{name:'因子证据与全年试跑缺口'})).toHaveAttribute('href',/execution-factor-resolution\.zh-CN\.md$/);
  await expect(section.getByRole('link',{name:'独立非交易估值情景'})).toHaveAttribute('href',/execution-delist-valuation\.zh-CN\.md$/);
+ await expect(section.getByRole('link',{name:'风险过滤与实际退出'})).toHaveAttribute('href',/execution-risk-guards\.zh-CN\.md$/);
  await expect(section).toContainText('不产生处置现金');
  await expect(section).toContainText('不能证明冲击是主要损耗');
  await page.setViewportSize({width:320,height:700});
