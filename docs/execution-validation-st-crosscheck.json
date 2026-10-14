@@ -1,0 +1,29 @@
+{
+  "schema": "execution-validation-st-crosscheck.v1",
+  "evidence_status": "retrospective_source_crosscheck_not_revision_safe_pit",
+  "created_utc": "2026-10-14T09:35:50Z",
+  "scope": {
+    "year": 2025,
+    "selected_symbols": 106,
+    "selected_symbol_decision_rows": 9680
+  },
+  "prepared_panel_join": {
+    "matched_rows": 9680,
+    "st_true_rows": 0,
+    "st_unknown_rows": 0,
+    "st_availability_dates_present": 0,
+    "selection_sha256": "ef8506a04b870a1e1239a08d7d83452d464359d03ef721452d1de648117ea256",
+    "daily_panel_sha256": "8b929649e7b62de716cc1ffa8a64d46743210bd7b9bcca3d71085851aea80b3d"
+  },
+  "independent_positive_history": {
+    "rows_2025_for_selected_symbols": 5608,
+    "symbols_with_positive_status": 35,
+    "sha256": "eadb1e718ae08a1de6b2bcb4a7a557e6dd980238e554a6a872cf1440b5747b48",
+    "manifest_sha256": "63852da53551517a9d04127be9a966014d61023b2df0aa04322e5ba811a6b73a",
+    "retrieved_observed_at": "2026-10-02T15:11:30.347549+00:00",
+    "availability_policy": "actual Shanghai retrieval day + 1; historical dates describe reconstructed states, not contemporaneous observations",
+    "revision_safe": false,
+    "historical_pit_eligible": false
+  },
+  "interpretation": "Selected target rows do not overlap with the prepared ST-positive status on the same decision date. This is not proof of point-in-time source coverage; positive history was observed retrospectively in 2026."
+}

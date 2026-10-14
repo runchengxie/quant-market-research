@@ -86,3 +86,5 @@ PYTHONPATH=src python scripts/prepare_execution_market_regimes.py \
 2025年使用`baseline`、`price_only`、`st_only`或`price_st`，不提供2024公告包；若日线来源清单发生本轮已核验的变更，必须显式使用`--allow-daily-manifest-revision`，同时仍须通过原入选行情和目标逐值核对。诊断入口是`diagnostics.analyze_run`，配对归因是`analysis_summary.compare_reports`，环境分组是`analysis_summary.market_regime_summary`；它们属于研究工具，不是实盘下单接口。
 
 下一步应先补齐2025年公告证据，再预先固定规则检验真正未见的时间段。历史数据修订安全、退市后可交易报价、排队与自身市场冲击仍待解决。本轮检查不能替代这些证据。
+
+后续数据缺口与前瞻留样方案见[下一阶段说明](execution-validation-next-stage.zh-CN.md)及[冻结评估协议](execution-validation-followup-protocol.json)。
