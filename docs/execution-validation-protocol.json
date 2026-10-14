@@ -1,0 +1,174 @@
+{
+  "schema": "execution-validation-protocol.v1",
+  "recorded_utc": "2026-10-14T05:24:30.944208+00:00",
+  "purpose": "cross-year replication, rule ablation, accounting attribution, exit diagnostics and bounded execution sensitivity",
+  "windows": {
+    "2024": "development_sample",
+    "2025": "retrospective_cross_year_already_reviewed_not_unseen_OOS"
+  },
+  "feasibility_observations_already_seen": [
+    "2025 price/ST targets equal original targets; no selected 2025 delist dates; announcement coverage incomplete"
+  ],
+  "selection": {
+    "count": 40,
+    "minimum_close_cny": 1.0,
+    "decision_clock": "20:02 Asia/Shanghai prior session",
+    "entry_clock": "09:32 Asia/Shanghai next exchange session",
+    "rebalance_sessions": 1,
+    "modes_2024": [
+      "baseline",
+      "price_only",
+      "st_only",
+      "termination_only",
+      "combined"
+    ],
+    "modes_2025": [
+      "baseline",
+      "price_only",
+      "st_only",
+      "price_st"
+    ],
+    "future_parameter_selection": "none from 2025 outcomes"
+  },
+  "valuation": {
+    "2024": "same four source-bound termination-decision full-impairment declarations in every arm; inventory retained, no cash disposal",
+    "2025": "no declared valuation events; termination guard not tested; complete held marks required"
+  },
+  "profiles": [
+    {
+      "scenario": "fees_1m",
+      "initial_cash": 1000000.0,
+      "participation_rate": 0.05,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 330,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "fees_10m",
+      "initial_cash": 10000000.0,
+      "participation_rate": 0.05,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 330,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "participation_1pct_10m",
+      "initial_cash": 10000000.0,
+      "participation_rate": 0.01,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 330,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "participation_3pct_10m",
+      "initial_cash": 10000000.0,
+      "participation_rate": 0.03,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 330,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "participation_10pct_10m",
+      "initial_cash": 10000000.0,
+      "participation_rate": 0.1,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 330,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "fast_10m",
+      "initial_cash": 10000000.0,
+      "participation_rate": 0.05,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 30,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "split_10m",
+      "initial_cash": 10000000.0,
+      "participation_rate": 0.05,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 5,
+      "execution_minutes": 120,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    },
+    {
+      "scenario": "fees_100m",
+      "initial_cash": 100000000.0,
+      "participation_rate": 0.05,
+      "buy_fee_bp": 1.0,
+      "sell_fee_bp": 6.0,
+      "lot_size": 100,
+      "release_slices": 1,
+      "execution_minutes": 330,
+      "latency_minutes": 1,
+      "commission_minimum_cny": 0.0,
+      "sell_tax_bp": 5.0
+    }
+  ],
+  "primary_metrics": [
+    "account_return",
+    "maximum_drawdown",
+    "transaction_cost_cny",
+    "target_notional_completion",
+    "zero_fill_sell_orders",
+    "retained_legal_inventory",
+    "symbol_PnL_and_fee_reconciliation"
+  ],
+  "publication": {
+    "original_18_scenarios_unchanged": true,
+    "nine_scenario_gate_not_completed_by_custom_profiles": true,
+    "raw_inputs_and_ledgers_private": true
+  },
+  "limitations": [
+    "reconstructed_PIT_not_revision_safe",
+    "2024_post_failure_rule_development",
+    "2025_already_reviewed_not_unseen_OOS",
+    "selected_subset_announcement_coverage_only",
+    "bar_VWAP_and_participation_sensitivity_no_queue_or_self_impact",
+    "no_live_capacity_estimate"
+  ],
+  "regime_definitions": {
+    "universe": "Shanghai/Shenzhen main-board daily panel",
+    "availability": "prior_exchange_session_only",
+    "low_liquidity": "prior 5-session mean amount / prior 20-session mean amount < 0.8",
+    "high_limit_down": "prior close at/below down_limit share >= 0.02",
+    "warmup": "20 complete sessions required; otherwise insufficient_history",
+    "labels_can_overlap": true,
+    "causal_attribution_proven": false
+  }
+}
