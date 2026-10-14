@@ -21,6 +21,11 @@ def test_selected_pilots_preserve_full_matrix_completion_gate():
     ]
 
 
+def test_registered_validation_inputs_require_their_own_runner():
+    with pytest.raises(ValueError, match='validation runner'):
+        runner.select_prepared_scenarios({'experiment_study': {}}, ['fees_1m'])
+
+
 @pytest.mark.parametrize("names", [["unknown"], ["fees_1m", "fees_1m"], []])
 def test_unknown_duplicate_or_empty_scenario_selection_rejects(names):
     with pytest.raises(ValueError):

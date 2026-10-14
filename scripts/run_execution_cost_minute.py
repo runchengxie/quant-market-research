@@ -235,6 +235,8 @@ def risk_comparison_metadata(inputs):
 
 
 def select_prepared_scenarios(inputs, names):
+    if 'experiment_study' in inputs:
+        raise ValueError('registered experiment inputs require the validation runner')
     metadata = risk_comparison_metadata(inputs)
     if metadata is not None and (not names or set(names) - set(metadata['authorized_scenarios'])):
         raise ValueError('risk comparison requires explicit fees_1m/fees_10m scenarios only')

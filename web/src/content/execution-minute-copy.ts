@@ -11,6 +11,8 @@ export const minuteCopy = {
  factorResolution:['Factor evidence and incomplete full-year pilots','因子证据与全年试跑缺口'],
  valuationScenarios:['Explicit nontrading valuation scenarios','独立非交易估值情景'],
  riskGuards:['Causal risk guards and executable exits','风险过滤与实际退出'],
+ validationSuite:['Cross-year validation and execution diagnostics','跨年验证与执行诊断'],
+ validationFinding:['Retrospective validation: the CNY1 price guard improved the assumption-based 2024 account but changed no 2025 fills. Across 24 scenario records (12 simulations and 12 verified ledger reuses), higher returns sometimes coincide with lower completion. These results do not establish live capacity.','回顾性验证：1元价格过滤改善了采用明确估值假设的2024年账户，却没有改变2025年的成交。24条情景记录包含12次模拟与12次核验后的台账复用；部分情景收益更高，成交完成率反而更低。这些结果不能证明实盘容量。'],
  valuationNote:['Separate assumption-based studies retain delisted shares and change valuation without creating disposal cash. They do not resolve the strict annual evidence gap or replace the 18 scenarios below.','另有单独的假设情景保留退市持股，只改变估值，不产生处置现金。它们不表示严格全年证据缺口已解决，也不替代下方18组结果。'],
  dates:['Window','区间'],sessions:['Sessions','交易日数'],bars:['Observed minute bars','已观测分钟记录'],synthetic:['Synthetic suspension marks','停牌合成标记数'],staleness:['Maximum calendar staleness (days)','最长报价陈旧天数（日历日）'],events:['Corporate events','公司行动数'],
  executionMinutes:['Release horizon (elapsed minutes)','释放窗口（实际分钟）'],slices:['Release slices','释放批次数'],commissionMinimum:['Minimum commission (CNY / parent)','最低佣金（元／母订单）'],

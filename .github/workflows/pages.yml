@@ -27,7 +27,7 @@ jobs:
       - name: Verify installed shared matching provider and accounting
         run: |
           uv run --locked --extra formal --extra duckdb --extra dev python -c "import importlib.metadata; importlib.metadata.distribution('quant-platform'); from portfolio_backtester.minute_execution import MinuteExecutionConfig, simulate_minute_execution"
-          uv run --locked --extra formal --extra duckdb --extra dev pytest -q tests/studies/test_execution_cost_replay.py
+          uv run --locked --extra formal --extra duckdb --extra dev pytest -q tests/studies/test_execution_cost_replay.py tests/studies/test_execution_validation_suite.py
 
   build:
     runs-on: ubuntu-latest

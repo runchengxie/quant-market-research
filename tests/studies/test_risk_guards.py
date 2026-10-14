@@ -118,3 +118,88 @@ def test_duplicate_input_indices_are_supported():
 def test_missing_st_availability_rejected():
     with pytest.raises(ValueError, match='st_available_from'):
         build_risk_targets(panel().drop(columns='st_available_from'), count=1)
+
+
+def ablation_panel():
+    source = panel()
+    extra = source.loc[source.ts_code.eq('000003.SZ')].copy()
+    extra['ts_code'] = '000004.SZ'
+    extra['total_mv'] = 4.
+    source = pd.concat([source, extra], ignore_index=True)
+    source.loc[source.ts_code.eq('000001.SZ'), 'close'] = .5
+    source.loc[source.ts_code.eq('000002.SZ'), 'st_available_from'] = '20250102'
+    return source
+
+
+@pytest.mark.parametrize('active,expected,reason', [
+    ('guard_price', '000002.SZ', 'below_minimum_close'),
+    ('guard_st_availability', '000001.SZ', 'st_unknown_or_contradictory'),
+    ('guard_termination', '000001.SZ', 'confirmed_termination'),
+])
+def test_each_guard_applies_only_its_own_exclusion(active, expected, reason):
+    source = ablation_panel()
+    events = event('2025-01-02T20:02:00+08:00')
+    events['symbol'] = '000003.SZ'
+    switches = dict(guard_price=False, guard_st_availability=False, guard_termination=False)
+    switches[active] = True
+    targets, audit = build_risk_targets(source, count=2, risk_events=events, **switches)
+    expected_symbols = {
+        'guard_price': ['000002.SZ', '000003.SZ'],
+        'guard_st_availability': ['000001.SZ', '000003.SZ'],
+        'guard_termination': ['000001.SZ', '000002.SZ'],
+    }
+    assert targets.symbol.tolist() == expected_symbols[active] * 2
+    assert targets.symbol.iloc[0] == expected
+    assert audit['active_guards'] == [active]
+    assert {k: audit['parameters'][k] for k in switches} == switches
+    for day in audit['dates']:
+        assert day['excluded_by_reason'][reason] == 1
+        assert sum(day['excluded_by_reason'].values()) == 1
+        assert day['excluded_candidates'][reason] == [{
+            'guard_price': '000001.SZ', 'guard_st_availability': '000002.SZ',
+            'guard_termination': '000003.SZ',
+        }[active]]
+
+
+def test_all_guards_disabled_preserves_baseline_buffer_and_inputs():
+    source = ablation_panel().drop(columns='st_available_from')
+    source.loc[source.trade_date.eq('20250103') & source.ts_code.eq('000003.SZ'), 'total_mv'] = .1
+    source.loc[source.ts_code.eq('000004.SZ'), 'is_st'] = True
+    original = source.copy(deep=True)
+    events = event('2025-01-02T20:02:00+08:00')
+    original_events = events.copy(deep=True)
+    targets, audit = build_risk_targets(
+        source, count=2, buffer_multiple=2, risk_events=events,
+        guard_price=False, guard_st_availability=False, guard_termination=False,
+    )
+    pd.testing.assert_frame_equal(targets, build_targets(source, count=2, buffer_multiple=2))
+    pd.testing.assert_frame_equal(source, original)
+    pd.testing.assert_frame_equal(events, original_events)
+    assert '000004.SZ' not in targets.symbol.tolist()
+    assert audit['active_guards'] == []
+    assert all(sum(day['excluded_by_reason'].values()) == 0 for day in audit['dates'])
+    json.dumps(audit, allow_nan=False)
+
+
+def test_explicit_all_guards_matches_defaults():
+    source = ablation_panel()
+    defaults, audit = build_risk_targets(source, count=1, risk_events=event())
+    explicit, explicit_audit = build_risk_targets(
+        source, count=1, risk_events=event(), guard_price=True,
+        guard_st_availability=True, guard_termination=True,
+    )
+    pd.testing.assert_frame_equal(defaults, explicit)
+    assert audit == explicit_audit
+
+
+@pytest.mark.parametrize('switch', ['guard_price', 'guard_st_availability', 'guard_termination'])
+@pytest.mark.parametrize('value', [0, 1, None, 'false'])
+def test_guard_switches_require_actual_bool(switch, value):
+    with pytest.raises(ValueError, match=switch):
+        build_risk_targets(panel(), count=1, **{switch: value})
+
+
+def test_disabled_termination_still_validates_supplied_event_source():
+    events = event('not-a-timestamp')
+    with pytest.raises(ValueError, match='available_time'):
+        build_risk_targets(panel(), count=1, risk_events=events, guard_termination=False)
