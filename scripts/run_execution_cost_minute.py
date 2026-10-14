@@ -218,9 +218,73 @@ def scenarios(names=None):
     return [row for row in matrix if row[0] in names]
 
 
+def risk_comparison_metadata(inputs):
+    if 'risk_comparison' not in inputs:
+        return None
+    metadata = inputs['risk_comparison']
+    if (not isinstance(metadata, dict) or metadata.get('role') not in {'baseline', 'risk'}
+            or metadata.get('authorized_scenarios') != ['fees_1m', 'fees_10m']
+            or not isinstance(metadata.get('source_packet_path'), str)
+            or not metadata['source_packet_path'].strip()
+            or not Path(metadata['source_packet_path']).is_absolute()
+            or not isinstance(metadata.get('source_packet_sha256'), str)
+            or len(metadata['source_packet_sha256']) != 64
+            or any(c not in '0123456789abcdef' for c in metadata['source_packet_sha256'])):
+        raise ValueError('invalid risk comparison receipt')
+    return metadata
+
+
+def select_prepared_scenarios(inputs, names):
+    metadata = risk_comparison_metadata(inputs)
+    if metadata is not None and (not names or set(names) - set(metadata['authorized_scenarios'])):
+        raise ValueError('risk comparison requires explicit fees_1m/fees_10m scenarios only')
+    return scenarios(names)
+
+
+def build_risk_comparison_valuation(inputs, bars):
+    """Use one source-bound nontrading impairment assumption for both arms."""
+    from market_research.studies.ashare_execution_costs.risk_sources import load_risk_events
+    from market_research.studies.ashare_execution_costs.risk_guards import build_risk_targets
+
+    metadata = risk_comparison_metadata(inputs)
+    prepared_hashes = metadata.get('lineage', {}).get('implementation_sha256', {})
+    for name, function in [('risk_sources', load_risk_events), ('risk_targets', build_risk_targets),
+                           ('baseline_targets', build_targets)]:
+        if prepared_hashes.get(name) != sha(Path(inspect.getfile(function))):
+            raise ValueError('risk comparison preparation implementation differs')
+    packet_path = Path(metadata['source_packet_path'])
+    if sha(packet_path) != metadata['source_packet_sha256']:
+        raise ValueError('risk comparison source packet hash mismatch')
+    sessions = sorted(pd.Timestamp(day).strftime('%Y%m%d')
+                      for day in bars.time.dt.tz_convert('Asia/Shanghai').dt.normalize().unique())
+    if not sessions or (sessions[0], sessions[-1], len(sessions)) != (
+            inputs['start'], inputs['end'], inputs['sessions']):
+        raise ValueError('risk comparison bars do not match prepared sessions')
+    expected = {'600321.SH', '002621.SZ', '000982.SZ', '600836.SH'}
+    events, audit = load_risk_events(packet_path, sessions, expected_symbols=expected)
+    confirmed = events.loc[events.event_type.eq('confirmed_termination')]
+    if len(confirmed) != 4 or set(confirmed.symbol) != expected:
+        raise ValueError('risk comparison requires the four confirmed termination events')
+    rows = []
+    for event in confirmed.itertuples(index=False):
+        rows.append(dict(event_id=f'termination_decision_full_impairment:{event.event_id}',
+                         symbol=event.symbol, effective_time=event.available_time,
+                         available_time=event.available_time, value_per_share=0.,
+                         basis='declared_full_impairment_hypothesis',
+                         source=f'packet_sha256:{audit["packet_sha256"]}'))
+    policy = dict(mode='termination_decision_full_impairment', hypothesis=True,
+                  source_assumption='confirmed_termination_available_time_zero_nontrading_mark',
+                  shares_retained=True, cash_disposal=False, quote_verified=False,
+                  events=len(rows), source_audit=audit)
+    return rows, policy
+
+
 def build_proposal(inputs, summaries, implementation_hashes, valuation_policy=None):
     names = [row['scenario'] for row in summaries]
+    metadata = risk_comparison_metadata(inputs)
     full = {row[0] for row in scenarios()}
+    if metadata is not None and set(names) - set(metadata['authorized_scenarios']):
+        raise ValueError('risk comparison results contain unauthorized scenarios')
     if len(names) != len(set(names)) or set(names) - full:
         raise ValueError('invalid scenario result matrix')
     proposal = {
@@ -234,6 +298,9 @@ def build_proposal(inputs, summaries, implementation_hashes, valuation_policy=No
                    'zero_dividend_withholding', 'wall_clock_execution_windows',
                    'confirmed_suspensions_use_nontradable_carried_valuation'],
     }
+    if metadata is not None:
+        proposal['requested_pilots_complete'] = set(names) == set(metadata['authorized_scenarios'])
+        proposal['authorized_pilot_count'] = len(metadata['authorized_scenarios'])
     if valuation_policy is not None:
         proposal['valuation_policy'] = valuation_policy
         proposal['limits'].append('declared_nontrading_valuation_not_cash_disposal')
@@ -246,6 +313,8 @@ def run(args):
 
     output = args.output
     inputs = json.loads((output / 'inputs.json').read_text())
+    selected = select_prepared_scenarios(inputs, args.scenario)
+    comparison = risk_comparison_metadata(inputs)
     for name, digest in inputs['input_sha256'].items():
         if sha(output / name) != digest:
             raise ValueError('prepared input hash mismatch')
@@ -255,9 +324,16 @@ def run(args):
     valuation_events, valuation_policy, valuation_policy_digest = [], None, None
     packet_path = getattr(args, 'valuation_source_packet', None)
     mode = getattr(args, 'valuation_mode', None)
+    if comparison is not None and (packet_path is not None or mode is not None):
+        raise ValueError('risk comparison binds its own valuation source and mode')
     if (packet_path is None) != (mode is None):
         raise ValueError('valuation source packet and mode must be specified together')
-    if packet_path is not None:
+    if comparison is not None:
+        from portfolio_backtester.minute_execution import ValuationEvent
+        rows, valuation_policy = build_risk_comparison_valuation(inputs, bars)
+        valuation_events = [ValuationEvent(**row) for row in rows]
+        packet_path = Path(comparison['source_packet_path'])
+    elif packet_path is not None:
         from portfolio_backtester.minute_execution import ValuationEvent
         from market_research.studies.ashare_execution_costs.delist_valuation import build_valuation_policy
         bound_inputs = dict(
@@ -267,6 +343,7 @@ def run(args):
                 for day in bars.time.dt.tz_convert('Asia/Shanghai').dt.normalize().unique()))
         rows, valuation_policy = build_valuation_policy(packet_path, bound_inputs, mode)
         valuation_events = [ValuationEvent(**row) for row in rows]
+    if packet_path is not None:
         policy_receipt = {'source_packet_sha256': sha(packet_path), 'events': rows,
                           'audit': valuation_policy}
         valuation_policy_digest = hashlib.sha256(
@@ -287,8 +364,14 @@ def run(args):
     }
     if packet_path is not None:
         implementation_hashes['valuation_contract'] = sha(Path(inspect.getfile(ValuationEvent)))
-        implementation_hashes['valuation_policy'] = sha(Path(inspect.getfile(build_valuation_policy)))
-    selected = scenarios(args.scenario)
+        if comparison is not None:
+            from market_research.studies.ashare_execution_costs.risk_sources import load_risk_events
+            from market_research.studies.ashare_execution_costs.risk_guards import build_risk_targets
+            implementation_hashes['risk_sources'] = sha(Path(inspect.getfile(load_risk_events)))
+            implementation_hashes['risk_targets'] = sha(Path(inspect.getfile(build_risk_targets)))
+        else:
+            implementation_hashes['valuation_policy'] = sha(
+                Path(inspect.getfile(build_valuation_policy)))
     for name, variant, capital, minutes, slices, buy, sell in selected:
         target = pd.read_parquet(output / f'targets-{variant}.parquet')
         config = MinuteExecutionConfig(initial_cash=capital, participation_rate=.05,
