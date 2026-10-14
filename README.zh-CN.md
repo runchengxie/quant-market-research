@@ -14,6 +14,7 @@
 - [研究方法与说明](https://runchengxie.github.io/quant-market-research/docs/)
 - [低换手研究](docs/research/factors/low-turnover.md)
 - [微盘股研究](docs/research/factors/microcap.md)
+- 网站由 `web/` 中的 Astro 应用构建，只有公开 Markdown allowlist 中的文档会被渲染。MkDocs 已不属于网站构建流程或运行依赖。
 
 ## 本地运行
 
@@ -32,6 +33,7 @@ uv run market-research --help
 - [本地运行手册](docs/runbook-local.md)：配置数据、运行报告和网页检查
 - [浏览器验证](docs/runbook-browser.md)：独立预览服务器和布局检查，中文步骤见本地运行手册
 - [兼容与职责说明](docs/compatibility.md)：查看仓库职责和迁移边界
+- [快照迁移](docs/snapshot-migration.md)：查看旧版审核快照复制工具的显式输入和安全限制
 
 ## 目录说明
 
