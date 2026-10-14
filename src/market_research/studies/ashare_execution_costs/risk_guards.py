@@ -44,6 +44,8 @@ def build_risk_targets(
     panel: pd.DataFrame, *, count: int, minimum_close: float = 1.0,
     rebalance_sessions: int = 1, buffer_multiple: int = 1,
     namechange: pd.DataFrame | None = None, risk_events: pd.DataFrame | None = None,
+    guard_price: bool = True, guard_st_availability: bool = True,
+    guard_termination: bool = True,
 ) -> tuple[pd.DataFrame, dict]:
     """Select full snapshots with prior-session close and known risk exclusions.
 
@@ -51,7 +53,16 @@ def build_risk_targets(
     with no date means known non-ST; false with a date is contradictory. True
     with a future/missing date and null ST are unknown, hence ineligible.
     ``minimum_close`` is an experimental CNY threshold, not statutory face value.
+    Switches disable only these additional guards; original eligibility filters
+    always apply. ST availability is required only when its guard is enabled.
+    Supplied events are validated even when their guard is disabled. Audit
+    reasons describe active guard masks, not exclusive causes of lost targets.
     """
+    guards = dict(guard_price=guard_price, guard_st_availability=guard_st_availability,
+                  guard_termination=guard_termination)
+    for key, value in guards.items():
+        if type(value) is not bool:
+            raise ValueError(f'{key} must be bool')
     if isinstance(minimum_close, bool):
         raise ValueError('minimum_close must be positive and finite')
     try:
@@ -60,7 +71,7 @@ def build_risk_targets(
         raise ValueError('minimum_close must be positive and finite') from exc
     if not math.isfinite(threshold) or threshold <= 0:
         raise ValueError('minimum_close must be positive and finite')
-    if 'st_available_from' not in panel:
+    if guard_st_availability and 'st_available_from' not in panel:
         raise ValueError('missing st_available_from selection column')
     events = _validated_events(risk_events)
     settings = dict(count=count, rebalance_sessions=rebalance_sessions,
@@ -75,19 +86,21 @@ def build_risk_targets(
         baseline = None
     source = panel.copy().reset_index(drop=True)
     source['trade_date'] = source.trade_date.astype(str)
-    available = pd.to_datetime(source.st_available_from, format='%Y%m%d', errors='coerce')
     dates = pd.to_datetime(source.trade_date, format='%Y%m%d', errors='raise')
     st = source.is_st.astype('boolean')
-    unknown = (st.isna() | (st.eq(True) & (available.isna() | available.gt(dates)))
-               | (st.eq(False) & source.st_available_from.notna())).fillna(True)
+    unknown = pd.Series(False, index=source.index)
+    if guard_st_availability:
+        available = pd.to_datetime(source.st_available_from, format='%Y%m%d', errors='coerce')
+        unknown = (st.isna() | (st.eq(True) & (available.isna() | available.gt(dates)))
+                   | (st.eq(False) & source.st_available_from.notna())).fillna(True)
     reasons = {
-        'below_minimum_close': source.close.lt(threshold),
+        'below_minimum_close': source.close.lt(threshold) & guard_price,
         'st_unknown_or_contradictory': unknown,
-        'known_st': (st.eq(True) & ~unknown).fillna(False),
+        'known_st': (st.eq(True) & ~unknown).fillna(False) & guard_st_availability,
         'confirmed_termination': pd.Series(False, index=source.index),
     }
     decisions = dates.dt.tz_localize(ZONE) + pd.Timedelta(hours=20, minutes=2)
-    for row in events.to_dict('records'):
+    for row in events.to_dict('records') if guard_termination else []:
         reasons['confirmed_termination'] |= (
             source.ts_code.eq(row['symbol']) & decisions.ge(row['available_time'])
         )
@@ -126,7 +139,9 @@ def build_risk_targets(
         ))
     return targets, dict(
         parameters=dict(count=count, minimum_close=threshold,
-                        rebalance_sessions=rebalance_sessions, buffer_multiple=buffer_multiple),
+                        rebalance_sessions=rebalance_sessions, buffer_multiple=buffer_multiple,
+                        **guards),
+        active_guards=[key for key, enabled in guards.items() if enabled],
         source_assumptions=dict(
             threshold='experimental_prior_close_CNY_not_statutory_face_value',
             st='daily_clean_st_available_from_YYYYMMDD_unknown_or_contradictory_excluded',
