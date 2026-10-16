@@ -16,6 +16,7 @@ test('ETF and hotspot studies are discoverable with diagnostic evidence labels',
 import { createHash } from 'node:crypto';
 import { validateLegacyStudyEvidence } from './content/legacy-strategy-evidence.server.ts';
 import { legacyStudyCopy } from './content/legacy-strategy-copy.ts';
+import { etfAnnualRows, etfSensitivityRows, hotspotSensitivityRows } from './content/legacy-strategy-chart-data.ts';
 
 test('rendered evidence claims follow the reviewed asset and stale translations fail closed', () => {
   const asset = validateLegacyStudyEvidence();
@@ -69,4 +70,36 @@ test('public metrics reject edited or malformed public payloads', () => {
     const changed = { ...asset, studies };
     assert.throws(() => validateLegacyStudyEvidence(changed), /digest|metric|review/i);
   }
+});
+
+test('interactive ETF chart data uses only reviewed aggregate values and both price conventions', () => {
+  const asset = validateLegacyStudyEvidence();
+  const rows = etfSensitivityRows(asset.studies.find(study => study.id === 'etf-rotation'));
+  assert.equal(rows.length, 4);
+  assert.deepEqual(rows.map(row => row.costBps), [0, 10, 25, 50]);
+  assert.deepEqual(Object.keys(rows[0].raw), ['linear_rank', 'lightgbm_regression', 'lightgbm_ranker', 'fixed_share_basket', 'single_etf_baseline']);
+  assert.deepEqual(Object.keys(rows[0].adjusted), Object.keys(rows[0].raw));
+  assert.equal(Number(rows.find(row => row.costBps === 25).adjusted.lightgbm_regression.toFixed(2)), -8.14);
+  assert.equal(Number(rows.find(row => row.costBps === 25).adjusted.fixed_share_basket.toFixed(2)), 1.52);
+  assert.deepEqual(etfAnnualRows(asset.studies[0]).map(row => row.year), [2021, 2022, 2023, 2024, 2025]);
+  assert.equal(Number(etfAnnualRows(asset.studies[0]).find(row => row.year === 2025).regression.toFixed(2)), 33.81);
+});
+
+test('hotspot chart stays aggregate-only and keeps mean uplift separate from event count', () => {
+  const asset = validateLegacyStudyEvidence();
+  const rows = hotspotSensitivityRows(asset.studies.find(study => study.id === 'hotsector'));
+  assert.deepEqual(rows.map(row => [row.costBps, Number(row.meanUpliftPp.toFixed(3)), row.positiveEvents, row.eventCount]), [
+    [0, 0.239, 3, 4], [25, 0.239, 3, 4], [50, 0.238, 3, 4],
+  ]);
+  assert.doesNotMatch(JSON.stringify(rows), /2025-\d\d-\d\d/);
+});
+
+test('Barra page presents a labeled current conclusion before the interactive workbench', async () => {
+  const page = await readFile(new URL('./pages/research/style-factors-18y/index.astro', import.meta.url), 'utf8');
+  assert.match(page, /showConclusion/);
+  assert.match(page, /BarraNarrative/);
+  assert.match(page, /长期风格研究|style-factor/);
+  assert.match(page, /showConclusion/);
+  const implementation = await readFile(new URL('./components/ResearchPage.astro', import.meta.url), 'utf8');
+  assert.match(implementation, /id="current-conclusion"/);
 });

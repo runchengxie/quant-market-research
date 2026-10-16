@@ -3,6 +3,8 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import { validateLegacyStudyEvidence } from '../content/legacy-strategy-evidence.server';
 const asset = validateLegacyStudyEvidence();
 import { legacyCopy, legacyStudyCopy, metricDefinition, metricLabel } from '../content/legacy-strategy-copy';
+import { etfAnnualRows, etfSensitivityRows, hotspotSensitivityRows } from '../content/legacy-strategy-chart-data';
+import { EtfSensitivityCharts, HotspotSensitivityChart } from './LegacyStrategyCharts';
 interface Props { id: 'etf-rotation' | 'hotsector' }
 const { id } = Astro.props;
 const study = asset.studies.find(value => value.id === id);
@@ -24,6 +26,14 @@ const shared = legacyCopy.shared;
       <p data-locale-text data-en={copy.limitations[0]} data-zh={copy.limitations[1]}>{copy.limitations[0]}</p>
       <p class="notice" data-locale-text data-en={shared.noPromotion[0]} data-zh={shared.noPromotion[1]}>{shared.noPromotion[0]}</p>
     </section>
+    <section class="panel reading-guide">
+      <h2 data-locale-text data-en={shared.reading[0]} data-zh={shared.reading[1]}>{shared.reading[0]}</h2>
+      <p data-locale-text data-en={copy.reading[0]} data-zh={copy.reading[1]}>{copy.reading[0]}</p>
+      <h3 data-locale-text data-en={shared.next[0]} data-zh={shared.next[1]}>{shared.next[0]}</h3>
+      <p data-locale-text data-en={copy.nextStep[0]} data-zh={copy.nextStep[1]}>{copy.nextStep[0]}</p>
+    </section>
+    {id === 'etf-rotation' && <EtfSensitivityCharts client:load rows={etfSensitivityRows(study)} annual={etfAnnualRows(study)} />}
+    {id === 'hotsector' && <HotspotSensitivityChart client:load rows={hotspotSensitivityRows(study)} />}
     <details class="panel results">
       <summary data-locale-text data-en={`${shared.metrics[0]} (${study.metrics.length})`} data-zh={`${shared.metrics[1]}（${study.metrics.length} 项）`}>{shared.metrics[0]} ({study.metrics.length})</summary>
       <p data-locale-text data-en={shared.metricNote[0]} data-zh={shared.metricNote[1]}>{shared.metricNote[0]}</p>
@@ -47,6 +57,11 @@ const shared = legacyCopy.shared;
   .notice { font-weight: 650; }
   .results summary { cursor: pointer; font-weight: 650; }
   .table-wrap { overflow-x: auto; }
+  .reading-guide h2, .reading-guide h3 { margin-block: .7rem .25rem; }
+  .legacy-chart-stack { display: grid; gap: 1rem; margin-block: 1rem; }
+  .legacy-chart-control { display: inline-flex; gap: .6rem; align-items: center; flex-wrap: wrap; margin: .5rem 0; }
+  .legacy-chart-control select { max-width: min(100%, 22rem); }
+  .chart-data summary { cursor: pointer; font-weight: 650; }
   table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
   th, td { border-bottom: 1px solid var(--line, #ddd); padding: .55rem .7rem; text-align: left; }
   td { text-align: right; white-space: nowrap; }

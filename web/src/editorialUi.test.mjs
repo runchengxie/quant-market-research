@@ -19,6 +19,8 @@ const [source, overview, routes, pages] = await Promise.all([
     "./pages/research/microcap/index.astro",
     "./pages/research/indices/index.astro",
     "./pages/research/style-factors-18y/index.astro",
+    "./components/research/BarraNarrative.astro",
+    "./components/ResearchPage.astro",
     "./pages/research/liquidity/index.astro",
     "./components/SiteHeader.astro",
   ].map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))),
@@ -74,10 +76,14 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
 });
 
 test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
-  assert.match(site, /18 年 A 股风格因子动态：收益、稳定性与市场阶段/);
-  assert.match(site, /读者可以了解各类风格因子在不同市场阶段的表现/);
+  assert.match(site, /showConclusion/);
+  assert.match(site, /BarraNarrative/);
+  assert.match(site, /19 项 A 股风格因子的高低分组/);
+  const conclusion = readFileSync(new URL("./content/../conclusion-copy.ts", import.meta.url), "utf8");
+  assert.match(conclusion, /19 条历史因子序列表现各异/);
+  assert.match(conclusion, /历史链路和交易可行性仍待核验/);
   assert.match(site, /Barra 风格因子字典/);
-  assert.match(site, /IC、样本外验证和统计显著性仍待补充/);
+  assert.match(site, /IC 与十分组研究怎么读/);
 });
 
 test("Barra 图表选择因子后展示对应详情", () => {
@@ -87,6 +93,8 @@ test("Barra 图表选择因子后展示对应详情", () => {
   assert.match(source, /怎么计算/);
   assert.match(source, /qualityComponents\.filter/);
   assert.match(source, /当前核心字典对应关系/);
+  assert.match(source, /Chart measure/);
+  assert.match(source, /overviewMetric/);
 });
 
 test("研究页面使用读者导向的入口和文案", () => {

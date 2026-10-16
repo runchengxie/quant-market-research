@@ -8,6 +8,8 @@ const translations = {
     baseline: ['Initially equal-weight fixed-share basket and single-ETF buy-and-hold, charged the same initial fee on matching dates.', '基准为起始等权、固定份额的 ETF 篮子，以及单只 ETF 持有；在相同日期计入相同的初始费用。'],
     scope: ['Conditional matched-mark tail: 1,183 open-to-open periods, 2021-02-18 to 2025-12-31; fixed basket of three current ETFs, not reconstructed historical membership.', '条件匹配后的尾段：2021-02-18 至 2025-12-31，共 1,183 个开盘到开盘区间；使用三只当前 ETF 组成的固定篮子，没有重建历史成分。'],
     limitations: ['The full window is blocked by a missing opening mark. Backfilled history has no independent historical-availability receipt; this was not an untouched holdout. Adjusted prices are a valuation sensitivity, not a broker cash-flow ledger. Fee levels are scenarios, not brokerage quotes. Execution, corporate actions and capacity remain unaudited.', '完整区间因缺少开盘价标记而无法计算。回填历史没有独立的历史可得性凭证，本次也不是未参与调参的留出集。复权价格只是估值敏感性口径，不是券商现金流账本。费用水平是情景假设，不是券商报价；执行、公司行为和容量仍未审计。'],
+    reading: ['The first chart compares cumulative returns under four assumed one-way costs and two price conventions. The second separates the regression recipe’s calendar-year pattern from the fixed basket. Neither chart is a fresh out-of-sample test.', '第一张图按四档单边成本和两种价格口径比较累计收益。第二张图把回归模型与固定篮子的逐年表现并排列出。两张图都不是新的样本外检验。'],
+    nextStep: ['The useful next step is a new sample with a dated availability receipt, a frozen comparison and a cost-aware ledger. Until then, treat the regression result as unresolved and keep the other recipes out of promotion.', '下一步应当取得带日期凭证的新样本，预先冻结比较方案，并统一交易成本账本。在此之前，回归模型仍属结论未定，其余配方也不应晋级。'],
   },
   hotsector: {
     title: ['Hotspot overlay: historical diagnostic', '热点叠加筛选：历史诊断'],
@@ -16,6 +18,8 @@ const translations = {
     baseline: ['Paired candidate arms share the same observed topic and membership base; the comparison changes only the additional individual-stock heat overlay.', '两组使用相同的主题和候选池，只比较是否额外叠加个股热度筛选。'],
     scope: ['Four isolated 2025 signal dates; each event holds for five sessions. Returns use selected opening-price marks and events do not form a continuous portfolio.', '2025 年四个彼此独立的信号日期；每个事件持有五个交易日。收益使用选定的开盘价标记，这些事件不构成连续投资组合。'],
     limitations: ['Historical snapshots do not prove when each input was available to a live researcher. Only four isolated events are available; this is not a significance test, untouched sample, or complete strategy comparison. Raw opening prices omit corporate-action cash flows. Suspensions, price limits, lot sizes and capacity are unaudited.', '历史快照不能证明当时研究者何时能拿到每项输入。这里只有四个独立事件，不是显著性检验、未触碰样本或完整策略比较。原始开盘价未计入公司行为现金流；停牌、涨跌停、交易单位和容量仍未审计。'],
+    reading: ['The chart shows the average paired return difference and how many of the four events favored the overlay. These are separate summaries of the same four events, not extra observations. Event-by-event dates and returns are intentionally not published.', '图表展示配对收益差的平均值，以及四个事件中叠加组占优的数量。它们是同一批四个事件的两种汇总，不是新增样本。网页不公开逐个事件的日期和收益。'],
+    nextStep: ['A stronger test needs new signal dates, proof that each input was available at the time, and a continuous portfolio comparison against a topic-free candidate base.', '更有力的检验需要新的信号日期、每项输入当时可得的凭证，以及与不带主题筛选的候选池进行连续组合比较。'],
   },
 } as const;
 
@@ -25,6 +29,8 @@ export const legacyCopy = {
     metrics: ['Aggregate results', '汇总结果'],
     metricNote: ['Returns are percentages. “bps” means basis points. Annual slices are exploratory and were computed after the full-window result was known. Bootstrap ranges are descriptive, not formal significance tests.', '收益以百分比表示；bps 为基点。年度拆分是在完整区间结果已知后计算的探索性结果。自助抽样区间仅作描述，不是正式显著性检验。'],
     noPromotion: ['These diagnostics do not establish profitability or readiness for live trading.', '这些诊断结果不能证明策略盈利，也不代表适合实盘交易。'],
+    reading: ['How to read these charts', '图表怎么看'],
+    next: ['What would make the next test useful', '下一步要补什么'],
     factors: ['Related factor methods', '相关因子方法'],
     factorBoundary: ['Factor links are conceptual references; their datasets and definitions are not interchangeable with strategy inputs.', '因子链接仅作方法参考，所用数据集和定义不能与策略输入直接替换。'],
     provenance: ['Reviewed source and public-content fingerprints', '已审查的来源与公开内容指纹'],
@@ -39,7 +45,7 @@ export function legacyStudyCopy(study: Study, reviewedContentDigest: string) {
   if (reviewedContentDigest !== translationReviewDigest) throw new Error('Translation content requires review against the changed public evidence');
   if (!(study.id in translations)) throw new Error('Study translation unavailable');
   const t = translations[study.id as keyof typeof translations];
-  return { title: t.title, question: t.question, conclusion: t.conclusion,
+  return { title: t.title, question: t.question, conclusion: t.conclusion, reading: t.reading, nextStep: t.nextStep,
     baseline: [study.baseline, t.baseline], scope: [study.sample_scope, t.scope],
     limitations: [study.limitations.join(' '), t.limitations] } as const;
 }

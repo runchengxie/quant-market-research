@@ -606,6 +606,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const [family, setFamily] = useState("全部");
   const familyLabel = (value: string) => text(value, ({ "全部": "All", "规模": "Size", "价值": "Value", "价值 / 收益": "Value / yield", "质量": "Quality", "成长": "Growth", "动量": "Momentum", "波动率": "Volatility", "市场敏感度": "Market sensitivity", "流动性": "Liquidity", "流动性 / 交易流": "Liquidity / trading flow", "持仓": "Holdings", "持仓 / 筹码": "Holdings / positioning", "基金持仓": "Fund holdings", "持仓与筹码": "Holdings & positioning", "其他": "Other" } as Record<string, string>)[value] ?? value);
   const [showSizeDiagnostic, setShowSizeDiagnostic] = useState(false);
+  const [overviewMetric, setOverviewMetric] = useState<"annual" | "sharpe" | "vol" | "drawdown">("annual");
   useEffect(() => {
     const restore = () => {
       const value = new URL(window.location.href).searchParams.get("factor");
@@ -647,11 +648,13 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
     drawdown: row.max_drawdown == null ? "" : String(row.max_drawdown / 100),
     hit: row.hit_rate == null ? "" : String(row.hit_rate / 100),
   }));
+  const overviewMetricLabel = ({ annual: text("几何年化收益", "Geometric annualized return"), sharpe: text("夏普比率", "Sharpe ratio"), vol: text("年化波动率", "Annualized volatility"), drawdown: text("最大回撤", "Maximum drawdown") } as Record<string, string>)[overviewMetric];
+  const overviewChartRows = factorRows.map(row => ({ factor: row.factor, value: row[overviewMetric] === "" ? Number.NaN : Number(row[overviewMetric]) }))
+    .filter(row => Number.isFinite(row.value)).sort((left, right) => right.value - left.value);
+  const overviewChartScale = Math.max(...overviewChartRows.map(row => Math.abs(row.value)), 0.0001);
+  const overviewChartValue = (value: number) => overviewMetric === "sharpe" ? value.toFixed(2) : pct(value);
   return <div className="barra-explorer">
     {includeNarrative && <ThemeHeading kicker={text("历史研究档案 · Barra 风格因子", "Historical research archive · Barra-style factors")} title={text("A 股风格因子的长期历史表现", "Long-run A-share style-factor performance")} text={text("历史多空合成收益，不代表实际账户盈亏。", "Historical long-short composite returns do not represent account P&L.")} asof={text("各因子样本区间不同", "Sample windows differ by factor")} />}
-    <nav className="section-nav" aria-label={text("本页目录", "On this page")}>
-      <a href="#barra-annual">{text("因子探索", "Factor explorer")}</a><a href="#barra-factor-detail">{text("定义与计算", "Definition & calculation")}</a><a href="#barra-overview">{text("全部表现", "All performance")}</a><a href="#barra-correlations">{text("相关性", "Correlations")}</a>
-    </nav>
     <section className="factor-diagnostic-workspace" aria-label={text("当前因子诊断工作区", "Selected-factor diagnostic workspace")}>
       <div className="workspace-context">
         <span className="section-kicker">{text("当前因子诊断", "Selected-factor diagnostic")}</span>
@@ -715,9 +718,29 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
       </Panel>
       </div>
     </section>
+    <nav className="section-nav" aria-label={text("本页目录", "On this page")}>
+      <a href="#barra-factor-detail">{text("定义与计算", "Definition & calculation")}</a><a href="#barra-overview">{text("全部表现", "All performance")}</a><a href="#barra-correlations">{text("相关性", "Correlations")}</a>
+    </nav>
     <section id="barra-overview">
       <Panel title={text("19 个因子表现总览", "Overview of 19 factor results")} tag={text("可搜索 · 可排序", "Searchable · sortable")}>
         <p className="panel-note">{text("完整数值供查阅。短样本与长样本并列，不代表同期间比较；收益不是已验证的可交易回报。", "Full figures are provided for reference. Short and long samples are shown together but do not cover the same periods. These returns are not validated tradable returns.")}</p>
+        <label className="control-label">{text("图表指标", "Chart measure")} <select aria-label={text("图表指标", "Chart measure")} value={overviewMetric} onChange={event => setOverviewMetric(event.target.value as typeof overviewMetric)}>
+          <option value="annual">{text("几何年化收益", "Geometric annualized return")}</option>
+          <option value="sharpe">{text("夏普比率", "Sharpe ratio")}</option>
+          <option value="vol">{text("年化波动率", "Annualized volatility")}</option>
+          <option value="drawdown">{text("最大回撤", "Maximum drawdown")}</option>
+        </select></label>
+        <div className="factor-summary-chart" role="list" aria-label={`${overviewMetricLabel} · ${text("因子历史摘要", "historical factor summaries")}`}>
+          {overviewChartRows.map(row => {
+            const width = `${Math.abs(row.value) / overviewChartScale * 50}%`;
+            return <div className="factor-summary-row" role="listitem" key={row.factor}>
+              <span className="factor-summary-label">{row.factor}</span>
+              <span className="factor-summary-track"><span className="factor-summary-zero"/><span className={`factor-summary-bar ${row.value < 0 ? "negative" : "positive"}`} style={{ left: row.value < 0 ? `calc(50% - ${width})` : "50%", width }}/></span>
+              <strong>{overviewChartValue(row.value)}</strong>
+            </div>;
+          })}
+        </div>
+        <p className="panel-note">{text("切换指标可查看各因子的历史摘要。因子之间的样本起止日不同，图表用于定位差异，不构成同期间排名。", "Switch the measure to inspect each factor's historical summary. Sample dates differ, so use this chart to locate contrasts rather than rank like-for-like results.")}</p>
             <details className="panel-note"><summary>{text("这些指标和公式符号是什么意思？", "What do these measures and formula terms mean?")}</summary><p>{text("几何年化收益把多期复合结果换算成等效年收益；年化波动率按页面所用频率把收益起伏折算到一年；夏普比率用平均超额收益除以年化波动率；最大回撤是从历史高点到之后低点的最大跌幅；日收益为正比例表示收益为正的交易日占比。它们都来自历史序列，不能单独证明未来表现。", "Geometric annualized return converts a compounded multi-period result into an equivalent yearly rate. Annualized volatility scales return variation to a year using the page's frequency. The Sharpe ratio divides average excess return by annualized volatility. Maximum drawdown is the largest fall from a previous high to a later low. Positive daily-return ratio is the share of trading days with positive returns. These describe the historical series and do not establish future performance on their own.")}</p><p>{text("读公式时：`ln` 是自然对数；`clip(x, a, b)` 把 x 限制在 a 到 b 之间；`Cov` 表示两个收益序列共同变化的程度，`Var` 表示单个序列的变化程度；`rᵢ` 是股票收益，`rₘ` 是本研究样本等权平均收益。字段名如 `total_mv`、`turnover_rate`、`PE_TTM` 沿用数据源原名。", "In the formulas, `ln` is the natural logarithm; `clip(x, a, b)` bounds x between a and b; `Cov` measures how two return series move together, and `Var` measures variation in one series; `rᵢ` is a stock return and `rₘ` is the equal-weight average return of this study's sample. Names such as `total_mv`, `turnover_rate`, and `PE_TTM` retain the source field identifiers.")}</p></details>
         {!factorRows.length ? <DataNotice label={text("因子总览", "Factor overview")} error={factorsResource.error} retry={factorsResource.retry} empty={!!factorsResource.data} /> :
           <SortableTable rows={factorRows} columns={[["factor", text("因子", "Factor")], ["coverage", text("样本范围", "Coverage")], ["annual", text("几何年化", "Geometric annualized")], ["vol", text("年化波动率", "Annualized volatility")], ["sharpe", text("夏普比率", "Sharpe ratio")], ["drawdown", text("最大回撤", "Max drawdown")], ["hit", text("日收益为正比例", "Positive daily-return ratio")]]} percentColumns={["annual", "vol", "drawdown", "hit"]} />}
