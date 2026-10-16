@@ -22,10 +22,11 @@ test('hub connects questions, source-backed charts and revised evidence in both 
   await expect(page.locator('#microcap-revisions')).toContainText('Next-session execution');
   await expect(page.locator('#microcap-open-questions')).toContainText('Partial evidence; verification remains open');
   await expect(page.locator('#microcap-window-recheck')).toContainText('4.22%');
-  await expect(page.locator('#microcap-window-recheck')).toContainText('not reproduced');
+  await expect(page.locator('#microcap-window-recheck')).toContainText('6.26%');
+  await expect(page.locator('#microcap-window-recheck')).toContainText('does not establish which run matches the historical method');
   await page.getByRole('button', { name: 'Switch to Chinese' }).click();
   await expect(page.locator('#microcap-map')).toContainText('研究地图');
-  await expect(page.locator('#microcap-window-recheck')).toContainText('原图中收益随窗口递增的排序没有重现');
+  await expect(page.locator('#microcap-window-recheck')).toContainText('还不能确认哪种口径符合当年的原始方法');
   await expect(page.locator('#microcap-window-evidence')).toContainText('最大回撤');
   await expect(page.locator('#microcap-revisions')).toContainText('下一交易日执行');
 });
