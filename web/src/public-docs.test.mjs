@@ -22,6 +22,11 @@ test('reader only opens the explicit public document allowlist', async () => {
 test('reader resolves published Chinese companion pages to the Astro docs routes', () => {
   assert.equal(
     resolveDocLink('docs/index.md', 'index.zh-CN.md', '/quant-market-research'),
-    '/quant-market-research/docs/index.zh-CN/',
+    '/quant-market-research/docs/index.zh-CN/?lang=zh-CN',
   );
+});
+
+test('explicit companion-language links override the saved UI language', () => {
+  assert.equal(resolveDocLink('docs/research/factors/microcap.md', 'microcap.zh-CN.md', '/quant-market-research'), '/quant-market-research/docs/research/factors/microcap.zh-CN/?lang=zh-CN');
+  assert.equal(resolveDocLink('docs/research/factors/microcap.zh-CN.md', 'microcap.md', '/quant-market-research'), '/quant-market-research/docs/research/factors/microcap/?lang=en-US');
 });

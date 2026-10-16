@@ -4,6 +4,10 @@ test('canonical documentation switches the full body and contents between langua
   await page.goto('docs/research/experiments/microcap-execution-diagnostic-20260928/?lang=zh-CN');
   await expect(page.locator('.article-content h1')).toContainText('微盘组合公共执行模拟诊断');
   await expect(page.locator('.article-content')).toContainText('5% 成交参与率');
+  await page.locator('.article-content').getByRole('link', {name:'English page',exact:true}).click();
+  await expect(page.locator('.article-content h1')).toContainText('Microcap portfolio execution diagnostic');
+  await page.getByRole('button', { name: 'Switch to Chinese' }).click();
+  await expect(page.locator('.article-content h1')).toContainText('微盘组合公共执行模拟诊断');
   await page.getByRole('button', { name: '切换到英文' }).click();
   await expect(page.locator('.article-content h1')).toContainText('Microcap portfolio execution diagnostic');
   await page.goto('docs/research/factors/microcap/?lang=zh-CN');
