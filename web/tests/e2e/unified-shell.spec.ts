@@ -38,14 +38,14 @@ test('research card category labels follow the selected locale', async ({ page }
   await page.goto('research/?lang=en-US');
   const labels = page.locator('.research-card .section-kicker');
   await expect(labels).toHaveText([
-    'Cash-flow research', 'Cash-flow research', 'Micro-cap research', 'Micro-cap research',
+    'Cash-flow research', 'Cash-flow research', 'Micro-cap research', 'Micro-cap research', 'Micro-cap research',
     'Index research', 'Style research', 'Style research', 'Trading costs and capacity', 'Liquidity research', 'Low-turnover research',
   ]);
 
   await page.getByRole('button', { name: 'Switch to Chinese' }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
   await expect(labels).toHaveText([
-    '现金流研究', '现金流研究', '微盘研究', '微盘研究', '指数研究',
+    '现金流研究', '现金流研究', '微盘研究', '微盘研究', '微盘研究', '指数研究',
     '风格研究', '风格研究', '交易成本与容量', '流动性研究', '低换手研究',
   ]);
 });

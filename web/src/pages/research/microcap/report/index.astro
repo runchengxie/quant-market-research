@@ -1,0 +1,16 @@
+---
+import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import ArticleLayout from '../../../../layouts/ArticleLayout.astro';
+import { buildMicrocapReport, buildWindowSvg } from '../../../../content/microcap-report.server';
+const processor = await createMarkdownProcessor();
+const en=await buildMicrocapReport('en-US');
+const zh=await buildMicrocapReport('zh-CN');
+const localMarkdown = (markdown: string) => markdown.replaceAll('https://runchengxie.github.io/quant-market-research/', `${import.meta.env.BASE_URL.replace(/\/$/, '')}/`);
+const english=await processor.render(localMarkdown(en.markdown));
+const chinese=await processor.render(localMarkdown(zh.markdown));
+const inlineChart = (html: string, svg: string) => html.replace(/<img\b[^>]*src="[^"]*microcap-windows\.[^"]+"[^>]*>/, svg);
+english.code=inlineChart(english.code,await buildWindowSvg('en-US'));
+chinese.code=inlineChart(chinese.code,await buildWindowSvg('zh-CN'));
+const meta={id:'microcap-report',title:zh.title,summary:'A complete source-backed public micro-cap research record with portfolio comparisons, revisions and methodology appendices.'};
+---
+<ArticleLayout meta={meta} html={english.code} headings={english.metadata.headings} alternate={{html:chinese.code,headings:chinese.metadata.headings,locale:'zh-CN'}} />

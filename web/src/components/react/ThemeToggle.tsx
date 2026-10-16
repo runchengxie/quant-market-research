@@ -18,6 +18,13 @@ export default function ThemeToggle() {
     applyTheme(storedChoice, window.matchMedia("(prefers-color-scheme: dark)").matches, document.documentElement);
   }, []);
 
+  useEffect(() => {
+    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const update = () => { if (choice === 'system') applyTheme(choice, media.matches, document.documentElement); };
+    media.addEventListener('change', update);
+    return () => media.removeEventListener('change', update);
+  }, [choice]);
+
   function cycleTheme() {
     const next = choices[(choices.indexOf(choice) + 1) % choices.length];
     setChoice(next);

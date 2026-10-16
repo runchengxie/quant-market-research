@@ -543,3 +543,11 @@ body { font-size: 15px; line-height: 1.75; }
 .research-verdict { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--line, #ccc); border-radius: 12px; }
 .research-verdict h2 { margin-top: 0; }
 .research-verdict p { max-width: 80ch; line-height: 1.7; }
+
+/* Markdown code and research links follow the same palette as the document. */
+[data-theme="dark"] .article-content pre,
+[data-theme="dark"] .article-content pre span { background-color: var(--surface-strong) !important; color: var(--ink-soft) !important; }
+.hub-section a { color: var(--accent); text-underline-offset: .18em; }
+.hub-section a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.article-content img, .article-content svg { max-width: 100%; height: auto; }

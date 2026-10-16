@@ -17,6 +17,12 @@ const metrics = [
  { id: 'turnover', label: c.turnover, value: (r: typeof rows[number]) => r.annualized_turnover, unit: '×' },
 ];
 ---
+<section id="microcap-report-downloads" class="panel hub-section">
+  <h2><Text text={c.reportTitle} /></h2><p><Text text={c.reportDescription} /></p>
+  <p><a class="button-link" href={link('/research/microcap/report/')}><Text text={c.readReport} /></a></p>
+  <p><a class="download-en button-link" href={link('/downloads/microcap-research.en-US.md')} download="microcap-research.en-US.md"><Text text={c.downloadReport} /> · English</a><a class="download-zh button-link" href={link('/downloads/microcap-research.zh-CN.md')} download="microcap-research.zh-CN.md"><Text text={c.downloadReport} /> · <span data-locale-text data-en="Chinese" data-zh="中文">Chinese</span></a></p>
+  <p class="panel-note"><Text text={c.reportFormats} /></p>
+</section>
 <section id="microcap-map" class="hub-section">
   <h2><Text text={c.title} /></h2><p><Text text={c.intro} /></p><p class="panel-note"><Text text={c.scope} /></p>
   <div class="hub-grid">{researchQuestions.map(q => <article class="research-card">
@@ -50,7 +56,7 @@ const metrics = [
   <p class="panel-note"><Text text={c.matrixBoundary} /></p>
   <div class="table-scroll"><table class="hub-matrix"><caption><Text text={c.return} /> (%)</caption><thead><tr><th><Text text={c.days} /></th>{cadences.map(f => <th scope="col"><Text text={f.label} /></th>)}</tr></thead><tbody>{definitions.map(d => <tr><th scope="row"><Text text={d.label} /></th>{cadences.map(f => {
     const row = matrix.find(r => r.turnover_definition === d.id && r.rebalance_frequency === f.id);
-    return <td style={row ? `background:rgba(18,103,214,${.06 + Math.abs(row.net_annual_return) / matrixMax * .24})` : ''}>{row ? `${row.net_annual_return.toFixed(2)}%` : '—'}</td>;
+    return <td style={row ? `background:color-mix(in srgb,var(--accent) ${6 + Math.abs(row.net_annual_return) / matrixMax * 24}%,transparent)` : ''}>{row ? `${row.net_annual_return.toFixed(2)}%` : '—'}</td>;
   })}</tr>)}</tbody></table></div>
   <p><a href={link('/data/low_turnover_exploration.json')}><Text text={c.source} /></a></p>
 </section>
@@ -64,6 +70,8 @@ const metrics = [
   <div class="hub-grid">{openQuestions.map(q => <article class="research-card"><span class="tag"><Text text={c.unpublished} /></span><h3><Text text={q.title} /></h3><p><Text text={q.text} /></p></article>)}</div>
 </section>
 <style>
+:global(html:not([lang="zh-CN"])) .download-zh { display: none; }
+:global(html[lang="zh-CN"]) .download-en { display: none; }
 .hub-section { margin-block: 2rem; scroll-margin-top: 16rem; }
 .hub-section h2 { margin-bottom: .8rem; }
 .hub-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.2rem; }
@@ -79,15 +87,15 @@ const metrics = [
 .hub-controls { display: flex; flex-wrap: wrap; gap: .5rem; margin-block: 1rem; }
 .hub-controls[hidden], figure[hidden] { display: none; }
 .hub-controls button { border: 1px solid currentColor; border-radius: .5rem; padding: .5rem .8rem; background: transparent; color: inherit; cursor: pointer; }
-.hub-controls button[aria-pressed="true"] { color: white; background: #1267d6; border-color: #1267d6; }
+.hub-controls button[aria-pressed="true"] { color: var(--paper); background: var(--accent-strong); border-color: var(--accent-strong); }
 figure { margin: 1.5rem 0; }
 figcaption { font-weight: 700; margin-bottom: 1rem; }
 .hub-bars { display: grid; gap: 1rem; }
 .hub-bar-row { display: grid; grid-template-columns: 5.5rem minmax(0, 1fr) 5.5rem; gap: .7rem; align-items: center; font-variant-numeric: tabular-nums; }
 .hub-bar-row strong { text-align: right; }
 .hub-bar-track { border-left: 1px solid currentColor; padding-block: .15rem; }
-.hub-bar { display: block; height: 1.1rem; background: #1267d6; border-radius: 0 .2rem .2rem 0; }
-.loss .hub-bar { background: #b35b4e; }
+.hub-bar { display: block; height: 1.1rem; background: var(--accent-strong); border-radius: 0 .2rem .2rem 0; }
+.loss .hub-bar { background: var(--ink-soft); }
 .hub-revisions { padding-left: 1.4rem; }
 .hub-revisions li { padding-left: .5rem; margin-block: 1.2rem; }
 .hub-revisions h3 { margin-bottom: .3rem; font-size: 1rem; }

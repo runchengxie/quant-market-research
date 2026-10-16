@@ -1,5 +1,10 @@
 // Reviewed public synthesis. Numerical charts read the existing published snapshot.
 export const hubCopy = {
+  reportTitle: ['Complete research report', '完整研究报告'],
+  reportDescription: ['A continuous reading edition with the research map, matched definitions, numerical comparisons, revisions, open questions and full public methodology appendices. Reviewed on 2026-10-16; underlying samples keep their own dates.', '按阅读顺序完整整理研究地图、组合口径、数值对照、修正记录、待解问题与公开方法附录。整理于 2026-10-16，各项样本仍保留各自截止日期。'],
+  readReport: ['Read the complete research report', '阅读完整研究报告'],
+  downloadReport: ['Download Markdown', '下载 Markdown 文档'],
+  reportFormats: ['Markdown includes the full text, exact tables and links to the public charts and sources. It can be saved and edited offline; linked chart images need a connection or a separate image download.', 'Markdown 包含完整正文、数值表及公开图表和来源链接，可离线保存与编辑；链接图片需联网读取或另行下载。'],
   title: ['Research map', '研究地图'],
   intro: ['Follow a question from historical observations to data checks and execution evidence. Each study keeps its own sample, portfolio definition and evidence status.', '从历史表现出发，沿着研究问题查看数据审计和执行证据。每项研究分别保留样本、组合定义和证据状态。'],
   scope: ['Public evidence reviewed on 2026-10-16; underlying samples have separate cutoffs. Older exploratory returns are not current strategy recommendations.', '公开证据整理于 2026-10-16；各项样本截止日期分别列明。早期探索收益不代表当前策略建议。'],
@@ -13,7 +18,7 @@ export const hubCopy = {
   revisionsIntro: ['Read revisions with the study they affect. A change in one return window or simulator does not automatically invalidate every related experiment.', '修正记录应与受影响的实验一起阅读。某个收益窗口或模拟器发生修正，并不意味着所有相关实验同时失效。'],
   matrix: ['Turnover definition × rebalance cadence', '换手定义 × 调仓频率'],
   matrixIntro: ['Sixteen historical screening configurations are preserved here to show how much was explored. These small-cap-plus-low-turnover composite results use a weight-level screening engine. They are a different portfolio from the three-window low-turnover chart above.', '保留 16 种历史筛选配置，说明已探索的范围。这些是小盘加低换手复合组合的权重筛选模拟结果，与上方三窗口低换手组合不同。'],
-  matrixBoundary: ['Net annual return, percent, from the 2026-09-16 exploratory snapshot. Darker blue means a higher historical value, not greater reliability. All cells need consistent share-ledger confirmation before cadence or parameter selection. The previously inspected 2024–2026 segment is descriptive only.', '净年化收益，单位为百分数，来自 2026-09-16 探索快照。蓝色越深仅表示历史数值越高，不表示更可信。选择调仓频率或参数前，各格均需一致份额账本复核；已查看的 2024–2026 仅作描述。'],
+  matrixBoundary: ['Net annual return, percent, from the 2026-09-16 exploratory snapshot. Shading encodes historical return, not confidence. All cells need consistent share-ledger confirmation before cadence or parameter selection. The previously inspected 2024–2026 segment is descriptive only.', '净年化收益，单位为百分数，来自 2026-09-16 探索快照。颜色强度仅表示历史收益高低，不表示更可信。选择调仓频率或参数前，各格均需一致份额账本复核；已查看的 2024–2026 仅作描述。'],
   weekly: ['Weekly', '每周'], biweekly: ['Biweekly', '每两周'], monthly: ['Monthly', '每月'], quarterly: ['Quarterly', '每季度'],
   mean20: ['20-day mean', '20 日均值'], mean60: ['60-day mean', '60 日均值'], median60: ['60-day median', '60 日中位数'], mean120: ['120-day mean', '120 日均值'],
   windows: ['Does smoothing turnover change the result?', '换手观察窗口会改变结果吗？'],

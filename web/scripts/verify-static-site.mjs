@@ -76,6 +76,7 @@ export function verifyStaticSite(distDirectory) {
     if (!fs.existsSync(file)) continue;
     const html = fs.readFileSync(file, "utf8")
       .replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, " ")
+      .replace(/<template\b[^>]*>[\s\S]*?<\/template>/gi, " ")
       .replace(/<style\b[^>]*>[\s\S]*?<\/style>/gi, " ")
       .replace(/<button\b[^>]*class="locale-toggle"[^>]*>[\s\S]*?<\/button>/gi, " ")
       .replace(/<[^>]+>/g, " ");
@@ -104,7 +105,7 @@ export function verifyStaticSite(distDirectory) {
     }
   }
 
-  const publicText = filesBelow(dist).filter((file) => /\.(?:html|js|css|json|csv|txt|xml|svg)$/i.test(file))
+  const publicText = filesBelow(dist).filter((file) => /\.(?:html|js|css|json|csv|txt|xml|svg|md)$/i.test(file))
     .map((file) => fs.readFileSync(file, "utf8")).join("\n");
   if (/\/home\/|\/Users\/|\/mnt\/|TUSHARE_TOKEN=|API_KEY=|SECRET_KEY=/.test(publicText)) {
     errors.push("Public build contains a forbidden local path or credential marker");
