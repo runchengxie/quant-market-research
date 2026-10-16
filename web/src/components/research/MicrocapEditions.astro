@@ -14,7 +14,7 @@ const base=import.meta.env.BASE_URL.replace(/\/$/,'');
  <p data-locale-text data-en={copy.current[0]} data-zh={copy.current[1]}>{copy.current[0]}</p>
  <p data-locale-text data-en={copy.change[0]} data-zh={copy.change[1]}>{copy.change[0]}</p>
  <p><a href={`${base}/downloads/archive/microcap-research.v${reportEdition}.en-US.md`} download data-locale-text data-en={`${copy.frozen[0]} (English)`} data-zh={`${copy.frozen[1]}（英文）`}>{copy.frozen[0]} (English)</a><a href={`${base}/downloads/archive/microcap-research.v${reportEdition}.zh-CN.md`} download data-locale-text data-en={`${copy.frozen[0]} (Chinese)`} data-zh={`${copy.frozen[1]}（中文）`}>{copy.frozen[0]} (Chinese)</a></p>
- <p>{(['en-US','zh-CN'] as const).map(locale=><a href={`${base}/downloads/archive/microcap-research.pre-v${reportEdition}.3966176.${locale}.md`} download data-locale-text data-en={`${copy.archive[0]} (${locale})`} data-zh={`${copy.archive[1]} (${locale})`}>{copy.archive[0]} ({locale})</a>)}</p>
+ <p>{(['en-US','zh-CN'] as const).map(locale=><a href={`${base}/downloads/archive/microcap-research.v1.0.0.${locale}.md`} download data-locale-text data-en={`${copy.archive[0]} (${locale})`} data-zh={`${copy.archive[1]}（${locale}）`}>{copy.archive[0]} ({locale})</a>)}</p>
  <p data-locale-text data-en={copy.archiveBoundary[0]} data-zh={copy.archiveBoundary[1]}>{copy.archiveBoundary[0]}</p>
 </section>
 <style>.editions{margin-block:1.5rem}.editions li{padding-left:0.5rem;margin-block:1.2rem;border-left:3px solid var(--rule)}.editions p{max-width:90ch;line-height:1.8}.editions a{margin-right:1rem}</style>
