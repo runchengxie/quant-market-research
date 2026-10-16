@@ -1,0 +1,10 @@
+---
+import {windowReviewCopy as c,windowReviewTable} from '../../content/microcap-window-review';
+const table=windowReviewTable('en-US'),zh=windowReviewTable('zh-CN');
+---
+<aside class="window-recheck" id="microcap-window-recheck">
+<h3 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h3>
+{(['finding','scope','boundary','source'] as const).map(k=><p data-locale-text data-en={c[k][0]} data-zh={c[k][1]}>{c[k][0]}</p>)}
+<div class="table-scroll"><table><thead><tr>{table.headers.map((h,i)=><th data-locale-text data-en={h} data-zh={zh.headers[i]}>{h}</th>)}</tr></thead><tbody>{table.rows.map((r,i)=><tr>{r.map((v,j)=><td data-locale-text data-en={v} data-zh={zh.rows[i][j]}>{v}</td>)}</tr>)}</tbody></table></div>
+</aside>
+<style>.window-recheck{border-left:4px solid var(--accent-strong);padding:1rem;margin-block:1rem}.window-recheck p{line-height:1.8;overflow-wrap:anywhere}.table-scroll{overflow-x:auto}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}th,td{padding:.6rem;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}</style>

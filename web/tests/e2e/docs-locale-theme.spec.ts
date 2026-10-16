@@ -45,7 +45,7 @@ test('complete report is available as localized web content and downloadable Mar
   await page.getByRole('link', { name: '阅读研究历史与证据汇编', exact: true }).click();
   await expect(page.locator('.article-content')).toContainText('当前结论');
   await expect(page.locator('.article-content table')).not.toHaveCount(0);
-  await expect(page.locator('.article-content svg')).toHaveCount(2);
+  await expect(page.locator('.article-content svg')).toHaveCount(3);
   for (const chart of await page.locator('.article-content svg').all()) await expect(chart).toBeVisible();
   await page.setViewportSize({width:390,height:844});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);

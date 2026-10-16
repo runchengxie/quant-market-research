@@ -10,8 +10,8 @@ export const recoveryCopy = {
     "本轮从来源笔记继续追查已跟踪笔记本、保留派生报告、迁移收据和已识别冷归档。找回制品、结构检查与研究复现属于不同证据阶段。"
   ],
   "scope": [
-    "The private ledger retains exact source identities, hashes, search roots and exclusions. The public build reads only this reviewed summary. No backtest or notebook was rerun and no shared data or latest pointer was changed.",
-    "精确来源身份、哈希、检索根目录和排除项保留在私有账册。公开构建仅读取这份经审查摘要。本轮未重跑回测或笔记本，未修改共享数据或最新版本指针。"
+    "The private ledger retains exact source identities, hashes, search roots and exclusions. The public build reads only this reviewed summary. The recovery inventory itself did not rerun backtests or notebooks. Subsequent window checks are identified separately; no shared input or latest pointer was changed.",
+    "精确来源身份、哈希、检索根目录和排除项保留在私有账册。公开构建仅读取这份经审查摘要。找回盘点本身未重跑回测或笔记本；后续窗口检查单独标识，未修改共享输入或最新版本指针。"
   ]
 } as const;
 export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;finding:LocalText;boundary:LocalText}> = [
@@ -41,16 +41,16 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
       "公开快照来源链"
     ],
     "status": [
-      "53 rows matched; three still open",
-      "53 行已匹配；三行仍待补"
+      "53 rows matched; 60-session metrics replayed",
+      "53 行已匹配；60 日窗口指标已回放"
     ],
     "finding": [
-      "All 53 published rows in six table families match retained CSV fields at numerical tolerance 1e-10. This covers candidates, anatomy, capital, cadence, ledgers and the joint grid.",
-      "六组表中已公开的全部 53 行，均以 1e-10 数值容差匹配保留 CSV 字段，覆盖候选、分解、资金、频率、账本与联合矩阵。"
+      "All 53 published rows in six table families match retained CSV fields at numerical tolerance 1e-10. This covers candidates, anatomy, capital, cadence, ledgers and the joint grid. Separately, 2,778 retained suspension-corrected daily observations reproduce all four published 60-session-window metrics after rounding: 5.334535% annual return, 0.330517 Sharpe, −52.389378% drawdown and 6.785942 annual turnover.",
+      "六组表中已公开的全部 53 行，均以 1e-10 数值容差匹配保留 CSV 字段，覆盖候选、分解、资金、频率、账本与联合矩阵。另找到 2,778 日的停牌修正后保留数据，回放后四项指标均与公开 60 日窗口的舍入值一致：年化 5.334535%、夏普 0.330517、回撤 −52.389378%、年换手 6.785942 倍。"
     ],
     "boundary": [
-      "The three low-turnover window rows are traceable to a public Git insertion, but a matching three-window runtime bundle was not located in the inspected roots. One coincidentally matching number elsewhere is insufficient. The published values are retained with this limitation.",
-      "三个低换手窗口行可追溯到公开 Git 中的加入记录，但在已查根目录中未定位到匹配的三窗口运行包。别处单个数字相同不足以证明匹配。公开数值保留，并明确这项限制。"
+      "The 20- and 120-session historical daily artifacts and a jointly bound three-window runtime remain missing. The 60-session metric replay establishes a retained daily source, not the original historical code, inputs or execution identity. A new current-inputs run matches the 20/60 rounded metrics but disagrees for 120 (4.22% versus 7.60% annual). It is a separate observation, not the missing historical binding; see the window recheck above.",
+      "20 日与 120 日窗口的历史逐日制品，以及统一绑定三个窗口的原始运行仍未找齐。60 日指标回放确立了保留的日度来源，不能确立历史代码、输入或执行身份。当前输入新运行匹配 20／60 日舍入指标，但 120 日不一致（年化 4.22% 对 7.60%）；它属于另一项观察，不能替代历史绑定，详见前面的窗口核对。"
     ]
   },
   {

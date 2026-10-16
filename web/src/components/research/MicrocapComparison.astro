@@ -1,0 +1,54 @@
+---
+import { comparisonCopy as copy } from '../../content/microcap-comparison';
+import { readExclusionReview, comparisonTables, buildExclusionSvg } from '../../content/microcap-comparison.server';
+const snapshot = await readExclusionReview();
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const locales = ['en-US', 'zh-CN'] as const;
+const charts = await Promise.all(locales.map(locale => buildExclusionSvg(locale, snapshot)));
+const primary = ['status', 'finding', 'weighting', 'buffers'] as const;
+const boundaries = ['scope', 'method', 'provenance', 'eras', 'capacity', 'units'] as const;
+---
+<section id="microcap-reviewed-comparison" class="panel reviewed-comparison">
+  <h2 data-locale-text data-en={copy.title[0]} data-zh={copy.title[1]}>{copy.title[0]}</h2>
+  {primary.map(key => <p data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</p>)}
+  <div class="comparison-boundaries">
+    {boundaries.map(key => <p data-locale-text data-en={copy[key][0]} data-zh={copy[key][1]}>{copy[key][0]}</p>)}
+  </div>
+  <h3 data-locale-text data-en={copy.tables[0]} data-zh={copy.tables[1]}>{copy.tables[0]}</h3>
+  {[{locale: 'en-US' as const, live: true}, ...locales.map(locale => ({locale, live: false}))].map(({locale, live}) => {
+    const Container = live ? 'div' : 'template';
+    return <Container data-comparison-live={live ? '' : undefined} data-comparison-locale={live ? undefined : locale} lang={locale}>
+      <div class="comparison-chart" set:html={charts[locale === 'zh-CN' ? 1 : 0]} />
+      <a href={`${base}/downloads/microcap-exclusions.${locale}.svg`} download>{copy.download[locale === 'zh-CN' ? 1 : 0]}</a>
+      {comparisonTables(snapshot, locale).map(group => <details>
+        <summary>{group.title}</summary>
+        <div class="comparison-table" tabindex="0" role="region" aria-label={group.title}>
+          <table>
+            <caption>{group.title}</caption>
+            <thead><tr>{group.headers.map(header => <th scope="col">{header}</th>)}</tr></thead>
+            <tbody>{group.rows.map(row => <tr>{row.map((value, index) => index === 0 ? <th scope="row">{value}</th> : <td>{value}</td>)}</tr>)}</tbody>
+          </table>
+        </div>
+      </details>)}
+    </Container>;
+  })}
+</section>
+<script>
+  const section = document.querySelector('#microcap-reviewed-comparison');
+  const live = section?.querySelector<HTMLElement>('[data-comparison-live]');
+  const syncComparisonLocale = () => {
+    const locale = document.documentElement.lang.startsWith('zh') ? 'zh-CN' : 'en-US';
+    if (!live || live.lang === locale) return;
+    const template = section?.querySelector<HTMLTemplateElement>(`template[data-comparison-locale="${locale}"]`);
+    if (!template) return;
+    const expanded = Array.from(live.querySelectorAll('details'), detail => detail.open);
+    live.replaceChildren(template.content.cloneNode(true));
+    live.lang = locale;
+    live.querySelectorAll('details').forEach((detail, index) => { detail.open = expanded[index] ?? false; });
+  };
+  syncComparisonLocale();
+  new MutationObserver(syncComparisonLocale).observe(document.documentElement, {attributes: true, attributeFilter: ['lang']});
+</script>
+<style>
+.reviewed-comparison{margin-block:1.5rem}.reviewed-comparison p{max-width:92ch;line-height:1.8}.comparison-chart{overflow-x:auto;margin-block:1rem}.comparison-chart :global(svg){display:block;width:100%;min-width:960px;height:auto}.comparison-boundaries{border-left:3px solid var(--rule,#d1d5db);padding-left:1rem;margin-block:1.5rem}.reviewed-comparison details{border-top:1px solid var(--rule,#d1d5db);padding:.9rem 0}.reviewed-comparison summary{cursor:pointer;font-weight:600;color:var(--ink,#252525)}.comparison-table{overflow-x:auto;margin-top:1rem}.comparison-table table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:.85rem}.comparison-table th,.comparison-table td{padding:.5rem;border-bottom:1px solid var(--rule,#d1d5db);text-align:right;white-space:nowrap}.comparison-table th:first-child,.comparison-table td:first-child{text-align:left}.comparison-table caption{text-align:left;padding-bottom:.7rem;color:var(--ink-soft,#555)}
+</style>
