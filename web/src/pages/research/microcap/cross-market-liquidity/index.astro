@@ -1,7 +1,11 @@
 ---
-import ResearchPage from "../../../../components/ResearchPage.astro";
-import { MicrocapPage } from "../../../../components/react/microcap-page";
+import TopicNav from '../../../../components/TopicNav.astro';
+import SiteLayout from '../../../../layouts/SiteLayout.astro';
+import { liquidityResearchCopy as c } from '../../../../content/liquidity-research-copy';
+import { withBase } from '../../../../lib/routes';
 ---
-<ResearchPage title="跨市场小微盘流动性" titleEn="Cross-market micro-cap liquidity" description="比较多个市场小市值股票的成交规模与数据覆盖。" snapshotKey="liquidity" activeRoute="liquidity" kicker="跨市场流动性" kickerEn="Cross-market liquidity" introduction="按市值分组比较小市值股票的成交额，并展示数据覆盖、统计区间和不同市场间的口径差异。" introductionEn="Compare traded value for small-cap stocks by size group, with coverage, date ranges, and market-definition differences shown explicitly." boundary="成交额只是流动性的观察指标，不能直接代表策略容量。下单规模、停牌、涨跌停和市场冲击仍会影响实际成交。" boundaryEn="Traded value is only a liquidity indicator and does not directly represent strategy capacity. Order size, suspensions, price limits, and market impact still determine execution." evidence="探索性比较" evidenceEn="Exploratory comparison" question="小市值股票的流动性差异是否具有跨市场的一致性？" questionEn="Are small-cap liquidity differences consistent across markets?" nextStep="统一币种、交易日和市值分组，再加入成本与容量情景。" nextStepEn="Align currencies, trading calendars, and size buckets before adding cost and capacity scenarios.">
-  <MicrocapPage client:load initialScope="cross-market" />
-</ResearchPage>
+<SiteLayout title="跨市场小微盘流动性" titleEn="Cross-market micro-cap liquidity" description={c.lead[0]} section="research">
+<TopicNav sections={[{id:"cross-market-summary",label:"研究说明",labelEn:"Research context",available:true},{id:"unified-entry",label:"统一专题",labelEn:"Unified study",available:true}]}/>
+<section id="cross-market-summary" class="theme-heading"><div><h1 data-locale-text data-en="Cross-market micro-cap liquidity" data-zh="跨市场小微盘流动性">Cross-market micro-cap liquidity</h1><p data-locale-text data-en="This research now shares one entry with trading costs and capacity. Market profiles, quality checks, interactive charts and research notes are maintained there." data-zh="这项研究已与交易成本和策略容量共用一个入口。市场画像、质量核查、互动图表和研究笔记统一在该专题维护。">This research now shares one entry with trading costs and capacity. Market profiles, quality checks, interactive charts and research notes are maintained there.</p></div></section>
+<p id="unified-entry"><a class="button-link" href={withBase('/research/liquidity/#market-profiles',import.meta.env.BASE_URL)} data-locale-link data-href-en={withBase("/research/liquidity/?lang=en-US#market-profiles",import.meta.env.BASE_URL)} data-href-zh={withBase("/research/liquidity/?lang=zh-CN#market-profiles",import.meta.env.BASE_URL)} data-locale-text data-en={c.unifiedLink[0]} data-zh={c.unifiedLink[1]}>{c.unifiedLink[0]}</a></p>
+</SiteLayout>

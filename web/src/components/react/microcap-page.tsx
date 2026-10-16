@@ -7,7 +7,8 @@ import {
 } from "../../lib/format";
 import RecoverySection from "../RecoverySection";
 import ReplicationSection from "../ReplicationSection";
-import { LiquidityPage } from "./liquidity-page";
+import { liquidityResearchCopy } from "../../content/liquidity-research-copy";
+import { withBase } from "../../lib/routes";
 import {
   NavChart,
   AnnualChart,
@@ -316,7 +317,7 @@ export function MicrocapPage({
     <>
       <MicrocapSubTabs scope={scope} onChange={setScope} />
       {scope === "cross-market" ? (
-        <LiquidityPage embedded />
+        <p className="data-notice"><a href={withBase(`/research/liquidity/?lang=${englishLocale() ? "en-US" : "zh-CN"}#market-profiles`, import.meta.env.BASE_URL)}>{liquidityResearchCopy.unifiedLink[englishLocale() ? 0 : 1]}</a></p>
       ) : (
         <>
           <ReplicationSection scope="microcap" />
