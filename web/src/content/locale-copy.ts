@@ -1,6 +1,8 @@
 import type { PublicPage, TopicId } from "./public-registry";
 
 const topicLabels: Record<TopicId, { en: string; zh: string }> = {
+  "etf-rotation": { en: "ETF rotation", zh: "ETF 轮动" },
+  hotsector: { en: "Hotspot candidates", zh: "热点候选" },
   cashflow: { en: "Cash-flow research", zh: "现金流研究" },
   microcap: { en: "Micro-cap research", zh: "微盘研究" },
   style: { en: "Style research", zh: "风格研究" },
@@ -15,6 +17,8 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  "etf-rotation": { title: "ETF rotation research", summary: "Synthetic integration passed; comparative investment evidence remains pending." },
+  hotsector: { title: "Hotspot candidate research", summary: "Topic-to-candidate integration passed; predictive and investment efficacy remain untested." },
   "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Ten selected L2 dates: CNY 100k median static costs are 9.27/8.87 bp; CNY 1m coverage is 62.12%/67.68%. Order-flow audit and strategy sensitivity are published; actual execution remains uncalibrated." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
