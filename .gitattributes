@@ -1,0 +1,3 @@
+# Verbatim downloaded prior editions retain their authenticated trailing bytes.
+# Current generated editions use one final newline; source whitespace checks remain enabled.
+web/public/downloads/archive/microcap-research.pre-v1.0.0.3966176.*.md whitespace=-blank-at-eof

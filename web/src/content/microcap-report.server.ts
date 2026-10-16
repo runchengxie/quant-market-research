@@ -1,3 +1,6 @@
+import { windowReviewMarkdown } from './microcap-window-review';
+import { comparisonMarkdown } from './microcap-comparison.server';
+import { editionMarkdown, timelineMarkdown } from './microcap-editions.server';
 import { historyMarkdown, historicalTablesMarkdown, recoveryMarkdown, type HistoricalSnapshot } from './microcap-history-report';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
@@ -29,13 +32,14 @@ export async function buildMicrocapReport(locale: ReportLocale) {
   const title = t('Small- and micro-cap research: evidence, methods and open questions', '小微盘研究整理：证据、方法与待解问题');
   const sections = [
     `# ${title}`,
-    t(`Public evidence review: ${reviewedOn}. This editorial date is not a data cutoff. The portfolio snapshot was generated on ${snapshot.generated_at}, covering ${snapshot.coverage.start} to ${snapshot.coverage.end}; each appendix retains its own dates. No research was rerun for this report.`, `公开证据整理日期：${reviewedOn}。这不是统一的数据截止日期。组合快照生成于 ${snapshot.generated_at}，覆盖 ${snapshot.coverage.start} 至 ${snapshot.coverage.end}；各附录保留各自日期。本次整理没有重跑研究。`),
+    t(`Public evidence review: ${reviewedOn}. This editorial date is not a data cutoff. The portfolio snapshot was generated on ${snapshot.generated_at}, covering ${snapshot.coverage.start} to ${snapshot.coverage.end}; each appendix retains its own dates. Stored exclusion results were reviewed without rerunning that experiment. Separately identified window checks do not overwrite historical outputs.`, `公开证据整理日期：${reviewedOn}。这不是统一的数据截止日期。组合快照生成于 ${snapshot.generated_at}，覆盖 ${snapshot.coverage.start} 至 ${snapshot.coverage.end}；各附录保留各自日期。排除实验使用保留结果审查，未重跑该实验；单独标识的窗口检查不覆盖历史输出。`),
     t('This report assembles the reviewed public record. It is not an inventory of every private experiment or a statement of strategy readiness. Missing comparisons remain open questions. All figures are historical, modeled or source-reported within their stated scope.', '本报告汇编已审查的公开证据与研究历史概括，不等于列举全部私有实验，也不代表策略已具备部署条件。缺失的对照继续保留为待解问题；各项数字按其范围分别属于历史观察、模拟或来源报告。'),
     `## ${t('Current conclusion', '当前结论')}`,
     t('The clearest micro-cap finding is substantial downside risk and potentially long recovery waits. Returns remain sensitive to eligibility, missing quotes, execution clocks and portfolio construction. Low turnover has historical conditional associations, but an independent causal premium and practical capacity have not been established.', '目前较清楚的微盘发现是：下行风险大，回本等待可能很长。收益仍受资格筛选、缺失报价、执行时点与组合构造影响。低换手存在历史条件关联，但独立因果溢价和实际容量尚未确立。'),
-    t('The fixed monthly low-turnover simulation reports net annual returns of 3.52%, 5.33% and 7.60% for 20-, 60- and 120-session windows; corresponding drawdowns are -65.01%, -52.39% and -45.61%. These are repeatedly inspected historical sensitivities, not a prospective ranking of investable strategies.', '固定月频低换手模拟中，20、60、120 日窗口净年化分别为 3.52%、5.33%、7.60%，最大回撤分别为 -65.01%、-52.39%、-45.61%。这是反复查看过的历史敏感性，不是可投资策略的前瞻排名。'),
+    t('The fixed monthly low-turnover simulation reports net annual returns of 3.52%, 5.33% and 7.60% for 20-, 60- and 120-session windows; corresponding drawdowns are -65.01%, -52.39% and -45.61%. A new 2026-10-16 run matches 20/60 but gives 4.22% for 120; the ascending return ordering is not reproduced. These are inspected historical sensitivities, not a prospective ranking.', '固定月频低换手模拟中，20、60、120 日窗口净年化分别为 3.52%、5.33%、7.60%，最大回撤分别为 -65.01%、-52.39%、-45.61%。2026-10-16 新运行匹配 20／60 日，但 120 日为 4.22%，未重现收益递增排序。这些是已查看的历史敏感性，不是前瞻排名。'),
     `## ${t('Contents', '阅读顺序')}`,
     t('1. Research map and evidence status\n2. Comparable portfolio definitions\n3. Turnover-window comparison\n4. Definition × rebalance matrix\n5. Research history and coverage register\n6. All published snapshot table families\n7. Revisions and limits\n8. Open questions and resumption criteria\n9. Public methodology appendices and sources', '1. 研究地图与证据状态\n2. 可比较的组合定义\n3. 换手窗口对照\n4. 换手定义 × 调仓频率矩阵\n5. 研究历史与覆盖清单\n6. 公开快照完整表组\n7. 修正记录与局限\n8. 待解问题与恢复研究条件\n9. 公开方法附录与来源'),
+    editionMarkdown(locale),
     `## ${text(hubCopy.title, locale)}`,
     ...researchQuestions.map(q => `### ${text(q.title, locale)}\n\n**${text(q.status, locale)}**\n\n${text(q.finding, locale)}\n\n**${text(hubCopy.sample, locale)}：** ${text(q.sample, locale)}\n\n**${text(hubCopy.next, locale)}：** ${text(q.next, locale)}\n\n[${text(q.action, locale).replace(/[↓↗]/g, '').trim()}](${origin}${q.href.startsWith('#') ? '/research/microcap/' : ''}${q.href})`),
     `## ${t('Keep portfolio definitions separate', '组合口径对照')}`,
@@ -50,9 +54,10 @@ export async function buildMicrocapReport(locale: ReportLocale) {
     text(hubCopy.windowIntro, locale), text(hubCopy.windowScope, locale),
     `![${text(hubCopy.windows, locale)}](${origin}/downloads/microcap-windows.${locale}.svg)`,
     table([text(hubCopy.days, locale), text(hubCopy.return, locale), text(hubCopy.drawdown, locale), 'Sharpe', text(hubCopy.turnover, locale)], snapshot.window_sensitivity.map(row => [String(row.window_days), `${Number(row.net_annual_return).toFixed(2)}%`, `${row.net_max_drawdown.toFixed(2)}%`, row.net_sharpe.toFixed(3), `${row.annualized_turnover.toFixed(2)}×`])),
-    text(hubCopy.windowCaveat, locale),
+    text(hubCopy.windowCaveat, locale), windowReviewMarkdown(locale),
     `## ${text(hubCopy.matrix, locale)}`, text(hubCopy.matrixIntro, locale), text(hubCopy.matrixBoundary, locale),
     table([t('Definition', '换手定义'), ...['weekly','biweekly','monthly','quarterly'].map(id => text(hubCopy[id as 'weekly'], locale))], ['mean_20','mean_60','median_60','mean_120'].map(id => [text(hubCopy[({mean_20:'mean20',mean_60:'mean60',median_60:'median60',mean_120:'mean120'} as const)[id as 'mean_20']],locale), ...['weekly','biweekly','monthly','quarterly'].map(cadence => {const row=snapshot.joint_matrix.find(r=>r.turnover_definition===id&&r.rebalance_frequency===cadence);return row ? `${Number(row.net_annual_return).toFixed(2)}%` : t('Missing','缺失');})])),
+    await comparisonMarkdown(locale), timelineMarkdown(locale),
     historyMarkdown(locale), recoveryMarkdown(locale), historicalTablesMarkdown(snapshot, locale),
     `## ${text(hubCopy.revisions, locale)}`, text(hubCopy.revisionsIntro, locale), ...revisions.map(item=>`### ${text(item.title,locale)}\n\n${text(item.text,locale)}`),
     `## ${text(hubCopy.open,locale)}`, ...openQuestions.map(item=>`### ${text(item.title,locale)}\n\n${text(item.text,locale)}`),
@@ -71,14 +76,14 @@ export async function buildMicrocapReport(locale: ReportLocale) {
     }).replace(/^(#{1,5}) /gm, '$1# ');
     sections.push(`## ${t('Appendix','附录')} ${i+1} · ${zh ? doc.title : englishCopy(doc).title}`, `[${t('Canonical web source','网页来源')}](${origin}${doc.route})`, absolute);
   }
-  return { title, markdown: sections.join('\n\n')+'\n' };
+  return { title, markdown: sections.join('\n\n').trimEnd()+'\n' };
 }
 export async function buildWindowSvg(locale: ReportLocale) {
   const snapshot=await readReportSnapshot();
   const zh=locale==='zh-CN';
   const rows=snapshot.window_sensitivity;
   const max=Math.max(...rows.map(row=>row.net_annual_return));
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="340" viewBox="0 0 800 340" role="img" aria-labelledby="title desc"><title id="title">${zh?'换手窗口与净年化收益':'Turnover window and net annual return'}</title><desc id="desc">${rows.map(row=>`${row.window_days}: ${Number(row.net_annual_return).toFixed(2)}%`).join('; ')}</desc><rect width="800" height="340" fill="var(--surface,#fff)"/><g font-family="sans-serif" fill="var(--ink,#252525)"><text x="30" y="40" font-size="22">${zh?'低换手窗口对照：净年化收益':'Low-turnover windows: net annual return'}</text>${rows.map((row,i)=>`<text x="30" y="${95+i*65}" font-size="18">${row.window_days} ${zh?'日':'days'}</text><rect x="150" y="${75+i*65}" height="25" width="${row.net_annual_return/max*500}" fill="var(--accent-strong,#1267d6)"/><text x="${160+row.net_annual_return/max*500}" y="${95+i*65}" font-size="18">${Number(row.net_annual_return).toFixed(2)}%</text>`).join('')}<text x="30" y="292" font-size="14">${zh?'2015–2026；月频，40 只目标、60 只缓冲；10bp 假设交易费':'2015–2026; monthly, 40 target names / 60-name buffer; assumed 10 bp fee'}</text><text x="30" y="318" font-size="14">${zh?'历史敏感性；未独立确认最优参数。快照：2026-09-16':'Historical sensitivity, not an independently confirmed optimum. Snapshot: 2026-09-16'}</text></g></svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" width="800" height="340" viewBox="0 0 800 340" role="img" aria-labelledby="title desc"><title id="title">${zh?'换手窗口与净年化收益':'Turnover window and net annual return'}</title><desc id="desc">${rows.map(row=>`${row.window_days}: ${Number(row.net_annual_return).toFixed(2)}%`).join('; ')}</desc><rect width="800" height="340" fill="var(--surface,#fff)"/><g font-family="sans-serif" fill="var(--ink,#252525)"><text x="30" y="40" font-size="22">${zh?'低换手窗口对照：净年化收益':'Low-turnover windows: net annual return'}</text>${rows.map((row,i)=>`<text x="30" y="${95+i*65}" font-size="18">${row.window_days} ${zh?'日':'days'}</text><rect x="150" y="${75+i*65}" height="25" width="${row.net_annual_return/max*500}" fill="var(--accent-strong,#1267d6)"/><text x="${160+row.net_annual_return/max*500}" y="${95+i*65}" font-size="18">${Number(row.net_annual_return).toFixed(2)}%</text>`).join('')}<text x="30" y="292" font-size="14">${zh?'2015–2026；月频，40 只目标、60 只缓冲；10bp 假设交易费':'2015–2026; monthly, 40 target names / 60-name buffer; assumed 10 bp fee'}</text><text x="30" y="318" font-size="14">${zh?'原快照：2026-09-16；120 日新核对为 4.22%，与图中不同。':'Snapshot 2026-09-16; 120-session value differs in 2026-10-16 recheck (4.22%).'}</text></g></svg>`;
 }
 
 export async function buildCandidateSvg(locale: ReportLocale) {

@@ -1,4 +1,5 @@
 ---
+import MicrocapWindowReview from './MicrocapWindowReview.astro';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { hubCopy as c, researchQuestions, revisions, openQuestions } from '../../content/microcap-hub';
@@ -45,6 +46,7 @@ const metrics = [
       </div>)}</div>
     </figure>;
   })}
+  <MicrocapWindowReview />
   <p class="panel-note"><Text text={c.chartNote} /></p><p class="callout"><Text text={c.windowCaveat} /></p>
   <details><summary><Text text={c.numbers} /></summary>
     <div class="table-scroll"><table><thead><tr><th><Text text={c.days} /></th>{metrics.map(m => <th><Text text={m.label} /></th>)}</tr></thead><tbody>{rows.map(r => <tr><th>{r.window_days}</th>{metrics.map(m => <td>{m.value(r).toFixed(2)}{m.unit}</td>)}</tr>)}</tbody></table></div>

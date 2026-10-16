@@ -1,5 +1,6 @@
 ---
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
+import { buildExclusionSvg } from '../../../../content/microcap-comparison.server';
 import ArticleLayout from '../../../../layouts/ArticleLayout.astro';
 import { buildMicrocapReport, buildWindowSvg, buildCandidateSvg } from '../../../../content/microcap-report.server';
 const processor = await createMarkdownProcessor();
@@ -13,6 +14,13 @@ english.code=inlineChart(english.code,await buildWindowSvg('en-US'));
 chinese.code=inlineChart(chinese.code,await buildWindowSvg('zh-CN'));
 english.code=english.code.replace(/<img\b[^>]*src="[^"]*microcap-candidates\.[^"]+"[^>]*>/,await buildCandidateSvg('en-US'));
 chinese.code=chinese.code.replace(/<img\b[^>]*src="[^"]*microcap-candidates\.[^"]+"[^>]*>/,await buildCandidateSvg('zh-CN'));
+english.code=english.code.replace(/<img\b[^>]*src="[^"]*microcap-exclusions\.[^"]+"[^>]*>/,await buildExclusionSvg('en-US'));
+chinese.code=chinese.code.replace(/<img\b[^>]*src="[^"]*microcap-exclusions\.[^"]+"[^>]*>/,await buildExclusionSvg('zh-CN'));
 const meta={id:'microcap-report',title:zh.title,summary:'A reviewed micro-cap research history and public evidence record with portfolio comparisons, revisions and methodology appendices.'};
 ---
 <ArticleLayout meta={meta} html={english.code} headings={english.metadata.headings} alternate={{html:chinese.code,headings:chinese.metadata.headings,locale:'zh-CN'}} />
+
+<style>
+:global(.article-content details){max-width:100%;overflow-x:auto}
+:global(.article-content p){overflow-wrap:anywhere}
+</style>

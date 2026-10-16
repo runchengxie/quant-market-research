@@ -11,7 +11,7 @@ export const hubCopy = {
   sample: ['Sample and construction', '样本与构造'],
   next: ['Open question', '待解问题'],
   open: ['Open research and publication gaps', '尚待补齐的研究与公开证据'],
-  unpublished: ['Not yet published as a matched public comparison', '尚未形成同口径公开对照'],
+  unpublished: ['Partial evidence; verification remains open', '已有部分证据；验证仍待完成'],
   openIntro: ['The map distinguishes available public evidence from research that still needs reproducible outputs. Missing results remain missing; private strategy configurations and raw market data are not included.', '研究地图区分现有公开证据与仍需可复现产物的研究。缺失的结果继续保留为空缺；不包含私有策略配置和原始行情。'],
   revisionSource: ['Read the evidence map and revision sources ↗', '阅读证据地图与修正来源 ↗'],
   revisions: ['How the interpretation changed', '研究结论如何修正'],
@@ -22,7 +22,7 @@ export const hubCopy = {
   weekly: ['Weekly', '每周'], biweekly: ['Biweekly', '每两周'], monthly: ['Monthly', '每月'], quarterly: ['Quarterly', '每季度'],
   mean20: ['20-day mean', '20 日均值'], mean60: ['60-day mean', '60 日均值'], median60: ['60-day median', '60 日中位数'], mean120: ['120-day mean', '120 日均值'],
   windows: ['Does smoothing turnover change the result?', '换手观察窗口会改变结果吗？'],
-  windowIntro: ['In this historical simulation, longer turnover windows coincide with higher net return, smaller drawdown and lower trading turnover. This is definition sensitivity, not an independently confirmed optimum.', '这套历史模拟中，更长的换手观察窗口对应更高净收益、更浅回撤和更低交易换手。这说明结果对定义敏感，不能据此确认最优参数。'],
+  windowIntro: ['The original published snapshot shows higher returns and smaller drawdowns for longer windows. A new documented run matches 20/60 sessions but gives 4.22% for 120, against the original 7.60%; that return ordering is not reproduced. Both versions are retained below.', '原公开快照呈现窗口越长、收益越高和回撤越浅；新记录运行匹配 20／60 日，但 120 日年化为 4.22%，原值为 7.60%，未重现该收益排序。下方保留两版结果。'],
   windowScope: ['2015–2026 daily-data study; monthly formation, 40 target names, 60-name holding buffer and 10 bp trading fee. Values come directly from window_sensitivity in the public exploratory snapshot dated 2026-09-16. The snapshot coverage ends on 2026-07-31. This panel does not reuse the separate small-cap-plus-low-turnover composite results.', '2015–2026 日频研究；月度形成，40 只目标持仓、60 只缓冲持仓，交易费假设为 10bp。数值直接来自 2026-09-16 公开探索快照的 window_sensitivity，快照覆盖截至 2026-07-31。本图不混用另一项小盘加低换手复合组合的结果。'],
   windowCaveat: ['Historical, repeatedly inspected evidence; no independent final holdout or broker-calibrated impact estimate. The daily traded-value proxy and simulator assumptions limit implementation claims. Do not interpret these bars as an executable return forecast.', '历史样本已经反复查看，缺少独立最终样本外验证和券商成交校准的冲击估计。日频成交额代理和模拟器假设限制了执行解释，不能把柱状图理解成可实现的收益预测。'],
   return: ['Net annual return', '净年化收益'],
@@ -51,7 +51,7 @@ export const revisions = [
  { title: ['A repeatedly inspected holdout', '已反复查看的留出样本'], text: ['2024–2026 has been examined across several historical sensitivity checks. It remains descriptive evidence; further parameter choices need genuinely prospective observations.', '2024–2026 已在多项历史敏感性检查中查看，应作描述性证据；后续参数选择需要新的前瞻观测。'] },
 ] satisfies Array<{title: LocalText; text: LocalText}>;
 export const openQuestions = [
- { title: ['Micro-cap exclusion and weighting', '微盘剔除与权重'], text: ['Publish a matched 0% / 10% / 20% / 30% exclusion matrix with equal- and market-value weights. Recompute signals on each formation universe and retain the same costs, buffer and evaluation period.', '形成 0%／10%／20%／30% 剔除比例与等权／市值权重的同口径矩阵。在各形成日股票池内重算信号，固定成本、缓冲与评价区间。'] },
+ { title: ['Micro-cap exclusion and weighting', '微盘剔除与权重'], text: ['The recovered 0% / 10% / 20% / 30% aggregate matrix is now published below. Historical code and actual fees remain unbound. Next, authenticate those inputs and rerun on a common share ledger with fixed formation universes, costs, buffers and dates.', '找回的 0%／10%／20%／30% 聚合矩阵已在下方公开；历史代码与实际费率仍未绑定。后续应核实输入，再以共同份额账本重跑，固定形成日股票池、成本、缓冲与日期。'] },
  { title: ['Size, liquidity and other characteristics', '规模、流动性与其他特征'], text: ['Separate size from illiquidity, extreme daily returns, idiosyncratic volatility, turnover and quality on common support. Conditional association would still not identify a causal mechanism.', '在共同样本上区分规模、非流动性、极端日收益、特质波动、换手和质量。条件关联仍不能识别因果机制。'] },
  { title: ['A comparable execution and capacity ladder', '可比较的执行与容量阶梯'], text: ['Use identical targets and dates to compare ideal held shares with a constrained cash ledger. Attribute differences to lot size, participation, delayed fills, costs and idle cash before publishing capacity claims.', '固定目标与日期，对照理想持有份额和受限现金账本；先拆解整手、参与率、延迟成交、成本与闲置现金，再解释容量。'] },
 ] satisfies Array<{title: LocalText; text: LocalText}>;

@@ -64,7 +64,7 @@ test('recovery summary preserves scoped results and unresolved provenance in bot
  }
  const en=(await buildMicrocapReport('en-US')).markdown;
  assert.match(en,/53 published rows/);
- assert.match(en,/three-window runtime bundle was not located/);
+ assert.match(en,/20- and 120-session historical daily artifacts/);
  assert.match(en,/owner-code commit fields are unknown/);
  assert.match(en,/112 factor rows, 56 weighting comparisons, 80 buffer rows and 24 capacity rows/);
  assert.doesNotMatch(JSON.stringify(recoveryRecords),/\/home\/|\/mnt\/|artifacts\/|configs\//);
