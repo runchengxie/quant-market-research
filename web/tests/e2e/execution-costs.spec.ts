@@ -1,9 +1,9 @@
 import { expect, test } from '@playwright/test';
 test('cost topic exposes scenario arithmetic and persists Chinese locale', async ({ page }) => {
   await page.goto('research/');
-  await page.getByRole('link').filter({ hasText: 'A-share Trading Costs and Capacity' }).click();
-  await page.waitForURL('**/research/execution-costs/');
-  await expect(page.locator('h1')).toHaveText('A-share trading costs and capacity');
+  await page.getByRole('link').filter({ hasText: 'Liquidity, Trading Costs and Capacity' }).click();
+  await page.waitForURL('**/research/liquidity/');
+  await expect(page.locator('h1')).toHaveText('Liquidity, trading costs and capacity');
   await expect(page.locator('#baseline tbody tr').first()).toContainText('10.50%');
   await expect(page.locator('#baseline tbody tr').first()).toContainText('5.25%');
   await page.goto('research/execution-costs/?lang=zh-CN');

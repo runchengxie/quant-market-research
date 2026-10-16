@@ -5,7 +5,7 @@ import { withBase } from "../../lib/routes";
 import { englishCopy, topicLabel } from "../../content/locale-copy";
 const pages = publicPages.filter(
   (page): page is PublicPage & { topic: TopicId } =>
-    page.section === "research" && page.topic !== undefined,
+    page.section === "research" && page.topic !== undefined && !["execution-costs", "cross-market-liquidity"].includes(page.id),
 );
 ---
 <SiteLayout title="研究专题" titleEn="Research topics" description="Browse public research by question." section="research">

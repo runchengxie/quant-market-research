@@ -9,7 +9,7 @@ const topicLabels: Record<TopicId, { en: string; zh: string }> = {
   "low-turnover": { en: "Low-turnover research", zh: "低换手研究" },
   indices: { en: "Index research", zh: "指数研究" },
   "execution-costs": { en: "Trading costs and capacity", zh: "交易成本与容量" },
-  liquidity: { en: "Liquidity research", zh: "流动性研究" },
+  liquidity: { en: "Liquidity, costs and capacity", zh: "流动性、成本与容量" },
 };
 
 export function topicLabel(topic: TopicId) {
@@ -29,7 +29,7 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
   indices: { title: "Indices and Long-run Returns", summary: "Which index and ETF histories are included, and why their returns use different definitions." },
   style: { title: "18 Years of Style Factors", summary: "How value, size, and other stock groups behaved across years and market conditions." },
   "pb-roe": { title: "Historical PB and ROE Comparison", summary: "Whether adding profitability data changed a historical valuation comparison using the same stocks." },
-  liquidity: { title: "Liquidity Research", summary: "How active trading was in the sampled stocks, how much data is available, and what cannot yet be inferred." },
+  liquidity: { title: "Liquidity, Trading Costs and Capacity", summary: "Cross-market profiles, book costs, execution scenarios and quality checks in one study. Actual capacity remains uncalibrated." },
   "low-turnover": { title: "Low-turnover Factor", summary: "What lower trading activity tracked in past data, how the gap changed after controls, and whether a real portfolio could trade." },
   "research-closeout-status": { title: "Research Closeout Status", summary: "Project status, evidence boundaries, and open verification items." },
   "low-turnover-method": { title: "Low-turnover Method", summary: "Methods, execution assumptions, and validation evidence." },

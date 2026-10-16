@@ -4,6 +4,7 @@ import FreshnessStrip from "./FreshnessStrip.astro";
 import ResearchContext from "./research/ResearchContext.astro";
 import { conclusionCopy } from "../conclusion-copy";
 import TopicNav from "./TopicNav.astro";
+import type { TopicSection } from "../lib/topic-sections";
 import { readFile } from "node:fs/promises";
 import { resolve } from "node:path";
 
@@ -26,7 +27,7 @@ interface Props {
   nextStep?: string;
   nextStepEn?: string;
   compact?: boolean;
-  sections?: readonly { id: string; label: string; available: boolean }[];
+  sections?: readonly TopicSection[];
 }
 
 const { title, titleEn = title, description, snapshotKey, activeRoute, kicker, kickerEn = kicker, introduction, introductionEn = introduction, boundary, boundaryEn = boundary, evidence = "描述性研究", evidenceEn = evidence, question = "这项研究正在回答什么问题？", questionEn = question, nextStep = "补充数据核验和可执行性测试。", nextStepEn = nextStep, compact = false, sections } = Astro.props;
