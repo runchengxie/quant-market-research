@@ -70,3 +70,5 @@ Files: liquidity/cross-market/execution Astro routes, `CapacityResearch.astro`, 
 - Combined-main validation exposed an obsolete source-text assertion for the renamed microcap hub. Updated that assertion to the current reader-facing label; numerical and behavioral expectations remain intact.
 
 - Final local validation: 140 Node unit tests, 99 related browser tests, Astro build with zero diagnostics, static-site verification and diff whitespace check passed. Dark preview inspected visually. Independent review has no remaining Critical/Important findings.
+- PR CI ran all 135 browser tests and found one additional old-title assertion in the direct-route smoke test (134 passed). Updated the expected unified title; rerunning the entire browser suite rather than skipping that check.
+- Final full browser rerun: all 135 tests passed, including direct-route refresh with the unified title.

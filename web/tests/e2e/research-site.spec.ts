@@ -8,7 +8,7 @@ const routes = [
   ["research/microcap/cross-market-liquidity/", "Cross-market micro-cap liquidity"],
   ["research/indices/", "Index and ETF history"],
   ["research/style-factors-18y/", "18-year A-share style factors"],
-  ["research/liquidity/", "Cross-market liquidity"],
+  ["research/liquidity/", "Liquidity, trading costs and capacity"],
   ["research/factors/low-turnover/", "Low-turnover factor: what information remains?"],
   ["research/factors/pb-roe/", "PB and ROE: historical comparison and evidence boundary"],
 ] as const;
