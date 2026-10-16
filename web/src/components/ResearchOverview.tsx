@@ -53,7 +53,7 @@ function overviewTree({recovery, barra}: OverviewProps, locale: 'en-US' | 'zh-CN
         date={text('lowTurnoverCoverage')} scope={text('lowTurnoverScope')}/>
       <EvidenceCard locale={locale} domain={englishLocale() ? 'Execution and liquidity' : '交易执行与流动性'}
         title={costCopy.title[englishLocale() ? 0 : 1]} status={costCopy.stage[englishLocale() ? 0 : 1]}
-        href={withBase('/research/execution-costs/', import.meta.env?.BASE_URL ?? '/')}
+        href={withBase('/research/liquidity/', import.meta.env?.BASE_URL ?? '/')}
         conclusion={costCopy.conclusion[englishLocale() ? 0 : 1]}
         date={costCopy.coverage[englishLocale() ? 0 : 1]}
         scope={costCopy.scope[englishLocale() ? 0 : 1]} />

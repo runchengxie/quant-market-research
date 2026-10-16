@@ -19,13 +19,13 @@ test("research and documentation directories render English-first localized copy
     "Style research",
     "Low-turnover research",
     "Index research",
-    "Liquidity research",
+    "Liquidity, costs and capacity",
     "现金流研究",
     "微盘研究",
     "风格研究",
     "低换手研究",
     "指数研究",
-    "流动性研究",
+    "流动性、成本与容量",
   ]) {
     assert.ok(copy.includes(label), `missing localized topic label ${label}`);
   }

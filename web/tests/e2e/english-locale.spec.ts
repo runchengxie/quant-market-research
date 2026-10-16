@@ -119,7 +119,8 @@ test('recovery reports localize source labels and expanded methodology in Englis
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
   await expect(page.locator('.replication-section h2')).toHaveText('How closely do local reconstructions track official indices?');
   await page.getByRole('button', { name: 'Cross-market micro-cap liquidity' }).click();
-  await expect(page.getByRole('heading', { name: 'Compare small-cap turnover across markets' })).toBeVisible();
+  await page.getByRole('link',{name:'Open the unified liquidity, costs and capacity study →',exact:true}).click();
+  await expect(page.getByRole('heading', { name: 'Compare historical turnover within the same size bucket' })).toBeVisible();
   const crossMarketHan = await page.locator('body').evaluate((body) => {
     const copy = body.cloneNode(true) as HTMLElement;
     copy.querySelectorAll('script, style, .locale-toggle').forEach((node) => node.remove());
