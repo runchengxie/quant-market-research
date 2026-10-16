@@ -566,3 +566,7 @@ body { font-size: 15px; line-height: 1.75; }
 .stat strong, .period-panel, .period-heading h2 { color:var(--ink); }
 .choice { border-color:var(--rule); }
 .choice.active, .choice:hover { color:var(--accent); border-color:var(--accent); }
+
+/* Keep liquidity evidence readable inside the viewport at phone widths. */
+.capacity-research .evidence-status { max-width:100%; white-space:normal; overflow-wrap:anywhere; }
+.capacity-research #market-profiles .table-scroll table { min-width:720px; table-layout:auto; }

@@ -17,7 +17,7 @@ export type TurnoverPeriod = { year?: number; month?: string; rank_count: number
 export type TurnoverSnapshot = { coverage_start: string; coverage_end: string; quality_status: "verified" | "incomplete"; rank_counts: number[]; annual: TurnoverPeriod[]; monthly: TurnoverPeriod[] };
 export type TurnoverAudit = { rank_count: number; common_days: number; common_start: string; common_end: string; mean_abs_relative_diff_turnover_median: number; p90_abs_relative_diff_turnover_median: number; within_5pct_ratio: number; within_10pct_ratio: number; within_25pct_ratio: number; quality_note: string };
 export type SmallcapTurnoverData = { schema_version: string; method: string; clean: TurnoverSnapshot; historical: TurnoverSnapshot; overlap_audit: TurnoverAudit[]; caveats: string[] };
-export type LiquidityBucket = { label: string; count?: number; median_usd: number | null; mean_usd: number | null; p90_usd?: number | null; median20_median_usd?: number | null; median20_mean_usd?: number | null; median20_p90_usd?: number | null; observations?: number };
+export type LiquidityBucket = { cap_min_usd?: number | null; cap_max_usd?: number | null; label: string; count?: number; median_usd: number | null; mean_usd: number | null; p90_usd?: number | null; median20_median_usd?: number | null; median20_mean_usd?: number | null; median20_p90_usd?: number | null; observations?: number };
 export type LiquidityPeriodMarket = { market: string; status?: string; eligible_stocks?: number; aggregation?: string; unique_stocks?: number; eligible_observations?: number; below_100m_observations?: number; fx_start?: string; fx_end?: string; as_of?: string; coverage_start?: string; coverage_end?: string; sub_100m_count?: number; sub_100m_median_usd?: number; buckets: LiquidityBucket[] };
 export type LiquidityPeriod = { period: string; status: string; included_markets?: string[]; missing_markets?: string[]; common_dates?: number; requested_start?: string; requested_end?: string; common_start?: string | null; common_end?: string | null; markets: LiquidityPeriodMarket[] };
 export type LiquiditySummary = { schema_version?: string; source_profiles?: Record<string, {source_rows: number; eligible_observations: number; exclusions: Record<string, number>}>; method: { roll_days: number; metric: string; currency: string; source_project: string }; markets: LiquidityPeriodMarket[]; periods?: LiquidityPeriod[]; caveats: string[] };
@@ -169,3 +169,5 @@ export function SortableTable({ rows, columns, percentColumns = [], searchPlaceh
   </>;
 }
 export function Loading() { return <p className="loading">{englishLocale() ? "Loading research data…" : "正在加载研究数据……"}</p>; }
+
+export type LiquidityRelativeSummary = { schema_version: string; absolute_summary_sha256: string; markets: LiquidityPeriodMarket[]; periods: LiquidityPeriod[] };
