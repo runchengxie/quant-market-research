@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/runchengxie/quant-market-research/blob/main/docs/schemas/execution-validation-session-calendar.v1.schema.json",
+  "title": "Prospective execution holdout session calendar",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "source", "session_dates"],
+  "properties": {
+    "schema_version": {"const": "execution-validation-session-calendar.v1"},
+    "source": {"type": "string", "minLength": 1},
+    "session_dates": {
+      "type": "array",
+      "minItems": 252,
+      "maxItems": 252,
+      "uniqueItems": true,
+      "items": {"type": "string", "format": "date"}
+    }
+  }
+}

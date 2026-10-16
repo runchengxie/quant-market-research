@@ -1,0 +1,59 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/runchengxie/quant-market-research/blob/main/docs/schemas/execution-validation-holdout-session-receipt.v1.schema.json",
+  "title": "Prospective execution holdout session receipt",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "session_date",
+    "capture_phase",
+    "captured_at_utc",
+    "registration_sha256",
+    "status",
+    "missing_artifacts",
+    "artifacts"
+  ],
+  "properties": {
+    "schema_version": {"const": "execution-validation-holdout-session-receipt.v1"},
+    "cohort_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$"},
+    "session_date": {"type": "string", "format": "date"},
+    "capture_phase": {"enum": ["pre_session", "post_session"]},
+    "captured_at_utc": {"type": "string", "format": "date-time"},
+    "registration_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "status": {"enum": ["complete", "blocked"]},
+    "missing_artifacts": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"type": "string", "pattern": "^[a-z][a-z0-9_]{0,63}$"}
+    },
+    "artifacts": {
+      "type": "object",
+      "propertyNames": {
+        "enum": [
+          "candidate_universe",
+          "targets",
+          "input_manifest",
+          "announcement_st_evidence",
+          "minute_data_manifest",
+          "engine_config_fingerprint",
+          "cash_holdings_orders_fills_valuation_ledgers"
+        ]
+      },
+      "additionalProperties": {"$ref": "#/$defs/artifact"}
+    }
+  },
+  "$defs": {
+    "artifact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["path", "size_bytes", "sha256"],
+      "properties": {
+        "path": {"type": "string", "minLength": 1},
+        "size_bytes": {"type": "integer", "minimum": 0},
+        "sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+      }
+    }
+  }
+}

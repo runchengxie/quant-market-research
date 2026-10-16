@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/runchengxie/quant-market-research/blob/main/docs/schemas/execution-validation-holdout-registration.v1.schema.json",
+  "title": "Prospective execution holdout registration",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cohort_id",
+    "registered_at_utc",
+    "first_session_date",
+    "duration_trade_sessions",
+    "session_calendar_source",
+    "session_calendar_sha256",
+    "code_commit",
+    "code_fingerprints",
+    "source_fingerprints",
+    "expected_sessions",
+    "required_artifacts",
+    "protocol_sha256"
+  ],
+  "properties": {
+    "schema_version": {"const": "execution-validation-holdout-registration.v1"},
+    "cohort_id": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{2,79}$"},
+    "registered_at_utc": {"type": "string", "format": "date-time"},
+    "first_session_date": {"type": "string", "format": "date"},
+    "duration_trade_sessions": {"const": 252},
+    "session_calendar_source": {"type": "string", "minLength": 1},
+    "session_calendar_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"},
+    "code_commit": {"type": "string", "pattern": "^[0-9a-f]{40,64}$"},
+    "code_fingerprints": {"$ref": "#/$defs/fingerprints"},
+    "source_fingerprints": {"$ref": "#/$defs/fingerprints"},
+    "expected_sessions": {
+      "type": "array",
+      "minItems": 252,
+      "maxItems": 252,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["session_date", "decision_at_utc", "session_open_utc", "entry_cutoff_utc", "closeout_not_before_utc"],
+        "properties": {
+          "session_date": {"type": "string", "format": "date"},
+          "decision_at_utc": {"type": "string", "format": "date-time"},
+          "session_open_utc": {"type": "string", "format": "date-time"},
+          "entry_cutoff_utc": {"type": "string", "format": "date-time"},
+          "closeout_not_before_utc": {"type": "string", "format": "date-time"}
+        }
+      }
+    },
+    "required_artifacts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["pre_session", "post_session"],
+      "properties": {
+        "pre_session": {
+          "type": "array",
+          "minItems": 6,
+          "maxItems": 6,
+          "uniqueItems": true,
+          "items": {
+            "enum": [
+              "candidate_universe",
+              "targets",
+              "input_manifest",
+              "announcement_st_evidence",
+              "minute_data_manifest",
+              "engine_config_fingerprint"
+            ]
+          }
+        },
+        "post_session": {
+          "type": "array",
+          "minItems": 1,
+          "maxItems": 1,
+          "uniqueItems": true,
+          "items": {"const": "cash_holdings_orders_fills_valuation_ledgers"}
+        }
+      }
+    },
+    "protocol_sha256": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+  },
+  "$defs": {
+    "fingerprints": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "enum": [
+          "candidate_universe",
+          "targets",
+          "input_manifest",
+          "announcement_st_evidence",
+          "minute_data_manifest",
+          "engine_config_fingerprint",
+          "cash_holdings_orders_fills_valuation_ledgers"
+        ]
+      },
+      "additionalProperties": {"type": "string", "pattern": "^[0-9a-f]{64}$"}
+    },
+    "artifactNames": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "candidate_universe",
+          "targets",
+          "input_manifest",
+          "announcement_st_evidence",
+          "minute_data_manifest",
+          "engine_config_fingerprint",
+          "cash_holdings_orders_fills_valuation_ledgers"
+        ]
+      }
+    }
+  }
+}

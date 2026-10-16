@@ -14,12 +14,13 @@ Keep all cohort records outside Git under the stable project data root:
 
 ```text
 $DATA_ROOT/quant/quant-market-research/ashare_execution_costs/prospective-holdout/<cohort-id>/
-  registration/
-    protocol.json
-    registration.json
+  registration.json
+  protocol.json
+  session-calendar.json
   sessions/
     YYYY-MM-DD/
-      receipt.json
+      pre_session.json
+      post_session.json
       <registered source and ledger artifacts>
       corrections/                 # append-only, only when needed
 ```
@@ -32,23 +33,37 @@ Use a new cohort ID and a new protocol version. Do not edit or copy over v1 in p
 - Source identities, version IDs, coverage definitions and hashes for the exchange calendar, daily/universe inputs, announcements and ST evidence, minute data, fees and corporate-action/valuation inputs.
 - The capture schedule and accountable operator, destination path, retention/backup policy, and the recovery procedure for late, incomplete or corrupt files.
 
-The protocol, registration record and every referenced manifest must be hashed as files, not reconstructed from their parsed values. Freeze the cohort before the first eligible session and confirm its registration timestamp precedes that session in Shanghai time. A code, source, parameter or missing-data-policy change requires a separately versioned protocol and a new prospective window; it cannot silently alter an active cohort.
+The registration record contains the hash of the exact adjacent `protocol.json` and `session-calendar.json` bytes. Each receipt binds the hash of the exact `registration.json` bytes. The calendar file lists its source and 252 session dates; registration binds the per-session decision, open, entry-cutoff and closeout times. An operator must verify the authoritative calendar before registration. Machine-readable contracts are the [registration schema](schemas/execution-validation-holdout-registration.v1.schema.json), [calendar schema](schemas/execution-validation-session-calendar.v1.schema.json) and [session-receipt schema](schemas/execution-validation-holdout-session-receipt.v1.schema.json). The validator checks that the calendar bytes match their fingerprint, its dates match the registered schedule, and the dates/timestamps are well formed and ordered; it does not fetch or independently attest the exchange calendar. A code, source, parameter or missing-data-policy change requires a separately versioned protocol and a new prospective window; it cannot silently alter an active cohort.
 
 ## Per-session receipt
 
-For every eligible session, create one `sessions/YYYY-MM-DD/receipt.json`. The receipt is an inventory and completeness record only; it must not contain NAV, returns, drawdown, capacity, fill-rate summaries or other performance results. It must bind the session to the registered cohort and include:
+For every eligible session, create a `pre_session.json` and a `post_session.json` in `sessions/YYYY-MM-DD/`. This split allows inputs to be receipted before the registered entry cutoff and fills/valuations to be receipted after the session. Both receipts are inventory and completeness records only; they must not contain NAV, returns, drawdown, capacity, fill-rate summaries or other performance results. Each binds the session to the registered cohort and includes:
 
-- `schema_version`, `cohort_id`, `session_date`, `captured_at_utc`, capture phase, and `registration_sha256`.
-- Decision and intended-entry timestamps, with time zone, to show that each input was available at the frozen decision point.
+- `schema_version`, `cohort_id`, `session_date`, `captured_at_utc`, `capture_phase`, and `registration_sha256`.
 - `status` (`complete` or `blocked`) and explicit missing/late artifact reasons. An empty event table is not evidence of complete event-source coverage.
-- An `artifacts` map for the protocol's daily archive items: full candidate universe, selected targets, input/source manifests, announcement and ST evidence with availability times, minute-data manifest, engine/config fingerprints, and complete cash/holdings/orders/fills/valuation ledgers.
+- A `pre_session` artifacts map for the full candidate universe, selection targets, input/source manifests, announcement and ST evidence, minute-data manifest and engine/config fingerprints; and a `post_session` artifacts map for the complete cash/holdings/orders/fills/valuation ledgers.
+- Stable artifact IDs are `candidate_universe`, `targets`, `input_manifest`, `announcement_st_evidence`, `minute_data_manifest`, `engine_config_fingerprint` and `cash_holdings_orders_fills_valuation_ledgers`. The strict schemas reject other IDs and all unregistered receipt fields, including performance fields.
 - For each artifact: a path relative to that session directory, byte size and SHA-256. Do not put private absolute machine paths in the receipt.
 
-Write and verify the receipt before the session's first eligible order/entry. If capture is incomplete, record `blocked`, preserve the missing items and do not backfill that session later as a valid prospective sample. A correction is a new versioned object with its own receipt and a reference to the superseded file; never overwrite bytes already used.
+Write `pre_session.json` at or after the registered decision time and before the registered entry cutoff. Write `post_session.json` no earlier than the registered closeout time, and after the pre-session receipt. The registration time must precede the first session's decision time. If capture is incomplete, record `blocked`, preserve the missing items and do not backfill that session later as a valid prospective sample. A correction is a new versioned object with its own receipt and a reference to the superseded file; never overwrite bytes already used.
 
 ## Safe daily checks and closeout
 
-Daily operational checks may inspect registration status, expected session date, receipt metadata, artifact presence, byte sizes and hashes, timestamps and sequence gaps. They must not parse ledgers, calculate cumulative measures or expose performance outcomes. The current historical replay scripts are not suitable for this daily check because running them produces evaluated results. Until a dedicated completeness-only validator and capture rehearsal exist, the cohort is not ready to start.
+Run the completeness-only validator after the session's post-session capture:
+
+```bash
+uv run python scripts/validate_execution_holdout_archive.py \
+  --root "$HOLDOUT_ARCHIVE_ROOT" \
+  --through-session-date YYYY-MM-DD
+```
+
+Run the temporary synthetic rehearsal separately:
+
+```bash
+uv run --locked --extra dev pytest -q tests/test_execution_holdout_archive_validator.py
+```
+
+Both arguments are required; the tool has no default data path. It checks registration, protocol and calendar fingerprints, that the calendar's ordered dates match registration, receipt schema/status/timing, artifact-relative paths, file sizes and SHA-256. It hashes artifact bytes without parsing them, including ledgers, and emits only completeness status/errors. It does not verify that an operator's registered exchange calendar is authoritative. Existing historical replay scripts are not suitable for this daily check because running them produces evaluated results. The synthetic command creates a temporary archive in the test runner's temporary directory; it does not create a cohort or touch project DATA_ROOT.
 
 After 252 eligible sessions, freeze the archive and independently verify the registration hash, every daily receipt, artifact hash, sequence and all blocked/corrected sessions. Only then perform the one-time evaluation specified in the registered protocol. If terminal marks or disposal proceeds are unresolved, report final NAV as incomplete and do not publish full-period performance.
 
@@ -57,6 +72,6 @@ After 252 eligible sessions, freeze the archive and independently verify the reg
 - [ ] A new protocol version is reviewed and its exact bytes are archived without changing v1.
 - [ ] Registration contains the fields above and is timestamped before the first eligible session.
 - [ ] External DATA_ROOT destination, permissions, immutable retention and backups are verified.
-- [ ] Daily capture and completeness-only validation have passed a rehearsal using synthetic data; no real session is created by the rehearsal.
+- [ ] Daily capture and completeness-only validation have passed the documented synthetic rehearsal; tests create no real session or DATA_ROOT file.
 - [ ] Failure handling prevents late data from being relabeled as timely and corrections from overwriting original inputs.
 - [ ] Interim access is restricted to completeness metadata; performance output remains unavailable until one-time closeout.
