@@ -34,7 +34,7 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
   "research-closeout-status": { title: "Research Closeout Status", summary: "Project status, evidence boundaries, and open verification items." },
   "low-turnover-method": { title: "Low-turnover Method", summary: "Methods, execution assumptions, and validation evidence." },
   "pb-roe-method": { title: "Historical PB and ROE Comparison", summary: "Paired valuation and profitability results, candidate-universe audit, and validation limits." },
-  "microcap-report": { title: "Complete Small- and Micro-cap Research Report", summary: "Research map, portfolio definitions, numerical comparisons, revisions and full public methodology appendices." },
+  "microcap-report": { title: "Small- and Micro-cap Research History", summary: "Reviewed research history, portfolio comparisons, revisions and public methodology appendices." },
   "microcap-method": { title: "Micro-cap Method", summary: "Research methods, coverage, and limitations." },
   "microcap-execution-diagnostic": { title: "Micro-cap Execution Simulation Diagnostic", summary: "Execution ledger, missing settlement events, and verifiable boundaries." },
   "smallcap-turnover-history": { title: "Small-cap Turnover History", summary: "Definitions and findings from the historical small-cap turnover study." },
