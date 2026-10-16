@@ -88,3 +88,4 @@ For 2025 use `baseline`, `price_only`, `st_only` or `price_st`, without the 2024
 Next priorities are complete 2025 announcement evidence and a pre-fixed test on a genuinely unseen period. Revision-safe historical data, executable post-delisting quotes, queue behavior and own market impact remain unresolved. This study's checks do not replace that evidence.
 
 See the [next-stage data-gap and holdout plan](execution-validation-next-stage.md) and the [frozen prospective protocol](execution-validation-followup-protocol.json).
+The start prerequisites and daily external archive contract for any replacement cohort are documented in the [holdout registration and archive runbook](execution-validation-holdout-archive.md).
