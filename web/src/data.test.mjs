@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { createHash } from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -84,4 +85,25 @@ test("publishes a lightweight smallcap turnover research snapshot", () => {
   assert.equal(summary.overlap_audit.length, 7);
   assert.ok(summary.clean.monthly.length >= 700);
   assert.ok(summary.historical.monthly.length >= 1_200);
+});
+
+test("relative quintiles bind to the reviewed absolute release and retain every denominator",()=>{
+ const absoluteRaw=fs.readFileSync(path.join(root,"liquidity/summary.json"));
+ const base=JSON.parse(absoluteRaw);
+ const raw=fs.readFileSync(path.join(root,"liquidity/relative-summary.json"));
+ const relative=JSON.parse(raw);
+ const review=JSON.parse(fs.readFileSync(path.join(root,"liquidity/relative-review.json")));
+ assert.equal(relative.absolute_summary_sha256,createHash('sha256').update(absoluteRaw).digest('hex'));
+ assert.equal(review.reviewed_summary_sha256,createHash('sha256').update(raw).digest('hex'));
+ assert.equal(review.aggregate_cells_reconciled,950);
+ assert.equal(review.absolute_aggregate_cells_reconciled,760);
+ assert.equal(review.feature_checksums_verified,true);
+ for(const [views,originals] of [[relative.markets,base.markets],...relative.periods.map((p,i)=>[p.markets,base.periods[i].markets])]) {
+  assert.deepEqual(views.map(m=>m.market),originals.map(m=>m.market));
+  views.forEach((m,i)=>{
+   assert.equal(m.eligible_observations,originals[i].eligible_observations);
+   assert.equal(m.buckets.reduce((n,b)=>n+b.observations,0),m.eligible_observations);
+   assert.equal(m.buckets.length,5);
+  });
+ }
 });

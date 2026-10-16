@@ -42,7 +42,7 @@ export function liquidityComparison(markets: LiquidityPeriodMarket[], bucket: nu
     .map(market => {
       const selected = market.buckets.find(item => item.label === label);
       const value = selected?.[basis === 'adv20' ? metric : (`median20_${metric}` as const)];
-      return {market: market.market, observations: selected?.observations, value: typeof value === 'number' && Number.isFinite(value) ? value : null};
+      return {market: market.market, stocks: selected?.count, totalStocks: market.unique_stocks ?? market.eligible_stocks, totalObservations: market.eligible_observations, capMin: selected?.cap_min_usd, capMax: selected?.cap_max_usd, observations: selected?.observations, value: typeof value === 'number' && Number.isFinite(value) ? value : null};
     });
 }
 

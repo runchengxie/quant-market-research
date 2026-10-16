@@ -101,3 +101,48 @@ for(const route of ['research/microcap/','research/cashflow/']) {
   expect(await card.evaluate(el=>getComputedStyle(el).backgroundColor)).not.toBe('rgb(232, 217, 200)');
  });
 }
+
+test('default size bucket includes A-share and empty buckets retain universe context', async ({page})=>{
+ await page.goto('research/liquidity/?lang=en-US');
+ const bucket=page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true});
+ await expect(bucket).toHaveValue('2');
+ const table=page.locator('#market-profiles .panel table');
+ const a=table.locator('tbody tr').filter({hasText:'A-share'});
+ await expect(a).toContainText('2,757');
+ await expect(a).not.toContainText('No observations');
+ await bucket.selectOption('0');
+ await expect(page.locator('.empty-bucket-notice')).toContainText('5,220 stocks and 5,220 security-days');
+ await expect(page.locator('.empty-bucket-notice')).toContainText('not missing market data');
+ await page.getByRole('button',{name:'2020-2024',exact:true}).click();
+ await expect(page.locator('.empty-bucket-notice')).toContainText('4,829,392 security-days');
+});
+
+test('relative quintiles preserve periods, show A-share and distinguish actual dollar sizes', async ({page})=>{
+ await page.setViewportSize({width:390,height:900});
+ await page.addInitScript(()=>localStorage.setItem('market-research-theme','dark'));
+ await page.goto('research/liquidity/?lang=en-US');
+ await page.getByRole('combobox',{name:'Size grouping',exact:true}).selectOption('relative');
+ await expect(page.getByRole('combobox',{name:'Size rank within each market',exact:true})).toHaveValue('0');
+ const table=page.locator('#market-profiles .panel table');
+ await expect(table).toContainText('Observed market-cap range (USD)');
+ await expect(table.locator('tbody tr').filter({hasText:'A-share'})).toContainText('1,044');
+ await expect(table).not.toContainText('No observations');
+ await expect(page.locator('#market-profiles')).toContainText('not the same dollar size');
+ await page.getByRole('button',{name:'2026 YTD',exact:true}).click();
+ await expect(table.locator('tbody tr')).toHaveCount(3);
+ await expect(page.locator('#market-profiles')).toContainText('Markets without data: US');
+ await page.getByRole('combobox',{name:'Size grouping',exact:true}).selectOption('absolute');
+ await expect(page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true})).toHaveValue('2');
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBeTruthy();
+});
+
+test('relative source failure can retry while the absolute comparison remains usable',async({page})=>{
+ await page.route('**/data/liquidity/relative-summary.json',route=>route.fulfill({status:503,body:'temporary failure'}));
+ await page.goto('research/liquidity/?lang=en-US');
+ await expect(page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true})).toHaveValue('2');
+ await page.getByRole('combobox',{name:'Size grouping',exact:true}).selectOption('relative');
+ await expect(page.locator('#market-profiles')).toContainText('503');
+ await page.unroute('**/data/liquidity/relative-summary.json');
+ await page.locator('#market-profiles').getByRole('button',{name:/Retry/i}).click();
+ await expect(page.getByRole('combobox',{name:'Size rank within each market',exact:true})).toBeVisible();
+});

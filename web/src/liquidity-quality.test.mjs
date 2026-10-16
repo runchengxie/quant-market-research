@@ -38,3 +38,12 @@ test('rolling median is selected explicitly rather than relabeled ADV20',()=>{
  assert.equal(liquidityComparison([market],0,'median_usd','median20')[0].value,80);
  assert.equal(liquidityComparison([market],0,'p90_usd','median20')[0].value,null);
 });
+
+test('empty size bucket retains its market universe and zero bucket counts',()=>{
+ const item={market:'A-share',aggregation:'snapshot',eligible_stocks:5220,unique_stocks:5220,eligible_observations:5220,buckets:[{label:'< $10m',count:0,observations:0,median_usd:null},{label:'$100m-$1bn',count:5220,observations:5220,median_usd:100}]};
+ const row=liquidityComparison([item],0,'median_usd')[0];
+ assert.equal(row.stocks,0);
+ assert.equal(row.totalStocks,5220);
+ assert.equal(row.totalObservations,5220);
+ assert.equal(row.value,null);
+});
