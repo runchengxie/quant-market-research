@@ -12,11 +12,12 @@ const verdict=c.rebuiltVerdict.map(value=>value.replace('{date}',commonDate));
 import { liquidityResearchCopy as c } from '../content/liquidity-research-copy';
 import { withBase } from '../lib/routes';
 const sections = [
- ['market-profiles',c.explorer],['liquidity-quality',c.quality],['liquidity-evidence',c.evidenceTitle],['order-budget',c.budget],
+ ['market-profiles',c.explorer],['liquidity-quality',c.quality],['capacity-data-coverage',c.coverageTitle],['liquidity-evidence',c.evidenceTitle],['order-budget',c.budget],
  ['expanded-results',['Static costs','静态交易成本']],['strategy-diagnostic',['Strategy scenarios','策略情景']],
  ['minute-execution',['Minute execution','分钟执行']],['research-notes',c.notes],
 ].map(([id,label])=>({id:id as string,label:label[1],labelEn:label[0],available:true}));
 const notes = [
+ ['2026-10-16','Daily, minute and Level 2 coverage audit','日线、分钟与 Level 2 覆盖审计','A-share 1-minute turnover now reconciles to daily turnover over the published history. Aggregate totals are close, with residual stock-day discrepancies and selected-date L2 limits disclosed.','已对发布范围内的 A 股 1 分钟成交额与日线成交额进行核对。全市场总额接近，但仍有证券日差异；Level 2 的选日样本限制也已单列。','docs/research/experiments/capacity-data-quality-20261016'],
  ['2026-10-16','Empty buckets and relative size','空桶与相对市值分组','Market coverage remains visible when a size bucket is empty. Daily within-market quintiles add a separate relative comparison.','市值桶为空时仍显示市场覆盖；每日市场内部五等分提供另一种相对比较。','docs/research/experiments/liquidity-size-groups-20261016'],
  ['2026-10-16','Four-market recomputation and source audit','四市场复算与来源核查','Common-date and historical summaries now use explicit lagged means/medians and prior FX. Sparse US source dates are isolated; Japanese shares remain exploratory.','共同日期与历史汇总已明确区分滞后均值、中位数和历史汇率；稀疏美股日期已隔离，日股股数仍为探索性来源。','docs/research/experiments/liquidity-rebuild-20261016'],
  ['2026-10-16','Count and metric audit','数量与指标审计','Archived inherited release: conflicting A-share counts remain unverified. Recomputed results are maintained separately.','历史发布已归档：A股冲突数量仍无法追溯确认，重新计算的结果另行维护。','docs/research/experiments/liquidity-capacity-audit-20261016'],

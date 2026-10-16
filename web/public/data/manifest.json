@@ -1,10 +1,11 @@
 {
-  "generated_at": "2026-10-12T16:12:00+08:00",
+  "generated_at": "2026-10-16T22:26:30+08:00",
   "sources": [
     "market-research A-share rule reconstruction",
     "smallcap turnover clean, historical and overlap-audit summaries",
     "reviewed public research snapshots",
-    "reviewed historical L2 aggregates and diagnostic strategy cost sensitivity"
+    "reviewed historical L2 aggregates and diagnostic strategy cost sensitivity",
+    "Reviewed four-market daily liquidity and capacity data-quality summaries"
   ],
   "markets": {
     "a_share": "published",
@@ -18,7 +19,8 @@
     "microcap_repair_files": 1,
     "smallcap_turnover_files": 1,
     "raw_data_published": false,
-    "execution_cost_files": 4
+    "execution_cost_files": 4,
+    "capacity_quality_files": 1
   },
   "snapshots": {
     "overview": {
@@ -98,25 +100,28 @@
       ]
     },
     "liquidity": {
-      "generated_at": "2026-09-12T00:00:00+08:00",
-      "source": "cross-market liquidity summary",
-      "quality_status": "incomplete",
+      "generated_at": "2026-10-16T22:26:30+08:00",
+      "coverage_start": "2019-11-01",
+      "coverage_end": "2026-10-15",
+      "source": "四市场 ADV20 复算与共同日期对照",
+      "quality_status": "derived",
       "markets": {
         "us": {
-          "as_of": "2026-05-26"
-        },
-        "hk": {
           "as_of": "2025-10-03"
         },
+        "hk": {
+          "as_of": "2026-05-26"
+        },
         "a_share": {
-          "as_of": "2026-09-07"
+          "as_of": "2026-10-15"
         },
         "jp": {
-          "as_of": null
+          "as_of": "2026-05-01"
         }
       },
       "caveats": [
-        "各市场数据日期不同。日本尚未发布可比分组"
+        "最近日期因市场而异；2026 YTD共同日期不含US。",
+        "美股成交额为收盘价代理；日股市值依赖探索性历史股数，历史PIT和完整股票池覆盖尚未证明。"
       ]
     },
     "execution_costs": {
@@ -162,6 +167,19 @@
       "caveats": [
         "80笔合成母单只验证程序与账目，不提供真实滑点证据；真实委托尚未接入。",
         "市场调整响应和按日期留出误差不等于自身因果冲击识别。"
+      ]
+    },
+    "capacity_data_quality": {
+      "generated_at": "2026-10-16T22:26:30+08:00",
+      "coverage_start": "2022-07-15",
+      "coverage_end": "2026-10-13",
+      "source": "A股TuShare分钟／日线对账、平台覆盖凭证及选日Level 2汇总",
+      "quality_status": "incomplete",
+      "caveats": [
+        "仍有9个交易日历缺口，分钟数据整库原生语义基线尚未完成。",
+        "全市场日成交额接近，但1.76%的匹配证券日相对差异超过1%，原因尚未定位。",
+        "Level 2覆盖10个选定盘口日期；真实委托、完整事件语义及全市场覆盖未具备。",
+        "已记录日线样本没有零成交值，不能据此估计全市场零交易比例。"
       ]
     }
   },

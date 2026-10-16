@@ -107,3 +107,24 @@ test("relative quintiles bind to the reviewed absolute release and retain every 
   });
  }
 });
+
+test("publishes aggregate-only daily, minute and Level 2 coverage checks",()=>{
+ const raw=fs.readFileSync(path.join(root,"liquidity/capacity-data-quality.json"));
+ const quality=JSON.parse(raw);
+ assert.equal(quality.schema_version,"capacity-data-quality.v1");
+ assert.deepEqual(quality.markets.map(row=>row.market),["US","HK","A-share","JP"]);
+ assert.deepEqual(quality.daily_periods.find(row=>row.period==="2026 YTD").markets,["HK","A-share","JP"]);
+ const ashare=quality.markets.find(row=>row.market==="A-share");
+ assert.equal(ashare.minute.sessions,1019);
+ assert.equal(ashare.minute.calendar_gaps,9);
+ assert.equal(ashare.level2.snapshot_dates,10);
+ assert.equal(ashare.level2.snapshot_rows,311395);
+ assert.equal(ashare.level2.usable_snapshot_rows,306483);
+ assert.equal(quality.minute_daily_reconciliation.matched_security_days,5411206);
+ assert.equal(quality.minute_daily_reconciliation.daily_only_security_days,2084);
+ assert.equal(quality.minute_daily_reconciliation.minute_duplicate_keys,0);
+ assert.ok(quality.minute_daily_reconciliation.median_daily_total_ratio > 0.99);
+ assert.equal(quality.audit_receipts.full_minute_semantic_rebaseline_complete,false);
+ assert.equal(quality.audit_receipts.l2_actual_order_calibrated,false);
+ assert.doesNotMatch(raw.toString(),/\/home\/|\/mnt\/|ts_code|security_id|source_path/);
+});
