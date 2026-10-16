@@ -76,7 +76,7 @@ export async function buildMicrocapReport(locale: ReportLocale) {
     }).replace(/^(#{1,5}) /gm, '$1# ');
     sections.push(`## ${t('Appendix','附录')} ${i+1} · ${zh ? doc.title : englishCopy(doc).title}`, `[${t('Canonical web source','网页来源')}](${origin}${doc.route})`, absolute);
   }
-  return { title, markdown: sections.join('\n\n')+'\n' };
+  return { title, markdown: sections.join('\n\n').trimEnd()+'\n' };
 }
 export async function buildWindowSvg(locale: ReportLocale) {
   const snapshot=await readReportSnapshot();
