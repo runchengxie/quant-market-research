@@ -1,44 +1,480 @@
 {
-  "reviewed_content_digest": "e5d5b2d39289f13a9b0c955e23bd0714e616e22dea6b2aab9c9fc7bd8bcac334",
-  "reviewed_source_digest": "20765f3b4e35de08aea668c5bd2ff53d9412c436094e6fb9fa294851b9fac4fc",
+  "reviewed_content_digest": "966fa7ea1c959adc487416d70eb5b03dd268cc12f35a5439b230556085734e7e",
+  "reviewed_source_digest": "555b981d2f157c34db21a1d656752b78906077497960c24db4e14612e43bbee7",
   "schema_version": "research.legacy_strategy_public.v1",
   "studies": [
     {
-      "baseline": "Fixed ETF diagnostic recipes; investment benchmark and cost comparison remain pending.",
-      "conclusion": "Synthetic integration succeeded. No real-data comparative return evidence has been admitted.",
-      "evidence_id": "legacy-etf-rotation-integration-v1",
-      "evidence_stage": "integration",
+      "baseline": "Initially equal-weight fixed-share basket and single-ETF buy-and-hold, charged the same initial fee on matching dates.",
+      "conclusion": "No recipe is ready for promotion. At 25 bps all three trail the fixed ETF basket. A small zero-cost raw-price advantage for the ranker does not persist under the adjusted-price convention.",
+      "evidence_id": "doc:quant-research.research.legacy-strategy-robustness-followup-20261016",
+      "evidence_stage": "diagnostic",
       "factor_refs": [
         "illiquidity",
         "realized_variance"
       ],
       "id": "etf-rotation",
       "limitations": [
-        "Integration is not evidence of investment efficacy.",
-        "Historical availability and untouched evaluation samples remain unverified.",
-        "No live RD-Agent comparison was performed."
+        "The original full window is blocked by a missing opening mark for one ETF; the reported tail starts later.",
+        "Backfilled history has no independent historical-availability receipt. Results are retrospective and were not an untouched holdout.",
+        "Same-day factor-adjusted prices are a valuation sensitivity, not a broker cash-flow ledger; raw prices give a different zero-fee ranking comparison.",
+        "The 0/10/25/50 bps values are fee scenarios, not brokerage quotes. Execution, corporate actions and capacity remain unaudited.",
+        "The small modern ETF basket cannot establish whether ETF rotation works across other funds or periods."
       ],
-      "metrics": [],
-      "question": "Can the retained etf rotation recipes run through maintained research infrastructure?",
-      "sample_scope": "Synthetic fixtures only; no historical investment sample.",
-      "source_status": "synthetic"
+      "metrics": [
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 0 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.linear_rank.cost_0_bps",
+          "unit": "percent",
+          "value": -13.75979025
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 0 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_regression.cost_0_bps",
+          "unit": "percent",
+          "value": -10.24358513
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 0 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_ranker.cost_0_bps",
+          "unit": "percent",
+          "value": -4.81852881
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 0 bps cost.",
+          "name": "etf.cumulative_return.raw.fixed_share_basket.cost_0_bps",
+          "unit": "percent",
+          "value": -6.59885041
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 0 bps cost.",
+          "name": "etf.cumulative_return.raw.single_etf_baseline.cost_0_bps",
+          "unit": "percent",
+          "value": -19.34830322
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 10 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.linear_rank.cost_10_bps",
+          "unit": "percent",
+          "value": -38.53758711
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 10 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_regression.cost_10_bps",
+          "unit": "percent",
+          "value": -10.74678553
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 10 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_ranker.cost_10_bps",
+          "unit": "percent",
+          "value": -39.71676318
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 10 bps cost.",
+          "name": "etf.cumulative_return.raw.fixed_share_basket.cost_10_bps",
+          "unit": "percent",
+          "value": -6.69496573
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 10 bps cost.",
+          "name": "etf.cumulative_return.raw.single_etf_baseline.cost_10_bps",
+          "unit": "percent",
+          "value": -19.43149723
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 25 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.linear_rank.cost_25_bps",
+          "unit": "percent",
+          "value": -63.04404392
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 25 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_regression.cost_25_bps",
+          "unit": "percent",
+          "value": -11.49648794
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 25 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_ranker.cost_25_bps",
+          "unit": "percent",
+          "value": -69.6407296
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 25 bps cost.",
+          "name": "etf.cumulative_return.raw.fixed_share_basket.cost_25_bps",
+          "unit": "percent",
+          "value": -6.83913872
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 25 bps cost.",
+          "name": "etf.cumulative_return.raw.single_etf_baseline.cost_25_bps",
+          "unit": "percent",
+          "value": -19.55628825
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 50 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.linear_rank.cost_50_bps",
+          "unit": "percent",
+          "value": -84.19696872
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 50 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_regression.cost_50_bps",
+          "unit": "percent",
+          "value": -12.73251588
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 50 bps cost, using raw prices.",
+          "name": "etf.cumulative_return.raw.lightgbm_ranker.cost_50_bps",
+          "unit": "percent",
+          "value": -90.34418955
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 50 bps cost.",
+          "name": "etf.cumulative_return.raw.fixed_share_basket.cost_50_bps",
+          "unit": "percent",
+          "value": -7.07942703
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 50 bps cost.",
+          "name": "etf.cumulative_return.raw.single_etf_baseline.cost_50_bps",
+          "unit": "percent",
+          "value": -19.76427327
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 0 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.linear_rank.cost_0_bps",
+          "unit": "percent",
+          "value": -3.66153143
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 0 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_regression.cost_0_bps",
+          "unit": "percent",
+          "value": -6.83405385
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 0 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_ranker.cost_0_bps",
+          "unit": "percent",
+          "value": 0.38479765
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 0 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.fixed_share_basket.cost_0_bps",
+          "unit": "percent",
+          "value": 1.77846207
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 0 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.single_etf_baseline.cost_0_bps",
+          "unit": "percent",
+          "value": -13.10752376
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 10 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.linear_rank.cost_10_bps",
+          "unit": "percent",
+          "value": -31.32944847
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 10 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_regression.cost_10_bps",
+          "unit": "percent",
+          "value": -7.35657906
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 10 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_ranker.cost_10_bps",
+          "unit": "percent",
+          "value": -36.41878508
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 10 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.fixed_share_basket.cost_10_bps",
+          "unit": "percent",
+          "value": 1.67372599
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 10 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.single_etf_baseline.cost_10_bps",
+          "unit": "percent",
+          "value": -13.19715527
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 25 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.linear_rank.cost_25_bps",
+          "unit": "percent",
+          "value": -58.6998156
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 25 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_regression.cost_25_bps",
+          "unit": "percent",
+          "value": -8.13507062
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 25 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_ranker.cost_25_bps",
+          "unit": "percent",
+          "value": -67.97798013
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 25 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.fixed_share_basket.cost_25_bps",
+          "unit": "percent",
+          "value": 1.51662188
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 25 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.single_etf_baseline.cost_25_bps",
+          "unit": "percent",
+          "value": -13.33160253
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 50 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.linear_rank.cost_50_bps",
+          "unit": "percent",
+          "value": -82.33205726
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 50 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_regression.cost_50_bps",
+          "unit": "percent",
+          "value": -9.41855699
+        },
+        {
+          "definition": "Cumulative net NAV change over the 1,183-period conditional tail at 50 bps cost, using factor adjusted prices.",
+          "name": "etf.cumulative_return.factor_adjusted.lightgbm_ranker.cost_50_bps",
+          "unit": "percent",
+          "value": -89.81436434
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 50 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.fixed_share_basket.cost_50_bps",
+          "unit": "percent",
+          "value": 1.25478169
+        },
+        {
+          "definition": "Buy-and-hold baseline cumulative net NAV change on the same dates at 50 bps cost.",
+          "name": "etf.cumulative_return.factor_adjusted.single_etf_baseline.cost_50_bps",
+          "unit": "percent",
+          "value": -13.55568131
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the evaluated NAV path at the primary 25 bps cost scenario.",
+          "name": "etf.maximum_drawdown.raw.linear_rank.cost_25_bps",
+          "unit": "percent",
+          "value": -72.04217319
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the evaluated NAV path at the primary 25 bps cost scenario.",
+          "name": "etf.maximum_drawdown.raw.lightgbm_regression.cost_25_bps",
+          "unit": "percent",
+          "value": -51.37305155
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the evaluated NAV path at the primary 25 bps cost scenario.",
+          "name": "etf.maximum_drawdown.raw.lightgbm_ranker.cost_25_bps",
+          "unit": "percent",
+          "value": -75.62432524
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the matched baseline NAV path.",
+          "name": "etf.maximum_drawdown.raw.fixed_share_basket.cost_25_bps",
+          "unit": "percent",
+          "value": -46.91744788
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the matched baseline NAV path.",
+          "name": "etf.maximum_drawdown.raw.single_etf_baseline.cost_25_bps",
+          "unit": "percent",
+          "value": -46.81992009
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the evaluated NAV path at the primary 25 bps cost scenario.",
+          "name": "etf.maximum_drawdown.factor_adjusted.linear_rank.cost_25_bps",
+          "unit": "percent",
+          "value": -69.25691079
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the evaluated NAV path at the primary 25 bps cost scenario.",
+          "name": "etf.maximum_drawdown.factor_adjusted.lightgbm_regression.cost_25_bps",
+          "unit": "percent",
+          "value": -50.08436456
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the evaluated NAV path at the primary 25 bps cost scenario.",
+          "name": "etf.maximum_drawdown.factor_adjusted.lightgbm_ranker.cost_25_bps",
+          "unit": "percent",
+          "value": -74.57343419
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the matched baseline NAV path.",
+          "name": "etf.maximum_drawdown.factor_adjusted.fixed_share_basket.cost_25_bps",
+          "unit": "percent",
+          "value": -43.01052601
+        },
+        {
+          "definition": "Maximum peak-to-trough decline in the matched baseline NAV path.",
+          "name": "etf.maximum_drawdown.factor_adjusted.single_etf_baseline.cost_25_bps",
+          "unit": "percent",
+          "value": -43.96676218
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.lightgbm_regression.year_2021.cost_25_bps",
+          "unit": "percent",
+          "value": -9.89006561
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.fixed_share_basket.year_2021.cost_25_bps",
+          "unit": "percent",
+          "value": -2.72509419
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.lightgbm_regression.year_2022.cost_25_bps",
+          "unit": "percent",
+          "value": -24.7836082
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.fixed_share_basket.year_2022.cost_25_bps",
+          "unit": "percent",
+          "value": -22.23749176
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.lightgbm_regression.year_2023.cost_25_bps",
+          "unit": "percent",
+          "value": -15.20918438
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.fixed_share_basket.year_2023.cost_25_bps",
+          "unit": "percent",
+          "value": -11.86083856
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.lightgbm_regression.year_2024.cost_25_bps",
+          "unit": "percent",
+          "value": 19.45907875
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.fixed_share_basket.year_2024.cost_25_bps",
+          "unit": "percent",
+          "value": 15.63392503
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.lightgbm_regression.year_2025.cost_25_bps",
+          "unit": "percent",
+          "value": 33.81247452
+        },
+        {
+          "definition": "Exploratory calendar-year compounded return grouped by exit-session year; computed after the full-window result was known.",
+          "name": "etf.calendar_return.factor_adjusted.fixed_share_basket.year_2025.cost_25_bps",
+          "unit": "percent",
+          "value": 31.67759822
+        },
+        {
+          "definition": "Lower 2.5th percentile of annualized paired relative log return in 10,000 circular block resamples of 20 trading periods; descriptive, not a formal significance test.",
+          "name": "etf.relative_log_return_ci95.linear_rank.low.cost_25_bps",
+          "unit": "percent",
+          "value": -23.71075188
+        },
+        {
+          "definition": "Upper 97.5th percentile of annualized paired relative log return in the same descriptive block resample.",
+          "name": "etf.relative_log_return_ci95.linear_rank.high.cost_25_bps",
+          "unit": "percent",
+          "value": -14.83524248
+        },
+        {
+          "definition": "Lower 2.5th percentile of annualized paired relative log return in 10,000 circular block resamples of 20 trading periods; descriptive, not a formal significance test.",
+          "name": "etf.relative_log_return_ci95.lightgbm_regression.low.cost_25_bps",
+          "unit": "percent",
+          "value": -6.3092423
+        },
+        {
+          "definition": "Upper 97.5th percentile of annualized paired relative log return in the same descriptive block resample.",
+          "name": "etf.relative_log_return_ci95.lightgbm_regression.high.cost_25_bps",
+          "unit": "percent",
+          "value": 1.93360364
+        },
+        {
+          "definition": "Lower 2.5th percentile of annualized paired relative log return in 10,000 circular block resamples of 20 trading periods; descriptive, not a formal significance test.",
+          "name": "etf.relative_log_return_ci95.lightgbm_ranker.low.cost_25_bps",
+          "unit": "percent",
+          "value": -30.11656389
+        },
+        {
+          "definition": "Upper 97.5th percentile of annualized paired relative log return in the same descriptive block resample.",
+          "name": "etf.relative_log_return_ci95.lightgbm_ranker.high.cost_25_bps",
+          "unit": "percent",
+          "value": -19.26055176
+        }
+      ],
+      "question": "Did the retained ETF recipes beat simple holdings across the matched historical window?",
+      "sample_scope": "Conditional matched-mark tail: 1,183 open-to-open periods, 2021-02-18 to 2025-12-31; fixed basket of three current ETFs, not reconstructed historical membership.",
+      "source_status": "reviewed"
     },
     {
-      "baseline": "Deterministic topic-to-candidate baseline; investment benchmark and cost comparison remain pending.",
-      "conclusion": "Synthetic integration succeeded. No real-data comparative return evidence has been admitted.",
-      "evidence_id": "legacy-hotsector-integration-v1",
-      "evidence_stage": "integration",
+      "baseline": "Paired candidate arms share the same observed topic and membership base; the comparison changes only the additional individual-stock heat overlay.",
+      "conclusion": "The overlay improves three of four fixed five-session events at each tested cost. Four events do not establish a reliable edge or validate the complete hotspot strategy.",
+      "evidence_id": "doc:quant-research.research.legacy-strategy-robustness-followup-20261016",
+      "evidence_stage": "diagnostic",
       "factor_refs": [],
       "id": "hotsector",
       "limitations": [
-        "Integration is not evidence of investment efficacy.",
-        "Historical availability and untouched evaluation samples remain unverified.",
-        "No live RD-Agent comparison was performed."
+        "Historical snapshot dates do not prove when each input was available to a live researcher; topic membership snapshots may be incomplete.",
+        "Only four isolated events are available; this is not a significance test, untouched sample, or complete strategy comparison.",
+        "Raw opening prices omit corporate-action cash flows. Suspensions, price limits, lot sizes and capacity are unaudited."
       ],
-      "metrics": [],
-      "question": "Can the retained hotspot candidates recipes run through maintained research infrastructure?",
-      "sample_scope": "Synthetic fixtures only; no historical investment sample.",
-      "source_status": "synthetic"
+      "metrics": [
+        {
+          "definition": "Unweighted mean paired return difference over four isolated events, in percentage points; not a continuous portfolio return.",
+          "name": "hotspot.mean_event_delta.cost_0_bps",
+          "unit": "percentage_points",
+          "value": 0.23913268
+        },
+        {
+          "definition": "Count of the four event overlays with a positive paired return difference.",
+          "name": "hotspot.positive_event_count.cost_0_bps",
+          "unit": "events",
+          "value": 3
+        },
+        {
+          "definition": "Unweighted mean paired return difference over four isolated events, in percentage points; not a continuous portfolio return.",
+          "name": "hotspot.mean_event_delta.cost_25_bps",
+          "unit": "percentage_points",
+          "value": 0.23853485
+        },
+        {
+          "definition": "Count of the four event overlays with a positive paired return difference.",
+          "name": "hotspot.positive_event_count.cost_25_bps",
+          "unit": "events",
+          "value": 3
+        },
+        {
+          "definition": "Unweighted mean paired return difference over four isolated events, in percentage points; not a continuous portfolio return.",
+          "name": "hotspot.mean_event_delta.cost_50_bps",
+          "unit": "percentage_points",
+          "value": 0.23793701
+        },
+        {
+          "definition": "Count of the four event overlays with a positive paired return difference.",
+          "name": "hotspot.positive_event_count.cost_50_bps",
+          "unit": "events",
+          "value": 3
+        }
+      ],
+      "question": "Did an individual-stock heat overlay improve the same hotspot candidate base?",
+      "sample_scope": "Four isolated 2025 signal dates; each event holds for five sessions. Returns use selected opening-price marks and events do not form a continuous portfolio.",
+      "source_status": "reviewed"
     }
   ]
 }

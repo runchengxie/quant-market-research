@@ -2,7 +2,7 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { validateLegacyStudyEvidence } from '../content/legacy-strategy-evidence.server';
 const asset = validateLegacyStudyEvidence();
-import { legacyCopy, legacyStudyCopy } from '../content/legacy-strategy-copy';
+import { legacyCopy, legacyStudyCopy, metricDefinition, metricLabel } from '../content/legacy-strategy-copy';
 interface Props { id: 'etf-rotation' | 'hotsector' }
 const { id } = Astro.props;
 const study = asset.studies.find(value => value.id === id);
@@ -21,9 +21,20 @@ const shared = legacyCopy.shared;
     <section class="panel">
       <p data-locale-text data-en={copy.scope[0]} data-zh={copy.scope[1]}>{copy.scope[0]}</p>
       <p data-locale-text data-en={copy.baseline[0]} data-zh={copy.baseline[1]}>{copy.baseline[0]}</p>
-      <p data-locale-text data-en={shared.missing[0]} data-zh={shared.missing[1]}>{shared.missing[0]}</p>
       <p data-locale-text data-en={copy.limitations[0]} data-zh={copy.limitations[1]}>{copy.limitations[0]}</p>
+      <p class="notice" data-locale-text data-en={shared.noPromotion[0]} data-zh={shared.noPromotion[1]}>{shared.noPromotion[0]}</p>
     </section>
+    <details class="panel results">
+      <summary data-locale-text data-en={`${shared.metrics[0]} (${study.metrics.length})`} data-zh={`${shared.metrics[1]}（${study.metrics.length} 项）`}>{shared.metrics[0]} ({study.metrics.length})</summary>
+      <p data-locale-text data-en={shared.metricNote[0]} data-zh={shared.metricNote[1]}>{shared.metricNote[0]}</p>
+      <div class="table-wrap"><table><thead><tr><th data-locale-text data-en="Measure" data-zh="指标">Measure</th><th data-locale-text data-en={shared.return[0]} data-zh={shared.return[1]}>{shared.return[0]}</th><th data-locale-text data-en="Definition" data-zh="口径说明">Definition</th></tr></thead>
+        <tbody>{study.metrics.map(metric => <tr>
+          <th scope="row" data-locale-text data-en={metricLabel(metric.name, 'en')} data-zh={metricLabel(metric.name, 'zh')}>{metricLabel(metric.name, 'en')}</th>
+          <td data-locale-text data-en={metric.unit === 'percent' ? `${metric.value.toFixed(2)}%` : metric.unit === 'percentage_points' ? `${metric.value > 0 ? '+' : ''}${metric.value.toFixed(2)} pp` : String(metric.value)} data-zh={metric.unit === 'percent' ? `${metric.value.toFixed(2)}%` : metric.unit === 'percentage_points' ? `${metric.value > 0 ? '+' : ''}${metric.value.toFixed(2)} 个百分点` : String(metric.value)}>{metric.unit === 'percent' ? `${metric.value.toFixed(2)}%` : metric.unit === 'percentage_points' ? `${metric.value > 0 ? '+' : ''}${metric.value.toFixed(2)} pp` : metric.value}</td>
+          <td data-locale-text data-en={metricDefinition(metric.name, 'en')} data-zh={metricDefinition(metric.name, 'zh')}>{metricDefinition(metric.name, 'en')}</td>
+        </tr>)}</tbody>
+      </table></div>
+    </details>
     {study.factor_refs.length > 0 && <section class="panel">
       <h2 data-locale-text data-en={shared.factors[0]} data-zh={shared.factors[1]}>{shared.factors[0]}</h2>
       <p data-locale-text data-en={shared.factorBoundary[0]} data-zh={shared.factorBoundary[1]}>{shared.factorBoundary[0]}</p>
@@ -32,3 +43,11 @@ const shared = legacyCopy.shared;
     <details><summary data-locale-text data-en={shared.provenance[0]} data-zh={shared.provenance[1]}>{shared.provenance[0]}</summary><p>{study.evidence_id}</p><p><code>{asset.reviewed_source_digest}</code></p><p><code>{asset.reviewed_content_digest}</code></p></details>
   </article>
 </SiteLayout>
+<style>
+  .notice { font-weight: 650; }
+  .results summary { cursor: pointer; font-weight: 650; }
+  .table-wrap { overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; font-variant-numeric: tabular-nums; }
+  th, td { border-bottom: 1px solid var(--line, #ddd); padding: .55rem .7rem; text-align: left; }
+  td { text-align: right; white-space: nowrap; }
+</style>
