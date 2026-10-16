@@ -1,0 +1,245 @@
+{
+  "schema_version": "capacity-data-quality.v1",
+  "generated_as_of": "2026-10-16",
+  "daily_periods": [
+    {
+      "period": "common snapshot",
+      "start": "2025-09-30",
+      "end": "2025-09-30",
+      "common_dates": 1,
+      "markets": [
+        "US",
+        "HK",
+        "A-share",
+        "JP"
+      ]
+    },
+    {
+      "period": "2020-2024",
+      "start": "2020-01-06",
+      "end": "2024-12-30",
+      "common_dates": 1065,
+      "markets": [
+        "US",
+        "HK",
+        "A-share",
+        "JP"
+      ]
+    },
+    {
+      "period": "2025",
+      "start": "2025-01-06",
+      "end": "2025-09-30",
+      "common_dates": 161,
+      "markets": [
+        "US",
+        "HK",
+        "A-share",
+        "JP"
+      ]
+    },
+    {
+      "period": "2026 YTD",
+      "start": "2026-01-05",
+      "end": "2026-04-30",
+      "common_dates": 71,
+      "markets": [
+        "HK",
+        "A-share",
+        "JP"
+      ]
+    }
+  ],
+  "markets": [
+    {
+      "market": "US",
+      "daily": {
+        "start": "2019-11-01",
+        "end": "2025-10-04",
+        "latest": "2025-10-03",
+        "basis": "SimFin close × volume; turnover is a close-price proxy, not reported traded value. Sparse source date 2025-10-04 is excluded; latest eligible observation is 2025-10-03."
+      },
+      "minute": {
+        "status": "not_in_research_panel",
+        "caveat": "No minute source is included in this cross-market research panel."
+      },
+      "level2": {
+        "status": "not_in_research_panel",
+        "caveat": "No Level 2 source is included in this cross-market research panel."
+      }
+    },
+    {
+      "market": "HK",
+      "daily": {
+        "start": "2019-11-01",
+        "end": "2026-05-26",
+        "latest": "2026-05-26",
+        "basis": "RQData reported turnover in HKD; historical universe coverage remains unproven."
+      },
+      "minute": {
+        "status": "not_in_research_panel",
+        "caveat": "No minute source is included in this cross-market research panel."
+      },
+      "level2": {
+        "status": "not_in_research_panel",
+        "caveat": "No Level 2 source is included in this cross-market research panel."
+      }
+    },
+    {
+      "market": "A-share",
+      "daily": {
+        "start": "2019-11-01",
+        "end": "2026-10-15",
+        "latest": "2026-10-15",
+        "basis": "TuShare daily turnover; prior-period status filters do not establish historical PIT."
+      },
+      "minute": {
+        "status": "available",
+        "start": "2022-07-15",
+        "end": "2026-10-13",
+        "sessions": 1019,
+        "rows": 1304100646,
+        "security_days": 5411206,
+        "calendar_gaps": 9,
+        "caveat": "Published TuShare operational version; nine exchange-calendar gaps remain and full native semantic rebaseline is incomplete."
+      },
+      "level2": {
+        "status": "sampled",
+        "snapshot_dates": 10,
+        "snapshot_rows": 311395,
+        "usable_snapshot_rows": 306483,
+        "event_dates": 2,
+        "caveat": "Selected-date static snapshots only; event semantics and full-market coverage are not verified."
+      }
+    },
+    {
+      "market": "JP",
+      "daily": {
+        "start": "2019-11-01",
+        "end": "2026-05-01",
+        "latest": "2026-05-01",
+        "basis": "J-Quants daily traded value; market cap uses exploratory Yahoo share history."
+      },
+      "minute": {
+        "status": "not_in_research_panel",
+        "caveat": "No minute source is included in this cross-market research panel."
+      },
+      "level2": {
+        "status": "not_in_research_panel",
+        "caveat": "No Level 2 source is included in this cross-market research panel."
+      }
+    }
+  ],
+  "minute_daily_reconciliation": {
+    "start": "2022-07-15",
+    "end": "2026-10-13",
+    "days": 1019,
+    "matched_security_days": 5411206,
+    "daily_only_security_days": 2084,
+    "minute_duplicate_keys": 0,
+    "invalid_amount_rows": 0,
+    "median_daily_total_ratio": 0.9997399205246067,
+    "abs_diff_le_1_cny": 0.9020990884471964,
+    "abs_diff_le_100_cny": 0.9735615313850554,
+    "rel_diff_le_0_1pct": 0.9740507014517651,
+    "rel_diff_over_1pct": 0.01759496866317786,
+    "rel_diff_over_5pct": 0.0008986906061236626,
+    "rel_diff_over_10pct": 0.0002097499152684263,
+    "relative_diff_quantiles": {
+      "0.5": 8.469810137497672e-11,
+      "0.9": 7.588874430421154e-09,
+      "0.99": 0.0162692562109494,
+      "1.0": 0.7091690298186818
+    },
+    "daily_zero_turnover_rate": 0.0,
+    "yearly": {
+      "2022": {
+        "matched_security_days": 562860,
+        "daily_security_days": 564194,
+        "daily_only_security_days": 1334,
+        "minute_only_security_days": 0,
+        "daily_zero_turnover_security_days": 0,
+        "relative_diff_over_0_1pct": 368,
+        "relative_diff_over_1pct": 207,
+        "relative_diff_over_5pct": 32,
+        "relative_diff_over_10pct": 10
+      },
+      "2023": {
+        "matched_security_days": 1222618,
+        "daily_security_days": 1222843,
+        "daily_only_security_days": 225,
+        "minute_only_security_days": 0,
+        "daily_zero_turnover_security_days": 0,
+        "relative_diff_over_0_1pct": 15479,
+        "relative_diff_over_1pct": 9549,
+        "relative_diff_over_5pct": 1512,
+        "relative_diff_over_10pct": 579
+      },
+      "2024": {
+        "matched_security_days": 1293394,
+        "daily_security_days": 1293893,
+        "daily_only_security_days": 499,
+        "minute_only_security_days": 0,
+        "daily_zero_turnover_security_days": 0,
+        "relative_diff_over_0_1pct": 40227,
+        "relative_diff_over_1pct": 29423,
+        "relative_diff_over_5pct": 2126,
+        "relative_diff_over_10pct": 424
+      },
+      "2025": {
+        "matched_security_days": 1313872,
+        "daily_security_days": 1313898,
+        "daily_only_security_days": 26,
+        "minute_only_security_days": 0,
+        "daily_zero_turnover_security_days": 0,
+        "relative_diff_over_0_1pct": 45102,
+        "relative_diff_over_1pct": 33434,
+        "relative_diff_over_5pct": 596,
+        "relative_diff_over_10pct": 52
+      },
+      "2026": {
+        "matched_security_days": 1018462,
+        "daily_security_days": 1018462,
+        "daily_only_security_days": 0,
+        "minute_only_security_days": 0,
+        "daily_zero_turnover_security_days": 0,
+        "relative_diff_over_0_1pct": 39241,
+        "relative_diff_over_1pct": 22597,
+        "relative_diff_over_5pct": 597,
+        "relative_diff_over_10pct": 70
+      }
+    },
+    "total_ratio_quantiles": {
+      "0.01": 0.9965169327756591,
+      "0.5": 0.9997399205246067,
+      "0.99": 1.000000000165275
+    }
+  },
+  "intraday_concentration": {
+    "days": 1019,
+    "quantiles": {
+      "0.5": {
+        "top_5min_share": 0.08937004034089269,
+        "open_30min_share": 0.306414244738671,
+        "close_30min_share": 0.12402471032367736
+      },
+      "0.9": {
+        "top_5min_share": 0.10510985786006086,
+        "open_30min_share": 0.34413228570045906,
+        "close_30min_share": 0.14266143391030828
+      },
+      "0.99": {
+        "top_5min_share": 0.126921235519639,
+        "open_30min_share": 0.37622957997985473,
+        "close_30min_share": 0.16421544380061398
+      }
+    }
+  },
+  "audit_receipts": {
+    "minute_audit_sha256": "59b7eb0da0bb8b48218146fd7a480d3e6b8fd8b6a12e7abc604973aed3a7c6e6",
+    "minute_source_quality_status": "tushare_native_baseline_required",
+    "full_minute_semantic_rebaseline_complete": false,
+    "l2_measurement_evidence": "descriptive_historical_static_expansion",
+    "l2_actual_order_calibrated": false
+  }
+}
