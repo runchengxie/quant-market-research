@@ -1,0 +1,6 @@
+---
+import type { LocalText } from '../../content/microcap-hub';
+interface Props { text: LocalText }
+const { text } = Astro.props;
+---
+<span data-locale-text data-en={text[0]} data-zh={text[1]}>{text[0]}</span>
