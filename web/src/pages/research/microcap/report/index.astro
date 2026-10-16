@@ -1,7 +1,7 @@
 ---
 import { createMarkdownProcessor } from '@astrojs/markdown-remark';
 import ArticleLayout from '../../../../layouts/ArticleLayout.astro';
-import { buildMicrocapReport, buildWindowSvg } from '../../../../content/microcap-report.server';
+import { buildMicrocapReport, buildWindowSvg, buildCandidateSvg } from '../../../../content/microcap-report.server';
 const processor = await createMarkdownProcessor();
 const en=await buildMicrocapReport('en-US');
 const zh=await buildMicrocapReport('zh-CN');
@@ -11,6 +11,8 @@ const chinese=await processor.render(localMarkdown(zh.markdown));
 const inlineChart = (html: string, svg: string) => html.replace(/<img\b[^>]*src="[^"]*microcap-windows\.[^"]+"[^>]*>/, svg);
 english.code=inlineChart(english.code,await buildWindowSvg('en-US'));
 chinese.code=inlineChart(chinese.code,await buildWindowSvg('zh-CN'));
-const meta={id:'microcap-report',title:zh.title,summary:'A complete source-backed public micro-cap research record with portfolio comparisons, revisions and methodology appendices.'};
+english.code=english.code.replace(/<img\b[^>]*src="[^"]*microcap-candidates\.[^"]+"[^>]*>/,await buildCandidateSvg('en-US'));
+chinese.code=chinese.code.replace(/<img\b[^>]*src="[^"]*microcap-candidates\.[^"]+"[^>]*>/,await buildCandidateSvg('zh-CN'));
+const meta={id:'microcap-report',title:zh.title,summary:'A reviewed micro-cap research history and public evidence record with portfolio comparisons, revisions and methodology appendices.'};
 ---
 <ArticleLayout meta={meta} html={english.code} headings={english.metadata.headings} alternate={{html:chinese.code,headings:chinese.metadata.headings,locale:'zh-CN'}} />
