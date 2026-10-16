@@ -32,9 +32,9 @@ h1 { margin: 10px 0 12px; font: 700 clamp(36px, 6vw, 70px)/.98 var(--font-headin
 .theme-heading h2 { max-width: 760px; margin: 10px 0 10px; font: 600 clamp(25px, 3vw, 43px)/1.14 var(--font-heading); letter-spacing: -.04em; }
 .theme-heading p { max-width: 740px; margin-bottom: 0; color: #716c63; line-height: 1.8; }
 .asof { white-space: nowrap; color: #8a8176; font: 11px var(--font-mono); }
-.stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin: 32px 0; border: 1px solid #d8d0c3; background: #d8d0c3; }
+.stat-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 1px; margin: 32px 0; border: 1px solid #d8d0c3; background: var(--rule); }
 .stat { min-height: 142px; padding: 20px; background: #f4f0e8; }
-.stat.accent { background: #e8d9c8; }
+.stat.accent { background: var(--accent-soft); }
 .stat span, .stat small { display: block; color: #81796e; font-size: 11px; }
 .stat strong { display: block; margin: 18px 0 8px; font: 700 clamp(22px, 3vw, 32px) var(--font-mono); letter-spacing: -.05em; }
 .stat small { line-height: 1.5; }
@@ -53,7 +53,7 @@ h1 { margin: 10px 0 12px; font: 700 clamp(36px, 6vw, 70px)/.98 var(--font-headin
 .chart-axis { display: flex; justify-content: space-between; padding-top: 10px; color: #8d8579; font: 10px var(--font-mono); }
 .chart-axis strong { color: #b64d33; font-weight: 500; }
 .research-grid, .market-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 32px; }
-.overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin: 46px 0; border: 1px solid #d8d0c3; background: #d8d0c3; }
+.overview-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; margin: 46px 0; border: 1px solid #d8d0c3; background: var(--rule); }
 .overview-grid a { min-height: 220px; padding: 28px; color: inherit; background: #f8f5ef; text-decoration: none; transition: background .2s ease; }
 .overview-grid a:hover { background: #e8d9c8; }
 .overview-grid h3 { margin: 28px 0 10px; font: 600 25px var(--font-heading); }
@@ -62,15 +62,15 @@ h1 { margin: 10px 0 12px; font: 700 clamp(36px, 6vw, 70px)/.98 var(--font-headin
 .sub-tabs { display: flex; gap: 6px; margin: 0 0 24px; border-bottom: 1px solid #d8d0c3; padding-bottom: 10px; }
 .sub-tabs button, .sub-tabs a { border: 1px solid transparent; padding: 8px 12px; color: #81796e; background: transparent; cursor: pointer; font-size: 12px; text-decoration: none; }
 .sub-tabs button:hover, .sub-tabs button:focus-visible, .sub-tabs button.active, .sub-tabs a:hover, .sub-tabs a:focus-visible, .sub-tabs a.active { border-color: #dba58f; color: #b64d33; background: #ede5d9; }
-.period-panel { margin: 0 0 42px; border: 1px solid #d8d0c3; padding: 24px; background: #f8f5ef; }
+.period-panel { margin: 0 0 42px; border: 1px solid var(--rule); padding: 24px; background: var(--surface); }
 .period-panel.embedded { margin-top: 10px; }
 .period-heading { display: flex; justify-content: space-between; gap: 20px; align-items: start; }
 .period-heading h3 { margin: 8px 0; font: 600 23px var(--font-heading); }
 .period-heading p { max-width: 680px; margin: 0; color: #81796e; font-size: 13px; line-height: 1.7; }
 .status-badge { flex: none; border: 1px solid #d8d0c3; padding: 6px 9px; color: #81796e; font: 10px var(--font-mono); }
-.status-badge.verified { border-color: #a9c8ae; color: #51855f; background: #edf5ed; }
-.status-badge.incomplete { border-color: #dba58f; color: #b64d33; background: #f8ebe5; }
-.status-badge.mixed { border-color: #d8c58a; color: #8a6b22; background: #faf4dd; }
+.status-badge.verified { border-color: var(--rule); color: var(--ink-soft); background: var(--surface-strong); }
+.status-badge.incomplete { border-color: var(--accent-strong); color: var(--accent); background: var(--accent-soft); }
+.status-badge.mixed { border-color: var(--rule); color: var(--ink-soft); background: var(--surface-strong); }
 .period-meta { margin: 4px 0 14px; color: #81796e; font: 10px var(--font-mono); }
 .callout.compact { margin: 16px 0; padding: 12px 16px; }
 .fine-print { margin: 42px 0 54px; padding-top: 16px; border-top: 1px solid #d8d0c3; color: #8d8579; font-size: 11px; line-height: 1.8; }
@@ -543,3 +543,19 @@ body { font-size: 15px; line-height: 1.75; }
 .research-verdict { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--line, #ccc); border-radius: 12px; }
 .research-verdict h2 { margin-top: 0; }
 .research-verdict p { max-width: 80ch; line-height: 1.7; }
+
+/* Shared research controls and evidence surfaces use the active palette. */
+.liquidity-filters { display:flex; flex-wrap:wrap; align-items:end; gap:16px; margin:24px 0; }
+.liquidity-filters label { display:grid; gap:8px; flex:1; min-width:160px; color:var(--ink-soft); font-size:13px; }
+.liquidity-filters select, .liquidity-filters input { width:100%; min-width:0; padding:10px; border:1px solid var(--rule); background:var(--paper); color:var(--ink); font:inherit; }
+.capacity-research { max-width:980px; margin-inline:auto; min-width:0; }
+.capacity-research .period-panel { margin-top:28px; }
+.capacity-research .report-section { scroll-margin-top:180px; }
+.capacity-research .period-heading h2 { font-size:1.45rem; line-height:1.5; }
+.capacity-research details { margin-block:20px; }
+.capacity-research summary { cursor:pointer; line-height:1.7; }
+.capacity-research .research-notes { border-top:1px solid var(--rule); padding-top:24px; }
+.capacity-research a { color:var(--accent); }
+.stat strong, .period-panel, .period-heading h2 { color:var(--ink); }
+.choice { border-color:var(--rule); }
+.choice.active, .choice:hover { color:var(--accent); border-color:var(--accent); }

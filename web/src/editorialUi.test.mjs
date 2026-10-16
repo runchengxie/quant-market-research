@@ -9,6 +9,7 @@ const [source, overview, routes, pages] = await Promise.all([
     "./components/react/style-page.tsx",
     "./components/react/cashflow-page.tsx",
     "./components/react/liquidity-page.tsx",
+    "./content/liquidity-research-copy.ts",
     "./components/ReplicationSection.tsx",
   ].map((file) => readFileSync(new URL(file, import.meta.url), "utf8"))).then((files) => files.join("\n")),
   ["./components/ResearchOverview.tsx", "./content/overview-copy.ts"].map(file => readFileSync(new URL(file, import.meta.url), "utf8")).join("\n"),
@@ -49,7 +50,7 @@ test("Astro 页面直接挂载研究组件，不保留 React 二次路由", () =
 
 test("研究总览使用三个研究域和小微盘子主题", () => {
   assert.match(site, /现金流历史研究/);
-  assert.match(site, /小微盘历史研究/);
+  assert.match(site, /小微盘研究/);
   assert.match(site, /长期风格研究/);
   assert.match(site, /历史研究档案/);
   assert.match(site, /实际账户盈亏/);
