@@ -1,0 +1,44 @@
+{
+  "reviewed_content_digest": "e5d5b2d39289f13a9b0c955e23bd0714e616e22dea6b2aab9c9fc7bd8bcac334",
+  "reviewed_source_digest": "20765f3b4e35de08aea668c5bd2ff53d9412c436094e6fb9fa294851b9fac4fc",
+  "schema_version": "research.legacy_strategy_public.v1",
+  "studies": [
+    {
+      "baseline": "Fixed ETF diagnostic recipes; investment benchmark and cost comparison remain pending.",
+      "conclusion": "Synthetic integration succeeded. No real-data comparative return evidence has been admitted.",
+      "evidence_id": "legacy-etf-rotation-integration-v1",
+      "evidence_stage": "integration",
+      "factor_refs": [
+        "illiquidity",
+        "realized_variance"
+      ],
+      "id": "etf-rotation",
+      "limitations": [
+        "Integration is not evidence of investment efficacy.",
+        "Historical availability and untouched evaluation samples remain unverified.",
+        "No live RD-Agent comparison was performed."
+      ],
+      "metrics": [],
+      "question": "Can the retained etf rotation recipes run through maintained research infrastructure?",
+      "sample_scope": "Synthetic fixtures only; no historical investment sample.",
+      "source_status": "synthetic"
+    },
+    {
+      "baseline": "Deterministic topic-to-candidate baseline; investment benchmark and cost comparison remain pending.",
+      "conclusion": "Synthetic integration succeeded. No real-data comparative return evidence has been admitted.",
+      "evidence_id": "legacy-hotsector-integration-v1",
+      "evidence_stage": "integration",
+      "factor_refs": [],
+      "id": "hotsector",
+      "limitations": [
+        "Integration is not evidence of investment efficacy.",
+        "Historical availability and untouched evaluation samples remain unverified.",
+        "No live RD-Agent comparison was performed."
+      ],
+      "metrics": [],
+      "question": "Can the retained hotspot candidates recipes run through maintained research infrastructure?",
+      "sample_scope": "Synthetic fixtures only; no historical investment sample.",
+      "source_status": "synthetic"
+    }
+  ]
+}
