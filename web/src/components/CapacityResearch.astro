@@ -3,15 +3,22 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import TopicNav from './TopicNav.astro';
 import { LiquidityPage } from './react/liquidity-page';
 import ExecutionReport from './ExecutionReport.astro';
+import LiquidityRebuildEvidence from './LiquidityRebuildEvidence.astro';
+import {readFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+const rebuilt=JSON.parse(await readFile(resolve(process.cwd(),'public/data/liquidity/summary.json'),'utf8'));
+const commonDate=rebuilt.periods?.find((p:any)=>p.period==='common snapshot')?.common_end??'';
+const verdict=c.rebuiltVerdict.map(value=>value.replace('{date}',commonDate));
 import { liquidityResearchCopy as c } from '../content/liquidity-research-copy';
 import { withBase } from '../lib/routes';
 const sections = [
- ['market-profiles',c.explorer],['liquidity-quality',c.quality],['order-budget',c.budget],
+ ['market-profiles',c.explorer],['liquidity-quality',c.quality],['liquidity-evidence',c.evidenceTitle],['order-budget',c.budget],
  ['expanded-results',['Static costs','静态交易成本']],['strategy-diagnostic',['Strategy scenarios','策略情景']],
  ['minute-execution',['Minute execution','分钟执行']],['research-notes',c.notes],
 ].map(([id,label])=>({id:id as string,label:label[1],labelEn:label[0],available:true}));
 const notes = [
- ['2026-10-16','Count and metric audit','数量与指标审计','Conflicting A-share counts are excluded; missing P90 stays missing. Cross-market dates and mean/median lineage remain unresolved.','A股数量冲突已隔离，缺失P90保持缺失。跨市场日期及均值、中位数生成来源仍待核验。','docs/research/experiments/liquidity-capacity-audit-20261016'],
+ ['2026-10-16','Four-market recomputation and source audit','四市场复算与来源核查','Common-date and historical summaries now use explicit lagged means/medians and prior FX. Sparse US source dates are isolated; Japanese shares remain exploratory.','共同日期与历史汇总已明确区分滞后均值、中位数和历史汇率；稀疏美股日期已隔离，日股股数仍为探索性来源。','docs/research/experiments/liquidity-rebuild-20261016'],
+ ['2026-10-16','Count and metric audit','数量与指标审计','Archived inherited release: conflicting A-share counts remain unverified. Recomputed results are maintained separately.','历史发布已归档：A股冲突数量仍无法追溯确认，重新计算的结果另行维护。','docs/research/experiments/liquidity-capacity-audit-20261016'],
  ['2026-10-12','Three-day static pilot','三日静态探索','Measured spread and ten-level depth; costs are conditional on full coverage.','测量价差与十档深度，成本分位数以完整覆盖为条件。','studies/ashare_execution_costs/pilot_findings'],
  ['2026-10-12','Ten-date expansion','十日扩展','311,395 sampled snapshots; 306,483 valid and 4,912 excluded. Selected dates do not establish population estimates.','抽样快照311,395条，其中有效306,483条、剔除4,912条；选定日期不能代表全市场总体。','docs/research/experiments/execution-cost-expansion-20261012'],
  ['2026-10-12','Data fitness and corrected replay','数据可用性与回放修正','Same-date paths were corrected. Vendor semantics and cross-stream ordering remain unverified.','已修正混入异日快照的路径，供应商事件语义和跨流顺序仍待核验。','docs/studies/execution-data-fitness-20261012'],
@@ -20,9 +27,10 @@ const notes = [
 <SiteLayout title={c.title[1]} titleEn={c.title[0]} description={c.lead[0]} section="research" activeRoute="liquidity">
 <article class="capacity-research">
 <header class="theme-heading"><div><span class="section-kicker" data-locale-text data-en="Cross-market liquidity" data-zh="跨市场流动性">Cross-market liquidity</span><h1 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h1><p data-locale-text data-en={c.lead[0]} data-zh={c.lead[1]}>{c.lead[0]}</p></div></header>
-<section class="research-verdict"><span class="evidence-status" data-locale-text data-en="Historical profiles · static measurement · modeled execution" data-zh="历史画像 · 静态测量 · 执行模拟">Historical profiles · static measurement · modeled execution</span><p data-locale-text data-en="A-share historical profile counts conflict and are excluded from comparisons. The ten-date L2 study remains descriptive: at CNY 1m, full ten-level coverage is 62.12% for buys and 67.68% for sells. Real execution remains uncalibrated." data-zh="A股历史流动性画像数量不一致，已排除出对比。十日L2研究仍属于描述性测量：100万元订单的十档完整覆盖率为买入62.12%、卖出67.68%。真实执行尚未完成校准。">A-share historical profile counts conflict and are excluded from comparisons. The ten-date L2 study remains descriptive: at CNY 1m, full ten-level coverage is 62.12% for buys and 67.68% for sells. Real execution remains uncalibrated.</p></section>
+<section class="research-verdict"><span class="evidence-status" data-locale-text data-en="Recomputed descriptive evidence · execution remains uncalibrated" data-zh="已复算的描述性证据 · 真实执行未校准">Recomputed descriptive evidence · execution remains uncalibrated</span><p data-locale-text data-en={verdict[0]} data-zh={verdict[1]}>{verdict[0]}</p></section>
 <TopicNav sections={sections}/>
 <LiquidityPage client:only="react"><p slot="fallback" class="loading" data-locale-text data-en="Loading research data…" data-zh="正在加载研究数据……">Loading research data…</p></LiquidityPage>
+<LiquidityRebuildEvidence/>
 <ExecutionReport embedded/>
 <section id="research-notes" class="research-notes report-section"><h2 data-locale-text data-en={c.notes[0]} data-zh={c.notes[1]}>{c.notes[0]}</h2>
 {notes.map(([date,en,zh,enNote,zhNote,path])=><details><summary><time>{date}</time> · <span data-locale-text data-en={en} data-zh={zh}>{en}</span></summary><p data-locale-text data-en={enNote} data-zh={zhNote}>{enNote}</p><a href={`https://github.com/runchengxie/quant-market-research/blob/main/${path}.md`} data-locale-link data-href-en={`https://github.com/runchengxie/quant-market-research/blob/main/${path}.md`} data-href-zh={`https://github.com/runchengxie/quant-market-research/blob/main/${path}.zh-CN.md`} data-locale-text data-en="Read methods and evidence ↗" data-zh="查看方法与证据 ↗">Read methods and evidence ↗</a></details>)}

@@ -1,5 +1,7 @@
 # 流动性与容量证据审计（2026-10-16）
 
+> 本篇保留旧发布的审计记录。[后续重建](liquidity-rebuild-20261016.zh-CN.md)已提供当前四市场证据；旧数量冲突仍未追溯解决。
+
 [English](liquidity-capacity-audit-20261016.md)
 
 [统一专题](https://runchengxie.github.io/quant-market-research/research/liquidity/?lang=zh-CN)按历史成交规模、静态盘口成本、执行模拟与真实委托校准组织。最后一层尚未完成。历史跨市场汇总存在明确矛盾，目前不能用于判定市场排名或组合容量。

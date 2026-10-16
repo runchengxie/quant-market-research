@@ -38,3 +38,32 @@ test('hub and numerical evidence remain readable without JavaScript on mobile', 
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   await context.close();
 });
+
+test('history register, report and download retain the same reviewed families in Chinese dark mode', async ({ page }) => {
+  await page.goto('research/microcap/?lang=zh-CN');
+  const register=page.locator('#microcap-coverage');
+  await expect(register.locator('details')).toHaveCount(35);
+  await register.locator('#history-H19 summary').click();
+  await expect(register.locator('#history-H19')).toContainText('结构检查通过');
+  const recovery=page.locator('#microcap-evidence-recovery');
+  await expect(recovery.locator('details')).toHaveCount(7);
+  await recovery.locator('#recovery-R04 summary').click();
+  await expect(recovery.locator('#recovery-R04')).toContainText('来源链不完整');
+  await register.getByRole('link').click();
+  await expect(page.locator('.article-content')).toContainText('研究历史与覆盖清单');
+  await expect(page.locator('.article-content')).toContainText('H32 · 港股');
+  await expect(page.locator('.article-content')).toContainText('七档资金情景');
+  const markdown=await (await page.request.get('downloads/microcap-research.zh-CN.md')).text();
+  expect(markdown).toContain('### H32 · 港股');
+  expect(markdown).toContain('56 条来源记录');
+  expect(markdown).toContain('### H35');
+  expect(markdown).toContain('### R04');
+  await expect(page.locator('.article-content')).toContainText('精确结果包仍缺失');
+  await page.evaluate(()=>{localStorage.setItem('market-research-theme','dark');document.documentElement.dataset.theme='dark';});
+  const chart=page.locator('.article-content svg').filter({has:page.locator('title#candidate-title')});
+  await expect(chart).toBeVisible();
+  expect(await chart.locator('rect').first().evaluate(el=>getComputedStyle(el).fill)).not.toBe('rgb(255, 255, 255)');
+  await page.getByRole('button',{name:'切换到英文'}).click();
+  await expect(page.locator('.article-content')).toContainText('H32 · Hong Kong');
+  await expect(page.locator('.article-content')).not.toContainText('七档资金情景');
+});

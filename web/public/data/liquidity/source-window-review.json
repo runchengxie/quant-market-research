@@ -1,0 +1,36 @@
+{
+  "schema_version": "liquidity.source-window-review.v1",
+  "markets": [
+    {
+      "market": "US",
+      "observation_date": "2025-09-30",
+      "stocks_checked": 12,
+      "prior_source_rows_checked": 240,
+      "numeric_cells_reconciled": 84
+    },
+    {
+      "market": "HK",
+      "observation_date": "2025-09-30",
+      "stocks_checked": 12,
+      "prior_source_rows_checked": 240,
+      "numeric_cells_reconciled": 84
+    },
+    {
+      "market": "A-share",
+      "observation_date": "2025-09-30",
+      "stocks_checked": 12,
+      "prior_source_rows_checked": 240,
+      "numeric_cells_reconciled": 84
+    },
+    {
+      "market": "JP",
+      "observation_date": "2025-09-30",
+      "stocks_checked": 12,
+      "prior_source_rows_checked": 240,
+      "numeric_cells_reconciled": 84
+    }
+  ],
+  "code_sha256": "c0fedf9ac627b8ce3de8e64565c1a976fb540b03d50cee2029feb79c6d74bf69",
+  "full_warehouse_audited": false,
+  "eligibility_vintages_verified": false
+}
