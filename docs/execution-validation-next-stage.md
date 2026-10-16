@@ -2,7 +2,7 @@
 
 [简体中文](execution-validation-next-stage.zh-CN.md)
 
-The next immediately actionable step is a prospective holdout: freeze inputs, source versions and execution ledgers for 252 trading sessions beginning after this protocol is merged, then evaluate once under predeclared rules. Existing history strengthens one part of the ST-state check. It cannot turn 2025 into unseen evidence or identify real queue priority and strategy-induced impact.
+Protocol v1 was merged by [PR #171](https://github.com/runchengxie/quant-market-research/pull/171) at 17:43 Shanghai time on 2026-10-14, after that day's session. Under the [SSE 2026 trading and closure schedule](https://www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml), its first eligible trading session was 2026-10-15. A project `DATA_ROOT` inventory on 2026-10-16 found no prospective daily receipt or immutable holdout archive for that start. The registered start was missed. Do not reconstruct October 15 later and label it unseen. Keep v1 and its hashes intact. A valid holdout now requires a new protocol version registered before its first eligible session, with the daily archive process ready. No holdout performance was inspected during this status check.
 
 ## What the local data shows
 
@@ -29,6 +29,8 @@ There is no reason to buy the broad announcement permission just to explain the 
 
 ## Frozen prospective evaluation
 
+**Status as of 2026-10-16:** v1's registered start was missed before a daily archive was created. The rules below describe the frozen v1 design and do not establish that its holdout began.
+
 The holdout starts on the first SSE or SZSE open session after this protocol is merged, rolling forward automatically if the exchange is closed. It ends after 252 complete trading sessions. During the window, inspect data completeness only; do not inspect or publish strategy NAV, return differences, drawdowns or capacity results.
 
 The primary comparison is the original baseline versus the combined 2024 rule: exclude names whose unadjusted prior-session close is below CNY1, while preserving existing strategy eligibility rules. CNY10m is primary capital and CNY1m is secondary. Use 5% participation, a 330-minute single release, one-minute latency and the current research fee settings. ST-availability and termination-announcement guards are separately preregistered secondary comparisons and count only after their event sources, publication times and full-candidate coverage pass audit. Otherwise report them as “not evaluable”; an empty event table is not zero risk.
@@ -42,7 +44,7 @@ A termination notice blocks new buys only after its available time. It cannot er
 ## Work sequence
 
 1. Use the existing positive-state table to publish a source-consistency check for 2025 ST candidates and selected dates. Fetch the separate `st` event endpoint only if a signal-relevant discrepancy remains.
-2. Before the first holdout session, register hashes of the window, parameters, primary metrics and missing-data policy; then archive daily inputs and receipts.
+2. Before the first session under a replacement protocol, register hashes of the window, parameters, primary metrics and missing-data policy; then archive daily inputs and receipts.
 3. Only if candidate-wide termination filtering is a required hypothesis and the account's access is confirmed, sample TuShare announcements or issuer-specific notices. Manually audit title recall, `rec_time`, original PDFs and source coverage.
 4. To measure queueing and own impact, obtain timestamped historical trades, changes in at least ten book levels and actual parent/child order and fill records. TuShare points, daily bars and minute bars do not replace these records.
 
