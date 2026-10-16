@@ -1,45 +1,82 @@
-// Chinese evidence translations are reviewed against this exact public content.
-const translationReviewDigest = 'e5d5b2d39289f13a9b0c955e23bd0714e616e22dea6b2aab9c9fc7bd8bcac334';
+// Reviewed bilingual copy is pinned to the exact aggregate content digest.
+const translationReviewDigest = '966fa7ea1c959adc487416d70eb5b03dd268cc12f35a5439b230556085734e7e';
 const translations = {
   'etf-rotation': {
-    title: ['ETF rotation: integration and evidence', 'ETF 轮动：迁移与证据'],
-    question: ['Can retained ETF recipes run through maintained research infrastructure?', '旧 ETF 研究配方能否通过统一研究基础设施运行？'],
-    baseline: '固定的 ETF 诊断配方；投资基准和成本对照仍待验证。',
+    title: ['ETF rotation: historical diagnostic', 'ETF 轮动：历史诊断'],
+    question: ['Did the retained ETF recipes beat simple holdings across the matched historical window?', '在可匹配的历史区间内，保留的 ETF 配方是否跑赢简单持有？'],
+    conclusion: ['No recipe is ready for promotion. At 25 bps all three trail the fixed ETF basket. A small zero-cost raw-price advantage for the ranker does not persist under the adjusted-price convention.', '目前没有配方达到晋级条件。按 25 个基点成本，三种模型都落后于固定 ETF 篮子。排序模型在原始价格、零成本情景下有小幅优势，但在复权价格口径下不再成立。'],
+    baseline: ['Initially equal-weight fixed-share basket and single-ETF buy-and-hold, charged the same initial fee on matching dates.', '基准为起始等权、固定份额的 ETF 篮子，以及单只 ETF 持有；在相同日期计入相同的初始费用。'],
+    scope: ['Conditional matched-mark tail: 1,183 open-to-open periods, 2021-02-18 to 2025-12-31; fixed basket of three current ETFs, not reconstructed historical membership.', '条件匹配后的尾段：2021-02-18 至 2025-12-31，共 1,183 个开盘到开盘区间；使用三只当前 ETF 组成的固定篮子，没有重建历史成分。'],
+    limitations: ['The full window is blocked by a missing opening mark. Backfilled history has no independent historical-availability receipt; this was not an untouched holdout. Adjusted prices are a valuation sensitivity, not a broker cash-flow ledger. Fee levels are scenarios, not brokerage quotes. Execution, corporate actions and capacity remain unaudited.', '完整区间因缺少开盘价标记而无法计算。回填历史没有独立的历史可得性凭证，本次也不是未参与调参的留出集。复权价格只是估值敏感性口径，不是券商现金流账本。费用水平是情景假设，不是券商报价；执行、公司行为和容量仍未审计。'],
   },
   hotsector: {
-    title: ['Hotspot candidates: integration and evidence', '热点候选：迁移与证据'],
-    question: ['Can retained hotspot candidate recipes run through maintained research infrastructure?', '旧热点候选配方能否通过统一研究基础设施运行？'],
-    baseline: '确定性的主题到候选池基线；投资基准和成本对照仍待验证。',
+    title: ['Hotspot overlay: historical diagnostic', '热点叠加筛选：历史诊断'],
+    question: ['Did an individual-stock heat overlay improve the same hotspot candidate base?', '在相同热点候选池上，个股热度叠加筛选是否带来改善？'],
+    conclusion: ['The overlay improves three of four fixed five-session events at each tested cost. Four events do not establish a reliable edge or validate the complete hotspot strategy.', '在每种测试成本下，四个固定五日事件中有三个因叠加筛选而改善。四个事件不足以证明稳定优势，也不能验证完整热点策略。'],
+    baseline: ['Paired candidate arms share the same observed topic and membership base; the comparison changes only the additional individual-stock heat overlay.', '两组使用相同的主题和候选池，只比较是否额外叠加个股热度筛选。'],
+    scope: ['Four isolated 2025 signal dates; each event holds for five sessions. Returns use selected opening-price marks and events do not form a continuous portfolio.', '2025 年四个彼此独立的信号日期；每个事件持有五个交易日。收益使用选定的开盘价标记，这些事件不构成连续投资组合。'],
+    limitations: ['Historical snapshots do not prove when each input was available to a live researcher. Only four isolated events are available; this is not a significance test, untouched sample, or complete strategy comparison. Raw opening prices omit corporate-action cash flows. Suspensions, price limits, lot sizes and capacity are unaudited.', '历史快照不能证明当时研究者何时能拿到每项输入。这里只有四个独立事件，不是显著性检验、未触碰样本或完整策略比较。原始开盘价未计入公司行为现金流；停牌、涨跌停、交易单位和容量仍未审计。'],
   },
 } as const;
 
 export const legacyCopy = {
   shared: {
-    stage: ['Synthetic integration', '合成数据集成验证'],
-    missing: ['Investment performance has not been established. Missing returns are not zero returns.', '尚未建立投资绩效证据，缺少收益数据不代表收益为零。'],
+    stage: ['Historical diagnostic; not investment validation', '历史诊断，尚非投资有效性验证'],
+    metrics: ['Aggregate results', '汇总结果'],
+    metricNote: ['Returns are percentages. “bps” means basis points. Annual slices are exploratory and were computed after the full-window result was known. Bootstrap ranges are descriptive, not formal significance tests.', '收益以百分比表示；bps 为基点。年度拆分是在完整区间结果已知后计算的探索性结果。自助抽样区间仅作描述，不是正式显著性检验。'],
+    noPromotion: ['These diagnostics do not establish profitability or readiness for live trading.', '这些诊断结果不能证明策略盈利，也不代表适合实盘交易。'],
     factors: ['Related factor methods', '相关因子方法'],
     factorBoundary: ['Factor links are conceptual references; their datasets and definitions are not interchangeable with strategy inputs.', '因子链接仅作方法参考，所用数据集和定义不能与策略输入直接替换。'],
     provenance: ['Reviewed source and public-content fingerprints', '已审查的来源与公开内容指纹'],
+    return: ['Value', '数值'],
+    details: ['Metric definitions', '指标说明'],
   },
 } as const;
 
-type Study = {
-  id: string; question: string; conclusion: string; baseline: string;
-  sample_scope: string; limitations: string[];
-};
+type Study = { id: string; question: string; conclusion: string; baseline: string; sample_scope: string; limitations: string[] };
 
 export function legacyStudyCopy(study: Study, reviewedContentDigest: string) {
-  if (reviewedContentDigest !== translationReviewDigest) {
-    throw new Error('Translation content requires review against the changed public evidence');
-  }
+  if (reviewedContentDigest !== translationReviewDigest) throw new Error('Translation content requires review against the changed public evidence');
   if (!(study.id in translations)) throw new Error('Study translation unavailable');
-  const zh = translations[study.id as keyof typeof translations];
-  return {
-    title: zh.title,
-    question: zh.question,
-    conclusion: [study.conclusion, '合成数据集成验证已通过，尚未纳入真实数据的收益对照证据。'],
-    baseline: [study.baseline, zh.baseline],
-    scope: [study.sample_scope, '仅使用合成样本，没有历史投资样本。'],
-    limitations: [study.limitations.join(' '), '集成验证不代表投资有效性。历史数据可见性和未经研究使用的评估样本仍待核验，尚未进行实时 RD-Agent 对照。'],
-  } as const;
+  const t = translations[study.id as keyof typeof translations];
+  return { title: t.title, question: t.question, conclusion: t.conclusion,
+    baseline: [study.baseline, t.baseline], scope: [study.sample_scope, t.scope],
+    limitations: [study.limitations.join(' '), t.limitations] } as const;
+}
+
+const modelLabels: Record<string, [string, string]> = {
+  linear_rank: ['Linear rank', '线性排序'], lightgbm_regression: ['LightGBM regression', 'LightGBM 回归'],
+  lightgbm_ranker: ['LightGBM ranker', 'LightGBM 排序'], fixed_share_basket: ['Fixed-share basket', '固定份额篮子'],
+  single_etf_510300: ['Single ETF baseline', '单只 ETF 基准'], without_overlay: ['Without overlay', '不叠加热度'], with_overlay: ['With overlay', '叠加热度'],
+};
+export function metricLabel(name: string, locale: 'en' | 'zh') {
+  const parts = name.split('.');
+  const model = modelLabels[parts.find(part => part in modelLabels) ?? ''];
+  const year = parts.find(part => /^year_\d{4}$/.test(part));
+  const date = parts.find(part => /^2025-\d\d-\d\d$/.test(part));
+  const cost = parts.find(part => /^cost_\d+_bps$/.test(part))?.replace('cost_', '').replace('_bps', '');
+  const valuation = parts.includes('raw') ? (locale === 'en' ? 'Raw price' : '原始价格') : parts.includes('factor_adjusted') ? (locale === 'en' ? 'Adjusted price' : '复权价格') : '';
+  const kind = name.includes('maximum_drawdown') ? (locale === 'en' ? 'Max drawdown' : '最大回撤') : name.includes('calendar_return') ? (locale === 'en' ? 'Calendar return' : '年度收益') : name.includes('relative_log_return_ci95') ? (locale === 'en' ? (name.includes('.low.') ? 'Interval lower bound' : 'Interval upper bound') : (name.includes('.low.') ? '区间下界' : '区间上界')) : name.includes('positive_event_count') ? (locale === 'en' ? 'Positive events' : '正向事件数') : name.includes('mean_event_delta') ? (locale === 'en' ? 'Mean event uplift' : '事件平均增量') : name.includes('event_delta') ? (locale === 'en' ? 'Overlay uplift' : '叠加筛选增量') : name.includes('event_return') ? (locale === 'en' ? 'Event return' : '事件收益') : (locale === 'en' ? 'Cumulative return' : '累计收益');
+  return [valuation, model?.[locale === 'en' ? 0 : 1], year?.slice(-4), date, cost && (locale === 'en' ? `${cost} bps` : `${cost} 基点`), kind].filter(Boolean).join(' · ');
+}
+
+export function metricDefinition(name: string, locale: 'en' | 'zh') {
+  if (name.includes('relative_log_return_ci95')) return locale === 'en'
+    ? '95% descriptive interval for annualized paired relative log return versus the fixed basket, from 10,000 circular block resamples of 20 periods; not a formal significance test.'
+    : '相对固定篮子的年化配对对数收益率之 95% 描述性区间，使用 10,000 次、区块长度 20 期的循环区块重抽样；不是正式显著性检验。';
+  if (name.includes('calendar_return')) return locale === 'en'
+    ? 'Exploratory compounded calendar-year return grouped by exit year, calculated after the full-period result was known.'
+    : '按退出年份汇总的探索性年度复合收益，在完整区间结果已知后计算。';
+  if (name.includes('maximum_drawdown')) return locale === 'en'
+    ? 'Largest peak-to-trough NAV decline in the stated valuation convention at 25 bps assumed cost.'
+    : '在对应价格口径和假设 25 基点成本下，净值从峰值到谷值的最大跌幅。';
+  if (name.includes('mean_event_delta')) return locale === 'en'
+    ? 'Unweighted mean paired uplift across four isolated five-session events, in percentage points; not a continuous portfolio return.'
+    : '四个独立五日事件的配对增量算术平均值，单位为百分点；不代表连续投资组合收益。';
+  if (name.includes('positive_event_count')) return locale === 'en'
+    ? 'Number of the four isolated events where the overlay return exceeded the no-overlay return.'
+    : '四个独立事件中，叠加筛选组收益高于未叠加组的事件数。';
+  return locale === 'en'
+    ? 'Cumulative net NAV change over 1,183 matched open-to-open periods under the stated price and fee convention.'
+    : '在所示价格和费用口径下，1,183 个匹配开盘到开盘区间的净值累计变化。';
 }

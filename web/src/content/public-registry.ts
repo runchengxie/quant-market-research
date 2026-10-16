@@ -44,8 +44,8 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
-  page({ id: 'etf-rotation', route: '/research/etf-rotation/', title: 'ETF 轮动研究', summary: '合成数据集成验证通过，真实数据收益对照仍待验证。', section: 'research', topic: 'etf-rotation', aliases: [], related: ['hotsector'], snapshotKeys: [] }),
-  page({ id: 'hotsector', route: '/research/hotsector/', title: '热点候选研究', summary: '主题到候选池的集成验证通过，预测和投资绩效仍待验证。', section: 'research', topic: 'hotsector', aliases: [], related: ['etf-rotation'], snapshotKeys: [] }),
+  page({ id: 'etf-rotation', route: '/research/etf-rotation/', title: 'ETF 轮动研究', summary: '历史尾段诊断：三种配方在 25bp 情景下均落后于固定 ETF 篮子；尚未证明有效。', section: 'research', topic: 'etf-rotation', aliases: [], related: ['hotsector'], snapshotKeys: [] }),
+  page({ id: 'hotsector', route: '/research/hotsector/', title: '热点候选研究', summary: '四个历史事件中，热度叠加筛选有三个改善；样本不足以证明稳定优势。', section: 'research', topic: 'hotsector', aliases: [], related: ['etf-rotation'], snapshotKeys: [] }),
   page({ id: 'overview', route: '/', title: '研究总览', summary: '每项研究发现了什么、数据覆盖哪些日期，还有哪些问题没有答案。', section: 'overview', aliases: ['/index.html'], related: ['research', 'docs', 'data-sources'], snapshotKeys: [] }),
   page({ id: 'research', route: '/research/', title: '研究专题', summary: '从研究问题出发，先看结论，再查数据和证据限制。', section: 'research', aliases: [], related: ['cashflow', 'microcap', 'style', 'pb-roe', 'low-turnover', 'indices', 'liquidity', 'execution-costs'], snapshotKeys: [] }),
   page({ id: 'cashflow', route: '/research/cashflow/', title: '现金流与分红', summary: '现金流和分红相关股票过去表现如何，经历下跌后多久回到前高。', section: 'research', topic: 'cashflow', aliases: [], related: ['cashflow-recovery', 'indices'], snapshotKeys: ['cashflow.performance'] }),
