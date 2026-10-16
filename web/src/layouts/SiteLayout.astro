@@ -32,6 +32,7 @@ const pageTitle = `${titleEn} · Quant Market Research`;
           const locale = requested === "zh-CN" || requested === "en-US"
             ? requested
             : saved === "zh-CN" ? "zh-CN" : "en-US";
+          if (requested === "zh-CN" || requested === "en-US") localStorage.setItem("quant-market-research-locale", locale);
           document.documentElement.lang = locale;
           document.documentElement.dataset.locale = locale;
           const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");

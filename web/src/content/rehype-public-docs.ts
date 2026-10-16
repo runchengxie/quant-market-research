@@ -18,13 +18,15 @@ export function resolveDocLink(source: string, href: string, base: string): stri
     } else parts.push(part);
   }
   const normalized = parts.join('/');
+  const sameDocument = source.replace(/\.zh-CN(?=\.md$)/, '') === normalized.replace(/\.zh-CN(?=\.md$)/, '');
+  const localeQuery = source !== normalized && sameDocument ? `?lang=${normalized.endsWith('.zh-CN.md') ? 'zh-CN' : 'en-US'}` : '';
   const match = publicDocs.find((doc) => doc.source === normalized);
   if (!match && normalized.startsWith('docs/') && normalized.endsWith('.zh-CN.md')) {
     const localeSlug = normalized.slice('docs/'.length, -'.md'.length);
-    return `${basePath(base, `/docs/${localeSlug}/`)}${fragment ? `#${fragment}` : ''}`;
+    return `${basePath(base, `/docs/${localeSlug}/`)}${localeQuery}${fragment ? `#${fragment}` : ''}`;
   }
   if (!match) throw new Error(`public document link outside allowlist: ${href}`);
-  return `${basePath(base, match.route)}${fragment ? `#${fragment}` : ''}`;
+  return `${basePath(base, match.route)}${localeQuery}${fragment ? `#${fragment}` : ''}`;
 }
 
 export function publicDocsTransform(base = '/quant-market-research') {

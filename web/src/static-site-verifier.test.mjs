@@ -86,3 +86,22 @@ test("static site verifier rejects malformed UTF-8 but accepts multibyte Chinese
   await fs.appendFile(path.join(root, "docs/index.zh-CN/index.html"), Buffer.from([0xe4, 0xb8]));
   assert.match(verifyStaticSite(root).join("\n"), /docs\/index\.zh-CN\/index\.html: HTML is not valid UTF-8/);
 });
+
+test('inert translation templates do not count as visible English copy, but still undergo private-path scans', async (t) => {
+  const root = await makeSite();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  const file = path.join(root, 'index.html');
+  await fs.appendFile(file, '<template data-document-translation><h1>中文正文</h1></template>');
+  assert.deepEqual(verifyStaticSite(root), []);
+  await fs.appendFile(file, '<template>/home/private/report</template>');
+  assert.match(verifyStaticSite(root).join('\n'), /forbidden local path/);
+});
+
+
+test('downloadable Markdown is included in public-boundary scanning', async (t) => {
+  const root = await makeSite();
+  t.after(() => fs.rm(root, { recursive: true, force: true }));
+  await fs.mkdir(path.join(root, 'downloads'));
+  await fs.writeFile(path.join(root, 'downloads/report.md'), '# Report\n/home/private/generated-report');
+  assert.match(verifyStaticSite(root).join('\n'), /forbidden local path/);
+});

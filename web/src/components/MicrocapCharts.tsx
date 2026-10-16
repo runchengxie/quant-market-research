@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { echarts, type EChartsOption } from "./echarts";
 import { readChartTheme } from "../theme";
+import { baseChartOptions } from "../lib/chart-presentation";
 
 type ChartRow = Record<string, string>;
 const englishLocale = () => typeof document === "undefined" || document.documentElement.lang !== "zh-CN";
@@ -11,11 +12,20 @@ function Chart({ option }: { option: EChartsOption }) {
   useEffect(() => {
     if (!ref.current) return;
     const chart = echarts.init(ref.current);
-    chart.setOption(option);
+    const paint = () => {
+      const theme = readChartTheme();
+      chart.setOption({ ...baseChartOptions(theme, window.matchMedia('(prefers-reduced-motion: reduce)').matches), ...option }, true);
+      const axis = { axisLabel: { color: theme.axis }, axisLine: { lineStyle: { color: theme.axis } }, splitLine: { lineStyle: { color: theme.grid } } };
+      chart.setOption({ xAxis: axis, yAxis: axis, textStyle: { color: theme.label } });
+    };
+    paint();
+    const themeObserver = new MutationObserver(paint);
+    themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
     const resize = () => chart.resize();
     window.addEventListener("resize", resize);
     return () => {
       window.removeEventListener("resize", resize);
+      themeObserver.disconnect();
       chart.dispose();
     };
   }, [option]);

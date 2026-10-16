@@ -544,6 +544,13 @@ body { font-size: 15px; line-height: 1.75; }
 .research-verdict h2 { margin-top: 0; }
 .research-verdict p { max-width: 80ch; line-height: 1.7; }
 
+/* Markdown code and research links follow the same palette as the document. */
+[data-theme="dark"] .article-content pre,
+[data-theme="dark"] .article-content pre span { background-color: var(--surface-strong) !important; color: var(--ink-soft) !important; }
+.hub-section a { color: var(--accent); text-underline-offset: .18em; }
+.hub-section a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+
+.article-content img, .article-content svg { max-width: 100%; height: auto; }
 /* Shared research controls and evidence surfaces use the active palette. */
 .liquidity-filters { display:flex; flex-wrap:wrap; align-items:end; gap:16px; margin:24px 0; }
 .liquidity-filters label { display:grid; gap:8px; flex:1; min-width:160px; color:var(--ink-soft); font-size:13px; }
