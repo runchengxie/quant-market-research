@@ -2,6 +2,7 @@ import type { LocalText } from './microcap-hub';
 export type ComparisonLocale = 'en-US' | 'zh-CN';
 export const comparisonText = (value: LocalText, locale: ComparisonLocale) => value[locale === 'zh-CN' ? 1 : 0];
 export const comparisonCopy = {
+ dataDownload: ['Download reviewed aggregate JSON, including all 288 yearly rows and source hashes','下载经审查的聚合 JSON（含全部 288 行年度输入及来源哈希）'],
  title: ['What survives excluding the smallest stocks?', '剔除最小市值股票后，哪些结果仍然成立？'],
  status: ['Recovered historical outputs · reviewed 2026-10-16 · no research rerun', '找回的历史结果 · 2026-10-16 审阅 · 未重跑研究'],
  finding: ['Dependence on the smallest stocks varies by candidate. With a buffer and equal weights, excluding 30% changes small-cap net annual return from 5.24% to −2.17%, low turnover from 5.33% to 7.76%, and the composite from 11.28% to 9.71%. These are portfolio sensitivities, not evidence of a causal premium.', '对最小市值股票的依赖因候选而异。在缓冲、等权口径下，剔除最小的 30% 后，小盘净年化由 5.24% 降至 −2.17%，低换手由 5.33% 升至 7.76%，复合组合由 11.28% 降至 9.71%。这是组合敏感性，不是因果溢价证据。'],

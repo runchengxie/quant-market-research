@@ -20,6 +20,7 @@ const boundaries = ['scope', 'method', 'provenance', 'eras', 'capacity', 'units'
     return <Container data-comparison-live={live ? '' : undefined} data-comparison-locale={live ? undefined : locale} lang={locale}>
       <div class="comparison-chart" set:html={charts[locale === 'zh-CN' ? 1 : 0]} />
       <a href={`${base}/downloads/microcap-exclusions.${locale}.svg`} download>{copy.download[locale === 'zh-CN' ? 1 : 0]}</a>
+      <p><a href={`${base}/data/microcap_exclusion_review.json`} download>{copy.dataDownload[locale === 'zh-CN' ? 1 : 0]}</a></p>
       {comparisonTables(snapshot, locale).map(group => <details>
         <summary>{group.title}</summary>
         <div class="comparison-table" tabindex="0" role="region" aria-label={group.title}>

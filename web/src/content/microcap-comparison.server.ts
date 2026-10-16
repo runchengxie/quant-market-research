@@ -32,7 +32,7 @@ export function comparisonTables(data: ExclusionReview, locale: ComparisonLocale
 export async function comparisonMarkdown(locale: ComparisonLocale, supplied?: ExclusionReview) {
  const data=supplied ?? await readExclusionReview(), t=(key:keyof typeof copy)=>comparisonText(copy[key],locale);
  const table=(headers:string[],rows:string[][])=>[headers,headers.map(()=>'---'),...rows].map(row=>`| ${row.map(v=>v.replaceAll('|','\\|').replaceAll('\n',' ')).join(' | ')} |`).join('\n');
- return [`## ${t('title')}`,t('status'),...(['finding','weighting','buffers','scope','method','provenance','eras','capacity','units'] as const).map(t),`![${t('chart')}](https://runchengxie.github.io/quant-market-research/downloads/microcap-exclusions.${locale}.svg)`,...comparisonTables(data,locale).map(group=>`<details>\n<summary>${group.title}</summary>\n\n${table(group.headers,group.rows)}\n\n</details>`)].join('\n\n');
+ return [`## ${t('title')}`,t('status'),`[${t('dataDownload')}](https://runchengxie.github.io/quant-market-research/data/microcap_exclusion_review.json)`,...(['finding','weighting','buffers','scope','method','provenance','eras','capacity','units'] as const).map(t),`![${t('chart')}](https://runchengxie.github.io/quant-market-research/downloads/microcap-exclusions.${locale}.svg)`,...comparisonTables(data,locale).map(group=>`<details>\n<summary>${group.title}</summary>\n\n${table(group.headers,group.rows)}\n\n</details>`)].join('\n\n');
 }
 export const buildExclusionMarkdown = comparisonMarkdown;
 export async function buildExclusionSvg(locale: ComparisonLocale, supplied?: ExclusionReview) {

@@ -170,6 +170,8 @@ Net annual return, percent, from the 2026-09-16 exploratory snapshot. Shading en
 
 Recovered historical outputs · reviewed 2026-10-16 · no research rerun
 
+[Download reviewed aggregate JSON, including all 288 yearly rows and source hashes](https://runchengxie.github.io/quant-market-research/data/microcap_exclusion_review.json)
+
 Dependence on the smallest stocks varies by candidate. With a buffer and equal weights, excluding 30% changes small-cap net annual return from 5.24% to −2.17%, low turnover from 5.33% to 7.76%, and the composite from 11.28% to 9.71%. These are portfolio sensitivities, not evidence of a causal premium.
 
 Weighting matters: value-weighted low turnover is negative at every exclusion level, while the composite stays positive under both weighting modes. The 10% composite peak is an inspected grid result, not a validated optimum.

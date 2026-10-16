@@ -17,7 +17,7 @@ test('reviewed comparison has one live locale, complete tables and reversible la
   await expect(live).toContainText('小盘');
   await expect(section.locator('svg')).toHaveCount(1);
   await expect(section.locator('svg')).toHaveAttribute('aria-labelledby',/zh-cn/);
-  await expect(live.locator('a[download]')).toHaveAttribute('href',/microcap-exclusions.zh-CN.svg$/);
+  await expect(live.locator('a[download][href$=".svg"]')).toHaveAttribute('href',/microcap-exclusions.zh-CN.svg$/);
   await expect(section.locator('tbody tr')).toHaveCount(192);
   await page.getByRole('button',{name:'切换到英文'}).click();
   await expect(live).toHaveAttribute('lang','en-US');
@@ -45,7 +45,7 @@ for(const locale of ['en-US','zh-CN']){
   expect(Math.min(...contrast)).toBeGreaterThanOrEqual(3);
   await expect(section.locator('svg circle')).toHaveCount(48);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
-  const download=live.locator('a[download]');
+  const download=live.locator('a[download][href$=".svg"]');
   const response=await page.request.get((await download.getAttribute('href'))!);expect(response.status()).toBe(200);expect(await response.text()).toContain(`microcap-exclusions-title-${locale.toLowerCase()}`);
  });
 }
