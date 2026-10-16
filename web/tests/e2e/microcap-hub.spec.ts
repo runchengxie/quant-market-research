@@ -42,9 +42,13 @@ test('hub and numerical evidence remain readable without JavaScript on mobile', 
 test('history register, report and download retain the same reviewed families in Chinese dark mode', async ({ page }) => {
   await page.goto('research/microcap/?lang=zh-CN');
   const register=page.locator('#microcap-coverage');
-  await expect(register.locator('details')).toHaveCount(34);
+  await expect(register.locator('details')).toHaveCount(35);
   await register.locator('#history-H19 summary').click();
-  await expect(register.locator('#history-H19')).toContainText('输出未核实');
+  await expect(register.locator('#history-H19')).toContainText('结构检查通过');
+  const recovery=page.locator('#microcap-evidence-recovery');
+  await expect(recovery.locator('details')).toHaveCount(7);
+  await recovery.locator('#recovery-R04 summary').click();
+  await expect(recovery.locator('#recovery-R04')).toContainText('来源链不完整');
   await register.getByRole('link').click();
   await expect(page.locator('.article-content')).toContainText('研究历史与覆盖清单');
   await expect(page.locator('.article-content')).toContainText('H32 · 港股');
@@ -52,6 +56,9 @@ test('history register, report and download retain the same reviewed families in
   const markdown=await (await page.request.get('downloads/microcap-research.zh-CN.md')).text();
   expect(markdown).toContain('### H32 · 港股');
   expect(markdown).toContain('56 条来源记录');
+  expect(markdown).toContain('### H35');
+  expect(markdown).toContain('### R04');
+  await expect(page.locator('.article-content')).toContainText('精确结果包仍缺失');
   await page.evaluate(()=>{localStorage.setItem('market-research-theme','dark');document.documentElement.dataset.theme='dark';});
   const chart=page.locator('.article-content svg').filter({has:page.locator('title#candidate-title')});
   await expect(chart).toBeVisible();

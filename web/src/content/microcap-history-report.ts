@@ -1,3 +1,4 @@
+import { recoveryCopy, recoveryRecords } from './microcap-recovery';
 import { microcapHistory } from './microcap-history';
 import type { ReportLocale } from './microcap-report.server';
 type Row = Record<string, string | number>;
@@ -8,7 +9,7 @@ export function historyMarkdown(locale: ReportLocale) {
   const zh=locale==='zh-CN'; const t=(en:string,cn:string)=>zh?cn:en;
   return [
     `## ${t('Research history and coverage register','研究历史与覆盖清单')}`,
-    t('This is an editorial register of 34 reviewed research families, not 34 independent experiments. The review covers the known quantitative research repositories and selected adjacent infrastructure as of 2026-10-16. Language companions, migration copies and synthesis notes are deduplicated. It does not claim recovery of every untracked notebook, external runtime bundle or private trial.', '这里登记了 34 组已审查研究主题，不等于 34 项独立实验。范围是截至 2026-10-16 已核对的 quant 研究仓库及部分相邻基础设施；语言伴随文档、迁移副本和汇总笔记不重复计数。尚未证明所有未跟踪笔记本、外部运行结果包或私有试验都已恢复。'),
+    t('This is an editorial register of 35 reviewed research families, not 35 independent experiments. The review covers the known quantitative research repositories and selected adjacent infrastructure as of 2026-10-16. Language companions, migration copies and synthesis notes are deduplicated. A follow-up inventory below records which notebooks and migrated result bundles were located; unresolved items have named evidence requirements.', '这里登记了 35 组已审查研究主题，不等于 35 项独立实验。范围是截至 2026-10-16 已核对的 quant 研究仓库及部分相邻基础设施；语言伴随文档、迁移副本和汇总笔记不重复计数。下方补充盘点列明已定位的笔记本与迁移结果包；未解决事项分别保留明确的证据要求。'),
     t('The web report and downloadable Markdown use this same register. Restricted studies are represented only by reviewed high-level findings and limitations; private parameters, raw inputs and reproduction locations are excluded. Their source identities remain in the restricted provenance ledger. Public evidence links below support the public subset, not every restricted historical claim.', '网页报告与下载 Markdown 使用同一份清单。受限研究仅公开经审查的概括性发现与局限，不公开私有参数、原始输入或复现位置；来源身份保留在受限来源账册中。下方公开链接支持可公开的部分，不代表每项受限历史判断都有公开原文。'),
     ...microcapHistory.map(r=>`### ${r.id} · ${r.title[zh?1:0]}\n\n**${r.status[zh?1:0]} · ${r.scope[zh?1:0]}**\n\n${r.finding[zh?1:0]}\n\n${r.boundary[zh?1:0]}`),
     `### ${t('Public evidence anchors','公开证据入口')}`,
@@ -46,4 +47,9 @@ export function historicalTablesMarkdown(snapshot: HistoricalSnapshot, locale: R
  table([...fields('Definition|Cadence|Formations','定义|频率|形成次数'),...perfHeaders,...fields('Development annual|Later descriptive annual','开发段年化|后段描述年化')],snapshot.joint_matrix.map(r=>[label(r.turnover_definition),label(r.rebalance_frequency),String(r.formation_dates),...perf(r),p(r,'development_annualized_return'),p(r,'holdout_annualized_return')])),
  t('Version warning: candidate, cadence and ledger numbers differ from earlier narrative reports. Apart from explicitly documented corrections, this compilation does not attribute every difference to a single cause. The snapshot also retains a stale caveat saying the joint grid is pending despite containing 16 cells. These conflicts remain visible rather than being silently reconciled.', '版本提示：候选、调仓与账本数字与早期叙述报告存在差异。除明确记载的修正外，本汇编不把所有差异归结为同一原因。快照还保留了“联合矩阵待生成”的旧提示，尽管已有 16 个单元。这些冲突继续公开保留，不作无依据的合并解释。'),
  ].join('\n\n');
+}
+
+export function recoveryMarkdown(locale: ReportLocale) {
+ const index=locale==='zh-CN'?1:0;
+ return [`## ${recoveryCopy.title[index]}`,recoveryCopy.intro[index],recoveryCopy.scope[index],...recoveryRecords.map(r=>`### ${r.id} · ${r.title[index]}\n\n**${r.status[index]}**\n\n${r.finding[index]}\n\n${r.boundary[index]}`)].join('\n\n');
 }

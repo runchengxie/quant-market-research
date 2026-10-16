@@ -30,8 +30,8 @@ for (const locale of ['en-US', 'zh-CN']) {
 test('history register preserves research stages and all published table rows with correct units', async () => {
   const { microcapHistory } = await import('./content/microcap-history.ts');
   const { historicalTablesMarkdown } = await import('./content/microcap-history-report.ts');
-  assert.equal(microcapHistory.length,34);
-  assert.equal(new Set(microcapHistory.map(r=>r.id)).size,34);
+  assert.equal(microcapHistory.length,35);
+  assert.equal(new Set(microcapHistory.map(r=>r.id)).size,35);
   const snapshot=await readReportSnapshot();
   const families=['candidates','anatomy','capacity','rebalance','share_ledger','joint_matrix','window_sensitivity'];
   assert.equal(families.reduce((sum,key)=>sum+snapshot[key].length,0),56);
@@ -50,5 +50,22 @@ test('history register preserves research stages and all published table rows wi
   assert.match(en,/Protocol only/);
   assert.match(en,/One completed month: August 2026/);
   assert.match(en,/stale caveat/);
-  assert.match(en,/not 34 independent experiments/);
+  assert.match(en,/not 35 independent experiments/);
+});
+
+
+test('recovery summary preserves scoped results and unresolved provenance in both reports', async()=>{
+ const {recoveryRecords}=await import('./content/microcap-recovery.ts');
+ assert.equal(recoveryRecords.length,7);
+ assert.equal(new Set(recoveryRecords.map(r=>r.id)).size,7);
+ for(const locale of ['en-US','zh-CN']) {
+  const {markdown}=await buildMicrocapReport(locale);
+  for(const r of recoveryRecords) assert.ok(markdown.includes(`### ${r.id} · ${r.title[locale==='zh-CN'?1:0]}`));
+ }
+ const en=(await buildMicrocapReport('en-US')).markdown;
+ assert.match(en,/53 published rows/);
+ assert.match(en,/three-window runtime bundle was not located/);
+ assert.match(en,/owner-code commit fields are unknown/);
+ assert.match(en,/112 factor rows, 56 weighting comparisons, 80 buffer rows and 24 capacity rows/);
+ assert.doesNotMatch(JSON.stringify(recoveryRecords),/\/home\/|\/mnt\/|artifacts\/|configs\//);
 });
