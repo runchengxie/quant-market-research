@@ -1,64 +1,1579 @@
 {
+  "code_receipts": {
+    "runner": "c8e0f4d8b814e6b1c4387888cdd634dc4cafab9568a27b152de7b31c85d2fc09",
+    "features": "cc224027d217e0843d28af8c8d94b519e193da66767faf5866d1fc3a5e92cefe"
+  },
+  "schema_version": "liquidity.rebuilt.v1",
+  "generated_on": "2026-10-16",
   "method": {
     "roll_days": 20,
-    "metric": "average daily turnover in the latest 20 trading days",
+    "metric": "lagged_ADV20_mean",
     "currency": "USD",
-    "market_cap_anchor": "latest available cross-section",
-    "snapshot_note": "各市场使用最近可用数据，快照日期并不一致",
-    "source_project": "market-liquidity-profiles"
+    "source_project": "quant-market-research",
+    "snapshot_note": "Latest snapshots differ by market; common snapshot uses one shared trading date",
+    "market_cap_anchor": "prior contiguous market session",
+    "feature_lag_sessions": 1,
+    "minimum_session_stocks": 100,
+    "calendar_method": "source dates with at least 100 observed securities; sparse dates excluded before rolling features",
+    "fx_method": "ECB reference USD/native cross rate, latest strictly earlier publication date, maximum age 7 calendar days",
+    "zero_and_missing": "Observed zero turnover included; missing market sessions invalidate the 20-session window",
+    "historical_pit_eligible": false
   },
   "markets": [
     {
       "market": "US",
+      "status": "derived",
+      "aggregation": "snapshot",
       "as_of": "2025-10-03",
-      "eligible_stocks": 6015,
-      "sub_100m_count": 1432,
-      "sub_100m_median_usd": 121735,
+      "coverage_start": "2025-10-03",
+      "coverage_end": "2025-10-03",
+      "unique_stocks": 4411,
+      "eligible_observations": 4411,
+      "below_100m_observations": 870,
+      "fx_start": "2025-10-02",
+      "fx_end": "2025-10-02",
       "buckets": [
-        { "label": "< $10m", "count": 511, "median_usd": 11162, "mean_usd": 2629317, "p90_usd": 3886671 },
-        { "label": "$10m-$100m", "count": 921, "median_usd": 180071, "mean_usd": 1316120, "p90_usd": 1983502 },
-        { "label": "$100m-$1bn", "count": 1819, "median_usd": 2439173, "mean_usd": 7992559, "p90_usd": 15162042 },
-        { "label": "$1bn-$10bn", "count": 1807, "median_usd": 37047661, "mean_usd": 65009048, "p90_usd": 136822283 },
-        { "label": ">= $10bn", "count": 957, "median_usd": 235945115, "mean_usd": 582916169, "p90_usd": 1002255305 }
-      ]
+        {
+          "label": "< $10m",
+          "observations": 230,
+          "count": 230,
+          "median_usd": 61069.996750000006,
+          "mean_usd": 4715274.111986956,
+          "p90_usd": 9666625.6745,
+          "median20_median_usd": 37617.990000000005,
+          "median20_mean_usd": 1998651.6818695648,
+          "median20_p90_usd": 1026529.4949999994
+        },
+        {
+          "label": "$10m-$100m",
+          "observations": 640,
+          "count": 640,
+          "median_usd": 165153.24475,
+          "mean_usd": 1067362.5249132817,
+          "p90_usd": 1815646.2232000027,
+          "median20_median_usd": 102081.9375,
+          "median20_mean_usd": 462726.3682812499,
+          "median20_p90_usd": 886418.6135000008
+        },
+        {
+          "label": "$100m-$1bn",
+          "observations": 1336,
+          "count": 1336,
+          "median_usd": 2494340.554,
+          "mean_usd": 7737851.4742421275,
+          "p90_usd": 14884148.300250001,
+          "median20_median_usd": 2063228.6875,
+          "median20_mean_usd": 6438070.454401204,
+          "median20_p90_usd": 12038136.7125
+        },
+        {
+          "label": "$1bn-$10bn",
+          "observations": 1360,
+          "count": 1360,
+          "median_usd": 34780559.16825001,
+          "mean_usd": 63207004.282411754,
+          "p90_usd": 117449704.5708,
+          "median20_median_usd": 29916581.1225,
+          "median20_mean_usd": 54718170.42198531,
+          "median20_p90_usd": 102797405.58000007
+        },
+        {
+          "label": ">= $10bn",
+          "observations": 845,
+          "count": 845,
+          "median_usd": 236099633.237,
+          "mean_usd": 613409922.4126121,
+          "p90_usd": 1041333827.7639003,
+          "median20_median_usd": 210940778.16000003,
+          "median20_mean_usd": 548179021.7571238,
+          "median20_p90_usd": 917799081.6800001
+        }
+      ],
+      "eligible_stocks": 4411,
+      "sub_100m_count": 870,
+      "sub_100m_median_usd": 146393.44175
     },
     {
       "market": "HK",
+      "status": "derived",
+      "aggregation": "snapshot",
       "as_of": "2026-05-26",
-      "eligible_stocks": 2522,
-      "sub_100m_count": 1362,
-      "sub_100m_median_usd": 10776,
+      "coverage_start": "2026-05-26",
+      "coverage_end": "2026-05-26",
+      "unique_stocks": 2383,
+      "eligible_observations": 2383,
+      "below_100m_observations": 1259,
+      "fx_start": "2026-05-25",
+      "fx_end": "2026-05-25",
       "buckets": [
-        { "label": "< $10m", "count": 261, "median_usd": 5042, "mean_usd": 18890 },
-        { "label": "$10m-$100m", "count": 1101, "median_usd": 13004, "mean_usd": 50298 },
-        { "label": "$100m-$1bn", "count": 699, "median_usd": 181899, "mean_usd": 1245259 },
-        { "label": "$1bn-$10bn", "count": 368, "median_usd": 6010845, "mean_usd": 11791965 },
-        { "label": ">= $10bn", "count": 93, "median_usd": 21766541, "mean_usd": 41237697 }
-      ]
+        {
+          "label": "< $10m",
+          "observations": 215,
+          "count": 215,
+          "median_usd": 3279.656465016335,
+          "mean_usd": 13605.113355357518,
+          "p90_usd": 27236.56560813033,
+          "median20_median_usd": 919.0431293441796,
+          "median20_mean_usd": 5144.263173696816,
+          "median20_p90_usd": 9161.698431161883
+        },
+        {
+          "label": "$10m-$100m",
+          "observations": 1044,
+          "count": 1044,
+          "median_usd": 10593.902694487688,
+          "mean_usd": 43542.39062206935,
+          "p90_usd": 102191.3101110027,
+          "median20_median_usd": 4581.110887583047,
+          "median20_mean_usd": 23229.94054543072,
+          "median20_p90_usd": 54106.4559837306
+        },
+        {
+          "label": "$100m-$1bn",
+          "observations": 670,
+          "count": 670,
+          "median_usd": 160470.59781612473,
+          "mean_usd": 1199047.119592916,
+          "p90_usd": 2421734.5204530554,
+          "median20_median_usd": 107310.2520583463,
+          "median20_mean_usd": 707029.7045356429,
+          "median20_p90_usd": 1691440.2458827596
+        },
+        {
+          "label": "$1bn-$10bn",
+          "observations": 361,
+          "count": 361,
+          "median_usd": 5841600.909243647,
+          "mean_usd": 11611067.2217182,
+          "p90_usd": 26654920.896766398,
+          "median20_median_usd": 5239491.621993334,
+          "median20_mean_usd": 10191955.847544327,
+          "median20_p90_usd": 23837035.475743856
+        },
+        {
+          "label": ">= $10bn",
+          "observations": 93,
+          "count": 93,
+          "median_usd": 20862665.583100185,
+          "mean_usd": 40425669.60277254,
+          "p90_usd": 86286965.4185817,
+          "median20_median_usd": 19502833.438841626,
+          "median20_mean_usd": 37212020.396386504,
+          "median20_p90_usd": 83773708.07297671
+        }
+      ],
+      "eligible_stocks": 2383,
+      "sub_100m_count": 1259,
+      "sub_100m_median_usd": 8039.553152476594
     },
     {
       "market": "A-share",
-      "as_of": "2026-09-07",
-      "eligible_stocks": 5321,
-      "sub_100m_count": 125,
-      "sub_100m_median_usd": 1365126,
+      "status": "derived",
+      "aggregation": "snapshot",
+      "as_of": "2026-10-15",
+      "coverage_start": "2026-10-15",
+      "coverage_end": "2026-10-15",
+      "unique_stocks": 5328,
+      "eligible_observations": 5328,
+      "below_100m_observations": 3,
+      "fx_start": "2026-10-14",
+      "fx_end": "2026-10-14",
       "buckets": [
-        { "label": "< $10m", "count": 16, "median_usd": 813238, "mean_usd": 1251180 },
-        { "label": "$10m-$100m", "count": 161, "median_usd": 1446068, "mean_usd": 2137422 },
-        { "label": "$100m-$1bn", "count": 2823, "median_usd": 8992347, "mean_usd": 13997260 },
-        { "label": "$1bn-$10bn", "count": 2166, "median_usd": 40430509, "mean_usd": 72468542 },
-        { "label": ">= $10bn", "count": 295, "median_usd": 243015757, "mean_usd": 463049830 }
-      ]
+        {
+          "label": "< $10m",
+          "observations": 0,
+          "count": 0,
+          "median_usd": null,
+          "mean_usd": null,
+          "p90_usd": null,
+          "median20_median_usd": null,
+          "median20_mean_usd": null,
+          "median20_p90_usd": null
+        },
+        {
+          "label": "$10m-$100m",
+          "observations": 3,
+          "count": 3,
+          "median_usd": 1243832.26579663,
+          "mean_usd": 1046784.4922147036,
+          "p90_usd": 1264259.4977635837,
+          "median20_median_usd": 1035872.189037037,
+          "median20_mean_usd": 925677.382749416,
+          "median20_p90_usd": 1091379.8185185185
+        },
+        {
+          "label": "$100m-$1bn",
+          "observations": 2912,
+          "count": 2912,
+          "median_usd": 9466565.430533867,
+          "mean_usd": 15681102.59726163,
+          "p90_usd": 33945786.492911875,
+          "median20_median_usd": 8030186.349783117,
+          "median20_mean_usd": 13430978.365795663,
+          "median20_p90_usd": 28904067.953051865
+        },
+        {
+          "label": "$1bn-$10bn",
+          "observations": 2148,
+          "count": 2148,
+          "median_usd": 34255103.57196969,
+          "mean_usd": 63687667.034955785,
+          "p90_usd": 145191839.97074264,
+          "median20_median_usd": 30263290.443767935,
+          "median20_mean_usd": 57491425.85447533,
+          "median20_p90_usd": 135273365.85720745
+        },
+        {
+          "label": ">= $10bn",
+          "observations": 265,
+          "count": 265,
+          "median_usd": 156077056.3800921,
+          "mean_usd": 285149729.2169484,
+          "p90_usd": 657615699.069551,
+          "median20_median_usd": 144647143.9232893,
+          "median20_mean_usd": 267193691.74977493,
+          "median20_p90_usd": 609187014.4665242
+        }
+      ],
+      "eligible_stocks": 5328,
+      "sub_100m_count": 3,
+      "sub_100m_median_usd": 1243832.26579663
+    },
+    {
+      "market": "JP",
+      "status": "derived",
+      "aggregation": "snapshot",
+      "as_of": "2026-05-01",
+      "coverage_start": "2026-05-01",
+      "coverage_end": "2026-05-01",
+      "unique_stocks": 3555,
+      "eligible_observations": 3555,
+      "below_100m_observations": 1466,
+      "fx_start": "2026-04-30",
+      "fx_end": "2026-04-30",
+      "buckets": [
+        {
+          "label": "< $10m",
+          "observations": 58,
+          "count": 58,
+          "median_usd": 29960.131567600016,
+          "mean_usd": 199556.56591842033,
+          "p90_usd": 446515.36840456317,
+          "median20_median_usd": 17416.952513509084,
+          "median20_mean_usd": 66411.68404732466,
+          "median20_p90_usd": 120641.32221494467
+        },
+        {
+          "label": "$10m-$100m",
+          "observations": 1408,
+          "count": 1408,
+          "median_usd": 70698.59331641285,
+          "mean_usd": 381704.88209475303,
+          "p90_usd": 610244.1431603078,
+          "median20_median_usd": 53322.31133671742,
+          "median20_mean_usd": 254042.4484131517,
+          "median20_p90_usd": 373217.53676109377
+        },
+        {
+          "label": "$100m-$1bn",
+          "observations": 1372,
+          "count": 1372,
+          "median_usd": 888517.6073522186,
+          "mean_usd": 2273181.0088911518,
+          "p90_usd": 3961563.977500687,
+          "median20_median_usd": 786079.8220621145,
+          "median20_mean_usd": 1890620.7423316007,
+          "median20_p90_usd": 3356486.397320019
+        },
+        {
+          "label": "$1bn-$10bn",
+          "observations": 572,
+          "count": 572,
+          "median_usd": 10087880.372927241,
+          "mean_usd": 18725968.596946146,
+          "p90_usd": 39158861.66445881,
+          "median20_median_usd": 9036860.797431909,
+          "median20_mean_usd": 16611009.946071388,
+          "median20_p90_usd": 35250679.18853228
+        },
+        {
+          "label": ">= $10bn",
+          "observations": 145,
+          "count": 145,
+          "median_usd": 92315444.59982532,
+          "mean_usd": 264789301.87460548,
+          "p90_usd": 439726901.10318756,
+          "median20_median_usd": 82747031.21483542,
+          "median20_mean_usd": 249832568.71146634,
+          "median20_p90_usd": 419556967.5011188
+        }
+      ],
+      "eligible_stocks": 3555,
+      "sub_100m_count": 1466,
+      "sub_100m_median_usd": 68960.61861252115
     }
   ],
   "periods": [
-    {"period": "2020-2024", "status": "pending", "common_start": null, "common_end": null, "markets": []},
-    {"period": "2025", "status": "pending", "common_start": null, "common_end": null, "markets": []},
-    {"period": "2026 YTD", "status": "pending", "common_start": null, "common_end": null, "markets": []}
+    {
+      "requested_start": "2025-09-30",
+      "requested_end": "2025-09-30",
+      "included_markets": [
+        "US",
+        "HK",
+        "A-share",
+        "JP"
+      ],
+      "missing_markets": [],
+      "common_start": "2025-09-30",
+      "common_end": "2025-09-30",
+      "common_dates": 1,
+      "markets": [
+        {
+          "market": "US",
+          "status": "derived",
+          "aggregation": "snapshot",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-09-30",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 4417,
+          "eligible_observations": 4417,
+          "below_100m_observations": 878,
+          "fx_start": "2025-09-29",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 233,
+              "count": 233,
+              "median_usd": 55846.01849999999,
+              "mean_usd": 4451358.251366949,
+              "p90_usd": 7998032.454300008,
+              "median20_median_usd": 32795.880000000005,
+              "median20_mean_usd": 1923053.6127467812,
+              "median20_p90_usd": 1187206.0580000028
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 645,
+              "count": 645,
+              "median_usd": 163109.17450000002,
+              "mean_usd": 1226489.2043945726,
+              "p90_usd": 1987948.4415000011,
+              "median20_median_usd": 101360.54000000001,
+              "median20_mean_usd": 396028.9835038756,
+              "median20_p90_usd": 833209.7010000004
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 1336,
+              "count": 1336,
+              "median_usd": 2533574.9215,
+              "mean_usd": 7625521.412318855,
+              "p90_usd": 14373712.87475,
+              "median20_median_usd": 2049523.235,
+              "median20_mean_usd": 6136297.902758243,
+              "median20_p90_usd": 11445033.3125
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 1360,
+              "count": 1360,
+              "median_usd": 34596699.874,
+              "mean_usd": 63128524.76470078,
+              "p90_usd": 119168833.75775,
+              "median20_median_usd": 29549950.7275,
+              "median20_mean_usd": 54056892.12001116,
+              "median20_p90_usd": 101168876.79000002
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 843,
+              "count": 843,
+              "median_usd": 234248692.79000002,
+              "mean_usd": 593175410.9210106,
+              "p90_usd": 967354080.0968007,
+              "median20_median_usd": 208775345.72,
+              "median20_mean_usd": 529650696.9395671,
+              "median20_p90_usd": 874571903.34
+            }
+          ],
+          "eligible_stocks": 4417,
+          "sub_100m_count": 878,
+          "sub_100m_median_usd": 147292.63675
+        },
+        {
+          "market": "HK",
+          "status": "derived",
+          "aggregation": "snapshot",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-09-30",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 2427,
+          "eligible_observations": 2427,
+          "below_100m_observations": 1271,
+          "fx_start": "2025-09-29",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 265,
+              "count": 265,
+              "median_usd": 2911.714648934304,
+              "mean_usd": 11892.52705220123,
+              "p90_usd": 24477.092655359174,
+              "median20_median_usd": 787.8913033944391,
+              "median20_mean_usd": 5006.51413437335,
+              "median20_p90_usd": 10853.42763244452
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 1006,
+              "count": 1006,
+              "median_usd": 11418.363691233224,
+              "mean_usd": 61355.29283456463,
+              "p90_usd": 133538.0711028638,
+              "median20_median_usd": 4838.944333282168,
+              "median20_mean_usd": 31974.205837692236,
+              "median20_p90_usd": 69230.83920270152
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 684,
+              "count": 684,
+              "median_usd": 216334.27779854837,
+              "mean_usd": 1385507.9881147572,
+              "p90_usd": 3524138.844534474,
+              "median20_median_usd": 151344.2153374704,
+              "median20_mean_usd": 941949.7779835041,
+              "median20_p90_usd": 2566458.1477381373
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 381,
+              "count": 381,
+              "median_usd": 8866588.161421146,
+              "mean_usd": 18037519.289647054,
+              "p90_usd": 44509505.995025106,
+              "median20_median_usd": 7186614.088901193,
+              "median20_mean_usd": 13727273.332999034,
+              "median20_p90_usd": 32978159.044343695
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 91,
+              "count": 91,
+              "median_usd": 22473182.08613389,
+              "mean_usd": 40789698.36306793,
+              "p90_usd": 121113065.6133031,
+              "median20_median_usd": 21639707.517750636,
+              "median20_mean_usd": 36525602.133132465,
+              "median20_p90_usd": 107803891.63921475
+            }
+          ],
+          "eligible_stocks": 2427,
+          "sub_100m_count": 1271,
+          "sub_100m_median_usd": 8486.219136479256
+        },
+        {
+          "market": "A-share",
+          "status": "derived",
+          "aggregation": "snapshot",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-09-30",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 5220,
+          "eligible_observations": 5220,
+          "below_100m_observations": 0,
+          "fx_start": "2025-09-29",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 0,
+              "count": 0,
+              "median_usd": null,
+              "mean_usd": null,
+              "p90_usd": null,
+              "median20_median_usd": null,
+              "median20_mean_usd": null,
+              "median20_p90_usd": null
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 0,
+              "count": 0,
+              "median_usd": null,
+              "mean_usd": null,
+              "p90_usd": null,
+              "median20_median_usd": null,
+              "median20_mean_usd": null,
+              "median20_p90_usd": null
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 2757,
+              "count": 2757,
+              "median_usd": 13896662.301835723,
+              "mean_usd": 19411161.929843128,
+              "p90_usd": 39206599.37405573,
+              "median20_median_usd": 12156659.231948202,
+              "median20_mean_usd": 16797525.59520854,
+              "median20_p90_usd": 32898877.16743369
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 2234,
+              "count": 2234,
+              "median_usd": 48861629.12281239,
+              "mean_usd": 82111734.86527815,
+              "p90_usd": 182859349.63503894,
+              "median20_median_usd": 43084249.44493722,
+              "median20_mean_usd": 73498594.1121709,
+              "median20_p90_usd": 164650576.98515365
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 229,
+              "count": 229,
+              "median_usd": 209932358.507943,
+              "mean_usd": 416337701.3659528,
+              "p90_usd": 993832337.3236576,
+              "median20_median_usd": 194654595.06594232,
+              "median20_mean_usd": 390705914.01045126,
+              "median20_p90_usd": 960873465.2820863
+            }
+          ],
+          "eligible_stocks": 5220,
+          "sub_100m_count": 0,
+          "sub_100m_median_usd": null
+        },
+        {
+          "market": "JP",
+          "status": "derived",
+          "aggregation": "snapshot",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-09-30",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 3654,
+          "eligible_observations": 3654,
+          "below_100m_observations": 1512,
+          "fx_start": "2025-09-29",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 22,
+              "count": 22,
+              "median_usd": 34831.925094620936,
+              "mean_usd": 256982.23575277076,
+              "p90_usd": 412334.51832463586,
+              "median20_median_usd": 23689.528888060555,
+              "median20_mean_usd": 172217.46005458295,
+              "median20_p90_usd": 159914.9838370226
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 1490,
+              "count": 1490,
+              "median_usd": 100851.12765942194,
+              "mean_usd": 501306.8925544097,
+              "p90_usd": 790350.0247373554,
+              "median20_median_usd": 71228.08211950911,
+              "median20_mean_usd": 282838.0036849825,
+              "median20_p90_usd": 491801.56423901865
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 1450,
+              "count": 1450,
+              "median_usd": 884749.08896089,
+              "mean_usd": 2178813.178708763,
+              "p90_usd": 3920821.1616274845,
+              "median20_median_usd": 744919.7426023625,
+              "median20_mean_usd": 1752016.130233479,
+              "median20_p90_usd": 3322980.4170203004
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 560,
+              "count": 560,
+              "median_usd": 8866856.679895915,
+              "mean_usd": 18767810.96687935,
+              "p90_usd": 36126739.37905551,
+              "median20_median_usd": 7849049.08715879,
+              "median20_mean_usd": 16612970.698498603,
+              "median20_p90_usd": 31574957.07345739
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 132,
+              "count": 132,
+              "median_usd": 81303115.74746242,
+              "mean_usd": 169381726.83196762,
+              "p90_usd": 380990519.48559976,
+              "median20_median_usd": 73830630.80849293,
+              "median20_mean_usd": 152224871.6097539,
+              "median20_p90_usd": 351359822.82768667
+            }
+          ],
+          "eligible_stocks": 3654,
+          "sub_100m_count": 1512,
+          "sub_100m_median_usd": 99785.18037188897
+        }
+      ],
+      "period": "common snapshot",
+      "status": "derived"
+    },
+    {
+      "requested_start": "2020-01-01",
+      "requested_end": "2024-12-31",
+      "included_markets": [
+        "US",
+        "HK",
+        "A-share",
+        "JP"
+      ],
+      "missing_markets": [],
+      "common_start": "2020-01-06",
+      "common_end": "2024-12-30",
+      "common_dates": 1065,
+      "markets": [
+        {
+          "market": "US",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2024-12-30",
+          "coverage_start": "2020-01-06",
+          "coverage_end": "2024-12-30",
+          "unique_stocks": 5642,
+          "eligible_observations": 4817648,
+          "below_100m_observations": 890743,
+          "fx_start": "2020-01-03",
+          "fx_end": "2024-12-27",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 163460,
+              "count": 825,
+              "median_usd": 44545.75275,
+              "mean_usd": 2288188.934112998,
+              "p90_usd": 2387710.4038500004,
+              "median20_median_usd": 25604.1525,
+              "median20_mean_usd": 1509761.582471581,
+              "median20_p90_usd": 809668.9065000006
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 727283,
+              "count": 2090,
+              "median_usd": 120683.49449999999,
+              "mean_usd": 1334900.8028343238,
+              "p90_usd": 1472580.8886000002,
+              "median20_median_usd": 78019.2,
+              "median20_mean_usd": 619982.1683391536,
+              "median20_p90_usd": 834392.0
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 1580360,
+              "count": 3457,
+              "median_usd": 1718207.5627499998,
+              "mean_usd": 4774887.387662345,
+              "p90_usd": 9827900.12955,
+              "median20_median_usd": 1372070.205,
+              "median20_mean_usd": 3685104.202087201,
+              "median20_p90_usd": 7983570.35
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 1580691,
+              "count": 2895,
+              "median_usd": 22440376.5485,
+              "mean_usd": 38795303.7287186,
+              "p90_usd": 80228774.1505,
+              "median20_median_usd": 19608689.68,
+              "median20_mean_usd": 33346529.543070074,
+              "median20_p90_usd": 69701402.01
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 765854,
+              "count": 1200,
+              "median_usd": 172695299.632,
+              "mean_usd": 412060155.65158427,
+              "p90_usd": 733646020.7353501,
+              "median20_median_usd": 156327496.39,
+              "median20_mean_usd": 374964780.8376776,
+              "median20_p90_usd": 659793555.375
+            }
+          ]
+        },
+        {
+          "market": "HK",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2024-12-30",
+          "coverage_start": "2020-01-06",
+          "coverage_end": "2024-12-30",
+          "unique_stocks": 2710,
+          "eligible_observations": 2511256,
+          "below_100m_observations": 1330030,
+          "fx_start": "2020-01-03",
+          "fx_end": "2024-12-27",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 249671,
+              "count": 733,
+              "median_usd": 1401.3684226155128,
+              "mean_usd": 15255.602864815037,
+              "p90_usd": 19722.761217775278,
+              "median20_median_usd": 107.72538780525267,
+              "median20_mean_usd": 5342.200526901667,
+              "median20_p90_usd": 5907.321091652355
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 1080359,
+              "count": 1781,
+              "median_usd": 5998.192294946149,
+              "mean_usd": 50116.50373655492,
+              "p90_usd": 84789.92153968853,
+              "median20_median_usd": 1624.8604677437577,
+              "median20_mean_usd": 25504.180928518235,
+              "median20_p90_usd": 40822.026496658145
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 765213,
+              "count": 1566,
+              "median_usd": 108867.1433585016,
+              "mean_usd": 599618.3044252757,
+              "p90_usd": 1385464.7490625004,
+              "median20_median_usd": 66506.8361916026,
+              "median20_mean_usd": 435403.6548702261,
+              "median20_p90_usd": 1044997.3236267222
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 352848,
+              "count": 719,
+              "median_usd": 3328667.3018116043,
+              "mean_usd": 6901812.252759313,
+              "p90_usd": 16615432.684643894,
+              "median20_median_usd": 2737389.8458457207,
+              "median20_mean_usd": 5716747.952959873,
+              "median20_p90_usd": 13825585.240371797
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 63165,
+              "count": 147,
+              "median_usd": 15811835.25124648,
+              "mean_usd": 29201901.16032334,
+              "p90_usd": 75311076.60301384,
+              "median20_median_usd": 13840990.194883136,
+              "median20_mean_usd": 25381391.627963167,
+              "median20_p90_usd": 64983111.86822596
+            }
+          ]
+        },
+        {
+          "market": "A-share",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2024-12-30",
+          "coverage_start": "2020-01-06",
+          "coverage_end": "2024-12-30",
+          "unique_stocks": 5519,
+          "eligible_observations": 4829392,
+          "below_100m_observations": 34947,
+          "fx_start": "2020-01-03",
+          "fx_end": "2024-12-27",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 0,
+              "count": 0,
+              "median_usd": null,
+              "mean_usd": null,
+              "p90_usd": null,
+              "median20_median_usd": null,
+              "median20_mean_usd": null,
+              "median20_p90_usd": null
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 34947,
+              "count": 194,
+              "median_usd": 200575.08457345463,
+              "mean_usd": 679102.6602662535,
+              "p90_usd": 1896354.9606451557,
+              "median20_median_usd": 139783.25443786982,
+              "median20_mean_usd": 510545.07053007453,
+              "median20_p90_usd": 1389486.9046562207
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 2790427,
+              "count": 4338,
+              "median_usd": 7328622.862948794,
+              "mean_usd": 12098590.837209942,
+              "p90_usd": 26752690.17454193,
+              "median20_median_usd": 6162171.270857143,
+              "median20_mean_usd": 10263459.754836068,
+              "median20_p90_usd": 22294022.632468324
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 1796003,
+              "count": 3504,
+              "median_usd": 24121040.758004855,
+              "mean_usd": 41453526.404637896,
+              "p90_usd": 90461855.0540658,
+              "median20_median_usd": 21068731.11919487,
+              "median20_mean_usd": 36904564.92635208,
+              "median20_p90_usd": 80251671.6365745
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 208015,
+              "count": 404,
+              "median_usd": 110860920.34220992,
+              "mean_usd": 177439207.03171775,
+              "p90_usd": 400763939.240942,
+              "median20_median_usd": 99605731.04671201,
+              "median20_mean_usd": 162070305.26274663,
+              "median20_p90_usd": 365545346.9017069
+            }
+          ]
+        },
+        {
+          "market": "JP",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2024-12-30",
+          "coverage_start": "2020-01-06",
+          "coverage_end": "2024-12-30",
+          "unique_stocks": 4206,
+          "eligible_observations": 3739852,
+          "below_100m_observations": 1479741,
+          "fx_start": "2020-01-03",
+          "fx_end": "2024-12-27",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 35045,
+              "count": 249,
+              "median_usd": 34282.22199023054,
+              "mean_usd": 153600.18592238854,
+              "p90_usd": 300942.9185259113,
+              "median20_median_usd": 19279.506239418075,
+              "median20_mean_usd": 52137.488128654055,
+              "median20_p90_usd": 96554.87319415918
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 1444696,
+              "count": 2353,
+              "median_usd": 97033.37952039528,
+              "mean_usd": 415117.55331030523,
+              "p90_usd": 768373.6579922542,
+              "median20_median_usd": 66801.08923492554,
+              "median20_mean_usd": 261163.99081636802,
+              "median20_p90_usd": 501585.47019413114
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 1571489,
+              "count": 2545,
+              "median_usd": 781850.9552310738,
+              "mean_usd": 1979054.5880354627,
+              "p90_usd": 3996920.495203399,
+              "median20_median_usd": 661018.8276654412,
+              "median20_mean_usd": 1603622.692136576,
+              "median20_p90_usd": 3293652.792247604
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 562883,
+              "count": 906,
+              "median_usd": 9269269.65125594,
+              "mean_usd": 15916152.846560594,
+              "p90_usd": 32239496.32099361,
+              "median20_median_usd": 8246056.314208733,
+              "median20_mean_usd": 14105068.212371927,
+              "median20_p90_usd": 28450107.749681246
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 125739,
+              "count": 204,
+              "median_usd": 73808953.15991634,
+              "mean_usd": 123022597.30973417,
+              "p90_usd": 236507239.99072468,
+              "median20_median_usd": 67463141.89554189,
+              "median20_mean_usd": 112731325.9533718,
+              "median20_p90_usd": 213836593.81046543
+            }
+          ]
+        }
+      ],
+      "period": "2020-2024",
+      "status": "derived"
+    },
+    {
+      "requested_start": "2025-01-01",
+      "requested_end": "2025-12-31",
+      "included_markets": [
+        "US",
+        "HK",
+        "A-share",
+        "JP"
+      ],
+      "missing_markets": [],
+      "common_start": "2025-01-06",
+      "common_end": "2025-09-30",
+      "common_dates": 161,
+      "markets": [
+        {
+          "market": "US",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-01-06",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 4748,
+          "eligible_observations": 725533,
+          "below_100m_observations": 156614,
+          "fx_start": "2025-01-03",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 41943,
+              "count": 462,
+              "median_usd": 38664.606,
+              "mean_usd": 2932650.802446968,
+              "p90_usd": 3603313.6234000013,
+              "median20_median_usd": 21714.6,
+              "median20_mean_usd": 1597003.674197943,
+              "median20_p90_usd": 529008.36
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 114671,
+              "count": 1106,
+              "median_usd": 131824.804,
+              "mean_usd": 1235074.6444634607,
+              "p90_usd": 1428218.7015,
+              "median20_median_usd": 84582.735,
+              "median20_mean_usd": 436664.5249758886,
+              "median20_p90_usd": 732444.56
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 217231,
+              "count": 1862,
+              "median_usd": 2265974.244,
+              "mean_usd": 5989515.998047881,
+              "p90_usd": 12317401.339500003,
+              "median20_median_usd": 1877073.31,
+              "median20_mean_usd": 4788777.952764282,
+              "median20_p90_usd": 9992501.395
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 220502,
+              "count": 1756,
+              "median_usd": 30535433.706999995,
+              "mean_usd": 56087803.64687691,
+              "p90_usd": 111663916.35824998,
+              "median20_median_usd": 26776296.340000004,
+              "median20_mean_usd": 48761375.59866657,
+              "median20_p90_usd": 96526792.47
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 131186,
+              "count": 953,
+              "median_usd": 218844479.46049997,
+              "mean_usd": 531301109.2519219,
+              "p90_usd": 925122647.87325,
+              "median20_median_usd": 198656318.285,
+              "median20_mean_usd": 478684317.46014684,
+              "median20_p90_usd": 823461000.7450001
+            }
+          ]
+        },
+        {
+          "market": "HK",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-01-06",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 2510,
+          "eligible_observations": 392066,
+          "below_100m_observations": 218080,
+          "fx_start": "2025-01-03",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 55494,
+              "count": 513,
+              "median_usd": 1641.189758161081,
+              "mean_usd": 12840.878107306917,
+              "p90_usd": 24955.34942718622,
+              "median20_median_usd": 173.90015320276774,
+              "median20_mean_usd": 4378.442452201581,
+              "median20_p90_usd": 8341.741192715905
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 162586,
+              "count": 1337,
+              "median_usd": 8021.377771123212,
+              "mean_usd": 44564.95878310792,
+              "p90_usd": 93246.13619646736,
+              "median20_median_usd": 2895.8829486072245,
+              "median20_mean_usd": 24737.48650954151,
+              "median20_p90_usd": 49289.59318426624
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 105624,
+              "count": 930,
+              "median_usd": 171613.6468244174,
+              "mean_usd": 1415453.2376725057,
+              "p90_usd": 3070979.123385529,
+              "median20_median_usd": 111691.07274805679,
+              "median20_mean_usd": 957943.1132531025,
+              "median20_p90_usd": 2193107.1379927215
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 55747,
+              "count": 461,
+              "median_usd": 6333450.030131593,
+              "mean_usd": 13786898.515322048,
+              "p90_usd": 32617658.872206625,
+              "median20_median_usd": 5145482.636479246,
+              "median20_mean_usd": 11086025.830896666,
+              "median20_p90_usd": 26210955.960472297
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 12615,
+              "count": 104,
+              "median_usd": 18991538.07775078,
+              "mean_usd": 33507068.840789475,
+              "p90_usd": 84836589.82443345,
+              "median20_median_usd": 16614727.24609356,
+              "median20_mean_usd": 29330052.20146611,
+              "median20_p90_usd": 73380219.90214106
+            }
+          ]
+        },
+        {
+          "market": "A-share",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-01-06",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 5365,
+          "eligible_observations": 838248,
+          "below_100m_observations": 123,
+          "fx_start": "2025-01-03",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 0,
+              "count": 0,
+              "median_usd": null,
+              "mean_usd": null,
+              "p90_usd": null,
+              "median20_median_usd": null,
+              "median20_mean_usd": null,
+              "median20_p90_usd": null
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 123,
+              "count": 11,
+              "median_usd": 2090138.1701809173,
+              "mean_usd": 2783123.2386877174,
+              "p90_usd": 4899999.497389724,
+              "median20_median_usd": 1890873.4045671436,
+              "median20_mean_usd": 2363542.509113635,
+              "median20_p90_usd": 3578684.7742043035
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 487522,
+              "count": 3611,
+              "median_usd": 12470861.673986703,
+              "mean_usd": 18866236.474321455,
+              "p90_usd": 39824579.970053695,
+              "median20_median_usd": 10458464.344361693,
+              "median20_mean_usd": 15969827.761598855,
+              "median20_p90_usd": 33179690.621092223
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 318709,
+              "count": 2681,
+              "median_usd": 35567126.300777465,
+              "mean_usd": 60212499.733599424,
+              "p90_usd": 132248646.15644471,
+              "median20_median_usd": 30782295.26286209,
+              "median20_mean_usd": 53204395.21406198,
+              "median20_p90_usd": 116333311.24152328
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 31894,
+              "count": 260,
+              "median_usd": 129227523.97086725,
+              "mean_usd": 216218263.6370744,
+              "p90_usd": 467413247.1135326,
+              "median20_median_usd": 116094039.42154771,
+              "median20_mean_usd": 196226981.2493612,
+              "median20_p90_usd": 417059832.3787458
+            }
+          ]
+        },
+        {
+          "market": "JP",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2025-09-30",
+          "coverage_start": "2025-01-06",
+          "coverage_end": "2025-09-30",
+          "unique_stocks": 3857,
+          "eligible_observations": 585477,
+          "below_100m_observations": 249667,
+          "fx_start": "2025-01-03",
+          "fx_end": "2025-09-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 7712,
+              "count": 142,
+              "median_usd": 47256.38987793107,
+              "mean_usd": 232690.84780367176,
+              "p90_usd": 568467.8193124679,
+              "median20_median_usd": 22953.237533385727,
+              "median20_mean_usd": 83712.78799317923,
+              "median20_p90_usd": 171182.58561257302
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 241955,
+              "count": 1918,
+              "median_usd": 93466.00520707425,
+              "mean_usd": 391073.3462919732,
+              "p90_usd": 685871.5073448454,
+              "median20_median_usd": 57621.74480116746,
+              "median20_mean_usd": 226887.47911770374,
+              "median20_p90_usd": 407242.0174449105
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 228710,
+              "count": 1757,
+              "median_usd": 816693.428603133,
+              "mean_usd": 1998018.2847083383,
+              "p90_usd": 3598278.742817506,
+              "median20_median_usd": 677522.7097635859,
+              "median20_mean_usd": 1585014.8123448237,
+              "median20_p90_usd": 2938360.390976775
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 86919,
+              "count": 677,
+              "median_usd": 9078385.712044956,
+              "mean_usd": 19238026.13359897,
+              "p90_usd": 35970273.237760305,
+              "median20_median_usd": 7939309.651925647,
+              "median20_mean_usd": 16806240.56205308,
+              "median20_p90_usd": 31413087.53417039
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 20181,
+              "count": 157,
+              "median_usd": 81141830.53668675,
+              "mean_usd": 158231475.06214225,
+              "p90_usd": 371756933.72349364,
+              "median20_median_usd": 72713476.96433055,
+              "median20_mean_usd": 142269835.71615297,
+              "median20_p90_usd": 329883380.44494104
+            }
+          ]
+        }
+      ],
+      "period": "2025",
+      "status": "incomplete"
+    },
+    {
+      "requested_start": "2026-01-01",
+      "requested_end": "2026-10-15",
+      "included_markets": [
+        "HK",
+        "A-share",
+        "JP"
+      ],
+      "missing_markets": [
+        "US"
+      ],
+      "common_start": "2026-01-05",
+      "common_end": "2026-04-30",
+      "common_dates": 71,
+      "markets": [
+        {
+          "market": "HK",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2026-04-30",
+          "coverage_start": "2026-01-05",
+          "coverage_end": "2026-04-30",
+          "unique_stocks": 2450,
+          "eligible_observations": 172075,
+          "below_100m_observations": 90733,
+          "fx_start": "2026-01-02",
+          "fx_end": "2026-04-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 16333,
+              "count": 319,
+              "median_usd": 2253.0076440927614,
+              "mean_usd": 18922.75224948239,
+              "p90_usd": 33548.790054067715,
+              "median20_median_usd": 480.11756473058085,
+              "median20_mean_usd": 6325.581810304005,
+              "median20_p90_usd": 9044.879908831523
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 74400,
+              "count": 1221,
+              "median_usd": 8753.802265351183,
+              "mean_usd": 50792.90875788713,
+              "p90_usd": 95104.28078879107,
+              "median20_median_usd": 3690.4062252138374,
+              "median20_mean_usd": 26369.596577193966,
+              "median20_p90_usd": 49768.44447339776
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 47978,
+              "count": 823,
+              "median_usd": 145438.74462590675,
+              "mean_usd": 1162586.6552189407,
+              "p90_usd": 2146885.364850907,
+              "median20_median_usd": 94568.66886644228,
+              "median20_mean_usd": 804540.2062850188,
+              "median20_p90_usd": 1586137.102066616
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 26730,
+              "count": 434,
+              "median_usd": 5897841.899129581,
+              "mean_usd": 11546855.860901205,
+              "p90_usd": 26267348.59488426,
+              "median20_median_usd": 4923271.871691903,
+              "median20_mean_usd": 9401564.24323191,
+              "median20_p90_usd": 21490103.019589197
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 6634,
+              "count": 111,
+              "median_usd": 21946941.637738146,
+              "mean_usd": 37868707.17545616,
+              "p90_usd": 85419332.67657396,
+              "median20_median_usd": 19547317.35939429,
+              "median20_mean_usd": 33725672.49658416,
+              "median20_p90_usd": 77678792.382536
+            }
+          ]
+        },
+        {
+          "market": "A-share",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2026-04-30",
+          "coverage_start": "2026-01-05",
+          "coverage_end": "2026-04-30",
+          "unique_stocks": 5325,
+          "eligible_observations": 373426,
+          "below_100m_observations": 0,
+          "fx_start": "2026-01-02",
+          "fx_end": "2026-04-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 0,
+              "count": 0,
+              "median_usd": null,
+              "mean_usd": null,
+              "p90_usd": null,
+              "median20_median_usd": null,
+              "median20_mean_usd": null,
+              "median20_p90_usd": null
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 0,
+              "count": 0,
+              "median_usd": null,
+              "mean_usd": null,
+              "p90_usd": null,
+              "median20_median_usd": null,
+              "median20_mean_usd": null,
+              "median20_p90_usd": null
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 181918,
+              "count": 2945,
+              "median_usd": 12691224.901339713,
+              "mean_usd": 18666407.974811427,
+              "p90_usd": 38507018.96274362,
+              "median20_median_usd": 10824613.961203791,
+              "median20_mean_usd": 15951117.095553402,
+              "median20_p90_usd": 32177105.557225883
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 171476,
+              "count": 2902,
+              "median_usd": 46540723.688538715,
+              "mean_usd": 82412944.25352949,
+              "p90_usd": 187409485.0269339,
+              "median20_median_usd": 40331866.36036513,
+              "median20_mean_usd": 73369904.32446152,
+              "median20_p90_usd": 167208889.91127953
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 20032,
+              "count": 349,
+              "median_usd": 217662570.1433975,
+              "mean_usd": 362689482.96895653,
+              "p90_usd": 790874716.149337,
+              "median20_median_usd": 198266113.87630588,
+              "median20_mean_usd": 334452470.4459596,
+              "median20_p90_usd": 740973826.0737163
+            }
+          ]
+        },
+        {
+          "market": "JP",
+          "status": "derived",
+          "aggregation": "security_day",
+          "as_of": "2026-04-30",
+          "coverage_start": "2026-01-05",
+          "coverage_end": "2026-04-30",
+          "unique_stocks": 3777,
+          "eligible_observations": 258790,
+          "below_100m_observations": 108158,
+          "fx_start": "2026-01-02",
+          "fx_end": "2026-04-29",
+          "buckets": [
+            {
+              "label": "< $10m",
+              "observations": 3725,
+              "count": 97,
+              "median_usd": 32364.577348501305,
+              "mean_usd": 106224.89916896299,
+              "p90_usd": 187362.8140088854,
+              "median20_median_usd": 20672.923839973766,
+              "median20_mean_usd": 55470.911364829495,
+              "median20_p90_usd": 99787.1140503456
+            },
+            {
+              "label": "$10m-$100m",
+              "observations": 104433,
+              "count": 1712,
+              "median_usd": 94532.11210420185,
+              "mean_usd": 392568.5524712269,
+              "p90_usd": 703781.0339245325,
+              "median20_median_usd": 67112.06796116504,
+              "median20_mean_usd": 242781.02634732163,
+              "median20_p90_usd": 458380.44464634696
+            },
+            {
+              "label": "$100m-$1bn",
+              "observations": 99650,
+              "count": 1611,
+              "median_usd": 1015106.8177150583,
+              "mean_usd": 2346441.5724304914,
+              "p90_usd": 4308928.792076598,
+              "median20_median_usd": 879436.2204816461,
+              "median20_mean_usd": 1903775.9823187822,
+              "median20_p90_usd": 3637338.687338716
+            },
+            {
+              "label": "$1bn-$10bn",
+              "observations": 40883,
+              "count": 663,
+              "median_usd": 10178706.639815757,
+              "mean_usd": 19844255.537692245,
+              "p90_usd": 41745942.050428115,
+              "median20_median_usd": 9305318.62840797,
+              "median20_mean_usd": 17721334.477790907,
+              "median20_p90_usd": 37153176.828062624
+            },
+            {
+              "label": ">= $10bn",
+              "observations": 10099,
+              "count": 165,
+              "median_usd": 100044193.87477827,
+              "mean_usd": 229306136.37910017,
+              "p90_usd": 510353170.91412926,
+              "median20_median_usd": 93719311.57793766,
+              "median20_mean_usd": 215587873.59155905,
+              "median20_p90_usd": 471850989.9181189
+            }
+          ]
+        }
+      ],
+      "period": "2026 YTD",
+      "status": "incomplete"
+    }
+  ],
+  "source_profiles": {
+    "US": {
+      "source_rows": 7402084,
+      "observed_stocks": 5991,
+      "coverage_start": "2019-11-01",
+      "coverage_end": "2025-10-04",
+      "eligible_observations": 6605564,
+      "exclusions": {
+        "prior_source_ineligible": 58758,
+        "missing_market_sessions": 24868,
+        "included": 6605564,
+        "missing_prior_cap": 593595,
+        "insufficient_history": 119215,
+        "sparse_non_market_date": 84
+      },
+      "duplicate_keys": 0
+    },
+    "HK": {
+      "source_rows": 3863464,
+      "observed_stocks": 2816,
+      "coverage_start": "2019-11-01",
+      "coverage_end": "2026-05-26",
+      "eligible_observations": 3773278,
+      "exclusions": {
+        "prior_source_ineligible": 26402,
+        "missing_market_sessions": 6830,
+        "missing_turnover": 352,
+        "insufficient_history": 56275,
+        "included": 3773278,
+        "missing_prior_cap": 327
+      },
+      "duplicate_keys": 0
+    },
+    "A-share": {
+      "source_rows": 8286522,
+      "observed_stocks": 5810,
+      "coverage_start": "2019-11-01",
+      "coverage_end": "2026-10-15",
+      "eligible_observations": 7817583,
+      "exclusions": {
+        "prior_source_ineligible": 240948,
+        "missing_market_sessions": 87341,
+        "included": 7817583,
+        "insufficient_history": 116042,
+        "missing_prior_cap": 24608
+      },
+      "duplicate_keys": 0
+    },
+    "JP": {
+      "source_rows": 6729598,
+      "observed_stocks": 5124,
+      "coverage_start": "2019-11-01",
+      "coverage_end": "2026-05-01",
+      "eligible_observations": 5474549,
+      "exclusions": {
+        "missing_turnover": 660567,
+        "prior_source_ineligible": 490600,
+        "missing_market_sessions": 100,
+        "included": 5474549,
+        "insufficient_history": 102289,
+        "missing_prior_cap": 1493
+      },
+      "duplicate_keys": 0
+    }
+  },
+  "source_receipts": [
+    {
+      "source_id": "a_clean",
+      "files": 5834,
+      "bytes": 2316735053,
+      "sha256": "b1301270146a1bdf054c72ef494baea9fb69bd1c17f12002c530767bcce46964"
+    },
+    {
+      "source_id": "us",
+      "files": 1,
+      "bytes": 1492442195,
+      "sha256": "ed8c53af4fcccefcb86fa86debfa71dbb18ab7d759330536e659659becceab6e"
+    },
+    {
+      "source_id": "hk_daily",
+      "files": 2962,
+      "bytes": 305620674,
+      "sha256": "6dd383f359e0f87f83db05fe1f79e70cb3e1e04332446215d5e346a34fae6d36"
+    },
+    {
+      "source_id": "hk_value",
+      "files": 3195,
+      "bytes": 198601402,
+      "sha256": "73e6b503d0f43ecd31859165fc56fdd8046350a1ed9e15c1c67c87f23b0f14ba"
+    },
+    {
+      "source_id": "hk_master",
+      "files": 1,
+      "bytes": 218519,
+      "sha256": "4ce11c237c9891994c9a881b0934af30b4f5f43944a57040ed4dce16f03f2e92"
+    },
+    {
+      "source_id": "jp_daily",
+      "files": 217,
+      "bytes": 718251196,
+      "sha256": "0f4d4e4876c38f06ad5ce2dbebe0a0d9fe6a19e5cc9c0d91e4e5dc43de5c630d"
+    },
+    {
+      "source_id": "jp_master",
+      "files": 1,
+      "bytes": 17423966,
+      "sha256": "89483aa1ccaa475424e2975df4c5af3d1978511e48085edc554e138fe3301839"
+    },
+    {
+      "source_id": "jp_shares",
+      "files": 1,
+      "bytes": 14068775,
+      "sha256": "0e924e165646c33def4ad825eac6e39bbb48a31e31636365c40f72ad05809951"
+    },
+    {
+      "source_id": "fx",
+      "files": 1,
+      "bytes": 641240,
+      "sha256": "2d6e651457afff20f964d193c33b46ffae74e5186f7d056fe5f6ba8e85c87764"
+    }
   ],
   "caveats": [
-    "A 股日频数据没有记录被省略的停牌日，因此无法仅凭零成交量频率推断停牌情况。",
-    "这里展示的是机械性的流动性画像，不等同于策略容量或实际执行容量。",
-    "当前历史快照覆盖美国、香港和 A 股；日本仍保留在统一适配器契约中，但目前尚未发布可比的分位桶快照。"
+    "日股市值使用Yahoo历史股数侧表，覆盖不完整且未证明历史修订安全，只作探索性比较。",
+    "共同日期只统一观察时间，不会消除各来源证券范围、估值和状态记录的差异。",
+    "本结果是可复算的回顾性流动性描述，不是策略容量、真实成交或历史PIT证明。"
   ]
 }

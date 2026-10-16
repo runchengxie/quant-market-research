@@ -26,20 +26,29 @@ for (const theme of ['dark','light']) {
  });
 }
 
-test('bucket and metric controls retain missing P90 and exclude contradictory counts', async ({page}) => {
+test('shared dates, real historical windows and distinct turnover measures remain explicit', async ({page}) => {
  await page.goto('research/liquidity/?lang=en-US');
  await expect(page.locator('#market-profiles')).toBeVisible();
+ await expect(page.locator('#market-profiles .period-meta').first()).toContainText('2025-09-30');
  await page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true}).selectOption('1');
  await page.getByRole('combobox',{name:'Turnover statistic',exact:true}).selectOption('p90_usd');
  const table=page.locator('#market-profiles .panel table');
- await expect(table).toContainText('1,983,502');
- await expect(table).toContainText('Not reported');
- await expect(table).not.toContainText('A-share');
- await expect(page.locator('#liquidity-quality')).toContainText('5,321 / 5,461');
- await expect(page.locator('#liquidity-quality')).toContainText('125 / 177');
- await page.getByRole('button',{name:'2025 · Pending generation',exact:true}).click();
- await expect(page.locator('#market-profiles')).toContainText('Latest snapshots are not substituted');
- await expect(page.locator('#market-profiles table')).toHaveCount(0);
+ await expect(table).toContainText('1,987,948');
+ await expect(table).toContainText('133,538');
+ await expect(table).toContainText('790,350');
+ await expect(table).toContainText('A-share');
+ await expect(table).toContainText('No observations');
+ await page.getByRole('combobox',{name:'Rolling turnover measure',exact:true}).selectOption('median20');
+ await expect(table).not.toContainText('1,987,948');
+ await page.getByRole('button',{name:'2025',exact:true}).click();
+ await expect(page.locator('#market-profiles .period-meta').first()).toContainText('2025-01-06');
+ await expect(page.locator('#market-profiles .period-meta').first()).toContainText('161');
+ await expect(table.locator('tbody tr')).toHaveCount(4);
+ await page.getByRole('button',{name:'2026 YTD',exact:true}).click();
+ await expect(page.locator('#market-profiles')).toContainText('Markets without data: US');
+ await expect(table.locator('tbody tr')).toHaveCount(3);
+ await expect(page.locator('#liquidity-evidence')).toContainText('960');
+ await expect(page.locator('#liquidity-quality')).toContainText('Historical PIT is not established', {ignoreCase:true});
 });
 
 test('arithmetic controls recompute and reject invalid inputs', async ({page}) => {
@@ -71,7 +80,7 @@ for(const width of [390,1280]) {
   await page.goto('research/liquidity/?lang=en-US');
   await expect(page.locator('#market-profiles')).toBeVisible();
   await page.locator('#market-profiles details summary').click();
-  await expect(page.locator('#market-profiles details table')).toContainText('511');
+  await expect(page.locator('#market-profiles details table')).toContainText('Security-day observations');
   await expect(page.locator('h1')).toHaveCount(1);
   if(await page.locator('.nav-toggle').isVisible()) await page.locator('.nav-toggle').click();
   await page.getByRole('button',{name:'Switch to Chinese',exact:true}).click();

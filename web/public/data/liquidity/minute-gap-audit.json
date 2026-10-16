@@ -1,0 +1,78 @@
+{
+  "schema_version": "execution.sample-minute-gaps.v1",
+  "days": [
+    {
+      "observed_stocks": 110,
+      "sampled_minutes": 26070,
+      "expected_minutes": 26070,
+      "missing_minutes": 0,
+      "venues": [
+        {
+          "venue": "Shanghai",
+          "observed_stocks": 45,
+          "affected_stocks": 0,
+          "expected_minutes": 10665,
+          "observed_minutes": 10665,
+          "missing_minutes": 0,
+          "blocks": []
+        },
+        {
+          "venue": "Shenzhen",
+          "observed_stocks": 65,
+          "affected_stocks": 0,
+          "expected_minutes": 15405,
+          "observed_minutes": 15405,
+          "missing_minutes": 0,
+          "blocks": []
+        }
+      ],
+      "full_universe_coverage_proven": false,
+      "missing_cause_identified": false,
+      "day": "20210104",
+      "selection_sha256": "c31cb63142aece0b58122a35a4a92cc1994129953f515d98f4acc22f2c922101"
+    },
+    {
+      "observed_stocks": 142,
+      "sampled_minutes": 32694,
+      "expected_minutes": 33654,
+      "missing_minutes": 960,
+      "venues": [
+        {
+          "venue": "Shanghai",
+          "observed_stocks": 62,
+          "affected_stocks": 0,
+          "expected_minutes": 14694,
+          "observed_minutes": 14694,
+          "missing_minutes": 0,
+          "blocks": []
+        },
+        {
+          "venue": "Shenzhen",
+          "observed_stocks": 80,
+          "affected_stocks": 80,
+          "expected_minutes": 18960,
+          "observed_minutes": 18000,
+          "missing_minutes": 960,
+          "blocks": [
+            {
+              "start": "09:32",
+              "end": "09:36",
+              "minutes": 5,
+              "missing_per_minute": 80
+            },
+            {
+              "start": "09:54",
+              "end": "10:00",
+              "minutes": 7,
+              "missing_per_minute": 80
+            }
+          ]
+        }
+      ],
+      "full_universe_coverage_proven": false,
+      "missing_cause_identified": false,
+      "day": "20260416",
+      "selection_sha256": "b48bf77c84ef07b7008cbc2c47b2074c945dc6ffed5f62986ebc1ec3501ae5a3"
+    }
+  ]
+}

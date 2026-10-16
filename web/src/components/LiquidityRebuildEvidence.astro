@@ -1,0 +1,21 @@
+---
+import {readFile} from 'node:fs/promises';
+import {resolve} from 'node:path';
+import {liquidityResearchCopy as c, liquiditySourceCopy as sources} from '../content/liquidity-research-copy';
+import {withBase} from '../lib/routes';
+const review=JSON.parse(await readFile(resolve(process.cwd(),'public/data/liquidity/independent-review.json'),'utf8'));
+const sourceReview=JSON.parse(await readFile(resolve(process.cwd(),'public/data/liquidity/source-window-review.json'),'utf8'));
+const report='https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/liquidity-rebuild-20261016';
+---
+<section id="liquidity-evidence" class="report-section">
+<h2 data-locale-text data-en={c.evidenceTitle[0]} data-zh={c.evidenceTitle[1]}>{c.evidenceTitle[0]}</h2>
+<p data-locale-text data-en={c.sourceRowsCaption[0]} data-zh={c.sourceRowsCaption[1]}>{c.sourceRowsCaption[0]}</p>
+<div class="table-scroll"><table><thead><tr>{[c.market,c.sourceUnits,c.sourceScope].map(label=><th scope="col" data-locale-text data-en={label[0]} data-zh={label[1]}>{label[0]}</th>)}</tr></thead><tbody>{sources.map(([market,units,scope])=><tr><th scope="row">{market}</th><td data-locale-text data-en={units[0]} data-zh={units[1]}>{units[0]}</td><td data-locale-text data-en={scope[0]} data-zh={scope[1]}>{scope[0]}</td></tr>)}</tbody></table></div>
+<p><strong data-locale-text data-en={c.reviewed[0]} data-zh={c.reviewed[1]}>{c.reviewed[0]}</strong>: {review.aggregate_cells_reconciled} · <strong data-locale-text data-en={c.sourceWindowCheck[0]} data-zh={c.sourceWindowCheck[1]}>{c.sourceWindowCheck[0]}</strong>: {sourceReview.markets.reduce((sum:number,item:any)=>sum+item.stocks_checked,0)}</p>
+<p class="panel-note" data-locale-text data-en={c.observationsOverlap[0]} data-zh={c.observationsOverlap[1]}>{c.observationsOverlap[0]}</p>
+<h3 data-locale-text data-en={c.minuteGaps[0]} data-zh={c.minuteGaps[1]}>{c.minuteGaps[0]}</h3><p data-locale-text data-en={c.minuteGapFinding[0]} data-zh={c.minuteGapFinding[1]}>{c.minuteGapFinding[0]}</p>
+<nav class="report-links"><a download href={withBase('/data/liquidity/independent-review.json',import.meta.env.BASE_URL)} data-locale-text data-en={c.receipt[0]} data-zh={c.receipt[1]}>{c.receipt[0]}</a><a href={`${report}.md`} data-locale-link data-href-en={`${report}.md`} data-href-zh={`${report}.zh-CN.md`} data-locale-text data-en={c.report[0]} data-zh={c.report[1]}>{c.report[0]}</a><a href="https://github.com/runchengxie/quant-market-research/blob/main/studies/liquidity_rebuild/review.ipynb" data-locale-text data-en={c.notebook[0]} data-zh={c.notebook[1]}>{c.notebook[0]}</a></nav>
+</section>
+<style>
+td{white-space:normal;overflow-wrap:anywhere;min-width:150px;line-height:1.8}th{white-space:normal}.table-scroll{max-width:100%}
+</style>

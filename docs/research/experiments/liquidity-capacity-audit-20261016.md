@@ -1,5 +1,7 @@
 # Liquidity and capacity evidence audit — 2026-10-16
 
+> This is the archived audit of the inherited release. The [subsequent reconstruction](liquidity-rebuild-20261016.md) supplies the current four-market evidence; the old count conflicts remain unresolved.
+
 [中文](liquidity-capacity-audit-20261016.zh-CN.md)
 
 The unified [liquidity, costs and capacity study](https://runchengxie.github.io/quant-market-research/research/liquidity/) distinguishes historical activity, static book costs, execution simulation and actual-order calibration. The last remains open. Inherited cross-market aggregates contain confirmed inconsistencies and must not establish a market ranking or portfolio capacity.
