@@ -1,8 +1,8 @@
 // Reviewed public synthesis. Numerical charts read the existing published snapshot.
 export const hubCopy = {
-  reportTitle: ['Complete research report', '完整研究报告'],
+  reportTitle: ['Research history and evidence report', '研究历史与证据汇编'],
   reportDescription: ['A continuous reading edition with the research map, matched definitions, numerical comparisons, revisions, open questions and full public methodology appendices. Reviewed on 2026-10-16; underlying samples keep their own dates.', '按阅读顺序完整整理研究地图、组合口径、数值对照、修正记录、待解问题与公开方法附录。整理于 2026-10-16，各项样本仍保留各自截止日期。'],
-  readReport: ['Read the complete research report', '阅读完整研究报告'],
+  readReport: ['Read the research history and evidence report', '阅读研究历史与证据汇编'],
   downloadReport: ['Download Markdown', '下载 Markdown 文档'],
   reportFormats: ['Markdown includes the full text, exact tables and links to the public charts and sources. It can be saved and edited offline; linked chart images need a connection or a separate image download.', 'Markdown 包含完整正文、数值表及公开图表和来源链接，可离线保存与编辑；链接图片需联网读取或另行下载。'],
   title: ['Research map', '研究地图'],
