@@ -50,7 +50,22 @@ const englishSnapshotCopy: Record<string, { source: string; caveats: string[] }>
   barra: { source: "Barra-style historical factor result package", caveats: ["This is a historical Barra-style reconstruction; point-in-time financial data and out-of-sample validation remain incomplete."] },
   cashflow: { source: "Cash-flow index recovery snapshot", caveats: ["Official index rules still need to be checked against the local constituent reconstruction."] },
   indices: { source: "Index catalog and representative ETF snapshot", caveats: ["Index returns are price returns. ETFs also incur fees and tracking error."] },
-  liquidity: { source: "Cross-market liquidity summary", caveats: ["Market data has different as-of dates. Comparable Japan buckets have not been published."] },
+  liquidity: {
+    source: "Recomputed four-market ADV20 summaries and common-date comparisons",
+    caveats: [
+      "Latest dates differ by market; the 2026 year-to-date common-date window excludes US.",
+      "US turnover is a close-price proxy and Japanese market caps use exploratory share history; historical point-in-time and full-universe coverage are not established.",
+    ],
+  },
+  capacity_data_quality: {
+    source: "A-share published TuShare minute-to-daily reconciliation, platform coverage receipt and selected-date Level 2 aggregates",
+    caveats: [
+      "Nine exchange-calendar gaps remain and the full native minute-data semantic rebaseline is incomplete.",
+      "Market-wide daily totals agree closely, but 1.76% of matched security-days differ by more than 1%; the cause is unresolved.",
+      "Level 2 evidence covers ten selected snapshot dates; actual orders, complete event semantics and full-market coverage are absent.",
+      "No zero-turnover rows were observed in the recorded daily sample; this is not a whole-market zero-trading estimate.",
+    ],
+  },
 };
 
 export function localizeSnapshotCard(card: SnapshotCard, locale: "en-US" | "zh-CN"): SnapshotCard {

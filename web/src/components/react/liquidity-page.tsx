@@ -5,7 +5,7 @@ import { formatNumber as num } from '../../lib/format';
 import { withBase } from '../../lib/routes';
 import { auditLiquidityMarket, liquidityComparison, marketsForPeriod, mechanicalOrderBudget, type LiquidityMetric } from '../../lib/liquidity-quality';
 import { Panel, BarChart, ControlBar, Choice, SimpleTable, Loading, ResourceState, useJson, englishLocale } from './research-shared';
-import type { LiquiditySummary, LiquidityRelativeSummary } from './research-shared';
+import type { LiquiditySummary, LiquidityRelativeSummary, LiquidityCoverageSummary } from './research-shared';
 
 const text = (key: keyof typeof copy) => copy[key][englishLocale() ? 0 : 1];
 const money = (value: number | null | undefined) => value == null ? text('missing') : `$${num(value)}`;
@@ -15,6 +15,7 @@ export function LiquidityPage({ embedded = false }: { embedded?: boolean }) {
 
 export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean }) {
  const { data: summary, error, retry } = useJson<LiquiditySummary>('liquidity/summary.json');
+ const coverageResource=useJson<LiquidityCoverageSummary>('liquidity/capacity-data-quality.json');
  const [chosenPeriod,setPeriod]=useState<string|null>(null);
  const [market,setMarket]=useState('all');
  const [absoluteBucket,setAbsoluteBucket]=useState(2);
@@ -74,18 +75,79 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
    <p className="panel-note">{text('jp')}</p><p className="panel-note">{text('sourceNote')}</p><p className="panel-note">{liquidityCaveats(summary.caveats,englishLocale()?'en-US':'zh-CN')}</p>
    <details><summary>{text('panelProfile')}</summary><SimpleTable rows={Object.entries(summary.source_profiles??{}).map(([name,p])=>({market:name,source:num(p.source_rows),included:num(p.eligible_observations)}))} columns={[["market",text('market')],["source",text('sourceRows')],["included",text('includedRows')]]}/></details>
    <p><a href={withBase('/data/liquidity/inherited-summary.json',import.meta.env.BASE_URL)}>{text('archive')}</a></p>
+   <LiquidityCoveragePanel data={coverageResource.data} error={coverageResource.error} retry={coverageResource.retry} market={market}/>
   </section>
-  <OrderBudget/>
+  <OrderBudget rows={rows} period={periodLabel(period)} bucket={buckets[bucket]?.label??''} basis={text(basis)} metric={text(metric)}/>
  </>;
 }
 
-function OrderBudget() {
- const [turnover,setTurnover]=useState('100000');const [participation,setParticipation]=useState('5');const [days,setDays]=useState('5');
- let budget:number|null=null;
- try {if(turnover.trim()&&participation.trim()&&days.trim()) budget=mechanicalOrderBudget(Number(turnover),Number(participation)/100,Number(days));} catch { /* Display invalid input without producing a budget. */ }
- return <section id="order-budget" className="report-section"><h2>{text('budget')}</h2><p>{text('budgetNote')}</p><div className="liquidity-filters">
-  <label>{text('turnover')}<input type="number" min="0" value={turnover} onChange={e=>setTurnover(e.target.value)}/></label>
+function LiquidityCoveragePanel({data,error,retry,market}:{data:LiquidityCoverageSummary|null;error:string|null;retry:()=>void;market:string}) {
+ const [quantile,setQuantile]=useState('0.5');
+ if(error) return <div className="report-section"><h3>{text('coverageTitle')}</h3><ResourceState error={error} retry={retry} label={text('coverageTitle')}/></div>;
+ if(!data) return <div className="report-section"><h3>{text('coverageTitle')}</h3><Loading/></div>;
+ const visible=data.markets.filter(row=>market==='all'||row.market===market);
+ const concentration=data.intraday_concentration.quantiles[quantile];
+ const pct=(value:number)=>`${(value*100).toFixed(1)}%`;
+ const dailyBasis:Record<string,string>={US:text('dailyBasisUS'),HK:text('dailyBasisHK'),'A-share':text('dailyBasisA'),JP:text('dailyBasisJP')};
+ const rows:Array<{market:string;granularity:string;coverage:string;status:string}> = [];
+ for(const row of visible) {
+  const minuteCoverage=row.minute.status==='available'?`${row.minute.start} – ${row.minute.end} · ${num(row.minute.sessions)} ${text('sessions')}`:text('notAvailable');
+  const minuteStatus=row.minute.status==='available'?`${num(row.minute.rows)} ${text('rows')}; ${num(row.minute.security_days)} ${text('securityDays')}; ${num(row.minute.calendar_gaps)} ${text('calendarGaps')}`:text('notAvailable');
+  const level2Coverage=row.level2.status==='sampled'?`${num(row.level2.snapshot_dates)} ${text('selectedDates')} · ${num(row.level2.usable_snapshot_rows)} / ${num(row.level2.snapshot_rows)} ${text('validQuotes')}`:text('notAvailable');
+  rows.push({market:row.market,granularity:text('daily'),coverage:`${row.daily.start} – ${row.daily.end} · ${text('latest')}: ${row.daily.latest}`,status:dailyBasis[row.market]??text('missing')});
+  rows.push({market:row.market,granularity:text('minute'),coverage:minuteCoverage,status:minuteStatus});
+  rows.push({market:row.market,granularity:'Level 2',coverage:level2Coverage,status:row.level2.status==='sampled'?text('level2Sampled'):text('notAvailable')});
+ }
+ return <div className="report-section" id="capacity-data-coverage">
+  <h3>{text('coverageTitle')}</h3><p>{text('coverageIntro')}</p>
+  <SimpleTable rows={rows} columns={[["market",text('market')],["granularity",text('granularity')],["coverage",text('coverageRange')],["status",text('coverageStatus')]]}/>
+  <p className="panel-note">{text('commonWindows')}: {data.daily_periods.map(row=>`${row.period}: ${row.start} – ${row.end} · ${num(row.common_dates)} ${text('sessions')}${row.markets.length<4?` · ${text('missing')}: ${['US','HK','A-share','JP'].filter(item=>!row.markets.includes(item)).join(', ')}`:''}`).join(' · ')}</p>
+  {visible.filter(row=>row.minute.status==='available').map(row=><p className="data-notice" role="note" key={`${row.market}-minute-note`}>{text('minuteCaveat')}</p>)}
+  {visible.filter(row=>row.level2.status==='sampled').map(row=><p className="panel-note" key={`${row.market}-level2-note`}>{text('level2Caveat')}</p>)}
+  <p className="panel-note">{text('minuteDailyMethod')}</p>
+  <SimpleTable rows={[
+   {metric:text('matchedSecurityDays'),value:num(data.minute_daily_reconciliation.matched_security_days)},
+   {metric:text('dailyOnlySecurityDays'),value:num(data.minute_daily_reconciliation.daily_only_security_days)},
+   {metric:text('duplicateMinuteKeys'),value:num(data.minute_daily_reconciliation.minute_duplicate_keys)},
+   {metric:text('matchWithin1Cny'),value:pct(data.minute_daily_reconciliation.abs_diff_le_1_cny)},
+   {metric:text('matchWithin100Cny'),value:pct(data.minute_daily_reconciliation.abs_diff_le_100_cny)},
+   {metric:text('matchWithin01Pct'),value:pct(data.minute_daily_reconciliation.rel_diff_le_0_1pct)},
+   {metric:text('mismatchOver1Pct'),value:pct(data.minute_daily_reconciliation.rel_diff_over_1pct)},
+   {metric:text('mismatchOver5Pct'),value:pct(data.minute_daily_reconciliation.rel_diff_over_5pct)},
+   {metric:text('mismatchOver10Pct'),value:pct(data.minute_daily_reconciliation.rel_diff_over_10pct)},
+   {metric:text('dailyTotalRatio'),value:num(data.minute_daily_reconciliation.median_daily_total_ratio)},
+   {metric:text('dailyZeroRate'),value:pct(data.minute_daily_reconciliation.daily_zero_turnover_rate)},
+  ]} columns={[["metric",text('diagnostic')],["value",text('result')]]}/>
+  <p className="panel-note">{text('zeroTurnoverNote')}</p>
+  <p>{text('yearlyMismatchTitle')}</p>
+  <SimpleTable rows={Object.entries(data.minute_daily_reconciliation.yearly).map(([year,row])=>({year:year==='2022'?`${year}*`:year,matched:num(row.matched_security_days),dailyOnly:num(row.daily_only_security_days),over1:pct(row.relative_diff_over_1pct/row.matched_security_days),over5:pct(row.relative_diff_over_5pct/row.matched_security_days),over10:pct(row.relative_diff_over_10pct/row.matched_security_days)}))} columns={[["year",text('year')],["matched",text('matchedSecurityDays')],["dailyOnly",text('dailyOnlySecurityDays')],["over1",text('mismatchOver1Pct')],["over5",text('mismatchOver5Pct')],["over10",text('mismatchOver10Pct')]]}/>
+  <p className="panel-note">{text('yearlyMismatchNote')}</p>
+  <p className="data-notice" role="note">{text('tailMismatchNote')}</p>
+  <p>{text('concentrationTitle')}</p>
+  <ControlBar><span className="control-label">{text('quantile')}</span>{[['0.5','P50'],['0.9','P90'],['0.99','P99']].map(([value,label])=><Choice key={value} active={quantile===value} onClick={()=>setQuantile(value)}>{label}</Choice>)}</ControlBar>
+  <BarChart rows={[
+   {window:text('top5Min'),share:String(concentration.top_5min_share)},
+   {window:text('open30Min'),share:String(concentration.open_30min_share)},
+   {window:text('close30Min'),share:String(concentration.close_30min_share)},
+  ]} labelKey="window" valueKey="share" formatter={pct}/>
+  <p className="panel-note">{text('concentrationNote').replace('{days}',num(data.intraday_concentration.days))}</p>
+ </div>;
+}
+
+function OrderBudget({rows,period,bucket,basis,metric}:{rows:ReturnType<typeof liquidityComparison>;period:string;bucket:string;basis:string;metric:string}) {
+ const [participation,setParticipation]=useState('3');const [days,setDays]=useState('5');const [holdings,setHoldings]=useState('20');
+ const p=Number(participation)/100;const d=Number(days);const n=Number(holdings);
+ const valid=Number.isFinite(p)&&p>0&&p<=1&&Number.isInteger(d)&&d>0&&Number.isInteger(n)&&n>0&&n<=1000;
+ const scenarioRows=rows.map(row=>{
+  const enoughStocks=row.stocks==null||n<=row.stocks;
+  const benchmark=row.value;
+  const singleStockBudget=valid&&enoughStocks&&typeof benchmark==='number'?mechanicalOrderBudget(benchmark,p,d):null;
+  const oneWay=singleStockBudget==null?null:singleStockBudget*n;
+  return {market:row.market,baseline:row.value==null?text('missing'):money(row.value),holdings:row.stocks==null?text('missing'):`${num(n)} / ${num(row.stocks)}`,budget:oneWay==null?(enoughStocks?text('invalid'):text('holdingsExceedSample')):money(oneWay)};
+ });
+ return <section id="order-budget" className="report-section"><h2>{text('budget')}</h2><p>{text('budgetNote')}</p><p className="panel-note">{period} · {bucket} · {basis} · {metric}</p><div className="liquidity-filters">
   <label>{text('participation')}<input type="number" min="0.01" max="100" step="0.1" value={participation} onChange={e=>setParticipation(e.target.value)}/></label>
-  <label>{text('days')}<input type="number" min="1" step="1" value={days} onChange={e=>setDays(e.target.value)}/></label>
- </div><p aria-live="polite"><strong>{text('result')}: <output>{budget==null?text('invalid'):money(budget)}</output></strong></p></section>;
+  <label>{text('days')}<input type="number" min="1" max="252" step="1" value={days} onChange={e=>setDays(e.target.value)}/></label>
+  <label>{text('holdings')}<input type="number" min="1" max="1000" step="1" value={holdings} onChange={e=>setHoldings(e.target.value)}/></label>
+ </div><SimpleTable rows={scenarioRows} columns={[["market",text('market')],["baseline",text('selectedGroupBaseline')],["holdings",text('scenarioHoldings')],["budget",text('scenarioBudget')]]}/></section>;
 }

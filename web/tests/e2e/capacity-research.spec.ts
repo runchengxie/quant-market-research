@@ -51,13 +51,28 @@ test('shared dates, real historical windows and distinct turnover measures remai
  await expect(page.locator('#liquidity-quality')).toContainText('Historical PIT is not established', {ignoreCase:true});
 });
 
-test('arithmetic controls recompute and reject invalid inputs', async ({page}) => {
+test('ADV-based scenario uses the selected market group and rejects invalid inputs', async ({page}) => {
  await page.goto('research/liquidity/?lang=en-US');
- await expect(page.locator('#order-budget output')).toHaveText('$25,000');
+ const row=page.locator('#order-budget table tbody tr').filter({hasText:'A-share'});
+ await expect(row).toContainText('$');
+ const initial=await row.innerText();
  await page.getByLabel('Execution days',{exact:true}).fill('10');
- await expect(page.locator('#order-budget output')).toHaveText('$50,000');
+ await expect(row).not.toHaveText(initial);
  await page.getByLabel('Participation rate (%)',{exact:true}).fill('0');
- await expect(page.locator('#order-budget output')).toContainText('Enter finite');
+ await expect(row).toContainText('Enter a participation rate');
+});
+
+test('coverage panel distinguishes daily overlap, A-share minute and sampled Level 2 evidence', async ({page})=>{
+ await page.goto('research/liquidity/?lang=en-US');
+ const panel=page.locator('#capacity-data-coverage');
+ await expect(panel).toContainText('2020-01-06');
+ await expect(panel).toContainText('2026-04-30');
+ await expect(panel).toContainText('5,411,206');
+ await expect(panel).toContainText('2,084');
+ await expect(panel).toContainText('306,483');
+ await expect(panel).toContainText('1,019');
+ await page.getByRole('button',{name:'P90',exact:true}).click();
+ await expect(panel.locator('.research-chart')).toBeVisible();
 });
 
 test('one directory entry and preserved old routes lead to the unified study', async ({page}) => {

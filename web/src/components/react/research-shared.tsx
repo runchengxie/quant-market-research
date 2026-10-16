@@ -171,3 +171,26 @@ export function SortableTable({ rows, columns, percentColumns = [], searchPlaceh
 export function Loading() { return <p className="loading">{englishLocale() ? "Loading research data…" : "正在加载研究数据……"}</p>; }
 
 export type LiquidityRelativeSummary = { schema_version: string; absolute_summary_sha256: string; markets: LiquidityPeriodMarket[]; periods: LiquidityPeriod[] };
+export type LiquidityCoverageSummary = {
+  schema_version: string;
+  generated_as_of: string;
+  daily_periods: Array<{ period: string; start: string; end: string; common_dates: number; markets: string[] }>;
+  markets: Array<{
+    market: string;
+    daily: { start: string; end: string; latest: string; basis: string };
+    minute: { status: string; start?: string; end?: string; sessions?: number; rows?: number; security_days?: number; calendar_gaps?: number; caveat: string };
+    level2: { status: string; snapshot_dates?: number; snapshot_rows?: number; usable_snapshot_rows?: number; event_dates?: number; caveat: string };
+  }>;
+  minute_daily_reconciliation: {
+    start: string; end: string; days: number; matched_security_days: number; daily_only_security_days: number;
+    minute_duplicate_keys: number; invalid_amount_rows: number; median_daily_total_ratio: number;
+    abs_diff_le_1_cny: number; abs_diff_le_100_cny: number; rel_diff_le_0_1pct: number;
+    rel_diff_over_1pct: number; rel_diff_over_5pct: number; rel_diff_over_10pct: number;
+    relative_diff_quantiles: Record<string, number>; daily_zero_turnover_rate: number;
+    yearly: Record<string, { matched_security_days: number; daily_security_days: number; daily_only_security_days: number; relative_diff_over_1pct: number; relative_diff_over_5pct: number; relative_diff_over_10pct: number; daily_zero_turnover_security_days: number }>;
+  };
+  intraday_concentration: {
+    days: number;
+    quantiles: Record<string, { top_5min_share: number; open_30min_share: number; close_30min_share: number }>;
+  };
+};
