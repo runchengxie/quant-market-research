@@ -1,0 +1,34 @@
+---
+import SiteLayout from '../layouts/SiteLayout.astro';
+import { validateLegacyStudyEvidence } from '../content/legacy-strategy-evidence.server';
+const asset = validateLegacyStudyEvidence();
+import { legacyCopy } from '../content/legacy-strategy-copy';
+interface Props { id: 'etf-rotation' | 'hotsector' }
+const { id } = Astro.props;
+const study = asset.studies.find(value => value.id === id);
+if (!study) throw new Error('Study identity unavailable');
+const copy = legacyCopy[id];
+const shared = legacyCopy.shared;
+---
+<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.conclusion[0]} section="research">
+  <article class="research-report">
+    <header class="theme-heading"><div>
+      <span class="section-kicker" data-locale-text data-en={shared.stage[0]} data-zh={shared.stage[1]}>{shared.stage[0]}</span>
+      <h1 data-locale-text data-en={copy.title[0]} data-zh={copy.title[1]}>{copy.title[0]}</h1>
+      <p data-locale-text data-en={copy.question[0]} data-zh={copy.question[1]}>{copy.question[0]}</p>
+      <p class="lede" data-locale-text data-en={copy.conclusion[0]} data-zh={copy.conclusion[1]}>{copy.conclusion[0]}</p>
+    </div></header>
+    <section class="panel">
+      <p data-locale-text data-en={shared.scope[0]} data-zh={shared.scope[1]}>{shared.scope[0]}</p>
+      <p data-locale-text data-en={copy.baseline[0]} data-zh={copy.baseline[1]}>{copy.baseline[0]}</p>
+      <p data-locale-text data-en={shared.missing[0]} data-zh={shared.missing[1]}>{shared.missing[0]}</p>
+      <p data-locale-text data-en={shared.limitations[0]} data-zh={shared.limitations[1]}>{shared.limitations[0]}</p>
+    </section>
+    {study.factor_refs.length > 0 && <section class="panel">
+      <h2 data-locale-text data-en={shared.factors[0]} data-zh={shared.factors[1]}>{shared.factors[0]}</h2>
+      <p data-locale-text data-en={shared.factorBoundary[0]} data-zh={shared.factorBoundary[1]}>{shared.factorBoundary[0]}</p>
+      <ul>{study.factor_refs.map(id => <li><a href={`https://runchengxie.github.io/quant-factor-observatory/factors/${id}`}>{id}</a></li>)}</ul>
+    </section>}
+    <details><summary data-locale-text data-en={shared.provenance[0]} data-zh={shared.provenance[1]}>{shared.provenance[0]}</summary><p>{study.evidence_id}</p><p><code>{asset.reviewed_source_digest}</code></p><p><code>{asset.reviewed_content_digest}</code></p></details>
+  </article>
+</SiteLayout>

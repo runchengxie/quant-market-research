@@ -1,0 +1,8 @@
+{
+  "schema_version": "research.legacy_strategy_review.v1",
+  "source_sha256": "20765f3b4e35de08aea668c5bd2ff53d9412c436094e6fb9fa294851b9fac4fc",
+  "content_sha256": "e5d5b2d39289f13a9b0c955e23bd0714e616e22dea6b2aab9c9fc7bd8bcac334",
+  "asset_sha256": "e409d3ceeb49ae51e972a370770b707cdf9d50f618083c41293fcb72b66355b3",
+  "review_kind": "independent_agent",
+  "reviewed_on": "2026-10-16"
+}
