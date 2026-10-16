@@ -1,12 +1,12 @@
 import type { LiquidityPeriodMarket, LiquiditySummary } from '../components/react/research-shared';
 
 export type LiquidityMetric = 'median_usd' | 'mean_usd' | 'p90_usd';
-export type LiquidityIssue = { code: 'total_count_mismatch' | 'sub100m_count_mismatch'; reported: number; grouped: number };
+export type LiquidityIssue = { code: 'total_count_mismatch' | 'sub100m_count_mismatch' | 'observation_count_mismatch' | 'sub100m_observation_count_mismatch'; reported: number; grouped: number };
 
 export function auditLiquidityMarket(market: LiquidityPeriodMarket): LiquidityIssue[] {
   const issues: LiquidityIssue[] = [];
   const counts = market.buckets.map(bucket => bucket.count);
-  if (counts.length && counts.every(count => Number.isInteger(count) && count! >= 0)) {
+  if (market.aggregation !== 'security_day' && counts.length && counts.every(count => Number.isInteger(count) && count! >= 0)) {
     const total = counts.reduce<number>((sum, count) => sum + count!, 0);
     if (market.eligible_stocks != null && total !== market.eligible_stocks)
       issues.push({code: 'total_count_mismatch', reported: market.eligible_stocks, grouped: total});
@@ -14,6 +14,17 @@ export function auditLiquidityMarket(market: LiquidityPeriodMarket): LiquidityIs
     if (market.buckets[0]?.label === '< $10m' && market.buckets[1]?.label === '$10m-$100m' && market.sub_100m_count != null) {
       const small = counts[0]! + counts[1]!;
       if (small !== market.sub_100m_count) issues.push({code: 'sub100m_count_mismatch', reported: market.sub_100m_count, grouped: small});
+    }
+  }
+  if (market.eligible_observations != null) {
+    const observations = market.buckets.map(bucket => bucket.observations);
+    if (observations.every(value => Number.isInteger(value) && value! >= 0)) {
+      const total = observations.reduce<number>((sum, value) => sum + value!, 0);
+      if (total !== market.eligible_observations) issues.push({code:'observation_count_mismatch',reported:market.eligible_observations,grouped:total});
+      if (market.below_100m_observations != null) {
+        const small = (observations[0] ?? 0) + (observations[1] ?? 0);
+        if (small !== market.below_100m_observations) issues.push({code:'sub100m_observation_count_mismatch',reported:market.below_100m_observations,grouped:small});
+      }
     }
   }
   return issues;
@@ -25,13 +36,13 @@ export function marketsForPeriod(summary: LiquiditySummary, period: string): Liq
   return !selected || selected.status === 'pending' ? [] : selected.markets;
 }
 
-export function liquidityComparison(markets: LiquidityPeriodMarket[], bucket: number, metric: LiquidityMetric) {
+export function liquidityComparison(markets: LiquidityPeriodMarket[], bucket: number, metric: LiquidityMetric, basis: 'adv20' | 'median20' = 'adv20') {
   const label = markets[0]?.buckets[bucket]?.label;
   return markets.filter(market => !auditLiquidityMarket(market).length && market.status !== 'incomplete')
     .map(market => {
       const selected = market.buckets.find(item => item.label === label);
-      const value = selected?.[metric];
-      return {market: market.market, value: typeof value === 'number' && Number.isFinite(value) ? value : null};
+      const value = selected?.[basis === 'adv20' ? metric : (`median20_${metric}` as const)];
+      return {market: market.market, observations: selected?.observations, value: typeof value === 'number' && Number.isFinite(value) ? value : null};
     });
 }
 

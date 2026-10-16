@@ -1,0 +1,23 @@
+{
+  "schema_version": "liquidity.code-format-review.v1",
+  "parser": "CPython 3.14.8 ast.dump, include_attributes=False",
+  "method": "Compare execution-time archived code with formatted repository source; no data or calculations rerun",
+  "files": [
+    {
+      "source_id": "runner",
+      "path": "scripts/rebuild_liquidity_evidence.py",
+      "executed_sha256": "c8e0f4d8b814e6b1c4387888cdd634dc4cafab9568a27b152de7b31c85d2fc09",
+      "formatted_sha256": "fe6935a4f9aac68011ae5312bb5d2034ab2dff817e53cf98a954301000c311fd",
+      "ast_sha256": "c64da6515be9766a16e450062651137b2ab16338c7b9ca331306325792525334",
+      "ast_equivalent": true
+    },
+    {
+      "source_id": "features",
+      "path": "src/market_research/liquidity_rebuild.py",
+      "executed_sha256": "cc224027d217e0843d28af8c8d94b519e193da66767faf5866d1fc3a5e92cefe",
+      "formatted_sha256": "420b143a1ca60b3f93a73e16d5a5a60cab6946b4edfb5178dd61b98677625836",
+      "ast_sha256": "c85da9192ec6e68efd50d2deff19b04246105f1d597b00fefdab0e97ce60316b",
+      "ast_equivalent": true
+    }
+  ]
+}

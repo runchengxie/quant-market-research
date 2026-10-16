@@ -1,0 +1,11 @@
+{
+  "schema_version": "liquidity.independent-review.v1",
+  "reviewed_summary_sha256": "59eb7b76315cd0dddc90d557c377a662c5bb71aa70e0e3eef1daf33d94199b91",
+  "review_code_sha256": "d509243b887589f58990403cf8948b0ceac83d34b3fec0dcc2ce9e61b016a707",
+  "aggregate_cells_reconciled": 760,
+  "security_day_observations_checked": 19275158,
+  "count_and_reason_conservation": true,
+  "strict_prior_fx_checked": true,
+  "full_raw_warehouse_audited": false,
+  "actual_execution_calibrated": false
+}

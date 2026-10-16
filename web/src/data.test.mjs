@@ -6,15 +6,21 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../public/data");
 
-test("publishes the migrated cross-market liquidity snapshot", () => {
+test("publishes reviewed four-market liquidity with real common-date periods", () => {
   const summary = JSON.parse(fs.readFileSync(path.join(root, "liquidity/summary.json"), "utf8"));
-  assert.deepEqual(summary.markets.map((market) => market.market), ["US", "HK", "A-share"]);
+  assert.deepEqual(summary.markets.map(m => m.market), ["US", "HK", "A-share", "JP"]);
   assert.equal(summary.method.roll_days, 20);
-  assert.equal(summary.method.snapshot_note, "各市场使用最近可用数据，快照日期并不一致");
-  assert.deepEqual(summary.markets.map((market) => market.as_of), ["2025-10-03", "2026-05-26", "2026-09-07"]);
-  assert.ok(summary.markets.every((market) => market.buckets.length >= 4));
-  assert.deepEqual(summary.periods.map((period) => period.period), ["2020-2024", "2025", "2026 YTD"]);
-  assert.ok(summary.periods.every((period) => ["verified", "incomplete", "pending"].includes(period.status)));
+  assert.deepEqual(summary.markets.map(m => m.as_of), ["2025-10-03", "2026-05-26", "2026-10-15", "2026-05-01"]);
+  const common = summary.periods.find(p => p.period === "common snapshot");
+  assert.equal(common.common_end, "2025-09-30");
+  assert.equal(common.common_dates, 1);
+  for (const period of summary.periods) for (const market of period.markets) {
+    assert.equal(market.buckets.reduce((n,b) => n+b.observations,0), market.eligible_observations);
+  }
+  const ytd = summary.periods.find(p => p.period === "2026 YTD");
+  assert.deepEqual(ytd.missing_markets, ["US"]);
+  assert.equal(ytd.common_dates, 71);
+  assert.equal(summary.periods.find(p => p.period === "2025").common_end, "2025-09-30");
 });
 
 test("publishes the Barra market-evidence snapshot", () => {
