@@ -303,6 +303,15 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
 .research-workbench .choice.active { color: var(--accent); border-color: var(--accent-strong); background: var(--accent-soft); font-weight: 650; }
 .research-workbench .choice:hover { background: var(--accent-soft); }
 .factor-chart { min-width: 0; }
+.factor-summary-chart { display: grid; gap: 6px; margin: 18px 0 24px; }
+.factor-summary-row { display: grid; grid-template-columns: minmax(120px, 190px) minmax(80px, 1fr) 66px; align-items: center; gap: 12px; min-height: 22px; font-size: 12px; }
+.factor-summary-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.factor-summary-track { position: relative; display: block; height: 12px; background: var(--surface-muted, rgba(120, 120, 120, .08)); border-radius: 2px; }
+.factor-summary-zero { position: absolute; left: 50%; top: -3px; bottom: -3px; width: 1px; background: var(--muted); }
+.factor-summary-bar { position: absolute; top: 1px; bottom: 1px; border-radius: 2px; }
+.factor-summary-bar.positive { background: #317c72; }
+.factor-summary-bar.negative { background: #a14e42; }
+.factor-summary-row strong { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .selected-heading { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px; }
 .selected-heading h3 { font: 650 27px/1.3 var(--font-body); margin: 6px 0 0; }
 .chart-unit { font-size: 12px; color: var(--muted); }
@@ -425,6 +434,7 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
   .research-workbench .panel { padding: 20px; }
 }
 @media (max-width: 640px) {
+  .factor-summary-row { grid-template-columns: minmax(88px, 120px) minmax(64px, 1fr) 56px; gap: 8px; font-size: 11px; }
   .research-workbench .topic-nav { margin: 10px 0; }
   .research-workbench .factor-diagnostic-workspace { margin-top: 10px; }
   .research-workbench .site-main { padding-top: 24px; }
@@ -541,6 +551,10 @@ body { font-size: 15px; line-height: 1.75; }
 }
 
 .research-verdict { margin: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--line, #ccc); border-radius: 12px; }
+.research-workbench .research-verdict { margin: .55rem 0; padding: .65rem .9rem; }
+.research-workbench .research-verdict h2 { margin-bottom: .3rem; font-size: 16px; }
+.research-workbench .research-verdict p { margin: .35rem 0; font-size: 13px; line-height: 1.5; }
+.research-workbench .research-verdict small { display: block; margin-top: .3rem; font-size: 11px; }
 .research-verdict h2 { margin-top: 0; }
 .research-verdict p { max-width: 80ch; line-height: 1.7; }
 

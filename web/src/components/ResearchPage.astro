@@ -27,10 +27,11 @@ interface Props {
   nextStep?: string;
   nextStepEn?: string;
   compact?: boolean;
+  showConclusion?: boolean;
   sections?: readonly TopicSection[];
 }
 
-const { title, titleEn = title, description, snapshotKey, activeRoute, kicker, kickerEn = kicker, introduction, introductionEn = introduction, boundary, boundaryEn = boundary, evidence = "描述性研究", evidenceEn = evidence, question = "这项研究正在回答什么问题？", questionEn = question, nextStep = "补充数据核验和可执行性测试。", nextStepEn = nextStep, compact = false, sections } = Astro.props;
+const { title, titleEn = title, description, snapshotKey, activeRoute, kicker, kickerEn = kicker, introduction, introductionEn = introduction, boundary, boundaryEn = boundary, evidence = "描述性研究", evidenceEn = evidence, question = "这项研究正在回答什么问题？", questionEn = question, nextStep = "补充数据核验和可执行性测试。", nextStepEn = nextStep, compact = false, showConclusion = false, sections } = Astro.props;
 const topicSections = sections ?? [{ id: "topic-content", label: "研究内容", available: true }, { id: "research-method", label: "数据与方法", available: true }];
 const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
 const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
@@ -41,18 +42,18 @@ const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
     <div>
       <span class="section-kicker" data-locale-text data-en={kickerEn} data-zh={kicker}>{kickerEn}</span>
       <h1 data-locale-text data-en={titleEn} data-zh={title}>{titleEn}</h1>
-      <p data-locale-text data-en={compact ? conclusionCopy.byTopic[snapshotKey].en : introductionEn} data-zh={compact ? conclusionCopy.byTopic[snapshotKey].zh : introduction}>{compact ? conclusionCopy.byTopic[snapshotKey].en : introductionEn}</p>
+      <p data-locale-text data-en={compact && !showConclusion ? conclusionCopy.byTopic[snapshotKey].en : introductionEn} data-zh={compact && !showConclusion ? conclusionCopy.byTopic[snapshotKey].zh : introduction}>{compact && !showConclusion ? conclusionCopy.byTopic[snapshotKey].en : introductionEn}</p>
     </div>
   </section>
-  {!compact && <section class="research-verdict" aria-labelledby="current-conclusion">
+  {(!compact || showConclusion) && <section class="research-verdict" aria-labelledby="current-conclusion">
     <h2 id="current-conclusion" data-locale-text data-en={conclusionCopy.heading.en} data-zh={conclusionCopy.heading.zh}>{conclusionCopy.heading.en}</h2>
     <span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span>
     <p data-locale-text data-en={conclusionCopy.byTopic[snapshotKey].en} data-zh={conclusionCopy.byTopic[snapshotKey].zh}>{conclusionCopy.byTopic[snapshotKey].en}</p>
     <p><strong data-locale-text data-en={conclusionCopy.boundary.en} data-zh={conclusionCopy.boundary.zh}>{conclusionCopy.boundary.en}</strong> · <span data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</span></p>
     <small>{snapshot.coverage_start ?? '—'} — {snapshot.coverage_end ?? '—'}</small>
   </section>}
-  <TopicNav sections={topicSections} />
-  {compact && <>
+  {(!compact || !showConclusion) && <TopicNav sections={topicSections} />}
+  {compact && !showConclusion && <>
     <div class="workbench-meta"><span data-locale-text data-en="Historical sample" data-zh="历史样本">Historical sample</span><strong>{snapshot.coverage_start ?? "Date pending"} — {snapshot.coverage_end ?? "Date pending"}</strong><span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span></div>
     <p class="workbench-boundary" data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</p>
   </>}
