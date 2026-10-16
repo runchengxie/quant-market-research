@@ -405,16 +405,16 @@ export const microcapHistory: HistoryRecord[] = [
       "分别使用 2015 年后与 2023 年后样本"
     ],
     "status": [
-      "Transcribed proxy comparisons",
-      "转录的代理对照"
+      "Historical bundles recovered; partial provenance",
+      "历史结果包已找回；来源链不完整"
     ],
     "finding": [
-      "Broader micro-cap proxies were compared with a vendor index in distinct windows. They are separate constructions, not index replications.",
-      "较宽微盘代理组合在不同窗口中与供应商指数比较；它们是独立构造，不是指数复制。"
+      "The dated monthly 100-name bundle was recovered through a documented storage migration; its stored full-sample summary agrees with the rounded source-note figures. The weekly 200-name proxy remains a separate comparison.",
+      "通过有记录的存储迁移找回了月频 100 只结果包，存储的全样本摘要与来源笔记的四舍五入数值一致。周频 200 只代理仍是独立对照。"
     ],
     "boundary": [
-      "One external result bundle was unavailable; another cumulative-excess label fails simple percentage-point subtraction. Do not reinterpret or pool these returns.",
-      "一份外部结果包不可得；另一份累计超额标签与百分点直接相减不符。不能擅自改口径或合并这些收益。"
+      "No performance was rerun. The recent-window comparison receipt and immutable code/input/output binding remain missing. A separate weekly proxy cumulative-excess label still fails percentage-point subtraction; do not pool or reinterpret these returns.",
+      "没有重跑业绩。近期窗口对照记录，以及不可变的代码、输入、输出绑定仍缺失。另一项周频代理的累计超额标签仍与百分点相减不符，不能合并或擅自重解释这些收益。"
     ]
   },
   {
@@ -428,16 +428,16 @@ export const microcapHistory: HistoryRecord[] = [
       "排除底部 0/10/20/30%；权重与缓冲对照"
     ],
     "status": [
-      "Protocol; outputs not verified",
-      "已有方案；输出未核实"
+      "Outputs recovered; structural checks passed",
+      "输出已找回；结构检查通过"
     ],
     "finding": [
-      "The protocol recomputes exclusions within the same formation universe and separates weighting, buffers, costs and capacity.",
-      "方案要求在同一形成股票池内重新计算排除比例，并区分权重、缓冲、成本与容量。"
+      "The migrated bundle contains 112 factor rows, 56 weighting comparisons, 80 buffer rows and 24 capacity rows. The factor, buffer and capacity grids have unique keys, no blank cells and complete declared axes; four checkpoint files match final outputs byte-for-byte.",
+      "迁移后的结果包含 112 行因子、56 行权重对照、80 行缓冲和 24 行容量记录。因子、缓冲与容量矩阵的组合键唯一，无空白单元，声明的维度完整；四个检查点文件与最终输出逐字节相同。"
     ],
     "boundary": [
-      "The reviewed record lacks checked-in result artifacts for the full protocol. It must not be presented as a completed robustness result.",
-      "已审查记录没有完整协议对应的入库结果制品，不能展示为已完成的稳健性结论。"
+      "The recorded owner-code commit fields are unknown. This artifact audit does not rerun performance, authenticate every historical input, establish an untouched holdout or promote a strategy. The separate characteristic-decomposition protocol still has no located result bundle.",
+      "结果记录的所属代码提交字段为 unknown。本次产物审计没有重跑业绩，也没有认证全部历史输入、确立未查看的留出样本或使策略晋级。独立的特征分解协议仍未找到结果包。"
     ]
   },
   {
@@ -784,6 +784,29 @@ export const microcapHistory: HistoryRecord[] = [
       "The combined outcome does not isolate a micro-cap premium. Reconstructed fundamentals may contain later revisions; large drawdowns, concentration and incomplete execution constraints prevent live-capacity or formal point-in-time claims.",
       "混合结果不能单独识别微盘溢价。重建基本面可能包含后续修订；大回撤、集中度和不完整执行约束使其不能证明实盘容量或正式时点有效性。"
     ]
+  },
+  {
+    "id": "H35",
+    "title": [
+      "Weekly size and beta neutrality feasibility",
+      "周度规模与贝塔中性化可行性"
+    ],
+    "scope": [
+      "Cached notebook comparisons: 2025 and partial 2026",
+      "笔记本缓存对照：2025 年及部分 2026 年"
+    ],
+    "status": [
+      "Cached exploratory evidence; not rerun",
+      "缓存探索证据；未重跑"
+    ],
+    "finding": [
+      "A concentrated candidate pool could not consistently satisfy portfolio size and beta constraints. Widening the candidate pool improved feasibility, while hard exposure controls reduced historical selected-sample excess returns.",
+      "集中的候选池无法持续满足组合规模与贝塔约束。扩大候选池提高了可行性，但较硬的敞口控制也降低了历史选定样本的超额收益。"
+    ],
+    "boundary": [
+      "The notebook reads existing comparison files and retains cached outputs; execution counters do not authenticate a fresh run. Samples were reused, lineage was incomplete and missing-outcome weights were flagged. Neither independent micro-cap alpha nor untouched out-of-sample performance is established.",
+      "笔记本读取已有对照文件并保留缓存输出，执行计数不能认证新运行。样本已复用，来源链不完整，且标记了缺失收益权重问题；不能据此确立独立微盘超额收益或未查看的样本外业绩。"
+    ]
   }
 ];
 
@@ -793,8 +816,8 @@ export const historyCopy = {
     "研究历史与覆盖"
   ],
   "intro": [
-    "34 reviewed research families, including early explorations, corrections, blocked replays and protocols without verified results. These are editorial entries, not independent experiment counts.",
-    "34 组已审查研究主题，覆盖早期探索、口径修正、受阻重放，以及尚无已核实结果的研究方案。这是编辑条目数，不是独立实验次数。"
+    "35 reviewed research families, including early explorations, corrections, blocked replays and protocols without verified results. These are editorial entries, not independent experiment counts.",
+    "35 组已审查研究主题，覆盖早期探索、口径修正、受阻重放，以及尚无已核实结果的研究方案。这是编辑条目数，不是独立实验次数。"
   ],
   "scope": [
     "The report and Markdown share all entries and seven numerical table families (56 source rows). Restricted research appears only as reviewed high-level findings. Untracked notebooks and unavailable external runs are not certified complete.",

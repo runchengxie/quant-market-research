@@ -1,4 +1,4 @@
-import { historyMarkdown, historicalTablesMarkdown, type HistoricalSnapshot } from './microcap-history-report';
+import { historyMarkdown, historicalTablesMarkdown, recoveryMarkdown, type HistoricalSnapshot } from './microcap-history-report';
 import { readFile } from 'node:fs/promises';
 import { resolve } from 'node:path';
 import { hubCopy, researchQuestions, revisions, openQuestions, type LocalText } from './microcap-hub';
@@ -53,7 +53,7 @@ export async function buildMicrocapReport(locale: ReportLocale) {
     text(hubCopy.windowCaveat, locale),
     `## ${text(hubCopy.matrix, locale)}`, text(hubCopy.matrixIntro, locale), text(hubCopy.matrixBoundary, locale),
     table([t('Definition', '换手定义'), ...['weekly','biweekly','monthly','quarterly'].map(id => text(hubCopy[id as 'weekly'], locale))], ['mean_20','mean_60','median_60','mean_120'].map(id => [text(hubCopy[({mean_20:'mean20',mean_60:'mean60',median_60:'median60',mean_120:'mean120'} as const)[id as 'mean_20']],locale), ...['weekly','biweekly','monthly','quarterly'].map(cadence => {const row=snapshot.joint_matrix.find(r=>r.turnover_definition===id&&r.rebalance_frequency===cadence);return row ? `${Number(row.net_annual_return).toFixed(2)}%` : t('Missing','缺失');})])),
-    historyMarkdown(locale), historicalTablesMarkdown(snapshot, locale),
+    historyMarkdown(locale), recoveryMarkdown(locale), historicalTablesMarkdown(snapshot, locale),
     `## ${text(hubCopy.revisions, locale)}`, text(hubCopy.revisionsIntro, locale), ...revisions.map(item=>`### ${text(item.title,locale)}\n\n${text(item.text,locale)}`),
     `## ${text(hubCopy.open,locale)}`, ...openQuestions.map(item=>`### ${text(item.title,locale)}\n\n${text(item.text,locale)}`),
     `### ${t('What would justify stronger conclusions?', '什么证据能支持更强的结论？')}`,

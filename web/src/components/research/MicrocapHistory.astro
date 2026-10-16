@@ -1,5 +1,6 @@
 ---
 import { microcapHistory, historyCopy } from '../../content/microcap-history';
+import { recoveryCopy, recoveryRecords } from '../../content/microcap-recovery';
 const base=import.meta.env.BASE_URL.replace(/\/$/,'');
 ---
 <section id="microcap-coverage" class="panel history-register">
@@ -11,6 +12,19 @@ const base=import.meta.env.BASE_URL.replace(/\/$/,'');
     {microcapHistory.map(record=><details id={`history-${record.id}`}>
       <summary><span>{record.id} · </span><span data-locale-text data-en={record.title[0]} data-zh={record.title[1]}>{record.title[0]}</span></summary>
       <p class="history-status"><strong data-locale-text data-en={record.status[0]} data-zh={record.status[1]}>{record.status[0]}</strong> · <span data-locale-text data-en={record.scope[0]} data-zh={record.scope[1]}>{record.scope[0]}</span></p>
+      <p data-locale-text data-en={record.finding[0]} data-zh={record.finding[1]}>{record.finding[0]}</p>
+      <p data-locale-text data-en={record.boundary[0]} data-zh={record.boundary[1]}>{record.boundary[0]}</p>
+    </details>)}
+  </div>
+</section>
+<section id="microcap-evidence-recovery" class="panel history-register">
+  <h2 data-locale-text data-en={recoveryCopy.title[0]} data-zh={recoveryCopy.title[1]}>{recoveryCopy.title[0]}</h2>
+  <p data-locale-text data-en={recoveryCopy.intro[0]} data-zh={recoveryCopy.intro[1]}>{recoveryCopy.intro[0]}</p>
+  <p data-locale-text data-en={recoveryCopy.scope[0]} data-zh={recoveryCopy.scope[1]}>{recoveryCopy.scope[0]}</p>
+  <div class="history-items">
+    {recoveryRecords.map(record=><details id={`recovery-${record.id}`}>
+      <summary><span>{record.id} · </span><span data-locale-text data-en={record.title[0]} data-zh={record.title[1]}>{record.title[0]}</span></summary>
+      <p><strong data-locale-text data-en={record.status[0]} data-zh={record.status[1]}>{record.status[0]}</strong></p>
       <p data-locale-text data-en={record.finding[0]} data-zh={record.finding[1]}>{record.finding[0]}</p>
       <p data-locale-text data-en={record.boundary[0]} data-zh={record.boundary[1]}>{record.boundary[0]}</p>
     </details>)}
