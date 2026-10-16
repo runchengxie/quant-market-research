@@ -51,8 +51,8 @@ Files: liquidity types/quality checks/explorer/catalog, bilingual audit notes an
 
 ### Task 4: Delivery
 
-- [ ] Run Python, lint, web, build/static and browser validation.
-- [ ] Independent read-only review and repair findings.
+- [x] Run Python, lint, web, build/static and browser validation.
+- [x] Independent read-only review and repair findings.
 - [ ] Validate against current main, commit/push/PR/CI/merge, verify live page and clean only this task.
 
 ## Evidence collected
@@ -65,3 +65,5 @@ Files: liquidity types/quality checks/explorer/catalog, bilingual audit notes an
 - Code reviewer found no blocking defects; source-format hash mismatch resolved with verified AST/hash mapping and bilingual disclosure.
 - Initial validation: 527 Python tests passed, 1 optional dependency skip; Ruff passed; 150 web unit tests; 141 browser tests; Astro 0 errors/warnings and static verification passed.
 - Target main advanced during the task; combine and validate before merge.
+
+- Combined validation at target `79fde7f`: 152 web unit tests and 142 browser tests passed; Astro 0 errors/warnings and static boundary validation passed. Python implementation unchanged by target integration. Desktop/phone Chinese dark-mode screenshots inspected without page overflow.
