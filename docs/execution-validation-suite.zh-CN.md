@@ -88,3 +88,4 @@ PYTHONPATH=src python scripts/prepare_execution_market_regimes.py \
 下一步应先补齐2025年公告证据，再预先固定规则检验真正未见的时间段。历史数据修订安全、退市后可交易报价、排队与自身市场冲击仍待解决。本轮检查不能替代这些证据。
 
 后续数据缺口与前瞻留样方案见[下一阶段说明](execution-validation-next-stage.zh-CN.md)及[冻结评估协议](execution-validation-followup-protocol.json)。
+替代批次的启动条件和仓库外逐日归档契约见[前瞻登记与归档说明](execution-validation-holdout-archive.zh-CN.md)。
