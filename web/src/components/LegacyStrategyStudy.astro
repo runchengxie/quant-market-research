@@ -2,12 +2,12 @@
 import SiteLayout from '../layouts/SiteLayout.astro';
 import { validateLegacyStudyEvidence } from '../content/legacy-strategy-evidence.server';
 const asset = validateLegacyStudyEvidence();
-import { legacyCopy } from '../content/legacy-strategy-copy';
+import { legacyCopy, legacyStudyCopy } from '../content/legacy-strategy-copy';
 interface Props { id: 'etf-rotation' | 'hotsector' }
 const { id } = Astro.props;
 const study = asset.studies.find(value => value.id === id);
 if (!study) throw new Error('Study identity unavailable');
-const copy = legacyCopy[id];
+const copy = legacyStudyCopy(study, asset.reviewed_content_digest);
 const shared = legacyCopy.shared;
 ---
 <SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.conclusion[0]} section="research">
@@ -19,10 +19,10 @@ const shared = legacyCopy.shared;
       <p class="lede" data-locale-text data-en={copy.conclusion[0]} data-zh={copy.conclusion[1]}>{copy.conclusion[0]}</p>
     </div></header>
     <section class="panel">
-      <p data-locale-text data-en={shared.scope[0]} data-zh={shared.scope[1]}>{shared.scope[0]}</p>
+      <p data-locale-text data-en={copy.scope[0]} data-zh={copy.scope[1]}>{copy.scope[0]}</p>
       <p data-locale-text data-en={copy.baseline[0]} data-zh={copy.baseline[1]}>{copy.baseline[0]}</p>
       <p data-locale-text data-en={shared.missing[0]} data-zh={shared.missing[1]}>{shared.missing[0]}</p>
-      <p data-locale-text data-en={shared.limitations[0]} data-zh={shared.limitations[1]}>{shared.limitations[0]}</p>
+      <p data-locale-text data-en={copy.limitations[0]} data-zh={copy.limitations[1]}>{copy.limitations[0]}</p>
     </section>
     {study.factor_refs.length > 0 && <section class="panel">
       <h2 data-locale-text data-en={shared.factors[0]} data-zh={shared.factors[1]}>{shared.factors[0]}</h2>

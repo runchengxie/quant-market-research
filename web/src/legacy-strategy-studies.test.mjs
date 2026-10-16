@@ -15,6 +15,19 @@ test('ETF and hotspot studies are discoverable without performance claims', asyn
 
 import { createHash } from 'node:crypto';
 import { validateLegacyStudyEvidence } from './content/legacy-strategy-evidence.server.ts';
+import { legacyStudyCopy } from './content/legacy-strategy-copy.ts';
+
+test('rendered evidence claims follow the reviewed asset and stale translations fail closed', () => {
+  const asset = validateLegacyStudyEvidence();
+  const study = { ...asset.studies[0], conclusion: 'A newly reviewed conclusion',
+    limitations: ['One material limitation', 'A second limitation'] };
+  const copy = legacyStudyCopy(study, asset.reviewed_content_digest);
+  assert.equal(copy.conclusion[0], 'A newly reviewed conclusion');
+  assert.equal(copy.baseline[0], study.baseline);
+  assert.equal(copy.scope[0], study.sample_scope);
+  assert.equal(copy.limitations[0], 'One material limitation A second limitation');
+  assert.throws(() => legacyStudyCopy(study, '0'.repeat(64)), /translation.*review/i);
+});
 
 test('source and content review reject stale or edited evidence', async () => {
   const raw = await readFile(new URL('../public/data/legacy-strategy-evidence.json', import.meta.url));
