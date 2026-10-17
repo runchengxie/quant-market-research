@@ -180,7 +180,7 @@ export default function RotationEvidenceExplorer({
       aria-labelledby="evidence-title"
     >
       <h2 id="evidence-title">{t("title")}</h2>
-      <p>{t("intro")}</p>
+      <p>{t("previousSnapshot")}</p><p>{t("intro")}</p>
       <p className="panel-note">
         {t("coverage").replace(
           /\{(registered|reproduced|missing)\}/g,

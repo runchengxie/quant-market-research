@@ -63,6 +63,7 @@ if(extensionEntry){
       <RotationForwardEvidence evidence={{sources:extension.sources,forward:extension.forward,theme:extension.theme}} client:only="react"><RotationExtensionStatic slot="fallback" evidence={extension} index={releaseIndex} dataBase={dataBase}/></RotationForwardEvidence>
       <RotationRobustnessExplorer evidence={{robustness:{...extension.robustness,rows:extension.robustness.rows.filter(r=>!r.window_id.startsWith('rolling_')),benchmarks:extension.robustness.benchmarks.filter(r=>!r.window_id.startsWith('rolling_'))}}} releaseEntry={extensionEntry!} dataBase={dataBase} client:only="react"/>
       <RotationReleaseComparison index={releaseIndex} dataBase={dataBase} client:only="react"/>
+      <details class="panel rotation-extension"><T as="summary" text={extensionCopy.methods}/><p><a href={`${dataBase.replace(/data\/$/,'research-notes/')}rotation-forward-review.md`} data-locale-link data-href-en={`${dataBase.replace(/data\/$/,'research-notes/')}rotation-forward-review.md`} data-href-zh={`${dataBase.replace(/data\/$/,'research-notes/')}rotation-forward-review.zh-CN.md`}><T as="span" text={extensionCopy.methods}/></a></p><p><a href={`${dataBase}${extensionEntry!.path}`}><T as="span" text={extensionCopy.download}/></a></p><p>SHA-256: <code>{extensionEntry!.sha256}</code></p></details>
 
     </>}
     <section class="panel" id="research-map">
@@ -168,4 +169,11 @@ if(extensionEntry){
 .rotation-extension table { min-width: 40rem; table-layout: auto; }
 .rotation-extension th, .rotation-extension td { white-space: nowrap; }
 .extension-callout { border-left: 3px solid var(--accent); padding: .8rem 1rem; background: var(--surface-2); }
+</style>
+<style is:global>
+.rotation-extension select, .rotation-extension input { min-height: 44px; padding: .65rem .8rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--surface-strong); color: var(--ink); font: inherit; }
+.rotation-extension button { min-height: 44px; padding: .6rem .9rem; border: 1px solid var(--rule); border-radius: 6px; background: var(--accent-soft); color: var(--ink); cursor: pointer; }
+.rotation-extension button:disabled { opacity: .6; cursor: wait; }
+.rotation-extension :is(button, select, input):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.rotation-extension code { overflow-wrap: anywhere; }
 </style>

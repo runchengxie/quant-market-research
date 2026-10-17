@@ -18,3 +18,9 @@ test('old schemas and missing cases stay explicit',async()=>{
  const right=structuredClone(asset);right.robustness.rows=[row];
  assert.equal(compareRotationReleases(asset,right).rows[0].status,'added');
 });
+
+test('old-schema comparison still explains the actual newly reviewed changes',async()=>{
+ const {compareRotationReleases}=await import('./content/rotation-release-comparison.ts');
+ const result=compareRotationReleases({schema_version:'research.rotation_evidence.v1'},asset);
+ assert.ok(result.changes.includes('recovered_two_symbols'));
+});
