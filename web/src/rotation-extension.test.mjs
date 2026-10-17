@@ -49,3 +49,15 @@ test('index rejects traversal and failed publication keeps the last valid versio
  await writeFile(input,JSON.stringify(changed));
  await assert.rejects(importRotationRelease({envelopePath:input,outputDirectory:out}),/identity conflict/);
 });
+
+test('index shape rejects missing current identity and duplicate IDs',async()=>{
+ const {validateReleaseIndex}=await import('./content/rotation-extension.ts');
+ assert.throws(()=>validateReleaseIndex({schema_version:'research.rotation_release_index.v1',current_release_id:'missing',releases:[]}));
+});
+
+test('unavailable benchmark cannot contain performance',async()=>{
+ const {validateExtensionShape}=await import('./content/rotation-extension.ts');
+ const copy=structuredClone(fixture.asset);
+ copy.robustness.benchmarks=[{group_id:'risk',allocator:'fixed_slots',benchmark_id:'bond_buy_hold',window_id:'common',cost_bps:5,status:'unavailable',reasons:['missing_history'],period:{start:'2024-01-01',end:'2024-12-31',sessions:252},metrics:{total_return:.1,cagr:.1,max_drawdown:-.1,sharpe_zero_rf:1}}];
+ assert.throws(()=>validateExtensionShape(copy),/benchmark/i);
+});

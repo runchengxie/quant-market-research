@@ -1,0 +1,9 @@
+---
+import T from './LocaleText.astro';
+import {extensionCopy as c} from '../content/rotation-extension-copy';
+import type {RotationExtension} from '../content/rotation-extension';
+const {theme}=Astro.props as {theme:{status:string;metrics:RotationExtension['theme']['metrics']}};
+const pct=(n:number)=>`${(n*100).toFixed(2)}%`;
+---
+<T text={theme.status==='diagnostic'?c.themeDiagnostic:c.themeBlocked}/>
+{theme.status==='diagnostic'&&theme.metrics&&<div class="table-scroll"><table><thead><tr><th><T as="span" text={c.configuration}/></th><th><T as="span" text={c.total_return}/></th><th><T as="span" text={c.cagr}/></th><th><T as="span" text={c.max_drawdown}/></th></tr></thead><tbody>{(['baseline','overlay'] as const).map(k=><tr><td><T as="span" text={c[k]}/></td><td>{pct(theme.metrics![k].total_return)}</td><td>{pct(theme.metrics![k].cagr)}</td><td>{pct(theme.metrics![k].max_drawdown)}</td></tr>)}</tbody></table></div>}

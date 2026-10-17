@@ -5,8 +5,8 @@ export type Period={start:string;end:string;sessions:number};
 export type RobustRow={id:string;experiment_id:string;group_id:string;allocator:string;cost_bps:number;delay_sessions:number;window_id:string;status:'available'|'unavailable';reasons:string[];period:Period|null;metrics:(Metrics & {volatility:number;cost_drag:number;avg_bond_weight:number;attribution:{risk:number;bond:number;costs:number;residual:number;total_return:number}})|null;turnover:number|null;pending_terminal:number};
 export type RotationExtension={schema_version:'research.rotation_extension.v1';release_id:string;created_at:string;producer_commit:string;base_evidence_id:string;reviewed_source_digest:string;
  sources:{availability:string;panel_start:string;panel_end:string;panel_count:number;admitted_count:number;recovered_symbols:string[];hashes:{core:string;pool:string;mapping:string};symbols:{symbol:string;status:string;reason:string}[];reconciliation:{symbol:string;status:string;reason:string;median_amount:number}[]};
- forward:{status:'waiting_for_fresh_inputs'|'collecting';reasons:string[];registration_id:string|null;effective_at:string|null;captured_weeks:number;settled_weeks:number;missed_weeks:{week:string;reason:string}[];coverage:{experiment_id:string;captured_weeks:number;settled_weeks:number}[];metrics:Metrics|null};
- robustness:{registration_sha256:string;historical_availability:string;rows:RobustRow[];unavailable_experiments:{experiment_id:string;reason:string}[];benchmarks:{group_id:string;allocator:string;benchmark_id:string;cost_bps:number;period:Period;metrics:Metrics}[]};
+ forward:{status:'waiting_for_fresh_inputs'|'collecting';reasons:string[];registration_id:string|null;effective_at:string|null;captured_weeks:number;settled_weeks:number;missed_weeks:{week:string;reason:string}[];coverage:{experiment_id:string;captured_weeks:number;settled_weeks:number;metrics:Metrics|null}[];metrics:Metrics|null};
+ robustness:{registration_sha256:string;historical_availability:string;rows:RobustRow[];unavailable_experiments:{experiment_id:string;reason:string}[];benchmarks:{group_id:string;allocator:string;benchmark_id:string;window_id:string;cost_bps:number;status:'available'|'unavailable';reasons:string[];period:Period|null;metrics:Metrics|null}[]};
  theme:{status:'blocked'|'diagnostic';reasons:string[];registration_id:string|null;metrics:{baseline:Metrics;overlay:Metrics;difference:{total_return_pp:number;cagr_pp:number}}|null};changes:{kind:string;code:string}[]};
 export type ReleaseEntry={release_id:string;schema_version:string;path:string;sha256:string;content_sha256:string;reviewer:string;published_at:string};
 export type ReleaseIndex={schema_version:'research.rotation_release_index.v1';current_release_id:string;releases:ReleaseEntry[]};
@@ -42,6 +42,10 @@ export function validateExtensionShape(value:unknown):RotationExtension{
    if(['last_252','last_756'].includes(r.window_id)&&r.period.sessions!==Number(r.window_id.slice(5)))throw Error('Incomplete window');
    if(Math.abs(t.total_return-m.total_return)>1e-10||Math.abs(t.risk+t.bond+t.costs+t.residual-m.total_return)>1e-10||m.avg_bond_weight<0||m.avg_bond_weight>1||m.max_drawdown< -1||m.max_drawdown>0)throw Error('Invalid attribution');
   }
+ }
+ for(const b of a.robustness.benchmarks){
+  if(!['available','unavailable'].includes(b.status)||(b.status==='available')!==(b.metrics!==null)||![0,5,10].includes(b.cost_bps))throw Error('Invalid benchmark status or metrics');
+  if(b.metrics&&(!b.period||b.period.start>b.period.end||b.period.sessions<2||b.metrics.max_drawdown< -1||b.metrics.max_drawdown>0))throw Error('Invalid benchmark period');
  }
  return a;
 }

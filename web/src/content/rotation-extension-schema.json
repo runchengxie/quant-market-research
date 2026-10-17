@@ -58,7 +58,15 @@
       {
         "experiment_id": "text",
         "captured_weeks": "integer",
-        "settled_weeks": "integer"
+        "settled_weeks": "integer",
+        "metrics": {
+          "?": {
+            "total_return": "number",
+            "cagr": "number",
+            "sharpe_zero_rf": "number",
+            "max_drawdown": "number"
+          }
+        }
       }
     ],
     "metrics": {
@@ -128,17 +136,26 @@
         "group_id": "text",
         "allocator": "text",
         "benchmark_id": "text",
+        "window_id": "text",
         "cost_bps": "number",
+        "status": "text",
+        "reasons": [
+          "text"
+        ],
         "period": {
-          "start": "date",
-          "end": "date",
-          "sessions": "integer"
+          "?": {
+            "start": "date",
+            "end": "date",
+            "sessions": "integer"
+          }
         },
         "metrics": {
-          "total_return": "number",
-          "cagr": "number",
-          "sharpe_zero_rf": "number",
-          "max_drawdown": "number"
+          "?": {
+            "total_return": "number",
+            "cagr": "number",
+            "sharpe_zero_rf": "number",
+            "max_drawdown": "number"
+          }
         }
       }
     ]

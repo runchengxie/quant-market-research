@@ -2,6 +2,13 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
+import RotationForwardEvidence from '../../../components/RotationForwardEvidence';
+import RotationRobustnessExplorer from '../../../components/RotationRobustnessExplorer';
+import RotationReleaseComparison from '../../../components/RotationReleaseComparison';
+import RotationExtensionStatic from '../../../components/RotationExtensionStatic.astro';
+import {validateReleaseIndex} from '../../../content/rotation-extension';
+import {validateRotationExtension} from '../../../content/rotation-extension.server';
+import {extensionCopy} from '../../../content/rotation-extension-copy';
 import RotationEvidenceExplorer from '../../../components/RotationEvidenceExplorer';
 import RotationEvidenceStatic from '../../../components/RotationEvidenceStatic.astro';
 import { evidenceCopy } from '../../../content/rotation-evidence-copy';
@@ -20,6 +27,15 @@ const evidence=validateRotationEvidence(release.asset,release.review);
 const releaseSha=createHash('sha256').update(releaseBytes).digest('hex');
 const releaseUrl=withBase('/data/rotation-evidence-release.json',import.meta.env.BASE_URL);
 const summary={...evidence,replay:[]};
+const dataBase=withBase('/data/',import.meta.env.BASE_URL);
+const releaseIndex=validateReleaseIndex(JSON.parse(readFileSync(resolve('public/data/rotation-release-index.json'),'utf8')));
+const extensionEntry=releaseIndex.releases.find(r=>r.release_id===releaseIndex.current_release_id&&r.schema_version==='research.rotation_extension.v1');
+let extension;
+if(extensionEntry){
+ const raw=readFileSync(resolve('public/data',extensionEntry.path));
+ if(createHash('sha256').update(raw).digest('hex')!==extensionEntry.sha256)throw Error('Extension registry hash mismatch');
+ const value=JSON.parse(raw.toString());extension=validateRotationExtension(value.asset,value.review);
+}
 ---
 <SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research" workbench>
   <article class="rotation-report">
@@ -37,9 +53,18 @@ const summary={...evidence,replay:[]};
       </div>
     </section>
     <nav class="rotation-nav" aria-label={pageCopy.topicSections[0]} data-locale-aria data-aria-en={pageCopy.topicSections[0]} data-aria-zh={pageCopy.topicSections[1]}>
+      <a href="#rotation-forward"><T as="span" text={extensionCopy.title}/></a>
+      <a href="#rotation-robustness"><T as="span" text={extensionCopy.robust}/></a>
+      <a href="#rotation-versions"><T as="span" text={extensionCopy.versions}/></a>
       <a href="#rotation-evidence"><T as="span" text={evidenceCopy.title}/></a>
       {links.map(([id, en, zh]) => <a href={`#${id}`} data-locale-text data-en={en} data-zh={zh}>{en}</a>)}
     </nav>
+    {extension&&<>
+      <RotationForwardEvidence evidence={{sources:extension.sources,forward:extension.forward,theme:extension.theme}} client:only="react"><RotationExtensionStatic slot="fallback" evidence={extension} index={releaseIndex} dataBase={dataBase}/></RotationForwardEvidence>
+      <RotationRobustnessExplorer evidence={{robustness:{...extension.robustness,rows:extension.robustness.rows.filter(r=>!r.window_id.startsWith('rolling_')),benchmarks:extension.robustness.benchmarks.filter(r=>!r.window_id.startsWith('rolling_'))}}} releaseEntry={extensionEntry!} dataBase={dataBase} client:only="react"/>
+      <RotationReleaseComparison index={releaseIndex} dataBase={dataBase} client:only="react"/>
+
+    </>}
     <section class="panel" id="research-map">
       <T as="h2" text={pageCopy.oneResearchChainFourSeparateQuestions} />
       <T text={pageCopy.groupingTheseStudiesMakesTheMissingLinks} />
@@ -131,4 +156,16 @@ const summary={...evidence,replay:[]};
 .evidence-workbench > .table-scroll table {min-width:1150px;}
 .evidence-workbench .table-scroll th,.evidence-workbench .table-scroll td {white-space:nowrap;overflow-wrap:normal;}
 .evidence-workbench > .table-scroll td:last-child {min-width:220px;max-width:280px;white-space:normal;}
+</style>
+
+<style is:global>
+.rotation-extension { min-width: 0; scroll-margin-top: 5rem; }
+.rotation-extension section { margin-top: 2rem; }
+.extension-controls { display: flex; flex-wrap: wrap; gap: 1rem; align-items: end; margin: 1.5rem 0; }
+.extension-controls label { display: grid; gap: .4rem; flex: 1 1 12rem; min-width: 0; }
+.rotation-extension select, .rotation-extension input { max-width: 100%; min-width: 0; }
+.rotation-extension .table-scroll { max-width: 100%; overflow-x: auto; }
+.rotation-extension table { min-width: 40rem; table-layout: auto; }
+.rotation-extension th, .rotation-extension td { white-space: nowrap; }
+.extension-callout { border-left: 3px solid var(--accent); padding: .8rem 1rem; background: var(--surface-2); }
 </style>
