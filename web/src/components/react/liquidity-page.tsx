@@ -74,6 +74,8 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
   <section id="liquidity-quality" className="report-section"><h2>{text('quality')}</h2>
    <SimpleTable rows={markets.map(item=>({market:item.market,date:item.coverage_start===item.coverage_end?item.as_of??text('missing'):`${item.coverage_start} — ${item.coverage_end}`,status:auditLiquidityMarket(item).length?text('quarantined'):text('historical'),issues:issueText(item)||text('consistent'),fx:`${item.fx_start??''} — ${item.fx_end??''}`}))} columns={[["market",text('market')],["date",text('range')],["status",text('status')],["issues",text('issue')],["fx",text('fx')]]}/>
    <p className="panel-note">{text('jp')}</p><p className="panel-note">{text('sourceNote')}</p><p className="panel-note">{liquidityCaveats(summary.caveats,englishLocale()?'en-US':'zh-CN')}</p>
+   <LiquidityStabilityPanel />
+   <div className="data-notice" role="note"><h3>{text('sourceLimitTitle')}</h3><p>{text('sourceLimitText')}</p></div>
    <details><summary>{text('panelProfile')}</summary><SimpleTable rows={Object.entries(summary.source_profiles??{}).map(([name,p])=>({market:name,source:num(p.source_rows),included:num(p.eligible_observations)}))} columns={[["market",text('market')],["source",text('sourceRows')],["included",text('includedRows')]]}/></details>
    <p><a href={withBase('/data/liquidity/inherited-summary.json',import.meta.env.BASE_URL)}>{text('archive')}</a></p>
    <LiquidityCoveragePanel data={coverageResource.data} error={coverageResource.error} retry={coverageResource.retry} market={market}/>
@@ -81,6 +83,28 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
   </section>
   <OrderBudget rows={rows} period={periodLabel(period)} bucket={buckets[bucket]?.label??''} basis={text(basis)} metric={text(metric)}/>
  </>;
+}
+
+type LiquidityStability = { summary: Array<{ market: string; year: number; bucket: string; months: number; security_days: number; adv20_median_of_months_usd: number | null; adv20_monthly_p25_usd: number | null; adv20_monthly_p75_usd: number | null; turnover_rate_median_of_months: number | null; turnover_rate_monthly_p25: number | null; turnover_rate_monthly_p75: number | null }> };
+
+function LiquidityStabilityPanel() {
+ const {data,error,retry}=useJson<LiquidityStability>('liquidity/stability.json');
+ const [market,setMarket]=useState('A-share');const [bucket,setBucket]=useState('< $10m');
+ if(error) return <div className="report-section"><h3>{text('stabilityTitle')}</h3><ResourceState error={error} retry={retry} label={text('stabilityTitle')}/></div>;
+ if(!data) return <div className="report-section"><h3>{text('stabilityTitle')}</h3><Loading/></div>;
+ const markets=[...new Set(data.summary.map(row=>row.market))];
+ const buckets=[...new Set(data.summary.filter(row=>row.market===market).map(row=>row.bucket))];
+ const selectedBucket=buckets.includes(bucket)?bucket:buckets[0]??'';
+ const rows=data.summary.filter(row=>row.market===market&&row.bucket===selectedBucket).sort((a,b)=>a.year-b.year);
+ const range=(lo:number|null,hi:number|null)=>lo==null||hi==null?text('missing'):`${money(lo)} — ${money(hi)}`;
+ const pctRange=(lo:number|null,hi:number|null)=>lo==null||hi==null?text('missing'):`${(lo*100).toFixed(2)}% — ${(hi*100).toFixed(2)}%`;
+ return <div className="report-section" id="liquidity-stability"><h3>{text('stabilityTitle')}</h3><p>{text('stabilityIntro')}</p>
+  <div className="liquidity-filters"><label>{text('stabilityMarket')}<select aria-label={text('stabilityMarket')} value={market} onChange={event=>{setMarket(event.target.value);setBucket('')}}>{markets.map(item=><option key={item}>{item}</option>)}</select></label><label>{text('stabilityBucket')}<select aria-label={text('stabilityBucket')} value={selectedBucket} onChange={event=>setBucket(event.target.value)}>{buckets.map(item=><option key={item}>{item}</option>)}</select></label></div>
+  <Panel title={`${text('stabilityTitle')} · ${market} · ${selectedBucket}`} tag={text('stabilityMedian')}>
+   <BarChart rows={rows.map(row=>({year:String(row.year),value:row.adv20_median_of_months_usd==null?'':String(row.adv20_median_of_months_usd)}))} labelKey="year" valueKey="value" formatter={money} logScale/>
+   <SimpleTable rows={rows.map(row=>({year:String(row.year),months:String(row.months),securityDays:num(row.security_days),median:money(row.adv20_median_of_months_usd),range:range(row.adv20_monthly_p25_usd,row.adv20_monthly_p75_usd),turnoverRate:row.turnover_rate_median_of_months==null?text('missing'):`${(row.turnover_rate_median_of_months*100).toFixed(2)}%`,turnoverRange:pctRange(row.turnover_rate_monthly_p25,row.turnover_rate_monthly_p75)}))} columns={[["year",text('year')],["months",text('months')],["securityDays",text('securityDays')],["median",text('stabilityMedian')],["range",text('stabilityRange')],["turnoverRate",text('turnoverRate')],["turnoverRange",text('stabilityRange')]]}/>
+  </Panel>
+ </div>;
 }
 
 function LiquidityFollowupPanel({data,error,retry}:{data:LiquidityFollowupAudit|null;error:string|null;retry:()=>void}) {

@@ -7,6 +7,11 @@ for (const theme of ['dark','light']) {
   await page.locator('astro-island[component-export="LiquidityPage"]').scrollIntoViewIfNeeded();
   const panel=page.locator('.period-panel');
   await expect(panel).toBeVisible();
+  const stability=page.locator('#liquidity-stability');
+  await expect(stability).toBeVisible();
+  await expect(stability).toContainText('P25–P75');
+  const stabilityBackground=await stability.locator('.panel').evaluate(el=>getComputedStyle(el).backgroundColor);
+  if(theme==='dark') expect(stabilityBackground).not.toBe('rgb(255, 255, 255)');
   const colors=await panel.evaluate(el=>{
    const s=getComputedStyle(el);
    const probe=document.createElement('span');probe.style.background='var(--surface)';document.body.append(probe);
