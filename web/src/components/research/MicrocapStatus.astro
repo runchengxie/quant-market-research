@@ -1,0 +1,26 @@
+---
+import { statusCopy as c, statusRows } from '../../content/microcap-status';
+import { tAgenda } from '../../content/microcap-agenda';
+---
+<section id="microcap-current-status" class="panel current-status">
+ <h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+ <p data-locale-text data-en={c.intro[0]} data-zh={c.intro[1]}>{c.intro[0]}</p>
+ {[{locale:'en-US' as const,live:true},...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
+ const Container=live?'div':'template';
+ return <Container data-status-live={live?'':undefined} data-status-locale={live?undefined:locale} lang={locale}>
+ <div class="status-table" tabindex="0" role="region" aria-label={tAgenda(c.title,locale)}>
+ <table><caption>{locale==='en-US'?'Six claims and their next evidence test':'六项结论及下一项证据检验'}</caption>
+ <thead><tr>{c.headers[locale==='zh-CN'?1:0].map(value=><th scope="col">{value}</th>)}</tr></thead>
+ <tbody>{statusRows(locale).map(row=><tr data-claim={row.id}><th scope="row"><a href={row.href}>{row.id} · {row.title}</a></th>{row.cells.map(value=><td>{value}</td>)}</tr>)}</tbody></table>
+ </div></Container>;
+ })}
+</section>
+<script>
+ const section=document.querySelector('#microcap-current-status');
+ const live=section?.querySelector<HTMLElement>('[data-status-live]');
+ const sync=()=>{const locale=document.documentElement.lang.startsWith('zh')?'zh-CN':'en-US';if(!live||live.lang===locale)return;const source=section?.querySelector<HTMLTemplateElement>(`template[data-status-locale="${locale}"]`);if(!source)return;live.replaceChildren(source.content.cloneNode(true));live.lang=locale;};
+ sync();new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<style>
+.current-status{margin-block:1.5rem;min-width:0}.current-status p{max-width:90ch;line-height:1.8}.status-table{overflow-x:auto;margin-block:1rem}.status-table table{width:100%;border-collapse:collapse;table-layout:fixed;min-width:900px;font-size:.86rem;line-height:1.65}.status-table caption{text-align:left;padding-bottom:.7rem;color:var(--muted)}.status-table th,.status-table td{vertical-align:top;text-align:left;padding:.7rem;border-bottom:1px solid var(--rule);overflow-wrap:anywhere;white-space:normal}.status-table thead{background:var(--surface-strong)}.status-table th:first-child{width:18%}.status-table:focus-visible{outline:2px solid var(--accent-strong)}
+</style>
