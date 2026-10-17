@@ -1,0 +1,108 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import T from '../../../components/LocaleText.astro';
+import LegacyStrategyStudy from '../../../components/LegacyStrategyStudy.astro';
+import { ExperimentExplorer, WeeklyExperimentCharts } from '../../../components/RotationWorkbench';
+import { researchSteps, rotationCopy as copy, experimentCards, weeklyRows, groupLabels, validationQuestions as tests, rotationGlossary as glossary, rotationPageCopy as pageCopy, rotationSections as links } from '../../../content/rotation-research';
+import { withBase } from '../../../lib/routes';
+
+
+---
+<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research">
+  <article class="rotation-report">
+    <header class="theme-heading"><div>
+      <T as="span" class="section-kicker" text={pageCopy.strategyResearchHistoricalEvidence} />
+      <T as="h1" text={copy.title} /><T text={copy.intro} />
+    </div></header>
+    <section class="panel rotation-conclusion" aria-labelledby="conclusion">
+      <h2 id="conclusion"><T as="span" text={pageCopy.currentConclusion} /></h2>
+      <T class="lede" text={copy.conclusion} />
+      <div class="rotation-facts">
+        <div><strong>3</strong><T as="span" text={pageCopy.distinctEvidenceStreams} /></div>
+        <div><strong>24</strong><T as="span" text={pageCopy.weeklyConfigurationsToExplore} /></div>
+        <div><strong>4</strong><T as="span" text={pageCopy.hotspotEventsNotAContinuousPortfolio} /></div>
+      </div>
+    </section>
+    <nav class="rotation-nav" aria-label={pageCopy.topicSections[0]} data-locale-aria data-aria-en={pageCopy.topicSections[0]} data-aria-zh={pageCopy.topicSections[1]}>
+      {links.map(([id, en, zh]) => <a href={`#${id}`} data-locale-text data-en={en} data-zh={zh}>{en}</a>)}
+    </nav>
+    <section class="panel" id="research-map">
+      <T as="h2" text={pageCopy.oneResearchChainFourSeparateQuestions} />
+      <T text={pageCopy.groupingTheseStudiesMakesTheMissingLinks} />
+      <ol class="rotation-flow">{researchSteps.map((step, i) => <li>
+        <span class="rotation-step">0{i + 1}</span><T as="h3" text={step.title} /><T text={step.text} /><T class="panel-note" text={step.gap} />
+      </li>)}</ol>
+      <details><T as="summary" text={pageCopy.whereStyleAndThemeInformationDiffer} />
+        <T text={pageCopy.styleIsAMeasurableCrossSectionalExposure} />
+      </details>
+    </section>
+    <ExperimentExplorer client:only="react">
+      <section slot="fallback" class="panel" id="experiments">
+        <T as="h2" text={pageCopy.exploreTheResearchBranches} />
+        <div class="rotation-card-grid">{experimentCards.map(card => <article class="rotation-card"><T as="h3" text={card.title} /><T text={card.observation} /><T class="panel-note" text={card.scope} /><T text={card.next} /></article>)}</div>
+      </section>
+    </ExperimentExplorer>
+    <section id="weekly">
+      <T as="h2" text={pageCopy.weeklyETFRotationWhatChangedAcrossExperiments} />
+      <T text={copy.weeklyProtocol} />
+      <T class="panel-note" text={copy.weeklyLimits} />
+      <WeeklyExperimentCharts client:only="react">
+        <div slot="fallback" class="panel">
+          <T text={pageCopy.staticEvidenceTableEnableJavaScriptToFilter} />
+          <div class="table-scroll"><table><thead><tr>
+            <th><T as="span" text={pageCopy.experimentGroup} /></th><th><T as="span" text={pageCopy.configuration} /></th>
+            <th><T as="span" text={pageCopy.annualizedReturn} /></th><th><T as="span" text={pageCopy.sharpeRatio} /></th><th><T as="span" text={pageCopy.maximumDrawdown} /></th><th><T as="span" text={pageCopy.averageBondWeight} /></th><th><T as="span" text={pageCopy.executedRebalances} /></th>
+          </tr></thead><tbody>{weeklyRows.map(row => <tr><td><T as="span" text={groupLabels[row.group]} /></td><td><T as="span" text={row.label} /></td><td>{row.cagr.toFixed(2)}%</td><td>{row.sharpe.toFixed(3)}</td><td>{row.drawdown.toFixed(2)}%</td><td>{row.fallback == null ? <T as="span" text={pageCopy.notReported} /> : `${row.fallback.toFixed(2)}%`}</td><td>{row.executions == null ? <T as="span" text={pageCopy.notReported} /> : row.executions}</td></tr>)}</tbody></table></div>
+        </div>
+      </WeeklyExperimentCharts>
+      <details class="panel"><T as="summary" text={pageCopy.industryExpansionAndShortETFHistories} />
+        <T text={pageCopy.aSeparateBroadIndustryExpansionDidNot} />
+      </details>
+    </section>
+    <LegacyStrategyStudy id="etf-rotation" />
+    <LegacyStrategyStudy id="hotsector" />
+    <section class="panel" id="next-tests">
+      <T as="h2" text={pageCopy.whatWouldValidateTheCompleteStrategy} />
+      <T text={pageCopy.theNextUsefulExperimentIsolatesTheTheme} />
+      <div class="rotation-card-grid">{tests.map(test => <div class="rotation-card"><T as="h3" text={test.title} /><T text={test.body} /></div>)}</div>
+    </section>
+    <section class="panel" id="sources">
+      <T as="h2" text={pageCopy.definitionsSourcesAndEvidenceBoundaries} />
+      {glossary.map(item => <details><T as="summary" text={item.title} /><T text={item.body} /></details>)}
+      <details><T as="summary" text={pageCopy.retainedWeeklySourceNotes} />
+        <T text={pageCopy.theSourceReviewCoversTheWeeklyStrategy} />
+        <a href={withBase('/research-notes/rotation-publication-review.md', import.meta.env.BASE_URL)} ><T as="span" text={pageCopy.sourceReview} /></a>
+      </details>
+      <div class="rotation-related">
+        <a href={withBase('/research/style-factors-18y/', import.meta.env.BASE_URL)} ><T as="span" text={pageCopy.relatedStyles} /></a>
+        <a href={withBase('/research/execution-costs/', import.meta.env.BASE_URL)} ><T as="span" text={pageCopy.relatedCosts} /></a>
+      </div>
+    </section>
+  </article>
+</SiteLayout>
+<style is:global>
+  .rotation-report { max-width: 1200px; margin-inline: auto; }
+  .rotation-report > section, .rotation-report > article { scroll-margin-top: 6rem; margin-block: 1.5rem; }
+  .rotation-conclusion { border-inline-start: 4px solid #317c72; }
+  .rotation-facts { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .rotation-facts div { display: grid; gap: .4rem; }
+  .rotation-facts strong { font-size: 2rem; font-variant-numeric: tabular-nums; }
+  .rotation-nav { display: flex; gap: .5rem 1.25rem; flex-wrap: wrap; padding: 1rem 0; border-block: 1px solid var(--rule); }
+  .rotation-nav a, .rotation-card a, .rotation-related a { color: var(--ink-soft); text-decoration-color: var(--accent); text-underline-offset: .25em; }
+  .rotation-nav a:hover, .rotation-card a:hover, .rotation-related a:hover { color: var(--accent-strong); }
+  .rotation-flow { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); padding: 0; gap: 1.25rem; list-style: none; }
+  .rotation-flow li { padding: 1.25rem; border: 1px solid var(--rule); border-radius: 12px; }
+  .rotation-step { font-family: monospace; color: var(--muted); font-size: 1.2rem; }
+  .rotation-card-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+  .rotation-card { min-width: 0; padding: 1.25rem; border: 1px solid var(--rule); border-radius: 12px; }
+  .rotation-card h3 { margin-top: .5rem; }
+  .rotation-report details { margin-block: .85rem; }
+  .rotation-report summary { cursor: pointer; font-weight: 650; }
+  .rotation-controls { display: flex; flex-wrap: wrap; gap: 1rem; }
+  .rotation-control { display: inline-flex; flex-wrap: wrap; align-items: center; gap: .6rem; margin-block: .65rem; }
+  .rotation-control select { max-width: 100%; padding: .6rem; }
+  .rotation-related { display: flex; flex-wrap: wrap; gap: 1rem; margin-top: 1rem; }
+  .rotation-report .research-chart { min-height: 380px; }
+  .rotation-report .study-evidence .theme-heading { margin-top: 2rem; }
+  @media(max-width: 680px) { .rotation-card-grid, .rotation-flow { grid-template-columns: 1fr; } .rotation-facts { gap: .65rem; } .rotation-facts strong { font-size: 1.6rem; } }
+</style>

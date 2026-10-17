@@ -17,7 +17,7 @@ const percent = (value: number) => `${value > 0 ? '+' : ''}${value.toFixed(2)}%`
 
 export function EtfSensitivityCharts({ rows, annual }: { rows: EtfRow[]; annual: AnnualRow[] }) {
   const [valuation, setValuation] = useState<'raw' | 'adjusted'>('adjusted');
-  const selected: EtfDisplayRow[] = rows.map(row => ({ ...row[valuation], cost: `${row.costBps} bps` }));
+  const selected: EtfDisplayRow[] = rows.map(row => ({ ...row[valuation], cost: `${row.costBps} ${ui('基点', 'bps')}` }));
   const recipes = Object.keys(recipeLabels) as Array<keyof typeof recipeLabels>;
   const yearly = annual.map(row => ({ year: String(row.year), regression: row.regression / 100, basket: row.basket / 100 }));
   const series = recipes.map((recipe, index) => ({
@@ -52,9 +52,9 @@ export function EtfSensitivityCharts({ rows, annual }: { rows: EtfRow[]; annual:
 
 export function HotspotSensitivityChart({ rows }: { rows: HotspotRow[] }) {
   const [measure, setMeasure] = useState<'uplift' | 'positive'>('uplift');
-  const chartRows = rows.map(row => ({ cost: `${row.costBps} bps`, value: measure === 'uplift' ? row.meanUpliftPp : row.positiveEvents }));
+  const chartRows = rows.map(row => ({ cost: `${row.costBps} ${ui('基点', 'bps')}`, value: measure === 'uplift' ? row.meanUpliftPp : row.positiveEvents }));
   const tableRows = rows.map(row => ({
-    cost: `${row.costBps} bps`, uplift: `${row.meanUpliftPp.toFixed(3)} pp`,
+    cost: `${row.costBps} ${ui('基点', 'bps')}`, uplift: `${row.meanUpliftPp.toFixed(3)} ${ui('个百分点', 'pp')}`,
     positive: `${row.positiveEvents} / ${row.eventCount}`,
   }));
   return <section className="panel" aria-labelledby="hotspot-sensitivity-title">
@@ -65,7 +65,7 @@ export function HotspotSensitivityChart({ rows }: { rows: HotspotRow[] }) {
         <option value="positive">{ui('正向事件数', 'Positive events')}</option>
       </select>
     </label>
-    <ResearchBarChart rows={chartRows.map(row => ({ cost: row.cost, value: String(row.value) }))} labelKey="cost" valueKey="value" color="#317c72" formatter={value => measure === 'uplift' ? `${value.toFixed(3)} pp` : `${value.toFixed(0)} / 4`} />
+    <ResearchBarChart rows={chartRows.map(row => ({ cost: row.cost, value: String(row.value) }))} labelKey="cost" valueKey="value" color="#317c72" formatter={value => measure === 'uplift' ? `${value.toFixed(3)} ${ui('个百分点', 'pp')}` : `${value.toFixed(0)} / 4`} />
     <p className="panel-note">{ui('均值是四个独立五日事件的等权平均增量；正向事件数表示叠加组收益高于未叠加组的事件个数。两项指标单位不同，因此用上方菜单切换。', 'The mean is the equal-weight average paired uplift across four isolated five-session events. Positive-event count records how often the overlay arm outperformed its paired no-overlay arm. The measures use different units, so choose one above.')}</p>
     <SimpleTable rows={tableRows} columns={[["cost", ui('单边成本', 'One-way cost')], ["uplift", ui('平均增量', 'Mean uplift')], ["positive", ui('正向事件', 'Positive events')]]} />
   </section>;

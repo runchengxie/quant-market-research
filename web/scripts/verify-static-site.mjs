@@ -8,6 +8,9 @@ const repository = path.resolve(path.dirname(fileURLToPath(import.meta.url)), ".
 
 const routes = [
   ["index.html", "Research overview"],
+  ["research/style-theme-rotation/index.html", "Style and theme rotation: from signals to ETF portfolios"],
+  ["research/etf-rotation/index.html", "Style and theme rotation"],
+  ["research/hotsector/index.html", "Style and theme rotation"],
   ["research/cashflow/index.html", "Cash-flow history"],
   ["research/cashflow/recovery/index.html", "Cash-flow drawdowns and recovery time"],
   ["research/microcap/index.html", "A-share micro-cap history"],

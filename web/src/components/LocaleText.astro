@@ -1,0 +1,6 @@
+---
+import type { Copy } from '../content/rotation-research';
+interface Props { text: Copy; as?: 'p' | 'h1' | 'h2' | 'h3' | 'span' | 'strong' | 'summary'; class?: string }
+const { text, as: Tag = 'p', class: className }: Props = Astro.props;
+---
+<Tag class={className} data-locale-text data-en={text[0]} data-zh={text[1]}>{text[0]}</Tag>

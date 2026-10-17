@@ -3,10 +3,11 @@ import { expect, test } from '@playwright/test';
 for (const id of ['etf-rotation', 'hotsector']) {
   test(`${id} direct route shows reviewed aggregate results in both languages`, async ({ page }) => {
     await page.goto(`research/${id}/`);
+    await expect(page).toHaveURL(new RegExp(`style-theme-rotation/.*#${id}`));
     await expect(page.locator('main h1')).toBeVisible();
     await expect(page.locator('main')).toContainText('Historical diagnostic; not investment validation');
-    await page.locator('details.results summary').click();
-    await expect(page.locator('details.results table tbody tr')).toHaveCount(id === 'etf-rotation' ? 66 : 6);
+    await page.locator(`#${id} details.results summary`).click();
+    await expect(page.locator(`#${id} details.results table tbody tr`)).toHaveCount(id === 'etf-rotation' ? 66 : 6);
     if (id === 'etf-rotation') await expect(page.locator('main')).toContainText('Interval lower bound');
     else {
       await expect(page.locator('main')).toContainText('Mean event uplift');
@@ -14,7 +15,7 @@ for (const id of ['etf-rotation', 'hotsector']) {
     }
     await page.getByRole('button', { name: 'Switch to Chinese' }).click();
     await expect(page.locator('main')).toContainText('历史诊断，尚非投资有效性验证');
-    await expect(page.locator('details.results table tbody tr')).toHaveCount(id === 'etf-rotation' ? 66 : 6);
+    await expect(page.locator(`#${id} details.results table tbody tr`)).toHaveCount(id === 'etf-rotation' ? 66 : 6);
     if (id === 'etf-rotation') await expect(page.locator('main')).toContainText('区间下界');
     else {
       await expect(page.locator('main')).toContainText('事件平均增量');
@@ -28,9 +29,9 @@ for (const id of ['etf-rotation', 'hotsector']) {
 test('ETF cost and price controls update the chart data table', async ({ page }) => {
   await page.goto('research/etf-rotation/');
   await expect(page.getByRole('heading', { name: 'How do costs and price conventions change results?' })).toBeVisible();
-  await expect(page.getByRole('table').first()).toContainText('-8.14%');
+  await expect(page.locator('#etf-rotation').getByRole('table').first()).toContainText('-8.14%');
   await page.getByLabel('Price convention', { exact: true }).selectOption('raw');
-  await expect(page.getByRole('table').first()).toContainText('-11.50%');
+  await expect(page.locator('#etf-rotation').getByRole('table').first()).toContainText('-11.50%');
   await page.getByRole('button', { name: 'Switch to Chinese' }).click();
   await expect(page.getByLabel('价格口径', { exact: true })).toBeVisible();
   await expect(page.locator('main')).toContainText('按退出年份汇总');
