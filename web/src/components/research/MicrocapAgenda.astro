@@ -1,0 +1,38 @@
+---
+import {agenda, agendaCopy as c, tAgenda, failureTable, sizeTable, sizeCoverageTable, buildFailureSvg, buildSizeSvg, claimTranslations, claimStages} from '../../content/microcap-agenda';
+const locales=['en-US','zh-CN'] as const;
+const base=import.meta.env.BASE_URL.replace(/\/$/,'');
+---
+<section id="microcap-research-agenda" class="panel agenda">
+<h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+{[{locale:'en-US' as const,live:true},...locales.map(locale=>({locale,live:false}))].map(({locale,live})=>{
+ const Container=live?'div':'template';const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
+ const en=locale==='en-US';
+ return <Container data-agenda-live={live?'':undefined} data-agenda-locale={live?undefined:locale} lang={locale}>
+ <p>{t('intro')}</p>
+ <section aria-labelledby={`agenda-forward-${locale}`}><h3 id={`agenda-forward-${locale}`}>{t('forwardTitle')}</h3>
+ <p>{t('forward')}</p><p>{t('forwardRules')}</p><p>{t('forwardTiming')}</p>
+ <p class="finding">{en?'New eligible completed months: ':'新样本已完成合格月份：'}<strong>{agenda.prospective.new_cohort_completed_windows}</strong>{en?'. Legacy receipt: one complete and one pending window, source as-of September 15, 2026.': '。旧收据：一个已完成、一个待定区间，来源截至 2026-09-15。'}</p></section>
+ <section aria-labelledby={`agenda-failure-${locale}`}><h3 id={`agenda-failure-${locale}`}>{t('failureTitle')}</h3><p>{t('failure')}</p><p>{t('failureBoundary')}</p>
+ <div class="agenda-chart" set:html={buildFailureSvg(locale)}/>
+ <p><a href={`${base}/downloads/microcap-failure-atlas.${locale}.svg`} download>{en?'Download failure chart':'下载失败案例图'}</a></p>
+ <details><summary>{en?'All eight historical scenarios':'八种历史情景完整对照'}</summary><div class="agenda-table" tabindex="0" role="region" aria-label={t('failureTitle')}><table><caption>{t('failureTitle')}</caption><thead><tr>{failureTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{failureTable(locale).rows.map(row=><tr>{row.map((value,j)=>j===0?<th scope="row">{value}</th>:<td>{value}</td>)}</tr>)}</tbody></table></div></details><p>{t('cash')}</p></section>
+ <section aria-labelledby={`agenda-size-${locale}`}><h3 id={`agenda-size-${locale}`}>{t('sizeTitle')}</h3><p>{t('sizeBoundary')}</p><p class="finding">{t('sizeFinding')}</p><p>{t('sizeScope')}</p><p>{t('sizeUnits')}</p>
+ <div class="agenda-table" tabindex="0" role="region" aria-label={t('sizeTitle')}><table><caption>{en?'Sample attrition and cell completeness':'样本流失与单元格完整性'}</caption><thead><tr>{sizeCoverageTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{sizeCoverageTable(locale).rows.map(row=><tr>{row.map((value,j)=>j===0?<th scope="row">{value}</th>:<td>{value}</td>)}</tr>)}</tbody></table></div>
+ <div class="agenda-chart" set:html={buildSizeSvg(locale)}/><p><a href={`${base}/downloads/microcap-size-liquidity.${locale}.svg`} download>{en?'Download conditional-spread chart':'下载条件收益差图'}</a></p>
+ <details><summary>{en?'All universes, support comparisons and intervals':'完整股票池、样本对照和区间'}</summary><div class="agenda-table" tabindex="0" role="region" aria-label={t('sizeTitle')}><table><caption>{t('sizeTitle')}</caption><thead><tr>{sizeTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{sizeTable(locale).rows.map(row=><tr>{row.map((value,j)=>j===0?<th scope="row">{value}</th>:<td>{value}</td>)}</tr>)}</tbody></table></div></details></section>
+ <section aria-labelledby={`agenda-claims-${locale}`}><h3 id={`agenda-claims-${locale}`}>{t('claimsTitle')}</h3><p>{t('claimsIntro')}</p>
+ {agenda.claims.map(row=>{const copy=claimTranslations[row.id];return <details class="claim"><summary>{row.id} · {tAgenda(copy.title,locale)}</summary><p>{en?'Current stage: ':'当前证据：'}{tAgenda(claimStages[row.stage],locale)}</p><dl><dt>{en?'Stronger evidence':'升级条件'}</dt><dd>{tAgenda(copy.upgrade,locale)}</dd><dt>{en?'Invalidating evidence':'失效证据'}</dt><dd>{tAgenda(copy.invalidating,locale)}</dd><dt>{en?'Reopen when':'复查触发'}</dt><dd>{tAgenda(copy.trigger,locale)}</dd></dl></details>;})}</section>
+ <p>{t('sourceBoundary')}</p><p><a href={`${base}/data/microcap_evidence_agenda.json`} download>{t('downloads')}</a> · <a href={`${base}/data/microcap_size_liquidity_review.json`} download>{en?'Common-support aggregates':'共同样本汇总'}</a></p>
+ </Container>;
+})}
+</section>
+<script>
+ const section=document.querySelector('#microcap-research-agenda');
+ const live=section?.querySelector<HTMLElement>('[data-agenda-live]');
+ const sync=()=>{const locale=document.documentElement.lang.startsWith('zh')?'zh-CN':'en-US';if(!live||live.lang===locale)return;const source=section?.querySelector<HTMLTemplateElement>(`template[data-agenda-locale="${locale}"]`);if(!source)return;const expanded=Array.from(live.querySelectorAll('details'),d=>d.open);live.replaceChildren(source.content.cloneNode(true));live.lang=locale;live.querySelectorAll('details').forEach((d,i)=>d.open=expanded[i]??false);};
+ sync();new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<style>
+.agenda{margin-block:2rem;min-width:0}.agenda p{line-height:1.8;max-width:92ch}.agenda h3{margin-top:2rem}.agenda-chart{overflow-x:auto;margin-block:1rem}.agenda-chart :global(svg){display:block;width:100%;min-width:760px;height:auto}.agenda-table{overflow-x:auto;margin-block:1rem}.agenda table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums;font-size:.86rem}.agenda caption{text-align:left;padding-bottom:.6rem}.agenda th,.agenda td{padding:.6rem;border-bottom:1px solid var(--rule);text-align:right;white-space:nowrap}.agenda th:first-child{text-align:left;white-space:normal;min-width:13rem}.agenda details{border-top:1px solid var(--rule);padding:.8rem 0}.agenda summary{cursor:pointer;font-weight:600}.agenda dd{margin:.3rem 0 1rem;max-width:90ch;line-height:1.7}.agenda dt{font-weight:600}.agenda a{margin-right:.6rem}.finding{border-left:3px solid var(--accent-strong);padding-left:1rem}.agenda-table:focus-visible{outline:2px solid var(--accent-strong)}
+</style>

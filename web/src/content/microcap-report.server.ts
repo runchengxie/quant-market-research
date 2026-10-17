@@ -1,3 +1,4 @@
+import { agendaMarkdown } from './microcap-agenda';
 import { followupMarkdown } from './microcap-followup';
 import { windowReviewMarkdown } from './microcap-window-review';
 import { comparisonMarkdown } from './microcap-comparison.server';
@@ -39,8 +40,8 @@ export async function buildMicrocapReport(locale: ReportLocale) {
     t('The clearest micro-cap finding is substantial downside risk and potentially long recovery waits. Returns remain sensitive to eligibility, missing quotes, execution clocks and portfolio construction. Low turnover has historical conditional associations, but an independent causal premium and practical capacity have not been established.', '目前较清楚的微盘发现是：下行风险大，回本等待可能很长。收益仍受资格筛选、缺失报价、执行时点与组合构造影响。低换手存在历史条件关联，但独立因果溢价和实际容量尚未确立。'),
     t('The fixed monthly low-turnover simulation reports net annual returns of 3.52%, 5.33% and 7.60% for 20-, 60- and 120-session windows. The new 120-session run gives 4.22% with 90 valid observations; a same-input sensitivity with 45 gives 6.26%. The threshold changes the result but does not identify the historical method or fully explain the gap. These inspected figures are not a prospective ranking.', '固定月频低换手模拟中，20、60、120 日窗口净年化分别为 3.52%、5.33%、7.60%。120 日新运行按 90 个有效观测得到 4.22%；同一输入改为 45 个观测后为 6.26%。门槛会改变结果，但仍无法确认历史方法，也没有完全解释差距。这些已查看的数字不是前瞻排名。'),
     `## ${t('Contents', '阅读顺序')}`,
-    t('0. Follow-up findings (2026-10-17)\n1. Research map and evidence status\n2. Comparable portfolio definitions\n3. Turnover-window comparison\n4. Definition × rebalance matrix\n5. Research history and coverage register\n6. All published snapshot table families\n7. Revisions and limits\n8. Open questions and resumption criteria\n9. Public methodology appendices and sources', '0. 后续核查（2026-10-17）\n1. 研究地图与证据状态\n2. 可比较的组合定义\n3. 换手窗口对照\n4. 换手定义 × 调仓频率矩阵\n5. 研究历史与覆盖清单\n6. 公开快照完整表组\n7. 修正记录与局限\n8. 待解问题与恢复研究条件\n9. 公开方法附录与来源'),
-    followupMarkdown(locale),
+    t('0. New evidence, prospective protocol and claim review\n0. Follow-up findings (2026-10-17)\n1. Research map and evidence status\n2. Comparable portfolio definitions\n3. Turnover-window comparison\n4. Definition × rebalance matrix\n5. Research history and coverage register\n6. All published snapshot table families\n7. Revisions and limits\n8. Open questions and resumption criteria\n9. Public methodology appendices and sources', '0. 新增证据、前瞻协议与结论复查\n0. 后续核查（2026-10-17）\n1. 研究地图与证据状态\n2. 可比较的组合定义\n3. 换手窗口对照\n4. 换手定义 × 调仓频率矩阵\n5. 研究历史与覆盖清单\n6. 公开快照完整表组\n7. 修正记录与局限\n8. 待解问题与恢复研究条件\n9. 公开方法附录与来源'),
+    agendaMarkdown(locale), followupMarkdown(locale),
     editionMarkdown(locale),
     `## ${text(hubCopy.title, locale)}`,
     ...researchQuestions.map(q => `### ${text(q.title, locale)}\n\n**${text(q.status, locale)}**\n\n${text(q.finding, locale)}\n\n**${text(hubCopy.sample, locale)}：** ${text(q.sample, locale)}\n\n**${text(hubCopy.next, locale)}：** ${text(q.next, locale)}\n\n[${text(q.action, locale).replace(/[↓↗]/g, '').trim()}](${origin}${q.href.startsWith('#') ? '/research/microcap/' : ''}${q.href})`),
