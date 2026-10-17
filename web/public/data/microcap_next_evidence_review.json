@@ -1,0 +1,302 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-18",
+  "raw_share_ready": false,
+  "original_runtime_recovered": false,
+  "readiness": {
+    "protocol_id": "microcap-prospective-20261017/v1",
+    "formation": "2026-10-30",
+    "status": "pending_before_cutoff",
+    "issue_count": 7,
+    "issue_categories": [
+      "benchmark",
+      "capitalization_valuation",
+      "industry_membership",
+      "prices_adjustments",
+      "signal",
+      "turnover_amounts",
+      "universe_status"
+    ],
+    "new_cohort_completed_windows": 0,
+    "admitted": false,
+    "as_of_utc": "2026-10-17T23:48:39.452223+00:00"
+  },
+  "initial_readiness": {
+    "protocol_id": "microcap-prospective-20261017/v1",
+    "formation": "2026-10-30",
+    "status": "pending_before_cutoff",
+    "issue_count": 8,
+    "issue_categories": [
+      "benchmark",
+      "calendar",
+      "capitalization_valuation",
+      "industry_membership",
+      "prices_adjustments",
+      "signal",
+      "turnover_amounts",
+      "universe_status"
+    ],
+    "new_cohort_completed_windows": 0,
+    "admitted": false,
+    "as_of_utc": "2026-10-17T23:39:31+00:00"
+  },
+  "calendar": {
+    "schema_version": 1,
+    "status": "official_published_schedule_crosschecked",
+    "civil_days": 61,
+    "october_open_sessions": 17,
+    "november_open_sessions": 21,
+    "vendor_calendar_mismatches": 0,
+    "formation": "2026-10-30",
+    "entry": "2026-11-02",
+    "holding_end": "2026-11-30",
+    "review_cutoff_utc": "2026-11-02T00:30:00+00:00",
+    "sources": [
+      {
+        "role": "annual",
+        "url": "https://www.sse.com.cn/disclosure/announcement/general/c/c_20251222_10802507.shtml",
+        "sha256": "c531e4ed2328b40ef4ce0abf961a044aeff802e60eb2e2f24ec2e9d8b2e48674",
+        "bytes": 28079,
+        "retrieved_utc": "2026-10-17T23:48:39.243510+00:00"
+      },
+      {
+        "role": "national_holiday",
+        "url": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/announcement/general/c/c_20260915_10832273.shtml",
+        "sha256": "ec3b2fa822161cd8852ed5255b002f40506ebd348f77a4b0c672dcd637387dec",
+        "bytes": 26921,
+        "retrieved_utc": "2026-10-17T23:48:39.451888+00:00"
+      }
+    ]
+  },
+  "events": {
+    "dated_unique_blockers": 94,
+    "unknown_exdate_rows": 1,
+    "retrospective_economic_adjudications": 3,
+    "dated_unresolved": 91,
+    "ordinary_share_ledger_examples": 1,
+    "no_original_holder_ledger_examples": 1,
+    "cash_ledger_examples": 1,
+    "period_metadata_still_unresolved_in_reviewed_cases": 1,
+    "differential_holder_cash_examples": 1,
+    "holder_classification_required_in_reviewed_cases": 1,
+    "plan_blockers": {
+      "45": 83,
+      "90": 82
+    },
+    "priority_counts": {
+      "announcement_or_period_conflict": 10,
+      "economic_conflict": 6,
+      "missing_amount_requires_primary_notice": 77,
+      "settlement_or_unknown_date": 1
+    },
+    "raw_share_ready": false,
+    "owner_resolver_recomputed": false,
+    "owner_blocker_inventory_unchanged": true
+  },
+  "cases": [
+    {
+      "case": "unrestricted_ordinary_capitalization",
+      "assumed_record_shares": 1000,
+      "opening_cash": "0",
+      "source_url": "https://epaper.stcn.com/pic/202406/26/8f7dd3652e682ceb00f5b19695fd561d.pdf",
+      "source_pdf_sha256": "47eb6c36a2a4b460df07f2b032104c399b1bbc3d57d002ba2d61d1b0c2a39507",
+      "dates": {
+        "source_announcement_date": "2024-06-26",
+        "record_date": "2024-07-01",
+        "ex_date": "2024-07-02",
+        "pay_date": null,
+        "stock_listing_date": "2024-07-02"
+      },
+      "stock_per_share": "0.4",
+      "cash_per_share": "0.0",
+      "snapshots": [
+        {
+          "cash": "0",
+          "cash_receivable": "0",
+          "settled_shares": "1000",
+          "share_receivable": "0",
+          "action_settlement_eligible_shares": "1000",
+          "mark": "1",
+          "nav": "1000",
+          "date": "2024-07-01",
+          "executable_sellable_shares": null
+        },
+        {
+          "cash": "0",
+          "cash_receivable": "0.0",
+          "settled_shares": "1400.0",
+          "share_receivable": "0.0",
+          "action_settlement_eligible_shares": "1400.0",
+          "mark": "1",
+          "nav": "1400.0",
+          "date": "2024-07-02",
+          "executable_sellable_shares": null
+        }
+      ]
+    },
+    {
+      "case": "restructuring_no_original_holder_entitlement",
+      "assumed_record_shares": 1000,
+      "opening_cash": "0",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2025-12-30/1224906744.PDF",
+      "source_pdf_sha256": "102db0e2d61978c54af65ea9fb3d7689a21048d4d77823d692a9fcd47ec9df86",
+      "dates": {
+        "source_announcement_date": "2025-12-30",
+        "record_date": "2025-12-29",
+        "ex_date": "2025-12-30",
+        "pay_date": null,
+        "stock_listing_date": null
+      },
+      "stock_per_share": "0.0",
+      "cash_per_share": "0.0",
+      "snapshots": [
+        {
+          "cash": "0",
+          "cash_receivable": "0",
+          "settled_shares": "1000",
+          "share_receivable": "0",
+          "action_settlement_eligible_shares": "1000",
+          "mark": "1",
+          "nav": "1000",
+          "date": "2025-12-29",
+          "executable_sellable_shares": null
+        },
+        {
+          "cash": "0",
+          "cash_receivable": "0.0",
+          "settled_shares": "1000",
+          "share_receivable": "0.0",
+          "action_settlement_eligible_shares": "1000",
+          "mark": "1",
+          "nav": "1000.0",
+          "date": "2025-12-30",
+          "executable_sellable_shares": null
+        }
+      ]
+    },
+    {
+      "case": "gross_ordinary_cash_distribution",
+      "assumed_record_shares": 1000,
+      "opening_cash": "0",
+      "source_url": "https://disc.static.szse.cn/disc/disk03/finalpage/2025-01-17/9d039b93-fbaf-4777-b017-05a28821c285.PDF",
+      "source_pdf_sha256": "78549e6908050e9fde1e5f9a07220032b64ad617dc222157413eeda6838a2301",
+      "dates": {
+        "source_announcement_date": "2025-01-17",
+        "record_date": "2025-01-23",
+        "ex_date": "2025-01-24",
+        "pay_date": "2025-01-24",
+        "stock_listing_date": null
+      },
+      "stock_per_share": "0",
+      "cash_per_share": "1.23",
+      "snapshots": [
+        {
+          "cash": "0",
+          "cash_receivable": "0",
+          "settled_shares": "1000",
+          "share_receivable": "0",
+          "action_settlement_eligible_shares": "1000",
+          "mark": "1",
+          "nav": "1000",
+          "date": "2025-01-23",
+          "executable_sellable_shares": null
+        },
+        {
+          "cash": "1230.00",
+          "cash_receivable": "0.00",
+          "settled_shares": "1000",
+          "share_receivable": "0",
+          "action_settlement_eligible_shares": "1000",
+          "mark": "1",
+          "nav": "2230.00",
+          "date": "2025-01-24",
+          "executable_sellable_shares": null
+        }
+      ],
+      "exdate_pre_settlement": {
+        "cash": "0",
+        "cash_receivable": "1230",
+        "settled_shares": "1000",
+        "share_receivable": "0"
+      }
+    },
+    {
+      "case": "differential_cash_requires_holder_classification",
+      "assumed_record_shares": 1000,
+      "opening_cash": "0",
+      "source_url": "https://big5.sse.com.cn/site/cht/www.sse.com.cn/disclosure/listedinfo/announcement/c/new/2024-07-18/600989_20240718_2K7K.pdf",
+      "source_pdf_sha256": "d47db5c0b7d2c9bfc37dbc71cfdd2e34ed299948baaad08e7fadedb6fa2dde86",
+      "dates": {
+        "source_announcement_date": "2024-07-18",
+        "record_date": "2024-07-23",
+        "ex_date": "2024-07-24",
+        "pay_date": "2024-07-24",
+        "stock_listing_date": null
+      },
+      "stock_per_share": "0",
+      "holder_rates": {
+        "minority": "0.3158",
+        "named_large_holder": "0.2650"
+      },
+      "reference_price_deduction": "0.28",
+      "snapshots_by_assumed_holder_class": {
+        "minority": [
+          {
+            "cash": "0",
+            "cash_receivable": "0",
+            "settled_shares": "1000",
+            "share_receivable": "0",
+            "action_settlement_eligible_shares": "1000",
+            "mark": "1",
+            "nav": "1000",
+            "date": "2024-07-23",
+            "executable_sellable_shares": null
+          },
+          {
+            "cash": "315.8000",
+            "cash_receivable": "0.0000",
+            "settled_shares": "1000",
+            "share_receivable": "0",
+            "action_settlement_eligible_shares": "1000",
+            "mark": "1",
+            "nav": "1315.8000",
+            "date": "2024-07-24",
+            "executable_sellable_shares": null
+          }
+        ],
+        "named_large_holder": [
+          {
+            "cash": "0",
+            "cash_receivable": "0",
+            "settled_shares": "1000",
+            "share_receivable": "0",
+            "action_settlement_eligible_shares": "1000",
+            "mark": "1",
+            "nav": "1000",
+            "date": "2024-07-23",
+            "executable_sellable_shares": null
+          },
+          {
+            "cash": "265.0000",
+            "cash_receivable": "0.0000",
+            "settled_shares": "1000",
+            "share_receivable": "0",
+            "action_settlement_eligible_shares": "1000",
+            "mark": "1",
+            "nav": "1265.0000",
+            "date": "2024-07-24",
+            "executable_sellable_shares": null
+          }
+        ]
+      }
+    }
+  ],
+  "source_sha256": {
+    "readiness_summary": "63dbdfc8cbd22c51c8041540ca7ac4a44570d1228a4fc15b51db4b98c46f81e0",
+    "events_summary": "592d03461ea91767a6f5d98846b501dd0c2f859dfce5e59ad92a4a128c6a4254",
+    "case_ledgers": "15f0cba30b9ca217afa2d210b3f10e1df04de4f4cafd1101149d8ca0ed0058ad",
+    "primary_evidence": "e2edaa2dcf02feb49839dcd1f9df2bea7eebc2de1b862cd8b1d2c6097673c62a",
+    "initial_readiness": "4ce7b1c77e6f4be9c5c4d0f4eac12ed1d98f42f3ebdae5c228291d53b53e0c5b",
+    "official_calendar": "220e33facc0b6669ff63bae5e5ca548be62aa9ade208b05f7d5a730941d46abd"
+  }
+}

@@ -1,0 +1,30 @@
+---
+import { nextEvidence, nextCopy as c, readinessTable, eventFinding, eventTable, caseTable, caseOutcomeTable, exampleSources } from '../../content/microcap-next-evidence';
+import { tAgenda } from '../../content/microcap-agenda';
+const base=import.meta.env.BASE_URL.replace(/\/$/,'');
+---
+<section id="microcap-next-evidence" class="panel next-evidence">
+<h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+{[{locale:'en-US' as const,live:true},...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
+ const Container=live?'div':'template';const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
+ return <Container data-next-live={live?'':undefined} data-next-locale={live?undefined:locale} lang={locale}>
+ <h3>{t('eventTitle')}</h3><p class="finding">{eventFinding(locale)}</p>
+ <h4>{t('outcomesTitle')}</h4><p>{t('outcomesBoundary')}</p>
+ <div class="next-table case-outcomes" tabindex="0" role="region" aria-label={t('outcomesTitle')}><table><caption>{t('outcomesTitle')}</caption><thead><tr>{caseOutcomeTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{caseOutcomeTable(locale).rows.map(row=><tr><th scope="row"><a href={row.source}>{row.cells[0]}</a></th>{row.cells.slice(1).map(cell=><td>{cell}</td>)}</tr>)}</tbody></table></div>
+ <details><summary>{t('eventDetails')}</summary><div class="next-table" tabindex="0" role="region" aria-label={t('eventTitle')}><table><caption>{t('eventDetails')}</caption><thead><tr>{eventTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{eventTable(locale).rows.map(row=><tr><th scope="row">{row[0]}</th><td>{row[1]}</td></tr>)}</tbody></table></div><p>{t('eventBoundary')}</p>
+ <div class="next-table" tabindex="0" role="region" aria-label={t('caseBoundary')}><table><caption>{locale==='zh-CN'?'真实事件的假设持仓核算':'Assumed-holdings accounting for real events'}</caption><thead><tr>{caseTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{caseTable(locale).rows.map(row=><tr><th scope="row">{row[0]}</th><td>{row[1]}</td></tr>)}</tbody></table></div><p>{t('caseBoundary')}</p><h4>{t('sourcesTitle')}</h4><p>{t('sourcesBoundary')}</p><ul>{exampleSources.map(source=><li><a href={source.url}>{tAgenda(source.label,locale)}</a> · SHA-256 <code>{source.hash}</code></li>)}</ul></details>
+ <h3>{t('readinessTitle')}</h3><p class="finding">{t('readiness')}</p>
+ <details><summary>{t('readinessDetails')}</summary><div class="next-table" tabindex="0" role="region" aria-label={t('readinessTitle')}><table><caption>{t('readinessDetails')}</caption><thead><tr>{readinessTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{readinessTable(locale).rows.map(row=><tr><th scope="row">{row[0]}</th><td>{row[1]}</td></tr>)}</tbody></table></div><p>{t('provenance')}</p><h4>{t('calendarTitle')}</h4><p>{t('calendar')}</p><ul>{nextEvidence.calendar.sources.map(source=><li><a href={source.url}>{source.role==='annual'?(locale==='zh-CN'?'2026 年全年休市安排':'2026 annual exchange holiday schedule'):(locale==='zh-CN'?'国庆节休市安排':'National Day exchange closure notice')}</a> · SHA-256 <code>{source.sha256}</code></li>)}</ul></details>
+ <h3>{t('gateTitle')}</h3><p>{t('gate')}</p><p>{t('boundary')}</p><p><a href={`${base}/data/microcap_next_evidence_review.json`} download>{t('download')}</a></p>
+ </Container>;
+})}
+</section>
+<script>
+ const section=document.querySelector('#microcap-next-evidence');
+ const live=section?.querySelector<HTMLElement>('[data-next-live]');
+ const sync=()=>{const locale=document.documentElement.lang.startsWith('zh')?'zh-CN':'en-US';if(!live||live.lang===locale)return;const source=section?.querySelector<HTMLTemplateElement>(`template[data-next-locale="${locale}"]`);if(!source)return;const expanded=Array.from(live.querySelectorAll('details'),d=>d.open);live.replaceChildren(source.content.cloneNode(true));live.lang=locale;live.querySelectorAll('details').forEach((d,i)=>d.open=expanded[i]??false);};
+ sync();new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<style>
+.next-evidence{margin-block:1.5rem;min-width:0}.next-evidence p{max-width:92ch;line-height:1.8}.next-evidence h3{margin-top:1.5rem}.next-evidence details{border-top:1px solid var(--rule);padding:.8rem 0}.next-evidence summary{cursor:pointer;font-weight:600}.next-table{overflow-x:auto;margin-block:1rem}.next-table table{border-collapse:collapse;width:100%;font-size:.86rem;line-height:1.7}.next-table th,.next-table td{text-align:left;vertical-align:top;padding:.6rem;border-bottom:1px solid var(--rule);white-space:normal;overflow-wrap:anywhere}.next-evidence code{overflow-wrap:anywhere}.case-outcomes table{min-width:1100px}.case-outcomes th:first-child{min-width:10rem}.case-outcomes td{min-width:12rem}.next-table caption{text-align:left;padding-bottom:.6rem}.finding{border-left:3px solid var(--accent-strong);padding-left:1rem}.next-table:focus-visible{outline:2px solid var(--accent-strong)}
+</style>
