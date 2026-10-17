@@ -1,11 +1,18 @@
 import { createHash } from "node:crypto";
-import { canonical, validateShape, type Review } from "./rotation-evidence";
+import {
+  canonical,
+  validateShape,
+  validatePublicText,
+  type Review,
+} from "./rotation-evidence";
 const sha = (s: string) => createHash("sha256").update(s).digest("hex");
 export function validateRotationEvidence(value: unknown, record: unknown) {
   const asset = validateShape(value);
   const review = record as Review;
   if (
     !review ||
+    typeof review !== "object" ||
+    Array.isArray(review) ||
     Object.keys(review).sort().join(",") !==
       [
         "status",
@@ -16,14 +23,11 @@ export function validateRotationEvidence(value: unknown, record: unknown) {
         "reviewed_at",
       ]
         .sort()
-        .join(",") ||
-    Object.values(review).some(
-      (v) =>
-        typeof v !== "string" ||
-        !v ||
-        v.length > 1000 ||
-        /\/home\/|\/tmp\/|API_KEY|TOKEN=|SECRET/.test(v),
-    ) ||
+        .join(",")
+  )
+    throw Error("Unreviewed public review fields");
+  Object.values(review).forEach(validatePublicText);
+  if (
     review.status !== "approved" ||
     typeof review.reviewer !== "string" ||
     !review.reviewer ||

@@ -124,3 +124,11 @@ const summary={...evidence,replay:[]};
   .rotation-report .study-evidence .theme-heading { margin-top: 2rem; }
   @media(max-width: 680px) { .rotation-card-grid, .rotation-flow { grid-template-columns: 1fr; } .rotation-facts { gap: .65rem; } .rotation-facts strong { font-size: 1.6rem; } }
 </style>
+
+<style is:global>
+.evidence-workbench .table-scroll {max-width:100%;overflow-x:auto;}
+.evidence-workbench .table-scroll table {min-width:850px;table-layout:auto;}
+.evidence-workbench > .table-scroll table {min-width:1150px;}
+.evidence-workbench .table-scroll th,.evidence-workbench .table-scroll td {white-space:nowrap;overflow-wrap:normal;}
+.evidence-workbench > .table-scroll td:last-child {min-width:220px;max-width:280px;white-space:normal;}
+</style>

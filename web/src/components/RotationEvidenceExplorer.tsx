@@ -259,6 +259,7 @@ export default function RotationEvidenceExplorer({
           : t("unavailable")}
       </p>
       <p>{t("sameWindow")}</p>
+      <p className="panel-note">{t("tableHint")}</p>
       {c.status === "available" ? (
         <>
           <ResearchBarChart

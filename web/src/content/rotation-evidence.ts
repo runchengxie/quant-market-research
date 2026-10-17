@@ -139,7 +139,7 @@ function fields(value: any, keys: string) {
   )
     throw Error("Unreviewed public fields");
 }
-function text(value: any) {
+export function validatePublicText(value: any) {
   if (
     typeof value !== "string" ||
     !value ||
@@ -190,7 +190,7 @@ function metrics(value: any) {
 function strings(value: any) {
   if (!Array.isArray(value) || value.length > 50)
     throw Error("Invalid public reasons");
-  value.forEach(text);
+  value.forEach(validatePublicText);
 }
 function collection(value: any, limit: number, keys: string): any[] {
   if (!Array.isArray(value) || value.length > limit)
@@ -201,6 +201,21 @@ function collection(value: any, limit: number, keys: string): any[] {
 function unique(rows: any[], key = "id") {
   if (new Set(rows.map((r) => r[key])).size !== rows.length)
     throw Error("Duplicate identity");
+}
+const executionStates = new Set([
+  "EXECUTED",
+  "OPTIMIZER_FALLBACK",
+  "NO_TRADE_THRESHOLD",
+  "BLOCKED_EXECUTION_MARK",
+]);
+function availablePeriod(row: any) {
+  period(row.period);
+  const required: Record<string, number> = { last_252: 252, last_756: 756 };
+  if (
+    required[row.window_id] &&
+    row.period.sessions !== required[row.window_id]
+  )
+    throw Error("Incomplete named window");
 }
 export function validateShape(value: unknown): RotationEvidence {
   const a = value as any;
@@ -282,7 +297,7 @@ export function validateShape(value: unknown): RotationEvidence {
       return;
     }
     if (r.status !== "available") throw Error("Unknown comparison status");
-    period(r.period);
+    availablePeriod(r);
     const members = collection(
       r.members,
       24,
@@ -309,6 +324,8 @@ export function validateShape(value: unknown): RotationEvidence {
         Array.isArray(m.status_counts)
       )
         throw Error("Missing execution counts");
+      if (Object.keys(m.status_counts).some((k) => !executionStates.has(k)))
+        throw Error("Unknown execution count field");
       Object.values(m.status_counts).forEach((v) => {
         number(v, 0, 100000);
         if (!Number.isInteger(v)) throw Error("Invalid event count");
@@ -322,7 +339,8 @@ export function validateShape(value: unknown): RotationEvidence {
   ).forEach((r) => {
     if (
       !byId.has(r.experiment_id) ||
-      day(r.signal_date) > day(r.execution_date)
+      !executionStates.has(r.status) ||
+      day(r.signal_date) >= day(r.execution_date)
     )
       throw Error("Invalid replay identity/date");
     fields(r.allocation, "risk_weight bond_weight");
@@ -373,12 +391,24 @@ export function validateShape(value: unknown): RotationEvidence {
       return;
     }
     if (r.status !== "available") throw Error("Unknown attribution status");
-    period(r.period);
+    availablePeriod(r);
     keys.forEach((k) => number(r[k]));
     if (
       Math.abs(r.risk + r.bond + r.costs + r.residual - r.total_return) > 1e-10
     )
       throw Error("Unreconciled attribution");
+    const matches = comparisons.flatMap((c) =>
+      c.status === "available" &&
+      c.window_id === r.window_id &&
+      canonical(c.period) === canonical(r.period)
+        ? c.members.filter((m: any) => m.experiment_id === r.experiment_id)
+        : [],
+    );
+    if (
+      matches.length !== 1 ||
+      Math.abs(matches[0].metrics.total_return - r.total_return) > 1e-10
+    )
+      throw Error("Attribution does not match comparison return");
   });
   fields(a.theme_status, "status reasons registration_id metrics");
   strings(a.theme_status.reasons);
@@ -399,16 +429,16 @@ export function validateShape(value: unknown): RotationEvidence {
     ),
   );
   function scan(v: any) {
-    if (typeof v === "string") text(v);
+    if (typeof v === "string") validatePublicText(v);
     else if (Array.isArray(v)) v.forEach(scan);
     else if (v && typeof v === "object")
       Object.entries(v).forEach(([k, x]) => {
-        text(k);
+        validatePublicText(k);
         if (
           textKeys.has(k) ||
           (["registration_id", "first_observed_date"].includes(k) && x !== null)
         )
-          text(x);
+          validatePublicText(x);
         scan(x);
       });
   }

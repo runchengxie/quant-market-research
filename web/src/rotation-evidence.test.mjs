@@ -252,3 +252,49 @@ test("missing contribution evidence remains an explicit unavailable view", () =>
     "unavailable",
   );
 });
+for (const failure of [
+  "status_field",
+  "review_path",
+  "short_window",
+  "same_day",
+  "attribution_reference",
+])
+  test(`review regression: ${failure}`, async () => {
+    const { asset, review } = JSON.parse(
+      await readFile(
+        new URL(
+          "../public/data/rotation-evidence-release.json",
+          import.meta.url,
+        ),
+        "utf8",
+      ),
+    );
+    if (failure === "status_field")
+      asset.comparisons[0].members[0].status_counts.private_holding_510300 = 12345;
+    if (failure === "review_path")
+      review.reviewer = "/mnt/private/research/owner";
+    if (failure === "short_window") {
+      const r = asset.comparisons.find((r) => r.window_id === "last_252");
+      r.period = { start: "2026-08-21", end: "2026-08-24", sessions: 2 };
+    }
+    if (failure === "same_day")
+      asset.replay[0].execution_date = asset.replay[0].signal_date;
+    if (failure === "attribution_reference") {
+      asset.attribution[0].risk += 1;
+      asset.attribution[0].total_return += 1;
+    }
+    review.content_sha256 = sha(canonical(asset));
+    review.asset_sha256 = sha(canonical(asset) + "\n");
+    assert.throws(() => validateRotationEvidence(asset, review));
+  });
+test("source archive does not deny the page current reproduced runs", async () => {
+  const { rotationPageCopy } = await import("./content/rotation-research.ts");
+  assert.doesNotMatch(
+    rotationPageCopy.theSourceReviewCoversTheWeeklyStrategy[0],
+    /This page adds no new backtest/,
+  );
+  assert.doesNotMatch(
+    rotationPageCopy.theSourceReviewCoversTheWeeklyStrategy[1],
+    /本页没有新增回测/,
+  );
+});

@@ -4,6 +4,10 @@ export const evidenceCopy = {
     "Read the reproduction and publication review",
     "阅读复现与发布审查说明",
   ],
+  tableHint: [
+    "Scroll tables horizontally to inspect every column.",
+    "可横向滚动表格，查看完整数值与执行状态。",
+  ],
   title: [
     "Reproduced weekly rotation evidence",
     "周频轮动：重新运行的历史证据",

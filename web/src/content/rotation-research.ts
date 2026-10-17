@@ -108,7 +108,7 @@ export const rotationPageCopy = {
   theNextUsefulExperimentIsolatesTheTheme: ['The next useful experiment isolates the theme-to-ETF link. It should not choose the highest historical Sharpe from unrelated tables. These are research questions, not published results.', '下一项有价值的实验，应单独检验“主题到 ETF”的衔接，而不是从互不相同的表格里挑出历史夏普最高的一行。以下是待研究的问题，不是已经获得的结果。'],
   definitionsSourcesAndEvidenceBoundaries: ['Definitions, sources and evidence boundaries', '指标口径、来源与证据边界'],
   retainedWeeklySourceNotes: ['Retained weekly source notes', '保留的周频研究记录'],
-  theSourceReviewCoversTheWeeklyStrategy: ['The source review covers the weekly strategy specification and the risk-cap, pool-expansion matrix, holding-continuity, Ridge and broad-industry-expansion notes. The experiments are dated 2026-09-16; note metadata records verification on 2026-10-01. This page adds no new backtest. The downloadable review lists source fingerprints and the exact public-field boundary.', '来源审查覆盖周频策略规格，以及风险仓位上限、候选池矩阵、持仓延续、岭回归和广泛行业扩池记录。实验记录日期为 2026-09-16，文档元数据记载的核验日期为 2026-10-01。本页没有新增回测。可下载的审查说明列出来源指纹与公开字段范围。'],
+  theSourceReviewCoversTheWeeklyStrategy: ['The source review covers the weekly strategy specification and the risk-cap, pool-expansion matrix, holding-continuity, Ridge and broad-industry-expansion notes. The experiments are dated 2026-09-16; note metadata records verification on 2026-10-01. That archive retains the original observations; newly reproduced runs are presented separately above. The downloadable review lists source fingerprints and the exact public-field boundary.', '来源审查覆盖周频策略规格，以及风险仓位上限、候选池矩阵、持仓延续、岭回归和广泛行业扩池记录。实验记录日期为 2026-09-16，文档元数据记载的核验日期为 2026-10-01。该档案保留原始观测，新增运行结果在上方单独展示。可下载的审查说明列出来源指纹与公开字段范围。'],
 } satisfies Record<string, Copy>;
 
 export const workbenchCopy = {

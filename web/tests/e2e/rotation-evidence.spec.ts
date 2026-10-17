@@ -149,3 +149,22 @@ test("negative numeric sorting and keyboard window changes retain reviewed units
     "252 sessions",
   );
 });
+test("mobile numeric tables scroll horizontally without stacking digits", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 390, height: 900 });
+  await page.goto(route + "?lang=zh-CN");
+  const table = page.locator("#rotation-evidence table").first();
+  await expect(table.locator("tbody tr")).toHaveCount(3);
+  await expect(table).toBeVisible();
+  await table.scrollIntoViewIfNeeded();
+  const row = await table.locator("tbody tr").first().boundingBox();
+  expect(row!.height).toBeLessThan(150);
+  expect(
+    await table.evaluate(
+      (t) =>
+        t.getBoundingClientRect().width >
+        t.parentElement!.getBoundingClientRect().width,
+    ),
+  ).toBeTruthy();
+});
