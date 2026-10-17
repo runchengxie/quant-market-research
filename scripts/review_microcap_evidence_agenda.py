@@ -94,6 +94,10 @@ def project_size(source):
     actual = {(row['universe'], row['coefficient']) for row in source['summaries']}
     if len(source['summaries']) != len(expected) or actual != expected:
         raise ValueError('unreviewed size contrasts')
+    required_estimates = ('coefficient_mean', 'hac_standard_error', 'ci95_low', 'ci95_high')
+    if any(row['formation_count'] <= 0 or any(row[key] is None for key in required_estimates)
+           for row in source['summaries']):
+        raise ValueError('missing public effect estimate')
     result = fields(source, SIZE_TOP)
     result['summaries'] = [fields(row, SIZE_STATS) for row in source['summaries']]
     result['coverage'] = {}

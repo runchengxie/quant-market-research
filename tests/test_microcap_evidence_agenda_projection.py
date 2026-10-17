@@ -39,3 +39,10 @@ def test_duplicate_known_contrasts_cannot_replace_missing_pairs():
     data['summaries']=[data['summaries'][0]]*24
     with pytest.raises(ValueError,match='unreviewed size contrasts'):
         project_size(data)
+
+
+def test_missing_effect_cannot_be_formatted_as_zero():
+    data=json.loads(Path('web/public/data/microcap_size_liquidity_review.json').read_text())
+    data['summaries'][0]['coefficient_mean']=None
+    with pytest.raises(ValueError,match='missing public effect estimate'):
+        project_size(data)
