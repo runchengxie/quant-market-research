@@ -1,0 +1,198 @@
+{
+  "schema_version": "text",
+  "release_id": "text",
+  "created_at": "timestamp",
+  "producer_commit": "text",
+  "base_evidence_id": "text",
+  "reviewed_source_digest": "sha256",
+  "sources": {
+    "availability": "text",
+    "panel_start": "date",
+    "panel_end": "date",
+    "panel_count": "integer",
+    "admitted_count": "integer",
+    "recovered_symbols": [
+      "text"
+    ],
+    "hashes": {
+      "core": "sha256",
+      "pool": "sha256",
+      "mapping": "sha256"
+    },
+    "symbols": [
+      {
+        "symbol": "text",
+        "status": "text",
+        "reason": "text"
+      }
+    ],
+    "reconciliation": [
+      {
+        "symbol": "text",
+        "status": "text",
+        "reason": "text",
+        "median_amount": "number"
+      }
+    ]
+  },
+  "forward": {
+    "status": "text",
+    "reasons": [
+      "text"
+    ],
+    "registration_id": {
+      "?": "text"
+    },
+    "effective_at": {
+      "?": "timestamp"
+    },
+    "captured_weeks": "integer",
+    "settled_weeks": "integer",
+    "missed_weeks": [
+      {
+        "week": "date",
+        "reason": "text"
+      }
+    ],
+    "coverage": [
+      {
+        "experiment_id": "text",
+        "captured_weeks": "integer",
+        "settled_weeks": "integer",
+        "metrics": {
+          "?": {
+            "total_return": "number",
+            "cagr": "number",
+            "sharpe_zero_rf": "number",
+            "max_drawdown": "number"
+          }
+        }
+      }
+    ],
+    "metrics": {
+      "?": {
+        "total_return": "number",
+        "cagr": "number",
+        "sharpe_zero_rf": "number",
+        "max_drawdown": "number"
+      }
+    }
+  },
+  "robustness": {
+    "registration_sha256": "sha256",
+    "historical_availability": "text",
+    "unavailable_experiments": [
+      {
+        "experiment_id": "text",
+        "reason": "text"
+      }
+    ],
+    "rows": [
+      {
+        "id": "text",
+        "experiment_id": "text",
+        "group_id": "text",
+        "allocator": "text",
+        "cost_bps": "number",
+        "delay_sessions": "integer",
+        "window_id": "text",
+        "status": "text",
+        "reasons": [
+          "text"
+        ],
+        "period": {
+          "?": {
+            "start": "date",
+            "end": "date",
+            "sessions": "integer"
+          }
+        },
+        "metrics": {
+          "?": {
+            "total_return": "number",
+            "cagr": "number",
+            "sharpe_zero_rf": "number",
+            "max_drawdown": "number",
+            "volatility": "number",
+            "cost_drag": "number",
+            "avg_bond_weight": "number",
+            "attribution": {
+              "risk": "number",
+              "bond": "number",
+              "costs": "number",
+              "residual": "number",
+              "total_return": "number"
+            }
+          }
+        },
+        "turnover": {
+          "?": "number"
+        },
+        "pending_terminal": "integer"
+      }
+    ],
+    "benchmarks": [
+      {
+        "group_id": "text",
+        "allocator": "text",
+        "benchmark_id": "text",
+        "window_id": "text",
+        "cost_bps": "number",
+        "status": "text",
+        "reasons": [
+          "text"
+        ],
+        "period": {
+          "?": {
+            "start": "date",
+            "end": "date",
+            "sessions": "integer"
+          }
+        },
+        "metrics": {
+          "?": {
+            "total_return": "number",
+            "cagr": "number",
+            "sharpe_zero_rf": "number",
+            "max_drawdown": "number"
+          }
+        }
+      }
+    ]
+  },
+  "theme": {
+    "status": "text",
+    "reasons": [
+      "text"
+    ],
+    "registration_id": {
+      "?": "text"
+    },
+    "metrics": {
+      "?": {
+        "baseline": {
+          "total_return": "number",
+          "cagr": "number",
+          "sharpe_zero_rf": "number",
+          "max_drawdown": "number"
+        },
+        "overlay": {
+          "total_return": "number",
+          "cagr": "number",
+          "sharpe_zero_rf": "number",
+          "max_drawdown": "number"
+        },
+        "difference": {
+          "total_return_pp": "number",
+          "cagr_pp": "number"
+        }
+      }
+    }
+  },
+  "changes": [
+    {
+      "kind": "text",
+      "code": "text"
+    }
+  ]
+}

@@ -1,5 +1,8 @@
 import { validateRotationEvidence } from "../src/content/rotation-evidence.server.ts";
 import fs from "node:fs";
+import {createHash} from "node:crypto";
+import {validateIndexedBinding,validateReleaseIndex} from "../src/content/rotation-extension.ts";
+import {validateRotationExtension} from "../src/content/rotation-extension.server.ts";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { publicDocs } from "../src/content/public-registry.ts";
@@ -68,6 +71,21 @@ export function verifyStaticSite(distDirectory) {
     if(Object.keys(release).sort().join(',')!=='asset,review')throw Error('Invalid envelope');
     validateRotationEvidence(release.asset,release.review);
   } catch(error) { errors.push(`Missing or invalid reviewed rotation evidence: ${error.message}`); }
+
+
+  try {
+    const index=validateReleaseIndex(JSON.parse(fs.readFileSync(path.join(dist,"data/rotation-release-index.json"),"utf8")));
+    for(const entry of index.releases){
+      const raw=fs.readFileSync(path.join(dist,"data",entry.path));
+      if(createHash('sha256').update(raw).digest('hex')!==entry.sha256)throw Error('Indexed release hash mismatch');
+      const envelope=JSON.parse(raw.toString());
+      validateIndexedBinding(entry,envelope);
+      if(Object.keys(envelope).sort().join()!=='asset,review')throw Error('Invalid indexed envelope');
+      if(envelope.asset.schema_version==='research.rotation_extension.v1')validateRotationExtension(envelope.asset,envelope.review);
+      else validateRotationEvidence(envelope.asset,envelope.review);
+      if(envelope.review.content_sha256!==entry.content_sha256||envelope.review.reviewer!==entry.reviewer)throw Error('Index review binding mismatch');
+    }
+  } catch(error){errors.push(`Missing or invalid rotation release registry: ${error.message}`);}
 
 
   for (const [relative, marker] of routes) {

@@ -1,0 +1,27 @@
+---
+import T from './LocaleText.astro';
+import RotationThemeStatic from './RotationThemeStatic.astro';
+import {extensionCopy as c,codeCopy} from '../content/rotation-extension-copy';
+import {weeklyRows} from '../content/rotation-research';
+import type {RotationExtension,ReleaseIndex} from '../content/rotation-extension';
+const {evidence:a,index,dataBase}=Astro.props as {evidence:RotationExtension;index:ReleaseIndex;dataBase:string};
+const rows=a.robustness.rows.filter(r=>r.window_id==='common'&&r.cost_bps===5&&r.delay_sessions===1);
+const label=(id:string)=>weeklyRows.find(r=>r.id===id)?.label??[id,id] as const;
+const pct=(v:number|null)=>v===null?'—':`${(v*100).toFixed(2)}%`;
+---
+<section class="panel rotation-extension" id="rotation-forward"><T as="h2" text={c.title}/><T text={c.intro}/>
+ <T as="h3" text={c.forward}/><T text={a.forward.status==='collecting'?c.collecting:c.waiting}/>
+ <p><T as="span" text={c.captured}/>: {a.forward.captured_weeks} · <T as="span" text={c.settled}/>: {a.forward.settled_weeks}</p>
+ {a.forward.registration_id&&<p><T as="span" text={c.registered}/>: <code>{a.forward.registration_id}</code> · {a.forward.effective_at}</p>}
+ <div class="table-scroll"><table><thead><tr><th><T as="span" text={c.configuration}/></th><th><T as="span" text={c.captured}/></th><th><T as="span" text={c.settled}/></th><th><T as="span" text={c.total_return}/></th></tr></thead><tbody>{a.forward.coverage.map(r=><tr><td><T as="span" text={label(r.experiment_id)}/></td><td>{r.captured_weeks}</td><td>{r.settled_weeks}</td><td>{r.metrics?pct(r.metrics.total_return):'—'}</td></tr>)}</tbody></table></div>
+ <T text={c.forwardNote}/>{a.forward.missed_weeks.length>0&&<details><T as="summary" text={c.missed}/><ul>{a.forward.missed_weeks.map(r=><li>{r.week} · <T as="span" text={codeCopy[r.reason]??c.unavailable}/></li>)}</ul></details>}
+ <section id="rotation-sources"><T as="h3" text={c.sources}/><T text={c.sourceNote}/><p>{a.sources.panel_start} – {a.sources.panel_end}</p>
+ <div class="table-scroll"><table><thead><tr><th><T as="span" text={c.symbol}/></th><th><T as="span" text={c.status}/></th><th><T as="span" text={c.reason}/></th></tr></thead><tbody>{a.sources.symbols.map(r=><tr><td>{r.symbol}</td><td><T as="span" text={codeCopy[r.status]??c.unavailable}/></td><td><T as="span" text={codeCopy[r.reason]??c.unavailable}/></td></tr>)}</tbody></table></div>
+ <details><T as="summary" text={c.sources}/><div class="table-scroll"><table><thead><tr><th><T as="span" text={c.symbol}/></th><th><T as="span" text={c.median}/></th><th><T as="span" text={c.reason}/></th></tr></thead><tbody>{a.sources.reconciliation.map(r=><tr><td>{r.symbol}</td><td>{r.median_amount}</td><td><T as="span" text={codeCopy[r.reason]??c.unavailable}/></td></tr>)}</tbody></table></div></details></section>
+ <T as="h3" text={c.theme}/><RotationThemeStatic theme={a.theme}/>
+</section>
+<section class="panel rotation-extension" id="rotation-robustness"><T as="h2" text={c.robust}/><T text={c.robustNote}/><p><T as="span" text={c.cost}/>: 5 · <T as="span" text={c.delay}/>: 1 · <T as="span" text={c.common}/></p>
+ <div class="table-scroll"><table><thead><tr><th><T as="span" text={c.configuration}/></th><th><T as="span" text={c.cagr}/></th><th><T as="span" text={c.max_drawdown}/></th><th><T as="span" text={c.avg_bond_weight}/></th><th><T as="span" text={c.period}/></th></tr></thead><tbody>{rows.map(r=><tr><td><T as="span" text={label(r.experiment_id)}/></td><td>{r.metrics?pct(r.metrics.cagr):'—'}</td><td>{r.metrics?pct(r.metrics.max_drawdown):'—'}</td><td>{r.metrics?pct(r.metrics.avg_bond_weight):'—'}</td><td>{r.period?`${r.period.start} – ${r.period.end}`:'—'}</td></tr>)}</tbody></table></div>
+ <T as="h3" text={c.benchmarks}/><T text={c.benchmarkNote}/><div class="table-scroll"><table><thead><tr><th><T as="span" text={c.group}/></th><th><T as="span" text={c.configuration}/></th><th><T as="span" text={c.cagr}/></th><th><T as="span" text={c.max_drawdown}/></th><th><T as="span" text={c.period}/></th></tr></thead><tbody>{a.robustness.benchmarks.filter(b=>b.cost_bps===5&&b.window_id==='common').map(b=><tr><td><T as="span" text={codeCopy[b.group_id]??c.unavailable}/></td><td><T as="span" text={codeCopy[b.benchmark_id]??c.unavailable}/></td><td>{b.metrics?pct(b.metrics.cagr):'—'}</td><td>{b.metrics?pct(b.metrics.max_drawdown):'—'}</td><td>{b.period?`${b.period.start} – ${b.period.end}`:'—'}</td></tr>)}</tbody></table></div>
+</section>
+<section class="panel rotation-extension" id="rotation-versions"><T as="h2" text={c.versions}/><T text={c.incompatible}/><T as="h3" text={c.changes}/><ul>{a.changes.map(r=><li><T as="span" text={codeCopy[r.code]??c.unavailable}/></li>)}</ul><ul>{index.releases.map(r=><li><a href={`${dataBase}${r.path}`}>{r.release_id}</a> · {r.published_at}</li>)}</ul></section>

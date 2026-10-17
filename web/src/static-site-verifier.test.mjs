@@ -43,6 +43,8 @@ async function makeSite() {
     await fs.writeFile(destination, file.endsWith(".html") ? "<html>Docs</html>" : "{}");
   }
   await fs.copyFile(new URL('../public/data/rotation-evidence-release.json',import.meta.url),path.join(root,'data/rotation-evidence-release.json'));
+  await fs.copyFile(new URL('../public/data/rotation-release-index.json',import.meta.url),path.join(root,'data/rotation-release-index.json'));
+  await fs.cp(new URL('../public/data/rotation/',import.meta.url),path.join(root,'data/rotation'),{recursive:true});
   return root;
 }
 
@@ -111,3 +113,9 @@ test('downloadable Markdown is included in public-boundary scanning', async (t) 
 });
 
  test('static verifier rejects a missing or corrupt rotation release',async(t)=>{const root=await makeSite();t.after(()=>fs.rm(root,{recursive:true,force:true}));await fs.writeFile(path.join(root,'data/rotation-evidence-release.json'),'{}');assert.match(verifyStaticSite(root).join('\n'),/invalid reviewed rotation evidence/);});
+
+test('static verifier rejects a missing release registry',async(t)=>{
+ const root=await makeSite();t.after(()=>fs.rm(root,{recursive:true,force:true}));
+ await fs.rm(path.join(root,'data/rotation-release-index.json'),{force:true});
+ assert.match(verifyStaticSite(root).join('\n'),/rotation release registry/);
+});

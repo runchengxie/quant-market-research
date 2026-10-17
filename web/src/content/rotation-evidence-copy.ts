@@ -12,6 +12,7 @@ export const evidenceCopy = {
     "Reproduced weekly rotation evidence",
     "周频轮动：重新运行的历史证据",
   ],
+  previousSnapshot: ["This section preserves the earlier reviewed snapshot with three missing price columns. The follow-up above recovers those inputs and uses a separate calendar aligned across execution delays; do not treat these sections as the same release.", "本节保留较早的已审查快照，其中三个配置缺少价格列。上方后续检验已恢复输入，并使用跨执行延迟对齐的独立窗口；两部分属于不同版本。"],
   intro: [
     "Compare compatible windows, replay historical eligibility and inspect reconciled return contributions. These are historical diagnostics; independently captured availability and forward validation remain missing.",
     "在一致窗口内比较配置，回看历史资格与执行状态，并核对收益贡献。当前结果属于历史诊断，尚缺独立历史可得性证据和前瞻验证。",

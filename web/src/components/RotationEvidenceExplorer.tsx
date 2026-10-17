@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import RotationThemeEvidence from "./RotationThemeEvidence";
+import {extText} from "../content/rotation-extension-display";
 import { ResearchBarChart } from "./ResearchCharts";
 import {
   englishLocale,
@@ -178,7 +180,7 @@ export default function RotationEvidenceExplorer({
       aria-labelledby="evidence-title"
     >
       <h2 id="evidence-title">{t("title")}</h2>
-      <p>{t("intro")}</p>
+      <p>{t("previousSnapshot")}</p><p>{t("intro")}</p>
       <p className="panel-note">
         {t("coverage").replace(
           /\{(registered|reproduced|missing)\}/g,
@@ -503,8 +505,8 @@ export default function RotationEvidenceExplorer({
         <p className="panel-note">{t("listingNote")}</p>
       </section>
       <section className="rotation-card" aria-labelledby="theme-status-title">
-        <h3 id="theme-status-title">{t("theme")}</h3>
-        <p>{t("themeBody")}</p>
+        <h3 id="theme-status-title">{evidence.theme_status.status==="diagnostic"?extText("theme"):t("theme")}</h3>
+        <RotationThemeEvidence theme={evidence.theme_status}/>
       </section>
       <p>
         <a
