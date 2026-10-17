@@ -1,3 +1,4 @@
+import { validateRotationEvidence } from "../src/content/rotation-evidence.server.ts";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -62,6 +63,12 @@ function resolveLocalReference(reference, htmlFile, dist) {
 export function verifyStaticSite(distDirectory) {
   const dist = path.resolve(distDirectory);
   const errors = [];
+  try {
+    const release=JSON.parse(fs.readFileSync(path.join(dist,"data/rotation-evidence-release.json"),"utf8"));
+    if(Object.keys(release).sort().join(',')!=='asset,review')throw Error('Invalid envelope');
+    validateRotationEvidence(release.asset,release.review);
+  } catch(error) { errors.push(`Missing or invalid reviewed rotation evidence: ${error.message}`); }
+
 
   for (const [relative, marker] of routes) {
     const file = path.join(dist, relative);

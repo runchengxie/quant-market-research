@@ -42,6 +42,7 @@ async function makeSite() {
     await fs.mkdir(path.dirname(destination), { recursive: true });
     await fs.writeFile(destination, file.endsWith(".html") ? "<html>Docs</html>" : "{}");
   }
+  await fs.copyFile(new URL('../public/data/rotation-evidence-release.json',import.meta.url),path.join(root,'data/rotation-evidence-release.json'));
   return root;
 }
 
@@ -108,3 +109,5 @@ test('downloadable Markdown is included in public-boundary scanning', async (t) 
   await fs.writeFile(path.join(root, 'downloads/report.md'), '# Report\n/home/private/generated-report');
   assert.match(verifyStaticSite(root).join('\n'), /forbidden local path/);
 });
+
+ test('static verifier rejects a missing or corrupt rotation release',async(t)=>{const root=await makeSite();t.after(()=>fs.rm(root,{recursive:true,force:true}));await fs.writeFile(path.join(root,'data/rotation-evidence-release.json'),'{}');assert.match(verifyStaticSite(root).join('\n'),/invalid reviewed rotation evidence/);});
