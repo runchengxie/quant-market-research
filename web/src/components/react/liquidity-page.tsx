@@ -5,7 +5,7 @@ import { formatNumber as num } from '../../lib/format';
 import { withBase } from '../../lib/routes';
 import { auditLiquidityMarket, liquidityComparison, marketsForPeriod, mechanicalOrderBudget, type LiquidityMetric } from '../../lib/liquidity-quality';
 import { Panel, BarChart, ControlBar, Choice, SimpleTable, Loading, ResourceState, useJson, englishLocale } from './research-shared';
-import type { LiquiditySummary, LiquidityRelativeSummary, LiquidityCoverageSummary } from './research-shared';
+import type { LiquiditySummary, LiquidityRelativeSummary, LiquidityCoverageSummary, LiquidityFollowupAudit } from './research-shared';
 
 const text = (key: keyof typeof copy) => copy[key][englishLocale() ? 0 : 1];
 const money = (value: number | null | undefined) => value == null ? text('missing') : `$${num(value)}`;
@@ -16,6 +16,7 @@ export function LiquidityPage({ embedded = false }: { embedded?: boolean }) {
 export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean }) {
  const { data: summary, error, retry } = useJson<LiquiditySummary>('liquidity/summary.json');
  const coverageResource=useJson<LiquidityCoverageSummary>('liquidity/capacity-data-quality.json');
+ const followupResource=useJson<LiquidityFollowupAudit>('liquidity/followup-audit.json');
  const [chosenPeriod,setPeriod]=useState<string|null>(null);
  const [market,setMarket]=useState('all');
  const [absoluteBucket,setAbsoluteBucket]=useState(2);
@@ -40,7 +41,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
  const displayCount=(value:number|undefined)=>value==null?text('missing'):num(value);
  const issueText=(item: typeof summary.markets[number])=>auditLiquidityMarket(item).map(issue=>`${text(issue.code)}: ${num(issue.reported)} / ${num(issue.grouped)}`).join('; ');
  const valueFor=(row: typeof buckets[number], key: LiquidityMetric)=>row[basis==='adv20'?key:(`median20_${key}` as const)];
- const rawRows=visible.flatMap(item=>item.buckets.map(row=>({market:item.market,date:item.coverage_start===item.coverage_end?item.as_of??'':`${item.coverage_start} — ${item.coverage_end}`,bucket:row.label,stocks:row.count==null?text('missing'):num(row.count),observations:row.observations==null?text('missing'):num(row.observations),median:row.observations===0?text('noObservations'):money(valueFor(row,'median_usd')),mean:money(valueFor(row,'mean_usd')),p90:money(valueFor(row,'p90_usd'))})));
+ const rawRows=visible.flatMap(item=>item.buckets.map(row=>({market:item.market,date:item.coverage_start===item.coverage_end?item.as_of??'':`${item.coverage_start} — ${item.coverage_end}`,bucket:row.label,stocks:row.count==null?text('missing'):num(row.count),observations:row.observations==null?text('missing'):num(row.observations),median:row.observations===0?text('noObservations'):money(valueFor(row,'median_usd')),p10:money(valueFor(row,'p10_usd')),p25:money(valueFor(row,'p25_usd')),mean:money(valueFor(row,'mean_usd')),p75:money(valueFor(row,'p75_usd')),p90:money(valueFor(row,'p90_usd')),zeroShare:row.zero_adv20_share==null?text('missing'):`${(row.zero_adv20_share*100).toFixed(2)}%`})));
  const periodLabel=(value:string)=>value==='latest'?text('latest'):value==='common snapshot'?text('common'):value;
  return <>
   <section className={`period-panel ${embedded?'embedded':''}`} id="market-profiles">
@@ -56,7 +57,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
      <label>{text('market')}<select aria-label={text('market')} value={market} onChange={e=>setMarket(e.target.value)}><option value="all">{text('all')}</option>{summary.markets.map(item=><option key={item.market}>{item.market}</option>)}</select></label>
      <label>{bucketLabel}<select aria-label={bucketLabel} value={bucket} onChange={e=>setBucket(Number(e.target.value))}>{buckets.map((item,index)=><option key={item.label} value={index}>{item.label}</option>)}</select></label>
      <label>{text('basis')}<select aria-label={text('basis')} value={basis} onChange={e=>setBasis(e.target.value as 'adv20'|'median20')}><option value="adv20">{text('adv20')}</option><option value="median20">{text('median20')}</option></select></label>
-     <label>{text('metric')}<select aria-label={text('metric')} value={metric} onChange={e=>setMetric(e.target.value as LiquidityMetric)}>{(['median_usd','mean_usd','p90_usd'] as const).map(value=><option key={value} value={value}>{text(value)}</option>)}</select></label>
+     <label>{text('metric')}<select aria-label={text('metric')} value={metric} onChange={e=>setMetric(e.target.value as LiquidityMetric)}>{(['median_usd','mean_usd','p10_usd','p25_usd','p75_usd','p90_usd'] as const).map(value=><option key={value} value={value}>{text(value)}</option>)}</select></label>
      <Choice active={log} onClick={()=>setLog(!log)}>{log?text('log'):text('linear')}</Choice>
     </div>
     <p className="period-meta">{visible.map(item=>`${item.market} ${item.as_of??item.coverage_end??text('missing')}`).join(' · ')}</p>
@@ -67,7 +68,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
      {rows.length ? <BarChart rows={rows.map(item=>({market:item.market,value:item.value==null?'':String(item.value)}))} labelKey="market" valueKey="value" formatter={value=>money(value)} logScale={log}/> : <p className="panel-note">{text('noMarket')}</p>}
      <SimpleTable rows={rows.map(item=>({market:item.market,value:item.observations===0?text('noObservations'):money(item.value),stocks:displayCount(item.stocks),totalStocks:displayCount(item.totalStocks),observations:displayCount(item.observations),totalObservations:displayCount(item.totalObservations),capRange:item.capMin==null?text('missing'):`${money(item.capMin)} — ${money(item.capMax)}`}))} columns={[["market",text('market')],["value",text(metric)],["stocks",text('bucketStocks')],["totalStocks",text('universeStocks')],["observations",text('bucketObservations')],["totalObservations",text('universeObservations')],...(grouping==='relative'?[["capRange",text('capRange')]]:[])]}/>
     </Panel>
-    <details><summary>{text('raw')}</summary><p className="panel-note">{selected?.common_dates!==1&&selected?text('pooled'):text('stockNote')}</p><SimpleTable rows={rawRows} columns={[["market",text('market')],["date",text('range')],["bucket",bucketLabel],["stocks",text('stocks')],["observations",text('observations')],["median",text('median_usd')],["mean",text('mean_usd')],["p90",text('p90_usd')]]}/></details>
+    <details><summary>{text('raw')}</summary><p className="panel-note">{selected?.common_dates!==1&&selected?text('pooled'):text('stockNote')}</p><SimpleTable rows={rawRows} columns={[["market",text('market')],["date",text('range')],["bucket",bucketLabel],["stocks",text('stocks')],["observations",text('observations')],["median",text('median_usd')],["p10",text('p10_usd')],["p25",text('p25_usd')],["mean",text('mean_usd')],["p75",text('p75_usd')],["p90",text('p90_usd')],["zeroShare",text('zeroAdvShare')]]}/></details>
    </>:source&&<p className="data-notice" role="status">{text('noPeriod')}</p>}
   </section>
   <section id="liquidity-quality" className="report-section"><h2>{text('quality')}</h2>
@@ -76,9 +77,17 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
    <details><summary>{text('panelProfile')}</summary><SimpleTable rows={Object.entries(summary.source_profiles??{}).map(([name,p])=>({market:name,source:num(p.source_rows),included:num(p.eligible_observations)}))} columns={[["market",text('market')],["source",text('sourceRows')],["included",text('includedRows')]]}/></details>
    <p><a href={withBase('/data/liquidity/inherited-summary.json',import.meta.env.BASE_URL)}>{text('archive')}</a></p>
    <LiquidityCoveragePanel data={coverageResource.data} error={coverageResource.error} retry={coverageResource.retry} market={market}/>
+   <LiquidityFollowupPanel data={followupResource.data} error={followupResource.error} retry={followupResource.retry}/>
   </section>
   <OrderBudget rows={rows} period={periodLabel(period)} bucket={buckets[bucket]?.label??''} basis={text(basis)} metric={text(metric)}/>
  </>;
+}
+
+function LiquidityFollowupPanel({data,error,retry}:{data:LiquidityFollowupAudit|null;error:string|null;retry:()=>void}) {
+ if(error) return <div className="report-section"><h3>{text('followupTitle')}</h3><ResourceState error={error} retry={retry} label={text('followupTitle')}/></div>;
+ if(!data) return <div className="report-section"><h3>{text('followupTitle')}</h3><Loading/></div>;
+ const rows=data.dates.flatMap(date=>date.exchanges.map(item=>({date:date.date,exchange:item.exchange,daily:num(item.daily_rows),matched:num(item.matched),dailyOnly:num(item.daily_only),suspended:num(item.daily_only_suspended),over1:`${(item.matched_rel_diff_over_1pct_share*100).toFixed(1)}%`,p50:`${(item.median_matched_relative_difference*100).toFixed(2)}%`,p90:`${(item.p90_matched_relative_difference*100).toFixed(2)}%`,missingAmount:`${(item.daily_only_amount_share*100).toFixed(1)}%`})));
+ return <div className="report-section"><h3>{text('followupTitle')}</h3><p>{text('followupIntro')}</p><SimpleTable rows={rows} columns={[["date",text('date')],["exchange",text('exchange')],["daily",text('dailyRows')],["matched",text('matchedSecurityDays')],["dailyOnly",text('dailyOnlySecurityDays')],["suspended",text('suspensionMatched')],["over1",text('mismatchOver1Pct')],["p50",text('relativeP50')],["p90",text('relativeP90')],["missingAmount",text('dailyOnlyAmountShare')]]}/><p className="data-notice" role="note">{text('followupDenominator').replace('{rows}',num(data.observed_rows.daily_rows)).replace('{zeros}',num(data.observed_rows.daily_zero_turnover_rows))} {data.universe_denominator.reason}</p></div>;
 }
 
 function LiquidityCoveragePanel({data,error,retry,market}:{data:LiquidityCoverageSummary|null;error:string|null;retry:()=>void;market:string}) {

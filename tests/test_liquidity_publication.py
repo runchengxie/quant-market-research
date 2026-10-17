@@ -13,9 +13,17 @@ def fixture():
         observations=1,
         median_usd=10.0,
         mean_usd=10.0,
+        p10_usd=10.0,
+        p25_usd=10.0,
+        p75_usd=10.0,
         p90_usd=10.0,
+        zero_adv20_observations=0,
+        zero_adv20_share=0.0,
         median20_median_usd=8.0,
         median20_mean_usd=8.0,
+        median20_p10_usd=8.0,
+        median20_p25_usd=8.0,
+        median20_p75_usd=8.0,
         median20_p90_usd=8.0,
     )
     labels = ["< $10m", "$10m-$100m", "$100m-$1bn", "$1bn-$10bn", ">= $10bn"]
@@ -27,9 +35,17 @@ def fixture():
             observations=0,
             median_usd=None,
             mean_usd=None,
+            p10_usd=None,
+            p25_usd=None,
+            p75_usd=None,
             p90_usd=None,
+            zero_adv20_observations=0,
+            zero_adv20_share=None,
             median20_median_usd=None,
             median20_mean_usd=None,
+            median20_p10_usd=None,
+            median20_p25_usd=None,
+            median20_p75_usd=None,
             median20_p90_usd=None,
         )
         for label in labels[1:]
@@ -113,4 +129,13 @@ def test_inconsistent_bucket_counts_cannot_be_published_even_with_a_receipt():
     raw = json.dumps(summary).encode()
     review["reviewed_summary_sha256"] = hashlib.sha256(raw).hexdigest()
     with pytest.raises(ValueError, match="observations"):
+        reviewed_publication(raw, review)
+
+
+def test_zero_adv20_share_must_match_observed_eligible_rows():
+    summary, _, review = fixture()
+    summary["markets"][0]["buckets"][0]["zero_adv20_observations"] = 1
+    raw = json.dumps(summary).encode()
+    review["reviewed_summary_sha256"] = hashlib.sha256(raw).hexdigest()
+    with pytest.raises(ValueError, match="share"):
         reviewed_publication(raw, review)

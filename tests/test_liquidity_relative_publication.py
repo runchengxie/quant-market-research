@@ -56,6 +56,22 @@ def test_changed_relative_denominator_is_rejected():
         reviewed_relative(raw, review, base_raw)
 
 
+def test_relative_zero_share_and_quantile_order_are_validated():
+    data, _, review, base_raw = proposal()
+    data["markets"][0]["buckets"][0]["zero_adv20_share"] = 0.5
+    raw = json.dumps(data).encode()
+    review["reviewed_summary_sha256"] = hashlib.sha256(raw).hexdigest()
+    with pytest.raises(ValueError, match="statistics"):
+        reviewed_relative(raw, review, base_raw)
+
+    data, _, review, base_raw = proposal()
+    data["markets"][0]["buckets"][0]["p10_usd"] = 21
+    raw = json.dumps(data).encode()
+    review["reviewed_summary_sha256"] = hashlib.sha256(raw).hexdigest()
+    with pytest.raises(ValueError, match="quantiles"):
+        reviewed_relative(raw, review, base_raw)
+
+
 @pytest.mark.parametrize(
     "key", ["feature_checksums_verified", "absolute_aggregate_cells_reconciled"]
 )

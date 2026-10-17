@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-10-16T22:26:30+08:00",
+  "generated_at": "2026-10-17T08:15:00+08:00",
   "sources": [
     "market-research A-share rule reconstruction",
     "smallcap turnover clean, historical and overlap-audit summaries",
@@ -20,7 +20,8 @@
     "smallcap_turnover_files": 1,
     "raw_data_published": false,
     "execution_cost_files": 4,
-    "capacity_quality_files": 1
+    "capacity_quality_files": 1,
+    "liquidity_audit_files": 2
   },
   "snapshots": {
     "overview": {
@@ -100,10 +101,10 @@
       ]
     },
     "liquidity": {
-      "generated_at": "2026-10-16T22:26:30+08:00",
+      "generated_at": "2026-10-17T08:15:00+08:00",
       "coverage_start": "2019-11-01",
       "coverage_end": "2026-10-15",
-      "source": "四市场 ADV20 复算与共同日期对照",
+      "source": "四市场 ADV20 重算、共同日期与定向分钟/日线核查",
       "quality_status": "derived",
       "markets": {
         "us": {

@@ -54,7 +54,7 @@ def main():
         if 'common_dates' in period:
             assert len(common)==period['common_dates']
         for item in period['markets']:
-            buckets=[dict(values=[],medians=[],stocks=set(),n=0) for _ in range(5)]
+            buckets=[dict(values=[],medians=[],stocks=set(),n=0,zeros=0) for _ in range(5)]
             for batch in pq.ParquetFile(files[item['market']]).iter_batches(
                     columns=['date','eligible','symbol','market_cap_usd','adv20_usd','median20_usd'],batch_size=100000):
                 frame=batch.to_pandas()
@@ -71,6 +71,7 @@ def main():
                     entry['medians'].append(selected.median20_usd.to_numpy())
                     entry['stocks'].update(selected.symbol)
                     entry['n']+=len(selected)
+                    entry['zeros']+=int(selected.adv20_usd.eq(0).sum())
             assert sum(b['n'] for b in buckets)==item['eligible_observations']
             checked_observations+=item['eligible_observations']
             for expected, actual in zip(item['buckets'], buckets):
@@ -79,13 +80,17 @@ def main():
                 checked_cells+=2
                 for source, prefix in [('values',''),('medians','median20_')]:
                     values=np.concatenate(actual[source]) if actual[source] else np.array([])
-                    for metric, func in [('median_usd',np.median),('mean_usd',np.mean),('p90_usd',lambda x:np.quantile(x,.9))]:
+                    for metric, func in [('median_usd',np.median),('mean_usd',np.mean),('p10_usd',lambda x:np.quantile(x,.1)),('p25_usd',lambda x:np.quantile(x,.25)),('p75_usd',lambda x:np.quantile(x,.75)),('p90_usd',lambda x:np.quantile(x,.9))]:
                         value=expected[prefix+metric]
                         if not len(values):
                             assert value is None
                         else:
                             assert np.isclose(func(values),value,rtol=1e-10,atol=1e-5), (item['market'],expected['label'],metric)
                         checked_cells+=1
+                assert expected['zero_adv20_observations']==actual['zeros']
+                zero_share=actual['zeros']/actual['n'] if actual['n'] else None
+                assert (expected['zero_adv20_share'] is None if zero_share is None else np.isclose(expected['zero_adv20_share'],zero_share))
+                checked_cells+=2
     result=dict(schema_version='liquidity.independent-review.v1',
                 reviewed_summary_sha256=hashlib.sha256((args.run/'summary.proposed.json').read_bytes()).hexdigest(),
                 review_code_sha256=hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),

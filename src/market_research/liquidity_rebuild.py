@@ -150,21 +150,35 @@ def summarize_period(con, features: str, start: date, end: date, markets: list[s
         for bucket, label in enumerate(BUCKET_LABELS):
             row = con.execute(
                 """SELECT count(*),count(DISTINCT symbol),median(adv20_usd),avg(adv20_usd),
-              quantile_cont(adv20_usd,0.9),median(median20_usd),avg(median20_usd),quantile_cont(median20_usd,0.9)
+              quantile_cont(adv20_usd,0.1),quantile_cont(adv20_usd,0.25),
+              quantile_cont(adv20_usd,0.75),quantile_cont(adv20_usd,0.9),
+              count_if(adv20_usd=0),median(median20_usd),avg(median20_usd),
+              quantile_cont(median20_usd,0.1),quantile_cont(median20_usd,0.25),
+              quantile_cont(median20_usd,0.75),quantile_cont(median20_usd,0.9)
               FROM liquidity_period_rows WHERE market=? AND bucket=?""",
                 [market, bucket],
             ).fetchone()
+            observations = row[0]
+            zero_count = row[8] or 0
             item["buckets"].append(
                 dict(
                     label=label,
-                    observations=row[0],
+                    observations=observations,
                     count=row[1],
                     median_usd=row[2],
                     mean_usd=row[3],
-                    p90_usd=row[4],
-                    median20_median_usd=row[5],
-                    median20_mean_usd=row[6],
-                    median20_p90_usd=row[7],
+                    p10_usd=row[4],
+                    p25_usd=row[5],
+                    p75_usd=row[6],
+                    p90_usd=row[7],
+                    zero_adv20_observations=zero_count,
+                    zero_adv20_share=zero_count / observations if observations else None,
+                    median20_median_usd=row[9],
+                    median20_mean_usd=row[10],
+                    median20_p10_usd=row[11],
+                    median20_p25_usd=row[12],
+                    median20_p75_usd=row[13],
+                    median20_p90_usd=row[14],
                 )
             )
         if bounds[2] == 1:

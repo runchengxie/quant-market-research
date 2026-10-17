@@ -105,6 +105,9 @@ def main():
                     for key, fn in [
                         ("median_usd", np.median),
                         ("mean_usd", np.mean),
+                        ("p10_usd", lambda a: np.quantile(a, 0.1)),
+                        ("p25_usd", lambda a: np.quantile(a, 0.25)),
+                        ("p75_usd", lambda a: np.quantile(a, 0.75)),
                         ("p90_usd", lambda a: np.quantile(a, 0.9)),
                     ]:
                         actual = b[prefix + key]
@@ -114,6 +117,15 @@ def main():
                             else np.isclose(actual, fn(values), rtol=1e-10, atol=1e-6)
                         )
                         cells += 1
+                zero_count = int(rows.adv20_usd.eq(0).sum())
+                assert b["zero_adv20_observations"] == zero_count
+                zero_share = zero_count / len(rows) if len(rows) else None
+                assert (
+                    b["zero_adv20_share"] is None
+                    if zero_share is None
+                    else np.isclose(b["zero_adv20_share"], zero_share)
+                )
+                cells += 2
                 for key, fn in [("cap_min_usd", np.min), ("cap_max_usd", np.max)]:
                     actual = b[key]
                     assert (

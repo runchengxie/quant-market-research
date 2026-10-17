@@ -1,0 +1,318 @@
+{
+  "schema_version": "liquidity_followup_audit.v1",
+  "sample_dates": [
+    "20230214",
+    "20230310",
+    "20241015",
+    "20241128",
+    "20250117",
+    "20260417"
+  ],
+  "selection": "Targeted dates selected from the prior full reconciliation for low total ratios or high daily-only counts; not a random sample.",
+  "method": {
+    "daily_amount_to_cny": "daily.amount * 1000",
+    "minute_amount_unit": "CNY",
+    "key": "trade date × security; exchange from canonical suffix",
+    "security_identifiers_published": false
+  },
+  "observed_rows": {
+    "daily_rows": 31761,
+    "daily_zero_turnover_rows": 0,
+    "daily_zero_turnover_row_rate": 0.0
+  },
+  "universe_denominator": {
+    "status": "unavailable",
+    "zero_turnover_rate": null,
+    "reason": "A complete point-in-time listed-security universe is not supplied to this audit. Zero counts cover returned daily rows only."
+  },
+  "dates": [
+    {
+      "date": "20230214",
+      "daily_rows": 5078,
+      "minute_rows": 1223557,
+      "daily_zero_turnover_rows": 0,
+      "daily_only": 1,
+      "exchanges": [
+        {
+          "exchange": "BJ",
+          "daily_rows": 169,
+          "minute_securities": 169,
+          "matched": 169,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 7,
+          "matched_rel_diff_over_1pct_share": 0.04142011834319527,
+          "median_matched_relative_difference": 2.894499883670975e-07,
+          "p90_matched_relative_difference": 3.3445468626497546e-06
+        },
+        {
+          "exchange": "SH",
+          "daily_rows": 2172,
+          "minute_securities": 2172,
+          "matched": 2172,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 0.0,
+          "p90_matched_relative_difference": 0.0
+        },
+        {
+          "exchange": "SZ",
+          "daily_rows": 2737,
+          "minute_securities": 2736,
+          "matched": 2736,
+          "daily_only": 1,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.014402909979677601,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 2.177618087244307e-09,
+          "p90_matched_relative_difference": 9.532637534134014e-09
+        }
+      ]
+    },
+    {
+      "date": "20230310",
+      "daily_rows": 5104,
+      "minute_rows": 1229823,
+      "daily_zero_turnover_rows": 0,
+      "daily_only": 1,
+      "exchanges": [
+        {
+          "exchange": "BJ",
+          "daily_rows": 177,
+          "minute_securities": 177,
+          "matched": 177,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 5,
+          "matched_rel_diff_over_1pct_share": 0.02824858757062147,
+          "median_matched_relative_difference": 3.9125401515557964e-07,
+          "p90_matched_relative_difference": 3.173482649035268e-06
+        },
+        {
+          "exchange": "SH",
+          "daily_rows": 2179,
+          "minute_securities": 2179,
+          "matched": 2179,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 0.0,
+          "p90_matched_relative_difference": 0.0
+        },
+        {
+          "exchange": "SZ",
+          "daily_rows": 2748,
+          "minute_securities": 2747,
+          "matched": 2747,
+          "daily_only": 1,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.011351267453760888,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 1.791480907590129e-09,
+          "p90_matched_relative_difference": 8.99213059237313e-09
+        }
+      ]
+    },
+    {
+      "date": "20241015",
+      "daily_rows": 5346,
+      "minute_rows": 1288145,
+      "daily_zero_turnover_rows": 0,
+      "daily_only": 1,
+      "exchanges": [
+        {
+          "exchange": "BJ",
+          "daily_rows": 254,
+          "minute_securities": 254,
+          "matched": 254,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 107,
+          "matched_rel_diff_over_1pct_share": 0.421259842519685,
+          "median_matched_relative_difference": 0.008759541753462868,
+          "p90_matched_relative_difference": 0.019638605603384006
+        },
+        {
+          "exchange": "SH",
+          "daily_rows": 2261,
+          "minute_securities": 2261,
+          "matched": 2261,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 0.0,
+          "p90_matched_relative_difference": 1.1207683119382291e-16
+        },
+        {
+          "exchange": "SZ",
+          "daily_rows": 2831,
+          "minute_securities": 2830,
+          "matched": 2830,
+          "daily_only": 1,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.006457453433550325,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 1.581626065415482e-09,
+          "p90_matched_relative_difference": 7.416560172408581e-09
+        }
+      ]
+    },
+    {
+      "date": "20241128",
+      "daily_rows": 5358,
+      "minute_rows": 1229100,
+      "daily_zero_turnover_rows": 0,
+      "daily_only": 258,
+      "exchanges": [
+        {
+          "exchange": "BJ",
+          "daily_rows": 257,
+          "minute_securities": 0,
+          "matched": 0,
+          "daily_only": 257,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 1.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": null,
+          "median_matched_relative_difference": null,
+          "p90_matched_relative_difference": null
+        },
+        {
+          "exchange": "SH",
+          "daily_rows": 2263,
+          "minute_securities": 2263,
+          "matched": 2263,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 0.0,
+          "p90_matched_relative_difference": 1.1360408670481587e-16
+        },
+        {
+          "exchange": "SZ",
+          "daily_rows": 2838,
+          "minute_securities": 2837,
+          "matched": 2837,
+          "daily_only": 1,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.001040895230958884,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 1.490937188661879e-09,
+          "p90_matched_relative_difference": 6.321683596947911e-09
+        }
+      ]
+    },
+    {
+      "date": "20250117",
+      "daily_rows": 5378,
+      "minute_rows": 1295857,
+      "daily_zero_turnover_rows": 0,
+      "daily_only": 1,
+      "exchanges": [
+        {
+          "exchange": "BJ",
+          "daily_rows": 263,
+          "minute_securities": 263,
+          "matched": 263,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 214,
+          "matched_rel_diff_over_1pct_share": 0.8136882129277566,
+          "median_matched_relative_difference": 0.016107460790135857,
+          "p90_matched_relative_difference": 0.029602063684077536
+        },
+        {
+          "exchange": "SH",
+          "daily_rows": 2269,
+          "minute_securities": 2269,
+          "matched": 2269,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 0.0,
+          "p90_matched_relative_difference": 7.294208323969632e-11
+        },
+        {
+          "exchange": "SZ",
+          "daily_rows": 2846,
+          "minute_securities": 2845,
+          "matched": 2845,
+          "daily_only": 1,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.001884898592966598,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 1.2590807218596896e-09,
+          "p90_matched_relative_difference": 8.26758515589175e-09
+        }
+      ]
+    },
+    {
+      "date": "20260417",
+      "daily_rows": 5497,
+      "minute_rows": 1324777,
+      "daily_zero_turnover_rows": 0,
+      "daily_only": 0,
+      "exchanges": [
+        {
+          "exchange": "BJ",
+          "daily_rows": 307,
+          "minute_securities": 307,
+          "matched": 307,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 256,
+          "matched_rel_diff_over_1pct_share": 0.8338762214983714,
+          "median_matched_relative_difference": 0.015699967919684817,
+          "p90_matched_relative_difference": 0.028716613504958317
+        },
+        {
+          "exchange": "SH",
+          "daily_rows": 2305,
+          "minute_securities": 2305,
+          "matched": 2305,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 0.0,
+          "p90_matched_relative_difference": 2.1943367028803826e-09
+        },
+        {
+          "exchange": "SZ",
+          "daily_rows": 2885,
+          "minute_securities": 2885,
+          "matched": 2885,
+          "daily_only": 0,
+          "daily_only_suspended": 0,
+          "daily_only_amount_share": 0.0,
+          "matched_rel_diff_over_1pct": 0,
+          "matched_rel_diff_over_1pct_share": 0.0,
+          "median_matched_relative_difference": 1.3065156156665696e-09,
+          "p90_matched_relative_difference": 5.841372070928852e-09
+        }
+      ]
+    }
+  ]
+}
