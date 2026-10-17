@@ -1,0 +1,23 @@
+---
+import T from './LocaleText.astro';
+import { evidenceCopy as c, stateCopy } from '../content/rotation-evidence-copy';
+import { weeklyRows } from '../content/rotation-research';
+import type { RotationEvidence } from '../content/rotation-evidence';
+const { evidence, releaseUrl }=Astro.props as {evidence:RotationEvidence;releaseUrl:string};
+const label=(id:string)=>weeklyRows.find(r=>r.id===id)?.label??[id,id] as const;
+const comparisons=evidence.comparisons.filter(r=>r.window_id==='common'&&r.status==='available');
+const contributions=evidence.attribution.filter(r=>r.window_id==='common'&&r.status==='available');
+const samples=['fixed-base','pool-core'].map(id=>evidence.replay.filter(r=>r.experiment_id===id).at(-1)).filter(r=>r!==undefined);
+const counts={registered:evidence.experiments.length,reproduced:evidence.experiments.filter(e=>!e.evidence_stage.startsWith('unavailable')).length,missing:evidence.experiments.filter(e=>e.evidence_stage.startsWith('unavailable')).length};
+const coverage=c.coverage.map(s=>s.replace(/\{(registered|reproduced|missing)\}/g,(_,k:keyof typeof counts)=>String(counts[k]))) as [string,string];
+const reviewUrl=releaseUrl.replace('/data/rotation-evidence-release.json','/research-notes/rotation-evidence-review');
+const pct=(v:number|null)=>v===null?'—':`${(v*100).toFixed(2)}%`;
+---
+<section class="panel evidence-workbench" id="rotation-evidence">
+ <T as="h2" text={c.title}/><T text={c.intro}/><T text={coverage}/><T text={c.sameWindow}/><T text={c.tableHint}/>
+ {comparisons.map(r=><section><h3><T as="span" text={label(r.members[0].experiment_id)}/> · {r.period?.start} – {r.period?.end} · {r.period?.sessions} <T as="span" text={c.sessions}/></h3><div class="table-scroll"><table><thead><tr><th><T as="span" text={c.configuration}/></th><th><T as="span" text={c.total_return}/></th><th><T as="span" text={c.cagr}/></th><th><T as="span" text={c.sharpe_zero_rf}/></th><th><T as="span" text={c.max_drawdown}/></th><th><T as="span" text={c.avg_bond_weight}/></th></tr></thead><tbody>{r.members.map(m=><tr><td><T as="span" text={label(m.experiment_id)}/></td><td>{pct(m.metrics.total_return)}</td><td>{pct(m.metrics.cagr)}</td><td>{m.metrics.sharpe_zero_rf.toFixed(3)}</td><td>{pct(m.metrics.max_drawdown)}</td><td>{pct(m.avg_bond_weight)}</td></tr>)}</tbody></table></div></section>)}
+ {evidence.experiments.filter(e=>e.evidence_stage.startsWith('unavailable')).map(e=><p><T as="span" text={label(e.id)}/>: <T as="span" text={c.missing}/></p>)}
+ <T as="h3" text={c.attribution}/><T text={c.linked}/><div class="table-scroll"><table><thead><tr><th><T as="span" text={c.configuration}/></th>{(['risk','bond','costs','residual','total_return'] as const).map(k=><th><T as="span" text={c[k]}/></th>)}</tr></thead><tbody>{contributions.map(r=><tr><td><T as="span" text={label(r.experiment_id)}/></td>{(['risk','bond','costs','residual','total_return'] as const).map(k=><td>{pct(r[k])}</td>)}</tr>)}</tbody></table></div>
+ <T as="h3" text={c.replay}/><T text={c.replayScope}/>{samples.map(r=><section><h4><T as="span" text={label(r.experiment_id)}/> · {r.signal_date} → {r.execution_date}</h4><p><T as="span" text={stateCopy[r.status]??c.unavailable}/> · <T as="span" text={c.riskWeight}/>: {pct(r.allocation.risk_weight)} · <T as="span" text={c.bondWeight}/>: {pct(r.allocation.bond_weight)}</p><div class="table-scroll"><table><thead><tr><th><T as="span" text={c.symbol}/></th><th><T as="span" text={c.firstObserved}/></th><th><T as="span" text={c.history}/></th><th><T as="span" text={c.eligible}/></th><th><T as="span" text={c.listing}/></th></tr></thead><tbody>{r.assets.map(a=><tr><td>{a.symbol}</td><td>{a.first_observed_date??'—'}</td><td>{a.observed_history}</td><td><T as="span" text={a.eligible?c.eligible:c.ineligible}/></td><td><T as="span" text={c.unverified}/></td></tr>)}</tbody></table></div></section>)}
+ <T text={c.listingNote}/><T as="h3" text={c.theme}/><T text={c.themeBody}/><T as="h3" text={c.methods}/><T text={c.methodBody}/><a href={releaseUrl}><T as="span" text={c.source}/></a><p><a href={`${reviewUrl}.md`} data-locale-link data-href-en={`${reviewUrl}.md`} data-href-zh={`${reviewUrl}.zh-CN.md`}><T as="span" text={c.reviewNote}/></a></p>
+</section>

@@ -26,30 +26,27 @@ const pageTitle = `${titleEn} · Quant Market Research`;
     <title>{pageTitle}</title>
     <script is:inline>
       (() => {
+        const requested = new URLSearchParams(window.location.search).get("lang");
+        let saved;
+        try { saved = localStorage.getItem("quant-market-research-locale"); } catch { /* storage is optional */ }
+        const locale = requested === "zh-CN" || requested === "en-US"
+          ? requested : saved === "zh-CN" ? "zh-CN" : "en-US";
         try {
-          const requested = new URLSearchParams(window.location.search).get("lang");
-          const saved = localStorage.getItem("quant-market-research-locale");
-          const locale = requested === "zh-CN" || requested === "en-US"
-            ? requested
-            : saved === "zh-CN" ? "zh-CN" : "en-US";
           if (requested === "zh-CN" || requested === "en-US") localStorage.setItem("quant-market-research-locale", locale);
-          document.documentElement.lang = locale;
-          document.documentElement.dataset.locale = locale;
-          const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");
-          if (title) document.title = title;
         } catch { /* storage is optional */ }
+        document.documentElement.lang = locale;
+        document.documentElement.dataset.locale = locale;
+        const title = document.documentElement.getAttribute(locale === "en-US" ? "data-title-en" : "data-title-zh");
+        if (title) document.title = title;
       })();
     </script>
     <script is:inline>
       (() => {
-        try {
-          const stored = localStorage.getItem("market-research-theme");
-          const choice = stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
-          const dark = choice === "dark" || (choice === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
-          document.documentElement.dataset.theme = dark ? "dark" : "light";
-        } catch {
-          document.documentElement.dataset.theme = "light";
-        }
+        let stored;
+        try { stored = localStorage.getItem("market-research-theme"); } catch { /* storage is optional */ }
+        const choice = stored === "dark" || stored === "light" || stored === "system" ? stored : "system";
+        const dark = choice === "dark" || (choice === "system" && matchMedia("(prefers-color-scheme: dark)").matches);
+        document.documentElement.dataset.theme = dark ? "dark" : "light";
       })();
     </script>
   </head>

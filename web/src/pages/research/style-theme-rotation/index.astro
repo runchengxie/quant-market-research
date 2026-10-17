@@ -1,4 +1,11 @@
 ---
+import { readFileSync } from 'node:fs';
+import { resolve } from 'node:path';
+import { createHash } from 'node:crypto';
+import RotationEvidenceExplorer from '../../../components/RotationEvidenceExplorer';
+import RotationEvidenceStatic from '../../../components/RotationEvidenceStatic.astro';
+import { evidenceCopy } from '../../../content/rotation-evidence-copy';
+import { validateRotationEvidence } from '../../../content/rotation-evidence.server';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import T from '../../../components/LocaleText.astro';
 import LegacyStrategyStudy from '../../../components/LegacyStrategyStudy.astro';
@@ -6,9 +13,15 @@ import { ExperimentExplorer, WeeklyExperimentCharts } from '../../../components/
 import { researchSteps, rotationCopy as copy, experimentCards, weeklyRows, groupLabels, validationQuestions as tests, rotationGlossary as glossary, rotationPageCopy as pageCopy, rotationSections as links } from '../../../content/rotation-research';
 import { withBase } from '../../../lib/routes';
 
-
+const releaseBytes=readFileSync(resolve('public/data/rotation-evidence-release.json'));
+const release=JSON.parse(releaseBytes.toString());
+if(Object.keys(release).sort().join(',')!=='asset,review')throw Error('Invalid rotation release envelope');
+const evidence=validateRotationEvidence(release.asset,release.review);
+const releaseSha=createHash('sha256').update(releaseBytes).digest('hex');
+const releaseUrl=withBase('/data/rotation-evidence-release.json',import.meta.env.BASE_URL);
+const summary={...evidence,replay:[]};
 ---
-<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research">
+<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research" workbench>
   <article class="rotation-report">
     <header class="theme-heading"><div>
       <T as="span" class="section-kicker" text={pageCopy.strategyResearchHistoricalEvidence} />
@@ -24,6 +37,7 @@ import { withBase } from '../../../lib/routes';
       </div>
     </section>
     <nav class="rotation-nav" aria-label={pageCopy.topicSections[0]} data-locale-aria data-aria-en={pageCopy.topicSections[0]} data-aria-zh={pageCopy.topicSections[1]}>
+      <a href="#rotation-evidence"><T as="span" text={evidenceCopy.title}/></a>
       {links.map(([id, en, zh]) => <a href={`#${id}`} data-locale-text data-en={en} data-zh={zh}>{en}</a>)}
     </nav>
     <section class="panel" id="research-map">
@@ -42,7 +56,11 @@ import { withBase } from '../../../lib/routes';
         <div class="rotation-card-grid">{experimentCards.map(card => <article class="rotation-card"><T as="h3" text={card.title} /><T text={card.observation} /><T class="panel-note" text={card.scope} /><T text={card.next} /></article>)}</div>
       </section>
     </ExperimentExplorer>
+    <RotationEvidenceExplorer evidence={summary} releaseUrl={releaseUrl} releaseSha={releaseSha} client:only="react">
+      <RotationEvidenceStatic slot="fallback" evidence={evidence} releaseUrl={releaseUrl}/>
+    </RotationEvidenceExplorer>
     <section id="weekly">
+      <T as="h2" text={evidenceCopy.archive}/><T text={evidenceCopy.archiveNote}/>
       <T as="h2" text={pageCopy.weeklyETFRotationWhatChangedAcrossExperiments} />
       <T text={copy.weeklyProtocol} />
       <T class="panel-note" text={copy.weeklyLimits} />
@@ -105,4 +123,12 @@ import { withBase } from '../../../lib/routes';
   .rotation-report .research-chart { min-height: 380px; }
   .rotation-report .study-evidence .theme-heading { margin-top: 2rem; }
   @media(max-width: 680px) { .rotation-card-grid, .rotation-flow { grid-template-columns: 1fr; } .rotation-facts { gap: .65rem; } .rotation-facts strong { font-size: 1.6rem; } }
+</style>
+
+<style is:global>
+.evidence-workbench .table-scroll {max-width:100%;overflow-x:auto;}
+.evidence-workbench .table-scroll table {min-width:850px;table-layout:auto;}
+.evidence-workbench > .table-scroll table {min-width:1150px;}
+.evidence-workbench .table-scroll th,.evidence-workbench .table-scroll td {white-space:nowrap;overflow-wrap:normal;}
+.evidence-workbench > .table-scroll td:last-child {min-width:220px;max-width:280px;white-space:normal;}
 </style>
