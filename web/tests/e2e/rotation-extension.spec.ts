@@ -58,7 +58,7 @@ test('rolling diagnostics load verified data and preserve an explicit window',as
 });
 
 test('failed rolling integrity check leaves earlier valid diagnostics readable',async({page})=>{
- await page.route('**/rotation/releases/rotation-forward-20261017-v1.json',r=>r.fulfill({status:200,body:'{}'}));
+ await page.route('**/rotation/releases/rotation-forward-*.json',r=>r.fulfill({status:200,body:'{}'}));
  await page.goto(route+'?lang=zh-CN');const robust=page.locator('#rotation-robustness');
  await robust.getByRole('button',{name:'加载滚动窗口检验',exact:true}).click();
  await expect(robust.getByRole('alert')).toContainText('无法验证');
