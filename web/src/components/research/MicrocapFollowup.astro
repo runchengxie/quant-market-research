@@ -1,9 +1,10 @@
 ---
-import { followupCopy as c, followupReview as review, executionLabels, sourceLabels, executionTable, supportTable, coverageTable } from '../../content/microcap-followup';
+import { followupCopy as c, followupReview as review, executionLabels, sourceLabels, executionTable, supportTable, coverageTable, backfillTable } from '../../content/microcap-followup';
 const tables = [
   { title: c.executionTitle, en: executionTable('en-US'), zh: executionTable('zh-CN'), id: 'execution', before: ['executionFinding', 'synthetic', 'executionRules', 'suspension'] as const, after: ['metricMeaning'] as const },
   { title: c.supportTitle, en: supportTable('en-US'), zh: supportTable('zh-CN'), id: 'support', before: ['supportFinding', 'supportMechanism'] as const, after: ['supportBoundary'] as const },
-  { title: c.coverageTitle, en: coverageTable('en-US'), zh: coverageTable('zh-CN'), id: 'coverage', before: ['coverageFinding'] as const, after: ['history', 'next'] as const },
+  { title: c.coverageTitle, en: coverageTable('en-US'), zh: coverageTable('zh-CN'), id: 'coverage', before: ['coverageFinding'] as const, after: [] as const },
+  { title: c.backfillTitle, en: backfillTable('en-US'), zh: backfillTable('zh-CN'), id: 'backfill', before: ['backfillFinding'] as const, after: ['backfillBoundary', 'history', 'next'] as const },
 ];
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
@@ -30,6 +31,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </table></div>
     {group.after.map(key => <p data-locale-text data-en={c[key][0]} data-zh={c[key][1]}>{c[key][0]}</p>)}
   </section>)}
+  <p><a href={`${base}/data/microcap_action_backfill_review.json`} download data-locale-text data-en={c.backfillLink[0]} data-zh={c.backfillLink[1]}>{c.backfillLink[0]}</a></p>
   <details><summary data-locale-text data-en={c.provenance[0]} data-zh={c.provenance[1]}>{c.provenance[0]}</summary>
     <p data-locale-text data-en={c.provenanceText[0]} data-zh={c.provenanceText[1]}>{c.provenanceText[0]}</p>
     <p><a href={`${base}/data/microcap_followup_review.json`} download data-locale-text data-en={c.dataLink[0]} data-zh={c.dataLink[1]}>{c.dataLink[0]}</a></p>

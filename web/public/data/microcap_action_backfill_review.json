@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-17",
+  "independent_event_completeness": false,
+  "raw_share_ready": false,
+  "plans": {
+    "45": {
+      "names": 619,
+      "stock_months": 5480,
+      "queried_names": 619,
+      "unqueried_names": 0,
+      "unqueried_stock_months": 0,
+      "events": {
+        "implemented_rows": 5389,
+        "ready_events": 5132,
+        "equivalent_versions_collapsed": 158,
+        "missing_ex_date_rows": 0,
+        "blocked_event_count": 83,
+        "conflict_fields": {
+          "cash_div": 5,
+          "cash_div_tax": 5,
+          "end_date": 6,
+          "imp_ann_date": 6
+        },
+        "missing_fields": {
+          "cash_div_tax": 69,
+          "div_listdate": 1
+        }
+      }
+    },
+    "90": {
+      "names": 597,
+      "stock_months": 5400,
+      "queried_names": 597,
+      "unqueried_names": 0,
+      "unqueried_stock_months": 0,
+      "events": {
+        "implemented_rows": 5304,
+        "ready_events": 5062,
+        "equivalent_versions_collapsed": 144,
+        "missing_ex_date_rows": 1,
+        "blocked_event_count": 82,
+        "conflict_fields": {
+          "cash_div": 5,
+          "cash_div_tax": 5,
+          "end_date": 5,
+          "imp_ann_date": 7
+        },
+        "missing_fields": {
+          "cash_div_tax": 69,
+          "div_listdate": 1
+        }
+      }
+    }
+  },
+  "source_sha256": "b7fbddad4b53304447c963e7a8f31967ee73d11e3a661b48b49baf37c2357e5c"
+}
