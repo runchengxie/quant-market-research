@@ -32,3 +32,9 @@ test('source trust, mapping and complete row definitions suppress deltas',async(
  const result=compareRotationReleases(l,r);assert.equal(result.rows[0].cagr_delta,null);assert.ok(!result.changes.includes('same_definitions'));
  }
 });
+
+test('changed forward registration remains visible when historical metrics are unchanged',async()=>{
+ const {compareRotationReleases}=await import('./content/rotation-release-comparison.ts');
+ const right=structuredClone(asset);right.forward.registration_id='new-registration';right.changes.push({kind:'forward',code:'forward_controls_hardened'});
+ const result=compareRotationReleases(asset,right);assert.ok(result.changes.includes('forward_evidence_changed'));assert.ok(result.changes.includes('forward_controls_hardened'));
+});

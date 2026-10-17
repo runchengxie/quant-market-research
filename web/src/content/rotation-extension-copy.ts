@@ -27,6 +27,7 @@ export const extensionCopy = {
     more: ['Show more rows', '显示更多行'], less: ['Show fewer rows', '收起部分行'],
 } satisfies Record<string, Copy>;
 export const codeCopy: Record<string, Copy> = {
+    forward_controls_hardened: ['Forward accounting and frozen implementation controls strengthened; historical results are unchanged.', '已加强前瞻核算与冻结代码校验，历史结果保持不变。'],
     source_availability_changed: ['Source availability evidence changed; numerical deltas are suppressed.', '数据可用性证据发生变化，不显示数值差额。'],
     row_definitions_changed: ['Some experiment or window definitions differ; affected deltas are suppressed.', '部分实验或窗口定义不同，相应结果不显示数值差额。'],
 

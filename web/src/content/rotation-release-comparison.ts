@@ -22,10 +22,12 @@ export function compareRotationReleases(left: unknown, right: unknown): {
         changes.push('sample_changed');
     if (l.robustness.registration_sha256 !== r.robustness.registration_sha256)
         changes.push('registration_changed');
-    if (l.forward.settled_weeks !== r.forward.settled_weeks)
+    if (l.forward.settled_weeks !== r.forward.settled_weeks || l.forward.registration_id !== r.forward.registration_id || l.forward.effective_at !== r.forward.effective_at || l.forward.status !== r.forward.status)
         changes.push('forward_evidence_changed');
     if (l.theme.status !== r.theme.status)
         changes.push('theme_status_changed');
+    for (const change of r.changes)
+        if (!l.changes.some(prior => prior.kind === change.kind && prior.code === change.code)) changes.push(change.code);
     const a = new Map(l.robustness.rows.map(row => [row.id, row])), b = new Map(r.robustness.rows.map(row => [row.id, row]));
     const rows: ComparedRow[] = [...new Set([...a.keys(), ...b.keys()])].map(id => {
         const x = a.get(id), y = b.get(id);

@@ -28,10 +28,12 @@ Theme capture preparation preserves original content hashes, actual capture time
 
 The source audit recomputed all 144 common-window returns, annualized returns and drawdowns from retained daily paths and checked weighted returns minus recorded costs. Maximum daily accounting residual was zero. Failed/interrupted runs remain retained privately; only the complete reviewed aggregate projection is published.
 
-Release: `rotation-forward-20261017-v1`.
+Release: `rotation-forward-20261017-v2`.
 
-- Reviewed source SHA-256: `6a0c7806bae354cd1880422a3cc91eb4bf7f9c58c7939725799b7e899ea09ec8`.
-- Canonical content SHA-256: `199f6985959f15a18c0b9c089a0b3500846b7b533ac1f93e2f49bb554f856ce2`.
-- Canonical asset bytes SHA-256: `40fdead4de2ef96a2886e439bcac5c5b1681f84da38ab181e7163e8a24604e8a`.
+- Reviewed source SHA-256: `bef74a7b6f196d673a78d29e1c0ba057a5b7757cf3a861c2fff5609560f3ef62`.
+- Canonical content SHA-256: `9fde3e9f2032da399688b100d452c223b81e12be9c2d65fd3660998f7efefee5`.
+- Canonical asset bytes SHA-256: `26d47f1b302d2003ec2b13fbe09dc395dcf0a98d41ae41fcaaf2025084aed93d`.
 
 The public contract excludes source filesystem paths, raw provider rows, raw theme text, private scores, security-level shadow positions and per-security P&L. Immutable reviewed assets are indexed only after verification; a failed import preserves the prior valid index. The original release and archived research remain available. Browser calculations filter and compare reviewed results; they do not run a new backtest.
+
+The v2 extension retains v1 unchanged and strengthens the forward operating controls after independent review. A new future-effective registration pins the committed implementation and effective configurations. Weekly settlements require continuous coverage through the next signal close and reviewed valuation availability; unavailable attempts and per-baseline missing weeks are retained. All historical source, robustness and theme sections are exactly unchanged between these extension versions. There are still no prospective observations.
