@@ -63,3 +63,83 @@ export const rotationCopy = {
   weeklyProtocol: ['These aggregate results were transcribed and checked against retained research notes, not rerun for this page. The source panel covers 2015-01-05 through 2026-08-24; that is input coverage, not a verified common performance start date. Runs use actual observed ETF history, next-observed-session close execution, and a 5 bp gross-traded-notional cost assumption. Cost scenarios are not brokerage quotes. The first usable return date is not independently established here. Separate groups retain their original comparisons.', '这些汇总结果已对照保留的研究记录逐项核对，本页面没有重新回测。来源行情面板覆盖 2015-01-05 至 2026-08-24；这是输入覆盖期，不是已核验的共同业绩起点。实验使用 ETF 实际观测历史，按下一可观测交易日收盘执行，假设按交易总额收取 5 基点成本。成本是假设情景，不是券商报价。这里未独立确认各实验首个有效收益日期。不同组保留各自原有对照。'],
   weeklyLimits: ['Historical diagnostics from a repeatedly examined sample. Metrics are rounded source-note aggregates; no raw daily ledger or continuous equity curve is published. Sharpe uses a zero-rate convention where specified by the pool study; a uniform recomputation across all runs is pending. Do not compare these annualized returns with the legacy chart’s cumulative return or with hotspot event uplift. None of these results authorizes live trading.', '这些是反复检视过的历史样本诊断。数值为研究记录中的取整汇总，未公开逐日账本或连续净值。候选池研究注明使用零利率夏普口径；所有实验的统一重算仍待完成。不能把这里的年化收益与旧版模型的累计收益、热点事件的增量直接排名。这些结果都不构成实盘资格。'],
 } satisfies Record<string, Copy>;
+
+export const validationQuestions: { title: Copy; body: Copy }[] = [
+  { title: ['Does theme information add value?', '主题信息是否提供增量？'], body: ['Freeze one historically eligible ETF universe, allocation rule and execution convention. Compare a theme-free baseline with the same system using only theme information available before each signal. Include neutral or stale themes, rather than selecting successful narratives afterwards.', '冻结同一套历史可交易 ETF 池、配置规则和执行口径。以不使用主题信息的组合为基准，只改变是否加入信号形成前已经可得的主题信息。保留中性或过时主题，避免事后挑选成功叙事。'] },
+  { title: ['Does the ETF represent the intended exposure?', 'ETF 是否代表预期暴露？'], body: ['Check dated index methodology and actual portfolio exposure, product inception, overlapping holdings, tracking differences and tradability. Keep unavailable ETFs out of earlier periods; an index’s longer history cannot be treated as a fund’s tradable history.', '核对当时的指数方法与真实组合暴露、产品成立日期、持仓重叠、跟踪差异和交易可行性。尚未上市的 ETF 不得进入更早区间；指数更长的历史不能当作基金可交易历史。'] },
+  { title: ['Is apparent improvement just lower risk?', '改善是否主要来自降低风险？'], body: ['Compare matched risk budgets and report bond exposure alongside return, drawdown, turnover and costs. A strategy with more bonds can suffer smaller losses without showing better theme selection. Review duration exposure explicitly.', '在一致的风险预算下比较，同时报告债券暴露、收益、回撤、换手和成本。债券更多的组合可能跌得更少，却未必具备更好的主题选择能力。需要单独评估久期暴露。'] },
+  { title: ['Will the result survive new dates and real constraints?', '新日期与实际交易约束下是否成立？'], body: ['Predefine acceptance and stopping criteria, retain failed runs, and collect a forward record without retuning to that record. Reconcile feasible trades and corporate actions before treating a research NAV as an execution result.', '预先设定接受与停止条件，保留失败实验，在不针对观察期反复调参的前提下累积前瞻记录。将可执行交易和公司行为对账完成后，才讨论研究净值与实际执行结果的关系。'] },
+];
+export const rotationGlossary: { title: Copy; body: Copy }[] = [
+  { title: ['Cumulative versus annualized return', '累计收益与年化收益'], body: ['Cumulative return describes total NAV change over the stated window. Annualized return converts compound growth to a yearly rate. Neither is interchangeable with a five-session event uplift, which is a paired difference measured in percentage points.', '累计收益描述给定区间内净值的总变化；年化收益将复合增长换算成每年水平。两者都不能与五日事件增量混用，后者是以百分点计量的配对差值。'] },
+  { title: ['Historical diagnostics versus new evidence', '历史诊断与新增证据'], body: ['Changing the model or slicing the same dates does not create independent observations. The weekly challenges and legacy tail were examined retrospectively. A forward test requires frozen decisions and subsequently arriving data.', '换模型或切分相同日期，不会创造独立观测。周频对照与旧版尾段都属于回顾性检视。前瞻检验要求先冻结决策，再等待随后到来的数据。'] },
+  { title: ['Costs and price conventions', '成本与价格口径'], body: ['The weekly study assumes 5 bps on gross traded notional. The legacy charts retain their own 0/10/25/50 bps scenarios and raw/adjusted valuations; hotspot events use 0/25/50 bps. These assumptions and holding periods differ, so this page does not combine the results into a single performance ranking.', '周频研究假设按交易总额计入 5 基点成本。旧版图表保留自身 0、10、25、50 基点情景及原始与复权价格口径；热点事件使用 0、25、50 基点。它们的假设和持有期不同，本页不将结果合成统一业绩排名。'] },
+  { title: ['Source review and remaining uncertainty', '来源审查与剩余不确定性'], body: ['The legacy panels use the existing digest-checked public evidence asset. Weekly aggregates were checked against six retained research notes on 2026-10-17. This is a review of note-level transcription and public scope, not an independent audit of the raw inputs, execution ledger or historical availability. Underlying strategies remain separate research identities.', '旧版面板使用已有、经过指纹校验的公开证据资产。周频汇总在 2026-10-17 对照六份保留研究记录完成核对。此次审查确认记录转录和公开范围，不等于独立审计原始输入、执行账本或历史可得性。底层策略仍保留各自研究身份。'] },
+];
+
+export const rotationPageCopy = {
+  topicSections: ['Topic sections', '专题目录'],
+  sourceReview: ['Download source review (English)', '下载来源审查说明（英文）'],
+  relatedStyles: ['Related: long-run style factors →', '相关研究：长期风格因子 →'],
+  relatedCosts: ['Related: trading costs and capacity →', '相关研究：交易成本与容量 →'],
+  currentConclusion: ['Current conclusion', '当前结论'],
+  averageBondWeight: ['Average bond fallback weight', '平均债券配置'],
+  executedRebalances: ['Executed rebalances', '执行调仓次数'],
+  notReported: ['Not reported', '未提供'],
+  strategyResearchHistoricalEvidence: ['Strategy research · historical evidence', '策略探索 · 历史证据'],
+  distinctEvidenceStreams: ['distinct evidence streams', '条分别保留的研究线索'],
+  weeklyConfigurationsToExplore: ['weekly configurations to explore', '组可交互查看的周频配置'],
+  hotspotEventsNotAContinuousPortfolio: ['hotspot events, not a continuous portfolio', '个热点事件，尚非连续组合'],
+  oneResearchChainFourSeparateQuestions: ['One research chain, four separate questions', '一条研究链，四个独立问题'],
+  groupingTheseStudiesMakesTheMissingLinks: ['Grouping these studies makes the missing links easier to see. It does not imply that the stock overlay, legacy ETF models and weekly allocation are the same strategy or use interchangeable inputs.', '把这些研究放在一起，可以更清楚地看到缺失环节。这不表示个股叠加筛选、旧版 ETF 模型和周频配置是同一策略，也不表示它们的输入可以直接互换。'],
+  whereStyleAndThemeInformationDiffer: ['Where style and theme information differ', '风格信息与主题信息的区别'],
+  styleIsAMeasurableCrossSectionalExposure: ['Style is a measurable cross-sectional exposure; a theme is a grouping or narrative whose membership and relevance can change. An industry ETF may represent a theme only partially, and a style ETF may hold many sectors. Ranking ETFs directly tests relative fund strength; ranking themes first adds a separate mapping decision that needs its own validation.', '风格是可以度量的横截面暴露；主题是成员范围和市场相关性会变化的分组或叙事。行业 ETF 可能只覆盖主题的一部分，风格 ETF 也可能跨越多个行业。直接给 ETF 排序，检验的是基金相对强弱；先给主题排序，再映射 ETF，会额外引入一个需要单独验证的决策。'],
+  exploreTheResearchBranches: ['Explore the research branches', '探索研究分支'],
+  weeklyETFRotationWhatChangedAcrossExperiments: ['Weekly ETF rotation: what changed across experiments?', '周频 ETF 轮动：不同实验改变了什么？'],
+  staticEvidenceTableEnableJavaScriptToFilter: ['Static evidence table. Enable JavaScript to filter experiments, sort values and explore charts.', '静态证据表。启用 JavaScript 后可筛选实验、排序数值并交互查看图表。'],
+  experimentGroup: ['Experiment group', '实验分组'],
+  configuration: ['Configuration', '配置'],
+  annualizedReturn: ['Annualized return', '年化收益'],
+  sharpeRatio: ['Sharpe ratio', '夏普比率'],
+  maximumDrawdown: ['Maximum drawdown', '最大回撤'],
+  industryExpansionAndShortETFHistories: ['Industry expansion and short ETF histories', '行业扩池与 ETF 短历史问题'],
+  aSeparateBroadIndustryExpansionDidNot: ['A separate broad industry expansion did not improve the retained strategy on its frozen sample. It is not mixed into the core-pool chart as if both runs shared fully audited return dates. More funds can add concentrated, correlated and shorter-history exposures. The cash-flow addition also left the full-sample rounded core metrics unchanged because it met the required history only late in the sample; that does not establish that cash-flow investing has no value.', '另一次广泛行业扩池，在其冻结样本上未改善保留策略的表现。该结果没有被混入核心池图表，避免暗示两次实验已经核验了完全一致的收益日期。基金更多，也可能带来集中、相关和较短历史的暴露。现金流扩池没有改变全样本取整后的核心指标，是因为它直到样本后段才满足历史长度要求；这不能推导为现金流投资没有价值。'],
+  whatWouldValidateTheCompleteStrategy: ['What would validate the complete strategy?', '怎样验证完整策略？'],
+  theNextUsefulExperimentIsolatesTheTheme: ['The next useful experiment isolates the theme-to-ETF link. It should not choose the highest historical Sharpe from unrelated tables. These are research questions, not published results.', '下一项有价值的实验，应单独检验“主题到 ETF”的衔接，而不是从互不相同的表格里挑出历史夏普最高的一行。以下是待研究的问题，不是已经获得的结果。'],
+  definitionsSourcesAndEvidenceBoundaries: ['Definitions, sources and evidence boundaries', '指标口径、来源与证据边界'],
+  retainedWeeklySourceNotes: ['Retained weekly source notes', '保留的周频研究记录'],
+  theSourceReviewCoversTheWeeklyStrategy: ['The source review covers the weekly strategy specification and the risk-cap, pool-expansion matrix, holding-continuity, Ridge and broad-industry-expansion notes. The experiments are dated 2026-09-16; note metadata records verification on 2026-10-01. This page adds no new backtest. The downloadable review lists source fingerprints and the exact public-field boundary.', '来源审查覆盖周频策略规格，以及风险仓位上限、候选池矩阵、持仓延续、岭回归和广泛行业扩池记录。实验记录日期为 2026-09-16，文档元数据记载的核验日期为 2026-10-01。本页没有新增回测。可下载的审查说明列出来源指纹与公开字段范围。'],
+} satisfies Record<string, Copy>;
+
+export const workbenchCopy = {
+  exploreTheResearchBranches: ["Explore the research branches", "探索研究分支"],
+  researchBranch: ["Research branch", "研究分支"],
+  allBranches: ["All branches", "全部分支"],
+  etfSelectionAndAllocation: ["ETF selection and allocation", "ETF 选择与配置"],
+  hotspotStockEvidence: ["Hotspot stock evidence", "热点个股证据"],
+  themeToETFValidationGap: ["Theme-to-ETF validation gap", "主题到 ETF 的验证缺口"],
+  whatRemainsToTest: ["What remains to test", "还要检验什么"],
+  readEvidenceAndLimitations: ["Read evidence and limitations →", "查看证据与限制 →"],
+  annualizedReturn: ["Annualized return", "年化收益"],
+  sharpeRatio: ["Sharpe ratio", "夏普比率"],
+  maximumDrawdown: ["Maximum drawdown", "最大回撤"],
+  compareOneExperimentFamilyAtATime: ["Compare one experiment family at a time", "每次比较一组实验"],
+  experimentGroup: ["Experiment group", "实验分组"],
+  chartMeasure: ["Chart measure", "图表指标"],
+  configurations: ["configurations", "组配置"],
+  inspectAndSortAllMetrics: ["Inspect and sort all metrics", "查看并排序全部指标"],
+  notReported: ["Not reported", "未提供"],
+  configuration: ["Configuration", "配置"],
+  averageBondFallbackWeight: ["Average bond fallback weight (%)", "平均债券配置（%）"],
+  executedRebalances: ["Executed rebalances", "执行调仓次数"],
+  missingCellsMeanTheSourceNoteDid: ["Missing cells mean the source note did not report that measure. They are not zeros. Maximum drawdown is a loss: a value closer to zero indicates a shallower decline. Use the table headers to sort; chart legends in the ETF charts can hide or restore a series.", "缺失单元格表示原记录未提供该指标，不是零。最大回撤表示损失，越接近零代表跌幅越浅。点击表头可排序；ETF 图表的图例可隐藏或恢复曲线。"],
+  researchProposal: ["Research proposal", "研究设想"],
+  historicalDiagnostic: ["Historical diagnostic", "历史诊断"],
+  branchCount: ["{count} research {branches} shown", "显示 {count} 项研究分支"],
+} satisfies Record<string, Copy>;
+
+export const rotationSections = [
+  ['research-map', 'Research map', '研究主线'], ['experiments', 'Research branches', '实验分支'],
+  ['weekly', 'Weekly ETF experiments', '周频 ETF 实验'], ['etf-rotation', 'Legacy ETF evidence', '旧版 ETF 证据'],
+  ['hotsector', 'Hotspot evidence', '热点证据'], ['next-tests', 'Next tests', '后续验证'], ['sources', 'Sources and definitions', '来源与口径'],
+];
