@@ -559,7 +559,7 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=17" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=50a883d3eeb5787af6e966da54c31bde2da7f992" },
+    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=4fbfe973540e15fb6552068be037229d2f53d540" },
     { name = "quant-platform", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?rev=63abaf53c5d388c0fc76e055967ef8461ba1b190" },
     { name = "requests", marker = "extra == 'dividends'", specifier = ">=2.32" },
     { name = "research-contracts", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=63abaf53c5d388c0fc76e055967ef8461ba1b190" },
@@ -1016,7 +1016,7 @@ wheels = [
 [[package]]
 name = "quant-backtest-runtime"
 version = "0.1.0"
-source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=50a883d3eeb5787af6e966da54c31bde2da7f992#50a883d3eeb5787af6e966da54c31bde2da7f992" }
+source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=4fbfe973540e15fb6552068be037229d2f53d540#4fbfe973540e15fb6552068be037229d2f53d540" }
 dependencies = [
     { name = "quant-platform" },
 ]
