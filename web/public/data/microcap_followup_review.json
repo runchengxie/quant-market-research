@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-17",
+  "sample": {
+    "start": "2015-03-02",
+    "end": "2026-07-31",
+    "sessions": 2778,
+    "capital_cny": 100000000,
+    "fee_bps": 10,
+    "adjusted_share_scenarios": true,
+    "raw_share_readiness": false
+  },
+  "accounting": {
+    "synthetic_max_daily_error": 1.2750217548429532e-15
+  },
+  "support": {
+    "support_no_buffer": {
+      "formations": 138,
+      "different": 132,
+      "different_2016plus": 122
+    },
+    "support_buffer": {
+      "formations": 138,
+      "different": 132,
+      "different_2016plus": 122
+    },
+    "shared_scores_no_buffer": {
+      "formations": 138,
+      "different": 130,
+      "different_2016plus": 122
+    },
+    "shared_scores_buffer": {
+      "formations": 138,
+      "different": 130,
+      "different_2016plus": 122
+    },
+    "coverage_s45_b40": {
+      "formations": 138,
+      "different": 28,
+      "different_2016plus": 19
+    },
+    "coverage_s45_b60": {
+      "formations": 138,
+      "different": 35,
+      "different_2016plus": 25
+    }
+  },
+  "signal_checks": {
+    "common_rows": 514750,
+    "raw_max_abs_error": 0.0,
+    "identical_input_score_max_abs_error": 0.0
+  },
+  "execution": [
+    {
+      "id": "ideal_one_day",
+      "net_annual_return": 5.180502974947343,
+      "net_max_drawdown": -58.56245059675269,
+      "net_sharpe": 0.32796293646450797,
+      "fill_ratio": null,
+      "avg_cash_weight": null,
+      "fills_over_5pct_realized_amount": null
+    },
+    {
+      "id": "retry_tradable_unlimited",
+      "net_annual_return": 5.228884457516836,
+      "net_max_drawdown": -58.37767115106796,
+      "net_sharpe": 0.3298849129819338,
+      "fill_ratio": 0.6250134153486717,
+      "avg_cash_weight": 0.00014649321216561153,
+      "fills_over_5pct_realized_amount": 543.0
+    },
+    {
+      "id": "same_day_capacity",
+      "net_annual_return": 5.589706306456654,
+      "net_max_drawdown": -57.899250000703105,
+      "net_sharpe": 0.3412436468930104,
+      "fill_ratio": 0.7431640863382217,
+      "avg_cash_weight": 0.0038950128027497957,
+      "fills_over_5pct_realized_amount": 0.0
+    },
+    {
+      "id": "same_day_capacity_lots",
+      "net_annual_return": 5.589101495505999,
+      "net_max_drawdown": -57.88849200835591,
+      "net_sharpe": 0.34124863787845494,
+      "fill_ratio": 0.7420811917027913,
+      "avg_cash_weight": 0.00405594871075812,
+      "fills_over_5pct_realized_amount": 0.0
+    },
+    {
+      "id": "same_day_capacity_lots_t1",
+      "net_annual_return": 5.589101495505999,
+      "net_max_drawdown": -57.88849200835591,
+      "net_sharpe": 0.34124863787845494,
+      "fill_ratio": 0.7420811917027913,
+      "avg_cash_weight": 0.00405594871075812,
+      "fills_over_5pct_realized_amount": 0.0
+    },
+    {
+      "id": "same_day_capacity_lots_t1_limits",
+      "net_annual_return": 5.485577688937071,
+      "net_max_drawdown": -58.74796789556909,
+      "net_sharpe": 0.33745467027510906,
+      "fill_ratio": 0.7447799178069704,
+      "avg_cash_weight": 0.004169997469522987,
+      "fills_over_5pct_realized_amount": 0.0
+    },
+    {
+      "id": "prior20_budget",
+      "net_annual_return": 5.362228373489053,
+      "net_max_drawdown": -58.90855494807605,
+      "net_sharpe": 0.3313800165879704,
+      "fill_ratio": 0.8421882136342694,
+      "avg_cash_weight": 0.009387250007806325,
+      "fills_over_5pct_realized_amount": 688.0
+    },
+    {
+      "id": "prior20_budget_realized_guard",
+      "net_annual_return": 5.409778259355558,
+      "net_max_drawdown": -58.73426615328219,
+      "net_sharpe": 0.3331404090051368,
+      "fill_ratio": 0.843612773993475,
+      "avg_cash_weight": 0.013581698655204755,
+      "fills_over_5pct_realized_amount": 0.0
+    }
+  ],
+  "action_coverage": {
+    "45": {
+      "names": 619,
+      "stock_months": 5480,
+      "queried_names": 494,
+      "unqueried_names": 125,
+      "unqueried_stock_months": 985,
+      "positive_share_rows_missing_listing_date": 1
+    },
+    "90": {
+      "names": 597,
+      "stock_months": 5400,
+      "queried_names": 483,
+      "unqueried_names": 114,
+      "unqueried_stock_months": 921,
+      "positive_share_rows_missing_listing_date": 1
+    }
+  },
+  "history": {
+    "inspection_records": 20,
+    "original_runtime_recovered": false
+  },
+  "source_hashes": {
+    "execution_metrics": "5adf320a722eb20f660bab3e35794ae1a5e892a3e6636624034d4d724b2e3928",
+    "execution_receipt": "1be3887c1d02fa5e36a16c95bd02ea47c6700edc2569b3ab9ec6a8b1cfe2f822",
+    "support_summary": "15490bf61c461d7b32b860223fa1fcbde0f7df2b6c757b76d2eb3624900669e5",
+    "support_receipt": "23c3a0c996398681133fc5d0c1359cd2de552bd0d8a1ba2532b1057d5c667c66",
+    "action_coverage": "e6d3a231bff123d88fc5142a512940cc939f335e9b0f32d1771c436346b8be45",
+    "accounting_review": "81075e7f3acc2087c0929fe6662762eb9e25e99b2b6b0470326679b9d7a214a4",
+    "historical_trace": "3a33e35b81423e86e1ef951ac702c91cead9521000851789af53a37333dac09d"
+  }
+}

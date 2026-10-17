@@ -1,0 +1,41 @@
+---
+import { followupCopy as c, followupReview as review, executionLabels, sourceLabels, executionTable, supportTable, coverageTable } from '../../content/microcap-followup';
+const tables = [
+  { title: c.executionTitle, en: executionTable('en-US'), zh: executionTable('zh-CN'), id: 'execution', before: ['executionFinding', 'synthetic', 'executionRules', 'suspension'] as const, after: ['metricMeaning'] as const },
+  { title: c.supportTitle, en: supportTable('en-US'), zh: supportTable('zh-CN'), id: 'support', before: ['supportFinding', 'supportMechanism'] as const, after: ['supportBoundary'] as const },
+  { title: c.coverageTitle, en: coverageTable('en-US'), zh: coverageTable('zh-CN'), id: 'coverage', before: ['coverageFinding'] as const, after: ['history', 'next'] as const },
+];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<section id="microcap-followup" class="followup panel" aria-labelledby="followup-title">
+  <h2 id="followup-title" data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+  {(['conclusion', 'scope', 'accounting'] as const).map(key => <p class:list={{finding:key === 'conclusion'}} data-locale-text data-en={c[key][0]} data-zh={c[key][1]}>{c[key][0]}</p>)}
+  {tables.map(group => <section aria-labelledby={`followup-${group.id}`}>
+    <h3 id={`followup-${group.id}`} data-locale-text data-en={group.title[0]} data-zh={group.title[1]}>{group.title[0]}</h3>
+    {group.before.map(key => <p class:list={{boundary:key === 'synthetic'}} data-locale-text data-en={c[key][0]} data-zh={c[key][1]}>{c[key][0]}</p>)}
+    {group.id === 'execution' && <figure>
+      <svg viewBox="0 0 1100 530" role="img" aria-labelledby="followup-chart-title followup-chart-desc">
+        <title id="followup-chart-title" data-locale-text data-en={c.chartTitle[0]} data-zh={c.chartTitle[1]}>{c.chartTitle[0]}</title>
+        <desc id="followup-chart-desc" data-locale-text data-en={c.chartDescription[0]} data-zh={c.chartDescription[1]}>{c.chartDescription[0]}</desc>
+        {[0,2,4,6].map(value => <g><line x1={590+value/6*400} x2={590+value/6*400} y1="25" y2="484" class="grid"/><text x={590+value/6*400} y="510" text-anchor="middle">{value}%</text></g>)}
+        {review.execution.map((row,i) => <g><text x="8" y={64+i*56} class="scenario" data-locale-text data-en={executionLabels[row.id][0]} data-zh={executionLabels[row.id][1]}>{executionLabels[row.id][0]}</text><rect x="590" y={46+i*56} width={row.net_annual_return/6*400} height="26" rx="3"/><text x={600+row.net_annual_return/6*400} y={65+i*56}>{row.net_annual_return.toFixed(2)}%</text></g>)}
+      </svg>
+      <figcaption data-locale-text data-en={c.chartUnit[0]} data-zh={c.chartUnit[1]}>{c.chartUnit[0]}</figcaption>
+      <p>{(['en-US','zh-CN'] as const).map(locale => <a href={`${base}/downloads/microcap-execution-followup.${locale}.svg`} download data-locale-text data-en={`${c.svgLink[0]} (${locale})`} data-zh={`${c.svgLink[1]}（${locale}）`}>{c.svgLink[0]} ({locale})</a>)}</p>
+    </figure>}
+    <div class="table-scroll" tabindex="0" role="region" aria-labelledby={`followup-${group.id}-caption`}><table>
+      <caption id={`followup-${group.id}-caption`} data-locale-text data-en={group.title[0]} data-zh={group.title[1]}>{group.title[0]}</caption>
+      <thead><tr>{group.en.headers.map((header,i) => <th scope="col" data-locale-text data-en={header} data-zh={group.zh.headers[i]}>{header}</th>)}</tr></thead>
+      <tbody>{group.en.rows.map((row,i) => <tr>{row.map((value,j) => j === 0 ? <th scope="row" data-locale-text data-en={value} data-zh={group.zh.rows[i][j]}>{value}</th> : <td data-locale-text data-en={value} data-zh={group.zh.rows[i][j]}>{value}</td>)}</tr>)}</tbody>
+    </table></div>
+    {group.after.map(key => <p data-locale-text data-en={c[key][0]} data-zh={c[key][1]}>{c[key][0]}</p>)}
+  </section>)}
+  <details><summary data-locale-text data-en={c.provenance[0]} data-zh={c.provenance[1]}>{c.provenance[0]}</summary>
+    <p data-locale-text data-en={c.provenanceText[0]} data-zh={c.provenanceText[1]}>{c.provenanceText[0]}</p>
+    <p><a href={`${base}/data/microcap_followup_review.json`} download data-locale-text data-en={c.dataLink[0]} data-zh={c.dataLink[1]}>{c.dataLink[0]}</a></p>
+    <dl>{Object.entries(review.source_hashes).map(([key,hash]) => <div><dt data-locale-text data-en={sourceLabels[key][0]} data-zh={sourceLabels[key][1]}>{sourceLabels[key][0]}</dt><dd><code>{hash}</code></dd></div>)}</dl>
+  </details>
+</section>
+<style>
+.followup{margin-block:2rem;min-width:0}.followup h3{margin-top:2rem}.followup p{line-height:1.8;max-width:90ch}.finding{font-weight:600}.boundary{border-left:4px solid var(--accent-strong);padding:1rem;background:var(--surface)}.followup figure{margin:1.5rem 0;overflow-x:auto}.followup svg{width:100%;min-width:690px;display:block;fill:var(--ink);font:16px sans-serif}.followup svg .scenario{font-size:13px}.followup svg rect{fill:var(--accent-strong)}.grid{stroke:var(--rule);stroke-width:1}.followup figcaption{color:var(--muted)}.table-scroll{overflow-x:auto;margin-block:1rem}.table-scroll:focus-visible{outline:2px solid var(--accent-strong);outline-offset:3px}table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}caption{text-align:left;font-weight:600;padding-bottom:.5rem}th,td{padding:.65rem;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}th:first-child{text-align:left;white-space:normal;min-width:15rem}thead th{font-weight:600}tbody th{font-weight:400}.followup summary{cursor:pointer;font-weight:600}.followup dd{margin:.3rem 0 1rem;overflow-wrap:anywhere}.followup code{font-size:.8rem}
+</style>
