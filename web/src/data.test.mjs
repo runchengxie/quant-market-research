@@ -17,6 +17,11 @@ test("publishes reviewed four-market liquidity with real common-date periods", (
   assert.equal(common.common_dates, 1);
   for (const period of summary.periods) for (const market of period.markets) {
     assert.equal(market.buckets.reduce((n,b) => n+b.observations,0), market.eligible_observations);
+    for (const bucket of market.buckets) {
+      assert.ok(bucket.zero_adv20_observations >= 0 && bucket.zero_adv20_observations <= bucket.observations);
+      assert.equal(bucket.zero_adv20_share, bucket.observations ? bucket.zero_adv20_observations / bucket.observations : null);
+      if (bucket.observations) assert.ok(bucket.p10_usd <= bucket.p25_usd && bucket.p25_usd <= bucket.median_usd && bucket.median_usd <= bucket.p75_usd && bucket.p75_usd <= bucket.p90_usd);
+    }
   }
   const ytd = summary.periods.find(p => p.period === "2026 YTD");
   assert.deepEqual(ytd.missing_markets, ["US"]);
@@ -95,8 +100,8 @@ test("relative quintiles bind to the reviewed absolute release and retain every 
  const review=JSON.parse(fs.readFileSync(path.join(root,"liquidity/relative-review.json")));
  assert.equal(relative.absolute_summary_sha256,createHash('sha256').update(absoluteRaw).digest('hex'));
  assert.equal(review.reviewed_summary_sha256,createHash('sha256').update(raw).digest('hex'));
- assert.equal(review.aggregate_cells_reconciled,950);
- assert.equal(review.absolute_aggregate_cells_reconciled,760);
+ assert.equal(review.aggregate_cells_reconciled,1710);
+ assert.equal(review.absolute_aggregate_cells_reconciled,1520);
  assert.equal(review.feature_checksums_verified,true);
  for(const [views,originals] of [[relative.markets,base.markets],...relative.periods.map((p,i)=>[p.markets,base.periods[i].markets])]) {
   assert.deepEqual(views.map(m=>m.market),originals.map(m=>m.market));
@@ -106,6 +111,30 @@ test("relative quintiles bind to the reviewed absolute release and retain every 
    assert.equal(m.buckets.length,5);
   });
  }
+});
+
+test("absolute liquidity aggregates bind to the expanded independent review",()=>{
+ const absoluteRaw=fs.readFileSync(path.join(root,"liquidity/summary.json"));
+ const summary=JSON.parse(absoluteRaw);
+ const review=JSON.parse(fs.readFileSync(path.join(root,"liquidity/independent-review.json")));
+ assert.equal(review.reviewed_summary_sha256,createHash("sha256").update(absoluteRaw).digest("hex"));
+ assert.equal(review.aggregate_cells_reconciled,1520);
+ assert.equal(review.count_and_reason_conservation,true);
+ assert.equal(review.strict_prior_fx_checked,true);
+ assert.equal(review.full_raw_warehouse_audited,false);
+ assert.ok(summary.generated_on >= "2026-10-17");
+});
+
+test("publishes identifier-free targeted minute/daily checks with an explicit missing universe denominator",()=>{
+ const raw=fs.readFileSync(path.join(root,"liquidity/followup-audit.json"));
+ const audit=JSON.parse(raw);
+ assert.equal(audit.schema_version,"liquidity_followup_audit.v1");
+ assert.equal(audit.universe_denominator.status,"unavailable");
+ assert.equal(audit.universe_denominator.zero_turnover_rate,null);
+ assert.equal(audit.observed_rows.daily_rows,31761);
+ assert.equal(audit.observed_rows.daily_zero_turnover_rows,0);
+ assert.ok(audit.dates.some(day=>day.date==="20241128"&&day.exchanges.some(row=>row.exchange==="BJ"&&row.daily_only===257)));
+ assert.doesNotMatch(raw.toString(),/\b[A-Z0-9]{6}\.(SH|SZ|BJ)\b|\/home\/|source_path/);
 });
 
 test("publishes aggregate-only daily, minute and Level 2 coverage checks",()=>{

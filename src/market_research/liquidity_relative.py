@@ -61,12 +61,17 @@ def summarize_relative(con, ranked: str, template: dict) -> dict:
         for bucket, label in enumerate(RELATIVE_LABELS):
             row = con.execute(
                 """SELECT count(*),count(DISTINCT symbol),
-              median(adv20_usd),avg(adv20_usd),quantile_cont(adv20_usd,0.9),
-              median(median20_usd),avg(median20_usd),quantile_cont(median20_usd,0.9),
-              min(market_cap_usd),max(market_cap_usd)
+              median(adv20_usd),avg(adv20_usd),quantile_cont(adv20_usd,0.1),
+              quantile_cont(adv20_usd,0.25),quantile_cont(adv20_usd,0.75),
+              quantile_cont(adv20_usd,0.9),count_if(adv20_usd=0),
+              median(median20_usd),avg(median20_usd),quantile_cont(median20_usd,0.1),
+              quantile_cont(median20_usd,0.25),quantile_cont(median20_usd,0.75),
+              quantile_cont(median20_usd,0.9),min(market_cap_usd),max(market_cap_usd)
               FROM relative_period WHERE market=? AND relative_bucket=?""",
                 [market, bucket],
             ).fetchone()
+            observations = row[0]
+            zero_count = row[8] or 0
             item["buckets"].append(
                 dict(
                     zip(
@@ -76,14 +81,28 @@ def summarize_relative(con, ranked: str, template: dict) -> dict:
                             "count",
                             "median_usd",
                             "mean_usd",
+                            "p10_usd",
+                            "p25_usd",
+                            "p75_usd",
                             "p90_usd",
+                            "zero_adv20_observations",
+                            "zero_adv20_share",
                             "median20_median_usd",
                             "median20_mean_usd",
+                            "median20_p10_usd",
+                            "median20_p25_usd",
+                            "median20_p75_usd",
                             "median20_p90_usd",
                             "cap_min_usd",
                             "cap_max_usd",
                         ],
-                        [label, *row],
+                        [
+                            label,
+                            *row[:8],
+                            zero_count,
+                            zero_count / observations if observations else None,
+                            *row[9:],
+                        ],
                         strict=True,
                     )
                 )

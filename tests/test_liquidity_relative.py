@@ -57,6 +57,10 @@ def test_quintiles_rank_each_market_day_and_break_cap_ties_by_symbol():
     assert us["buckets"][2]["observations"] == 0
     assert us["buckets"][2]["median_usd"] is None
     assert "below_100m_observations" not in a
+    assert a["buckets"][0]["p10_usd"] == a["buckets"][0]["median_usd"]
+    assert a["buckets"][0]["p90_usd"] == a["buckets"][0]["median_usd"]
+    assert a["buckets"][0]["zero_adv20_observations"] == 0
+    assert a["buckets"][0]["zero_adv20_share"] == 0
 
 
 def test_historical_grain_and_common_dates_are_preserved_when_stocks_move():

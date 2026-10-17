@@ -1,6 +1,6 @@
 import type { LiquidityPeriodMarket, LiquiditySummary } from '../components/react/research-shared';
 
-export type LiquidityMetric = 'median_usd' | 'mean_usd' | 'p90_usd';
+export type LiquidityMetric = 'median_usd' | 'mean_usd' | 'p10_usd' | 'p25_usd' | 'p75_usd' | 'p90_usd';
 export type LiquidityIssue = { code: 'total_count_mismatch' | 'sub100m_count_mismatch' | 'observation_count_mismatch' | 'sub100m_observation_count_mismatch'; reported: number; grouped: number };
 
 export function auditLiquidityMarket(market: LiquidityPeriodMarket): LiquidityIssue[] {

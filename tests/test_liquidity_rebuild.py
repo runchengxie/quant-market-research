@@ -136,6 +136,12 @@ def test_empty_requested_market_is_not_replaced_and_empty_bucket_is_null():
         for b in m["buckets"]
         if b["observations"] == 0
     )
+    assert all(
+        b["zero_adv20_observations"] == 0 and b["zero_adv20_share"] is None
+        for m in result["markets"]
+        for b in m["buckets"]
+        if b["observations"] == 0
+    )
 
 
 def test_sparse_extra_dates_do_not_pollute_the_market_session_calendar():
@@ -154,3 +160,20 @@ def test_sparse_extra_dates_do_not_pollute_the_market_session_calendar():
     assert con.execute(
         "SELECT adv20_native,eligible FROM features WHERE market='US' AND symbol='one' AND date='2025-01-26'"
     ).fetchone() == (1450, True)
+
+
+def test_bucket_exposes_distribution_tails_and_zero_adv20_with_observed_denominator():
+    con = fixture_connection()
+    con.execute("UPDATE raw SET turnover=0 WHERE date<='2025-01-20'")
+    build_features(con, "raw", "fx", "features")
+    result = summarize_period(
+        con, "features", date(2025, 1, 21), date(2025, 1, 24), ["A-share", "US"]
+    )
+    bucket = next(
+        b for b in result["markets"][0]["buckets"] if b["observations"] > 0
+    )
+    assert bucket["p10_usd"] <= bucket["median_usd"]
+    assert bucket["median_usd"] <= bucket["p90_usd"]
+    assert bucket["p25_usd"] <= bucket["p75_usd"]
+    assert bucket["zero_adv20_observations"] == 1
+    assert bucket["zero_adv20_share"] == pytest.approx(0.25)

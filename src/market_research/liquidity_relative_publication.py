@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 
 from .liquidity_publication import BUCKET, MARKET, PERIOD, _fields, _safe
 from .liquidity_relative import RELATIVE_LABELS
@@ -24,18 +25,34 @@ def _match_market(item, base):
         n, stocks = b["observations"], b["count"]
         if type(n) is not int or type(stocks) is not int or not 0 <= stocks <= n:
             raise ValueError("invalid relative sample counts")
-        metrics = [b[k] for k in BUCKET - {"label", "observations", "count"}] + [
+        zero_count = b["zero_adv20_observations"]
+        if type(zero_count) is not int or not 0 <= zero_count <= n:
+            raise ValueError("invalid relative zero-ADV20 count")
+        metrics = [b[k] for k in BUCKET - {"label", "observations", "count", "zero_adv20_observations"}] + [
             b["cap_min_usd"],
             b["cap_max_usd"],
         ]
         if n == 0:
-            if any(v is not None for v in metrics):
+            if zero_count != 0 or b["zero_adv20_share"] is not None or any(v is not None for v in metrics):
                 raise ValueError("empty relative buckets must retain null statistics")
         elif (
             any(type(v) not in (int, float) or v < 0 for v in metrics)
+            or b["zero_adv20_share"] is None
+            or not math.isclose(b["zero_adv20_share"], zero_count / n, rel_tol=1e-12, abs_tol=1e-12)
             or not 0 < b["cap_min_usd"] <= b["cap_max_usd"]
         ):
             raise ValueError("invalid relative statistics")
+        elif any(
+            b[lower] > b[upper]
+            for prefix in ("", "median20_")
+            for lower, upper in (
+                (f"{prefix}p10_usd", f"{prefix}p25_usd"),
+                (f"{prefix}p25_usd", f"{prefix}median_usd"),
+                (f"{prefix}median_usd", f"{prefix}p75_usd"),
+                (f"{prefix}p75_usd", f"{prefix}p90_usd"),
+            )
+        ):
+            raise ValueError("relative quantiles are not ordered")
     if sum(b["observations"] for b in item["buckets"]) != item["eligible_observations"]:
         raise ValueError("relative bucket counts do not conserve universe")
     if (

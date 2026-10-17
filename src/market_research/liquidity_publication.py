@@ -11,7 +11,11 @@ from .liquidity_rebuild import BUCKET_LABELS
 TOP = {'schema_version','generated_on','method','markets','periods','source_profiles','source_receipts','code_receipts','caveats'}
 METHOD = {'roll_days','metric','currency','source_project','snapshot_note','market_cap_anchor','feature_lag_sessions','minimum_session_stocks','calendar_method','fx_method','zero_and_missing','historical_pit_eligible'}
 MARKET = {'market','status','aggregation','as_of','coverage_start','coverage_end','unique_stocks','eligible_observations','below_100m_observations','fx_start','fx_end','buckets','eligible_stocks','sub_100m_count','sub_100m_median_usd'}
-BUCKET = {'label','observations','count','median_usd','mean_usd','p90_usd','median20_median_usd','median20_mean_usd','median20_p90_usd'}
+BUCKET = {
+    'label','observations','count','median_usd','mean_usd','p10_usd','p25_usd','p75_usd','p90_usd',
+    'zero_adv20_observations','zero_adv20_share','median20_median_usd','median20_mean_usd',
+    'median20_p10_usd','median20_p25_usd','median20_p75_usd','median20_p90_usd',
+}
 PERIOD = {'requested_start','requested_end','included_markets','missing_markets','common_start','common_end','common_dates','markets','period','status'}
 PROFILE = {'source_rows','observed_stocks','coverage_start','coverage_end','eligible_observations','exclusions','duplicate_keys'}
 RECEIPT = {'source_id','files','bytes','sha256'}
@@ -49,7 +53,19 @@ def _market(item):
             raise ValueError('invalid bucket observations')
         if not isinstance(bucket['count'],int) or not 0<=bucket['count']<=bucket['observations']:
             raise ValueError('invalid stock count')
-        values=[bucket[key] for key in BUCKET-{'label','observations','count'}]
+        if not isinstance(bucket['zero_adv20_observations'],int) or not 0<=bucket['zero_adv20_observations']<=bucket['observations']:
+            raise ValueError('invalid zero-ADV20 count')
+        if bucket['observations']:
+            expected_share=bucket['zero_adv20_observations']/bucket['observations']
+            if bucket['zero_adv20_share'] is None or not math.isclose(bucket['zero_adv20_share'],expected_share,rel_tol=1e-12,abs_tol=1e-12):
+                raise ValueError('zero-ADV20 share does not reconcile')
+            for prefix in ['', 'median20_']:
+                quantiles=[bucket[f'{prefix}p10_usd'],bucket[f'{prefix}p25_usd'],bucket[f'{prefix}median_usd'],bucket[f'{prefix}p75_usd'],bucket[f'{prefix}p90_usd']]
+                if any(value is None for value in quantiles) or quantiles!=sorted(quantiles):
+                    raise ValueError('liquidity quantiles are not ordered')
+        elif bucket['zero_adv20_share'] is not None or bucket['zero_adv20_observations'] != 0:
+            raise ValueError('empty buckets must have zero count and null zero-ADV20 share')
+        values=[bucket[key] for key in BUCKET-{'label','observations','count','zero_adv20_observations'}]
         if bucket['observations']==0 and any(v is not None for v in values):
             raise ValueError('empty buckets must have null statistics')
         if bucket['observations'] and any(v is None or v<0 for v in values):
