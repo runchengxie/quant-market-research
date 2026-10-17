@@ -26,8 +26,8 @@ export default function RotationReleaseComparison({ index, dataBase }: {
         }
     }
     return <section id="rotation-versions" className="panel rotation-extension"><h2>{t('versions')}</h2>
-  <div className="extension-controls"><label>{t('left')}<select aria-label={t('left')} value={left} onChange={e => { setLeft(e.target.value); setResult(null); }}>{index.releases.map(r => <option key={r.release_id}>{r.release_id}</option>)}</select></label>
-  <label>{t('right')}<select aria-label={t('right')} value={right} onChange={e => { setRight(e.target.value); setResult(null); }}>{index.releases.map(r => <option key={r.release_id}>{r.release_id}</option>)}</select></label>
+  <div className="extension-controls"><label>{t('left')}<select disabled={state === 'loading'} aria-label={t('left')} value={left} onChange={e => { setLeft(e.target.value); setResult(null); }}>{index.releases.map(r => <option key={r.release_id}>{r.release_id}</option>)}</select></label>
+  <label>{t('right')}<select disabled={state === 'loading'} aria-label={t('right')} value={right} onChange={e => { setRight(e.target.value); setResult(null); }}>{index.releases.map(r => <option key={r.release_id}>{r.release_id}</option>)}</select></label>
   <button onClick={compare} disabled={state === 'loading'}>{t('compare')}</button></div>
   <p aria-live="polite">{state === 'loading' ? t('loading') : state === 'error' ? t('error') : ''}</p>
   {result && <><h3>{t('changes')}</h3><ul>{result.changes.map(code => <li key={code}>{reason(code)}</li>)}</ul>

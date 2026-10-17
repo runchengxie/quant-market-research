@@ -27,6 +27,9 @@ export const extensionCopy = {
     more: ['Show more rows', '显示更多行'], less: ['Show fewer rows', '收起部分行'],
 } satisfies Record<string, Copy>;
 export const codeCopy: Record<string, Copy> = {
+    source_availability_changed: ['Source availability evidence changed; numerical deltas are suppressed.', '数据可用性证据发生变化，不显示数值差额。'],
+    row_definitions_changed: ['Some experiment or window definitions differ; affected deltas are suppressed.', '部分实验或窗口定义不同，相应结果不显示数值差额。'],
+
     present: ['Retained snapshot', '已有快照'], recovered: ['Recovered history', '已恢复历史'], excluded: ['Excluded by snapshot rule', '未通过快照准入'], admitted: ['Admitted by snapshot rule', '通过快照准入'],
     below_snapshot_median_amount: ['Median amount below 10,000', '成交额中位数低于 10,000'], snapshot_only: ['Snapshot identity only', '仅核实快照身份'], retained_adjusted_history: ['Recovered from retained adjusted snapshot', '从已有复权快照恢复'],
     missing_retained_price_column: ['Missing price column', '缺少价格列'],

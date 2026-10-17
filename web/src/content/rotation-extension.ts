@@ -183,12 +183,17 @@ export function validateExtensionShape(value: unknown): RotationExtension {
         throw Error('Invalid forward evidence');
     if (!['blocked', 'diagnostic'].includes(a.theme.status) || (a.theme.status === 'blocked') !== (a.theme.metrics === null))
         throw Error('Invalid theme state');
+    for (const row of a.forward.coverage)
+        if (row.settled_weeks > row.captured_weeks || row.captured_weeks > a.forward.captured_weeks || (!row.settled_weeks && row.metrics !== null))
+            throw Error('Invalid baseline observations');
+    if (a.sources.availability !== a.robustness.historical_availability)
+        throw Error('Source availability disagreement');
     const ids = new Set<string>();
     for (const r of a.robustness.rows) {
         if (ids.has(r.id))
             throw Error('Duplicate case');
         ids.add(r.id);
-        if (![0, 5, 10].includes(r.cost_bps) || ![1, 2].includes(r.delay_sessions) || !['available', 'unavailable'].includes(r.status) || (r.status === 'available') !== (r.metrics !== null && r.period !== null))
+        if (![0, 5, 10].includes(r.cost_bps) || ![1, 2].includes(r.delay_sessions) || !['available', 'unavailable'].includes(r.status) || [r.metrics, r.period, r.turnover].some(v => (v !== null) !== (r.status === 'available')))
             throw Error('Invalid robustness case');
         if (r.metrics && r.period) {
             const m = r.metrics, t = m.attribution;
@@ -230,9 +235,19 @@ export async function loadIndexedRelease(entry: ReleaseEntry, baseUrl: string) {
     if (await shaBytes(raw) !== entry.sha256)
         throw Error('Release bytes mismatch');
     const envelope = JSON.parse(new TextDecoder().decode(raw));
+    validateIndexedBinding(entry, envelope);
     if (await shaBytes(canonical(envelope.asset)) !== entry.content_sha256)
         throw Error('Release content mismatch');
     if (envelope.asset.schema_version === 'research.rotation_extension.v1')
         validateExtensionShape(envelope.asset);
     return envelope.asset as RotationExtension | Record<string, unknown>;
+}
+
+export function validateIndexedBinding(entry: Pick<ReleaseEntry, 'release_id' | 'schema_version' | 'content_sha256' | 'reviewer' | 'published_at'>, envelope: any) {
+    if (!envelope || Object.keys(envelope).sort().join() !== 'asset,review' ||
+        (envelope.asset.release_id ?? envelope.asset.evidence_id) !== entry.release_id ||
+        envelope.asset.schema_version !== entry.schema_version || envelope.review.status !== 'approved' ||
+        envelope.review.content_sha256 !== entry.content_sha256 || envelope.review.reviewer !== entry.reviewer ||
+        envelope.review.reviewed_at !== entry.published_at)
+        throw Error('Indexed envelope identity/review binding mismatch');
 }

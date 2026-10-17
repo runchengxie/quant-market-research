@@ -1,7 +1,7 @@
 import { validateRotationEvidence } from "../src/content/rotation-evidence.server.ts";
 import fs from "node:fs";
 import {createHash} from "node:crypto";
-import {validateReleaseIndex} from "../src/content/rotation-extension.ts";
+import {validateIndexedBinding,validateReleaseIndex} from "../src/content/rotation-extension.ts";
 import {validateRotationExtension} from "../src/content/rotation-extension.server.ts";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -79,6 +79,7 @@ export function verifyStaticSite(distDirectory) {
       const raw=fs.readFileSync(path.join(dist,"data",entry.path));
       if(createHash('sha256').update(raw).digest('hex')!==entry.sha256)throw Error('Indexed release hash mismatch');
       const envelope=JSON.parse(raw.toString());
+      validateIndexedBinding(entry,envelope);
       if(Object.keys(envelope).sort().join()!=='asset,review')throw Error('Invalid indexed envelope');
       if(envelope.asset.schema_version==='research.rotation_extension.v1')validateRotationExtension(envelope.asset,envelope.review);
       else validateRotationEvidence(envelope.asset,envelope.review);

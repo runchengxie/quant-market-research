@@ -4,7 +4,7 @@ import {pathToFileURL} from 'node:url';
 import {createHash} from 'node:crypto';
 import {validateRotationExtension} from '../src/content/rotation-extension.server.ts';
 import {validateRotationEvidence} from '../src/content/rotation-evidence.server.ts';
-import {validateReleaseIndex} from '../src/content/rotation-extension.ts';
+import {validateIndexedBinding,validateReleaseIndex} from '../src/content/rotation-extension.ts';
 import {canonical} from '../src/content/rotation-evidence.ts';
 const sha=s=>createHash('sha256').update(s).digest('hex');
 export async function importRotationRelease({envelopePath,outputDirectory,beforeRename=()=>{}}){
@@ -21,7 +21,7 @@ export async function importRotationRelease({envelopePath,outputDirectory,before
  try{
   const path=join(outputDirectory,'rotation-release-index.json');let index;
   try{index=validateReleaseIndex(JSON.parse(await readFile(path,'utf8')));}catch(e){if(e.code!=='ENOENT')throw e;index={schema_version:'research.rotation_release_index.v1',current_release_id:id,releases:[]};}
-  for(const entry of index.releases){const retained=await readFile(join(outputDirectory,entry.path));if(sha(retained)!==entry.sha256)throw Error('Corrupt retained release');}
+  for(const entry of index.releases){const retained=await readFile(join(outputDirectory,entry.path));if(sha(retained)!==entry.sha256)throw Error('Corrupt retained release');const priorEnvelope=JSON.parse(retained.toString());validateIndexedBinding(entry,priorEnvelope);if(priorEnvelope.asset.schema_version==='research.rotation_extension.v1')validateRotationExtension(priorEnvelope.asset,priorEnvelope.review);else validateRotationEvidence(priorEnvelope.asset,priorEnvelope.review);}
   const prior=index.releases.find(r=>r.release_id===id);
   if(prior){if(prior.sha256!==sha(raw))throw Error('Immutable release identity conflict');return;}
   const entry={release_id:id,schema_version:a.schema_version,path:`rotation/releases/${id}.json`,sha256:sha(raw),content_sha256:envelope.review.content_sha256,reviewer:envelope.review.reviewer,published_at:envelope.review.reviewed_at};

@@ -61,3 +61,30 @@ test('unavailable benchmark cannot contain performance',async()=>{
  copy.robustness.benchmarks=[{group_id:'risk',allocator:'fixed_slots',benchmark_id:'bond_buy_hold',window_id:'common',cost_bps:5,status:'unavailable',reasons:['missing_history'],period:{start:'2024-01-01',end:'2024-12-31',sessions:252},metrics:{total_return:.1,cagr:.1,max_drawdown:-.1,sharpe_zero_rf:1}}];
  assert.throws(()=>validateExtensionShape(copy),/benchmark/i);
 });
+
+test('coverage cannot publish unobserved performance and index metadata binds envelope',async()=>{
+ const {validateExtensionShape,validateIndexedBinding}=await import('./content/rotation-extension.ts');
+ const a=structuredClone(fixture.asset);a.forward.coverage=[{experiment_id:'fixed-base',captured_weeks:0,settled_weeks:0,metrics:{total_return:0,cagr:0,max_drawdown:0,sharpe_zero_rf:0}}];
+ assert.throws(()=>validateExtensionShape(a));
+ const entry={release_id:fixture.asset.release_id,schema_version:fixture.asset.schema_version,content_sha256:fixture.review.content_sha256,reviewer:fixture.review.reviewer,published_at:fixture.review.reviewed_at};
+ validateIndexedBinding(entry,fixture);
+ for(const field of ['release_id','schema_version','reviewer','published_at'])assert.throws(()=>validateIndexedBinding({...entry,[field]:'wrong'},fixture));
+});
+
+test('retained registry metadata corruption blocks import without replacing index',async()=>{
+ const {importRotationRelease}=await import('../scripts/import-rotation-release.mjs');
+ const root=await mkdtemp(join(tmpdir(),'rotation-binding-')),input=join(root,'input.json'),out=join(root,'data');
+ await writeFile(input,JSON.stringify(fixture));await importRotationRelease({envelopePath:input,outputDirectory:out});
+ const path=join(out,'rotation-release-index.json'),index=JSON.parse(await readFile(path,'utf8'));
+ index.releases[0].reviewer='incorrect-reviewer';const corrupted=JSON.stringify(index);await writeFile(path,corrupted);
+ await assert.rejects(importRotationRelease({envelopePath:input,outputDirectory:out}),/binding/);
+ assert.equal(await readFile(path,'utf8'),corrupted);
+});
+
+test('unavailable strategy cannot retain metrics, period or turnover independently',async()=>{
+ const {validateExtensionShape}=await import('./content/rotation-extension.ts');
+ const row={id:'case',experiment_id:'fixed-base',group_id:'risk',allocator:'fixed_slots',cost_bps:5,delay_sessions:1,window_id:'common',status:'unavailable',reasons:['insufficient_complete_sessions'],period:null,metrics:null,turnover:null,pending_terminal:0};
+ for(const [field,value] of [['metrics',{total_return:0,cagr:0,max_drawdown:0,sharpe_zero_rf:0,volatility:0,cost_drag:0,avg_bond_weight:0,attribution:{risk:0,bond:0,costs:0,residual:0,total_return:0}}],['period',{start:'2024-01-01',end:'2024-12-31',sessions:252}],['turnover',0]]){
+ const a=structuredClone(fixture.asset);a.robustness.rows=[{...row,[field]:value}];assert.throws(()=>validateExtensionShape(a),/robustness/);
+ }
+});

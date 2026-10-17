@@ -24,3 +24,11 @@ test('old-schema comparison still explains the actual newly reviewed changes',as
  const result=compareRotationReleases({schema_version:'research.rotation_evidence.v1'},asset);
  assert.ok(result.changes.includes('recovered_two_symbols'));
 });
+
+test('source trust, mapping and complete row definitions suppress deltas',async()=>{
+ const {compareRotationReleases}=await import('./content/rotation-release-comparison.ts');
+ for(const mutate of [a=>a.sources.availability='verified',a=>a.robustness.historical_availability='verified',a=>a.sources.hashes.mapping='f'.repeat(64),a=>a.robustness.rows[0].experiment_id='pool-core',a=>a.robustness.rows[0].window_id='last_252',a=>a.robustness.rows[0].group_id='pool']){
+ const l=structuredClone(asset);l.robustness.rows=[structuredClone(row)];const r=structuredClone(l);mutate(r);
+ const result=compareRotationReleases(l,r);assert.equal(result.rows[0].cagr_delta,null);assert.ok(!result.changes.includes('same_definitions'));
+ }
+});

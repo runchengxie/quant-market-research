@@ -66,3 +66,16 @@ test('failed rolling integrity check leaves earlier valid diagnostics readable',
  await page.setViewportSize({width:390,height:844});await page.emulateMedia({colorScheme:'dark'});
  await robust.scrollIntoViewIfNeeded();await page.screenshot({path:'/tmp/rotation-forward-mobile.png'});
 });
+
+test('comparison selectors stay bound to the pair while release fetch is pending',async({page})=>{
+ await page.goto(`${route}?lang=en-US`);
+ await page.route('**/data/rotation/releases/*.json',async route=>{
+   await new Promise(resolve=>setTimeout(resolve,400));await route.continue();
+ });
+ const versions=page.locator('#rotation-versions');
+ await versions.getByRole('button',{name:'Compare releases',exact:true}).click();
+ await expect(versions.locator('select').first()).toBeDisabled();
+ await expect(versions.locator('select').last()).toBeDisabled();
+ await expect(versions).toContainText('numerical deltas are suppressed');
+ await expect(versions.locator('select').first()).toBeEnabled();
+});

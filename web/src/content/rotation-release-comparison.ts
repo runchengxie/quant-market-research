@@ -14,6 +14,8 @@ export function compareRotationReleases(left: unknown, right: unknown): {
     if (l.schema_version !== 'research.rotation_extension.v1' || r.schema_version !== 'research.rotation_extension.v1')
         return { status: 'incompatible', changes: ['schema_changed', 'historical_archive_preserved', ...(r.schema_version === 'research.rotation_extension.v1' ? r.changes.map(change => change.code) : [])], rows: [] };
     const changes: string[] = [];
+    const sameTrust = l.sources.availability === r.sources.availability && l.robustness.historical_availability === r.robustness.historical_availability;
+    if (!sameTrust) changes.push('source_availability_changed');
     if (JSON.stringify(l.sources.hashes) !== JSON.stringify(r.sources.hashes))
         changes.push('source_vintage_changed');
     if (l.sources.panel_end !== r.sources.panel_end || l.sources.panel_start !== r.sources.panel_start)
@@ -34,10 +36,11 @@ export function compareRotationReleases(left: unknown, right: unknown): {
             status = 'removed';
         else {
             const panel = x.experiment_id.startsWith('pool-') ? 'pool' : 'core';
-            if (x.status === 'available' && y.status === 'available' && l.sources.hashes[panel] === r.sources.hashes[panel] && l.robustness.registration_sha256 === r.robustness.registration_sha256 && JSON.stringify(x.period) === JSON.stringify(y.period) && x.cost_bps === y.cost_bps && x.delay_sessions === y.delay_sessions && x.allocator === y.allocator)
+            if (x.status === 'available' && y.status === 'available' && sameTrust && l.sources.hashes.mapping === r.sources.hashes.mapping && x.experiment_id === y.experiment_id && x.group_id === y.group_id && x.window_id === y.window_id && l.sources.hashes[panel] === r.sources.hashes[panel] && l.robustness.registration_sha256 === r.robustness.registration_sha256 && JSON.stringify(x.period) === JSON.stringify(y.period) && x.cost_bps === y.cost_bps && x.delay_sessions === y.delay_sessions && x.allocator === y.allocator)
                 status = 'compatible';
         }
         return { id, status, cagr_delta: status === 'compatible' ? y!.metrics!.cagr - x!.metrics!.cagr : null, drawdown_delta: status === 'compatible' ? y!.metrics!.max_drawdown - x!.metrics!.max_drawdown : null };
     });
+    if (rows.some(row => row.status === 'incompatible')) changes.push('row_definitions_changed');
     return { status: 'comparable', changes: changes.length ? changes : ['same_definitions'], rows };
 }
