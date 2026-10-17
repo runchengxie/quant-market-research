@@ -3,14 +3,12 @@ import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
 import { publicPages } from './content/public-registry.ts';
 
-test('ETF and hotspot studies are discoverable with diagnostic evidence labels', async () => {
-  for (const id of ['etf-rotation', 'hotsector']) {
-    const page = publicPages.find((entry) => entry.id === id);
-    assert.ok(page, `missing study ${id}`);
-    assert.equal(page.route, `/research/${id}/`);
-    const source = await readFile(new URL(`./pages/research/${id}/index.astro`, import.meta.url), 'utf8');
-    assert.match(source, /LegacyStrategyStudy/);
-  }
+test('one rotation topic owns both retired routes without duplicate directory entries', () => {
+  const pages = publicPages.filter(entry => entry.id === 'rotation');
+  assert.equal(pages.length, 1);
+  assert.equal(pages[0].route, '/research/style-theme-rotation/');
+  assert.deepEqual(pages[0].aliases, ['/research/etf-rotation/', '/research/hotsector/']);
+  assert.equal(publicPages.filter(entry => ['etf-rotation', 'hotsector'].includes(entry.id)).length, 0);
 });
 
 import { createHash } from 'node:crypto';
@@ -25,6 +23,10 @@ test('rendered evidence claims follow the reviewed asset and stale translations 
   const copy = legacyStudyCopy(study, asset.reviewed_content_digest);
   assert.match(copy.conclusion[0], /25 bps/);
   assert.equal(copy.baseline[0], study.baseline);
+  assert.equal(typeof copy.baseline[1], 'string');
+  assert.equal(typeof copy.scope[1], 'string');
+  assert.equal(typeof copy.limitations[1], 'string');
+  assert.doesNotMatch(copy.baseline[1], /Initially|equal-weight/);
   assert.equal(copy.scope[0], study.sample_scope);
   assert.equal(copy.limitations[0], 'One material limitation A second limitation');
   assert.throws(() => legacyStudyCopy(study, '0'.repeat(64)), /translation.*review/i);
@@ -102,4 +104,20 @@ test('Barra page presents a labeled current conclusion before the interactive wo
   assert.match(page, /showConclusion/);
   const implementation = await readFile(new URL('./components/ResearchPage.astro', import.meta.url), 'utf8');
   assert.match(implementation, /id="current-conclusion"/);
+});
+
+import { selectWeeklyRows } from './content/rotation-research.ts';
+test('weekly chart groups keep incompatible portfolio comparisons separate and preserve absent metrics', () => {
+  const risk = selectWeeklyRows('risk');
+  assert.equal(risk.length, 9);
+  assert.deepEqual(risk.find(row => row.id === 'hrp-75'), {
+    id: 'hrp-75', group: 'risk', label: ['HRP allocation · 75% risk cap', '层次风险平价 · 风险上限 75%'],
+    cagr: 6.70, sharpe: 1.026, drawdown: -8.56, fallback: 64.22, executions: null,
+  });
+  const holdover = selectWeeklyRows('holdover');
+  assert.deepEqual(holdover.map(row => row.executions), [649, 595, 551]);
+  assert.ok(holdover.every(row => row.fallback === null));
+  assert.equal(selectWeeklyRows('pool').length, 8);
+  assert.equal(selectWeeklyRows('score').length, 4);
+  assert.ok(selectWeeklyRows('pool').every(row => row.group === 'pool'));
 });

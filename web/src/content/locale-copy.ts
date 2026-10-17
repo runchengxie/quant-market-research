@@ -1,8 +1,7 @@
 import type { PublicPage, TopicId } from "./public-registry";
 
 const topicLabels: Record<TopicId, { en: string; zh: string }> = {
-  "etf-rotation": { en: "ETF rotation", zh: "ETF 轮动" },
-  hotsector: { en: "Hotspot candidates", zh: "热点候选" },
+  rotation: { en: "Style and theme rotation", zh: "风格与主题轮动" },
   cashflow: { en: "Cash-flow research", zh: "现金流研究" },
   microcap: { en: "Micro-cap research", zh: "微盘研究" },
   style: { en: "Style research", zh: "风格研究" },
@@ -17,8 +16,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
-  "etf-rotation": { title: "ETF Rotation: Historical Diagnostic", summary: "Three retained recipes trailed a fixed ETF basket at 25 bps in a conditional historical tail; investment efficacy remains unproven." },
-  hotsector: { title: "Hotspot Overlay: Historical Diagnostic", summary: "The heat overlay improved three of four isolated events; the sample is too small to establish a reliable edge." },
+  rotation: { title: "Style and Theme Rotation", summary: "From style and hotspot signals to ETF portfolios: historical model diagnostics, weekly allocation experiments, and the missing validation steps." },
   "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Ten selected L2 dates: CNY 100k median static costs are 9.27/8.87 bp; CNY 1m coverage is 62.12%/67.68%. Order-flow audit and strategy sensitivity are published; actual execution remains uncalibrated." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },

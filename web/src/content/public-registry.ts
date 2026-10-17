@@ -1,5 +1,5 @@
 export type SectionId = 'overview' | 'research' | 'docs' | 'data';
-export type TopicId = 'cashflow' | 'microcap' | 'style' | 'low-turnover' | 'indices' | 'liquidity' | 'execution-costs' | 'etf-rotation' | 'hotsector';
+export type TopicId = 'cashflow' | 'microcap' | 'style' | 'low-turnover' | 'indices' | 'liquidity' | 'execution-costs' | 'rotation';
 
 export type PublicPage = {
   id: string;
@@ -44,10 +44,9 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
-  page({ id: 'etf-rotation', route: '/research/etf-rotation/', title: 'ETF 轮动研究', summary: '历史尾段诊断：三种配方在 25bp 情景下均落后于固定 ETF 篮子；尚未证明有效。', section: 'research', topic: 'etf-rotation', aliases: [], related: ['hotsector'], snapshotKeys: [] }),
-  page({ id: 'hotsector', route: '/research/hotsector/', title: '热点候选研究', summary: '四个历史事件中，热度叠加筛选有三个改善；样本不足以证明稳定优势。', section: 'research', topic: 'hotsector', aliases: [], related: ['etf-rotation'], snapshotKeys: [] }),
+  page({ id: 'rotation', route: '/research/style-theme-rotation/', title: '风格与主题轮动', summary: '从风格和热点信号到 ETF 组合：统一查看模型、周频配置和热点筛选的历史证据与验证缺口。', section: 'research', topic: 'rotation', aliases: ['/research/etf-rotation/', '/research/hotsector/'], related: ['style', 'indices', 'execution-costs'], snapshotKeys: [] }),
   page({ id: 'overview', route: '/', title: '研究总览', summary: '每项研究发现了什么、数据覆盖哪些日期，还有哪些问题没有答案。', section: 'overview', aliases: ['/index.html'], related: ['research', 'docs', 'data-sources'], snapshotKeys: [] }),
-  page({ id: 'research', route: '/research/', title: '研究专题', summary: '从研究问题出发，先看结论，再查数据和证据限制。', section: 'research', aliases: [], related: ['cashflow', 'microcap', 'style', 'pb-roe', 'low-turnover', 'indices', 'liquidity', 'execution-costs'], snapshotKeys: [] }),
+  page({ id: 'research', route: '/research/', title: '研究专题', summary: '从研究问题出发，先看结论，再查数据和证据限制。', section: 'research', aliases: [], related: ['rotation', 'cashflow', 'microcap', 'style', 'pb-roe', 'low-turnover', 'indices', 'liquidity', 'execution-costs'], snapshotKeys: [] }),
   page({ id: 'cashflow', route: '/research/cashflow/', title: '现金流与分红', summary: '现金流和分红相关股票过去表现如何，经历下跌后多久回到前高。', section: 'research', topic: 'cashflow', aliases: [], related: ['cashflow-recovery', 'indices'], snapshotKeys: ['cashflow.performance'] }),
   page({ id: 'cashflow-recovery', route: '/research/cashflow/recovery/', title: '现金流恢复性', summary: '现金流研究中的回本时间、结果复核和实际交易限制。', section: 'research', topic: 'cashflow', aliases: [], related: ['cashflow'], snapshotKeys: ['cashflow.recovery'] }),
   page({ id: 'microcap-report', route: '/research/microcap/report/', title: '小微盘研究历史与证据汇编', summary: '已审查研究历史、组合对照、修正记录与公开方法附录。', section: 'research', topic: 'microcap', aliases: [], related: ['microcap', 'low-turnover', 'microcap-execution-diagnostic'], snapshotKeys: [] }),

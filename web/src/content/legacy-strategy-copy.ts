@@ -27,7 +27,7 @@ export const legacyCopy = {
   shared: {
     stage: ['Historical diagnostic; not investment validation', '历史诊断，尚非投资有效性验证'],
     metrics: ['Aggregate results', '汇总结果'],
-    metricNote: ['Returns are percentages. “bps” means basis points. Annual slices are exploratory and were computed after the full-window result was known. Bootstrap ranges are descriptive, not formal significance tests.', '收益以百分比表示；bps 为基点。年度拆分是在完整区间结果已知后计算的探索性结果。自助抽样区间仅作描述，不是正式显著性检验。'],
+    metricNote: ['Returns are percentages. “bps” means basis points. Annual slices are exploratory and were computed after the full-window result was known. Bootstrap ranges are descriptive, not formal significance tests.', '收益以百分比表示；成本以基点表示，1 基点为 0.01%。年度拆分是在完整区间结果已知后计算的探索性结果。自助抽样区间仅作描述，不是正式显著性检验。'],
     noPromotion: ['These diagnostics do not establish profitability or readiness for live trading.', '这些诊断结果不能证明策略盈利，也不代表适合实盘交易。'],
     reading: ['How to read these charts', '图表怎么看'],
     next: ['What would make the next test useful', '下一步要补什么'],
@@ -46,14 +46,14 @@ export function legacyStudyCopy(study: Study, reviewedContentDigest: string) {
   if (!(study.id in translations)) throw new Error('Study translation unavailable');
   const t = translations[study.id as keyof typeof translations];
   return { title: t.title, question: t.question, conclusion: t.conclusion, reading: t.reading, nextStep: t.nextStep,
-    baseline: [study.baseline, t.baseline], scope: [study.sample_scope, t.scope],
-    limitations: [study.limitations.join(' '), t.limitations] } as const;
+    baseline: [study.baseline, t.baseline[1]], scope: [study.sample_scope, t.scope[1]],
+    limitations: [study.limitations.join(' '), t.limitations[1]] } as const;
 }
 
 const modelLabels: Record<string, [string, string]> = {
   linear_rank: ['Linear rank', '线性排序'], lightgbm_regression: ['LightGBM regression', 'LightGBM 回归'],
   lightgbm_ranker: ['LightGBM ranker', 'LightGBM 排序'], fixed_share_basket: ['Fixed-share basket', '固定份额篮子'],
-  single_etf_510300: ['Single ETF baseline', '单只 ETF 基准'], without_overlay: ['Without overlay', '不叠加热度'], with_overlay: ['With overlay', '叠加热度'],
+  single_etf_baseline: ['Single ETF baseline', '单只 ETF 基准'], without_overlay: ['Without overlay', '不叠加热度'], with_overlay: ['With overlay', '叠加热度'],
 };
 export function metricLabel(name: string, locale: 'en' | 'zh') {
   const parts = name.split('.');
