@@ -13,7 +13,8 @@ export default function ThemeToggle() {
 
   useEffect(() => {
     setLocale(document.documentElement.lang === "zh-CN" ? "zh-CN" : "en-US");
-    const storedChoice = readThemeChoice(window.localStorage);
+    let storedChoice: ThemeChoice = "system";
+    try { storedChoice = readThemeChoice(window.localStorage); } catch { /* storage is optional */ }
     setChoice(storedChoice);
     applyTheme(storedChoice, window.matchMedia("(prefers-color-scheme: dark)").matches, document.documentElement);
   }, []);
@@ -28,7 +29,7 @@ export default function ThemeToggle() {
   function cycleTheme() {
     const next = choices[(choices.indexOf(choice) + 1) % choices.length];
     setChoice(next);
-    persistThemeChoice(window.localStorage, next);
+    try { persistThemeChoice(window.localStorage, next); } catch { /* storage is optional */ }
     applyTheme(next, window.matchMedia("(prefers-color-scheme: dark)").matches, document.documentElement);
   }
 
