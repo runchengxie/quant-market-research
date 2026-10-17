@@ -21,7 +21,7 @@ const releaseSha=createHash('sha256').update(releaseBytes).digest('hex');
 const releaseUrl=withBase('/data/rotation-evidence-release.json',import.meta.env.BASE_URL);
 const summary={...evidence,replay:[]};
 ---
-<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research">
+<SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research" workbench>
   <article class="rotation-report">
     <header class="theme-heading"><div>
       <T as="span" class="section-kicker" text={pageCopy.strategyResearchHistoricalEvidence} />
