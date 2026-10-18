@@ -1,0 +1,40 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import Text from '../../../components/research/HubText.astro';
+import { overseasCopy as c } from '../../../content/overseas-leadlag-copy';
+import { withBase } from '../../../lib/routes';
+import data from '../../../../public/data/overseas_leadlag_reviewed.json';
+const base = import.meta.env.BASE_URL;
+const selected = data.comparisons.filter(r => r.baseline === 'global' && r.augmented === 'all_overseas');
+const main = selected.filter(r => r.lag_sessions === 0);
+const delayed = selected.filter(r => r.lag_sessions === 1);
+const pct = (v: number) => `${(v * 100).toFixed(2)}%`;
+const ci = (r: typeof selected[number]) => `${pct(r.mse_gain)} [${r.mse_gain_ci95.map(pct).join(', ')}]`;
+const label = (map: Record<string, readonly [string, string]>, key: string) => map[key];
+const allGain = (r: typeof selected[number]) => data.comparisons.find(x => x.target === r.target && x.outcome === r.outcome && x.lag_sessions === r.lag_sessions && x.baseline === 'domestic_fx' && x.augmented === 'all_overseas')!;
+const years = (r: typeof selected[number]) => data.annual.filter(x => x.target === r.target && x.outcome === r.outcome && x.lag_sessions === r.lag_sessions && x.baseline === 'global' && x.augmented === 'all_overseas');
+const etfs = data.costs.filter(r => r.scenario === 'flat_bps' && 'round_trip_bp' in r && r.round_trip_bp === 10 && r.lag_sessions === 0 && r.model !== 'domestic_fx');
+const budgets = data.costs.filter(r => r.scenario === 'budget' && r.lag_sessions === 0 && r.model === 'all_overseas');
+---
+<SiteLayout title={c.title[1]} titleEn={c.title[0]} description={c.intro[0]} section="research">
+  <article class="research-report" data-overseas-study>
+    <header class="theme-heading"><div><span class="section-kicker"><Text text={c.kicker}/></span><h1><Text text={c.title}/></h1><p><Text text={c.intro}/></p></div><span class="evidence-status exploratory"><Text text={c.status}/></span></header>
+    <section class="report-section report-conclusion"><h2><Text text={c.finding}/></h2><p><Text text={c.lead}/></p></section>
+    <section class="report-section"><h2><Text text={c.availability}/></h2><p><Text text={c.availabilityBody}/></p></section>
+    <section class="report-section" id="forecasts"><h2><Text text={c.forecasts}/></h2><p><Text text={c.forecastHelp}/></p>
+      <div class="table-scroll"><table><thead><tr><th><Text text={c.target}/></th><th><Text text={c.sample}/></th><th><Text text={c.allGain}/></th><th><Text text={c.asianGain}/></th><th><Text text={c.positiveYears}/></th></tr></thead><tbody>{main.map(r => <tr><th><Text text={label(c.targets,r.target)}/> · <Text text={label(c.outcomes,r.outcome)}/></th><td>{r.n.toLocaleString('en-US')}</td><td>{pct(allGain(r).mse_gain)}</td><td>{ci(r)}</td><td>{years(r).filter(y => y.mse_gain > 0).length} / {years(r).length}</td></tr>)}</tbody></table></div>
+      <details><summary><Text text={c.delayed}/></summary><div class="table-scroll"><table><thead><tr><th><Text text={c.target}/></th><th><Text text={c.sample}/></th><th><Text text={c.asianGain}/></th></tr></thead><tbody>{delayed.map(r => <tr><th><Text text={label(c.targets,r.target)}/> · <Text text={label(c.outcomes,r.outcome)}/></th><td>{r.n.toLocaleString('en-US')}</td><td>{ci(r)}</td></tr>)}</tbody></table></div></details>
+      <details><summary><Text text={c.years}/></summary><div class="table-scroll"><table><thead><tr><th><Text text={c.year}/></th>{main.map(r => <th><Text text={label(c.targets,r.target)}/> · <Text text={label(c.outcomes,r.outcome)}/></th>)}</tr></thead><tbody>{[2020,2021,2022,2023,2024,2025,2026].map(y => <tr><th>{y === 2026 ? '2026 ≤ 10-16' : y}</th>{main.map(r => <td>{years(r).find(a => a.year === y) ? pct(years(r).find(a => a.year === y)!.mse_gain) : '—'}</td>)}</tr>)}</tbody></table></div></details>
+    </section>
+    <section class="report-section" id="etf-costs"><h2><Text text={c.costTitle}/></h2><p><Text text={c.costCorrection}/></p><p><Text text={c.costHelp}/></p>
+      <div class="table-scroll"><table><caption><Text text={c.costCaption}/></caption><thead><tr><th>ETF</th><th><Text text={c.model}/></th><th><Text text={c.mean}/></th><th><Text text={c.sharpe}/></th><th><Text text={c.exposure}/></th></tr></thead><tbody>{etfs.map(r => <tr><th>{r.target}</th><td><Text text={label(c.models,r.model)}/></td><td>{r.mean_daily_net_bp.toFixed(2)}</td><td>{r.sharpe?.toFixed(2) ?? '—'}</td><td>{pct(r.exposure_fraction)}</td></tr>)}</tbody></table></div>
+      <figure><img src={withBase('/charts/overseas-leadlag-cost.svg',base)} alt={c.chartAlt[0]} data-locale-image data-image-en={withBase('/charts/overseas-leadlag-cost.svg',base)} data-image-zh={withBase('/charts/overseas-leadlag-cost.svg',base)} data-alt-en={c.chartAlt[0]} data-alt-zh={c.chartAlt[1]} width="1000" height="370" loading="lazy"/><figcaption><Text text={c.costCaption}/></figcaption></figure>
+      <details><summary><Text text={c.budgetTitle}/></summary><p><Text text={c.budgetHelp}/></p><div class="table-scroll"><table><thead><tr><th>ETF</th><th><Text text={c.budget}/></th><th><Text text={c.slippage}/></th><th><Text text={c.mean}/></th></tr></thead><tbody>{budgets.map(r => <tr><th>{r.target}</th><td>{r.notional_budget_yuan.toLocaleString('en-US')}</td><td>{'slippage_one_way_bp' in r ? r.slippage_one_way_bp : '—'}</td><td>{r.mean_daily_net_bp.toFixed(2)}</td></tr>)}</tbody></table></div></details>
+    </section>
+    <section class="report-section"><h2><Text text={c.boundary}/></h2><p><Text text={c.boundaryBody}/></p></section>
+    <nav class="report-links"><a class="button-link" href={withBase('/docs/research/experiments/overseas-leadlag-20261018/',base)}><Text text={c.method}/></a><a class="button-link secondary" href={withBase('/data/overseas_leadlag_reviewed.json',base)}><Text text={c.download}/></a></nav>
+  </article>
+</SiteLayout>
+<style>
+  .table-scroll{overflow-x:auto;max-width:100%;margin:1rem 0} table{border-collapse:collapse;min-width:40rem;width:100%;font-variant-numeric:tabular-nums} th,td{padding:.7rem;text-align:left;border-bottom:1px solid var(--border-color,#ddd);vertical-align:top}caption{text-align:left;margin-bottom:.8rem} details{margin:1.2rem 0}summary{cursor:pointer;font-weight:600}figure{margin:1.5rem 0}figure img{width:100%;height:auto;background:white}figcaption{font-size:.9rem;margin-top:.5rem}
+</style>
