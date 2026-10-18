@@ -2,8 +2,6 @@
 
 [Chinese version](microcap.zh-CN.md)
 
-See the [ST eligibility and comparability audit](../experiments/microcap-st-comparability-audit-20261018.md) before comparing studies: historical ST filters, delisting exits, costs and portfolio accounting differ by version. The size-tail exclusion matrix is not an include-ST versus exclude-ST test.
-
 This page describes reconstructed historical rules and risk characteristics. It is not a Wind index replication and does not represent a directly tradable strategy.
 
 ## Plain-language takeaway

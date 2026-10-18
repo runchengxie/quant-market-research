@@ -11,7 +11,7 @@
 | 研究或版本 | 历史ST／*ST状态 | 退市处理边界 | 权重、调仓、收益与成本 | 可以比较什么 |
 | --- | --- | --- | --- | --- |
 | 最早同收盘选股成交版本，以及混用数据源的2014–2015持有区间 | 补充状态数据不能修复成交前视或跨源价格问题 | 未形成经验证的结算历史 | 相关收益已作废 | 不作为当前业绩证据 |
-| [2008–2026最小N日频重建](turnover-microcap-followup-20260915.md)，N=50／100／200／400／800 | 2015年前加载器将日线 `is_st` 设为false，再用重建区间按 `ann_date < 形成日` 排除；2015年起另用清洗日线 `is_st`。早期历史状态覆盖未被证明完整；入口也没有强制执行诊断所需的版本化可用时间收据 | 形成日需有证券记录且早于退市日；持仓终值和现金结算仍不完整 | 日频等权，形成收盘→下一观测收盘执行→再下一收盘计价。没有手续费或现金账本；无法解释缺价分别按持平和全部损失给出敏感性 | 同一重建、相同有效日期内比较N和缺价规则；不能接成执行账本 |
+| [2008–2026最小N日频重建](https://github.com/runchengxie/quant-market-research/blob/d569806/docs/research/experiments/turnover-microcap-followup-20260915.md)，N=50／100／200／400／800 | 2015年前加载器将日线 `is_st` 设为false，再用重建区间按 `ann_date < 形成日` 排除；2015年起另用清洗日线 `is_st`。早期历史状态覆盖未被证明完整；入口也没有强制执行诊断所需的版本化可用时间收据 | 形成日需有证券记录且早于退市日；持仓终值和现金结算仍不完整 | 日频等权，形成收盘→下一观测收盘执行→再下一收盘计价。没有手续费或现金账本；无法解释缺价分别按持平和全部损失给出敏感性 | 同一重建、相同有效日期内比较N和缺价规则；不能接成执行账本 |
 | [低换手候选与20／60／120日窗口](../factors/low-turnover.md) | 当前资格函数按历史日期与证券键排除ST，不是把今天的ST名单倒推；但函数本身不要求公告时间或不受修订影响的收据 | 当前模拟器使用退市日期和终值收益假设；假设损失不等于实际结算 | 已发布窗口快照为月频、40目标、60缓冲、协议成本10bp；连续权重与份额账本分开 | 仅在相同输入、引擎、日期和成本下比较。旧归因收益窗口已被替代，差额不能解释成ST效应 |
 | 留存的0%／10%／20%／30%市值尾部剔除及权重矩阵 | 当前稳健性函数复用历史日期ST过滤；旧结果源代码提交和命令收据不明，不能用当前代码认证历史运行 | 入池资格和最终退出核算仍需区分 | 月频筛选、多种权重，容量输出另列；笔记写10bp，但历史实际成本未验证 | 只能作附带来源限制的矩阵内部描述，不能称作同账本执行对照 |
 | 早期2025年1月执行诊断 | 使用旧清洗日线和临时证券快照，后来记录了历史ST误标修正 | 扩展区间曾遇到无法解释的退市退出 | 短期连续模拟；输入版本已被替代 | 仅保留迁移记录 |
@@ -38,9 +38,9 @@ market-research源码的 `/research/microcap/` 已汇集历史图表、研究地
 
 ## 可核对的公开来源
 
-- [历史加载、资格与区间公告条件](../../../scripts/analyze_microcap_history.py)及[历史收益构造](../../../src/market_research/microcap_history.py)。
-- [执行状态收据、更名与退市检查](../../../src/market_research/microcap_execution.py)。
-- [留存对照的来源契约](../../../src/market_research/microcap_review.py)。
+- [历史加载、资格与区间公告条件](https://github.com/runchengxie/quant-market-research/blob/d569806/scripts/analyze_microcap_history.py)及[历史收益构造](https://github.com/runchengxie/quant-market-research/blob/d569806/src/market_research/microcap_history.py)。
+- [执行状态收据、更名与退市检查](https://github.com/runchengxie/quant-market-research/blob/d569806/src/market_research/microcap_execution.py)。
+- [留存对照的来源契约](https://github.com/runchengxie/quant-market-research/blob/d569806/src/market_research/microcap_review.py)。
 - [历史修正与研究身份](../factors/microcap.zh-CN.md)。
 
 私有代码只读核查确认：当前候选资格函数使用历史日期与证券键过滤ST，稳健性参考股票池调用该函数。这只证明当前实现结构；表内注明的历史运行身份仍然未知。
