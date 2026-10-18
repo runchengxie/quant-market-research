@@ -38,3 +38,11 @@ test('changed forward registration remains visible when historical metrics are u
  const right=structuredClone(asset);right.forward.registration_id='new-registration';right.changes.push({kind:'forward',code:'forward_controls_hardened'});
  const result=compareRotationReleases(asset,right);assert.ok(result.changes.includes('forward_evidence_changed'));assert.ok(result.changes.includes('forward_controls_hardened'));
 });
+
+test('identical foundation releases are identified without fabricated return deltas',async()=>{
+ const {compareRotationReleases}=await import('./content/rotation-release-comparison.ts');
+ const {asset:foundation}=JSON.parse(await readFile(new URL('../tests/fixtures/rotation-foundation.json',import.meta.url),'utf8'));
+ assert.deepEqual(compareRotationReleases(foundation,structuredClone(foundation)),{status:'identical',changes:['same_release'],rows:[]});
+ const revised=structuredClone(foundation);revised.release_id+='-revised';
+ const result=compareRotationReleases(foundation,revised);assert.equal(result.status,'incompatible');assert.deepEqual(result.changes,['foundation_comparison_unavailable']);assert.deepEqual(result.rows,[]);
+});
