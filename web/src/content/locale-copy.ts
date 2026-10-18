@@ -1,6 +1,7 @@
 import type { PublicPage, TopicId } from "./public-registry";
 
 const topicLabels: Record<TopicId, { en: string; zh: string }> = {
+  overseas: { en: 'Overseas lead-lag research', zh: '海外领先指标研究' },
   rotation: { en: "Style and theme rotation", zh: "风格与主题轮动" },
   cashflow: { en: "Cash-flow research", zh: "现金流研究" },
   microcap: { en: "Micro-cap research", zh: "微盘研究" },
@@ -16,6 +17,8 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  'overseas-leadlag': { title: 'Overseas signals and the A-share open', summary: 'FX and market controls, annual folds and T+1 ETF costs: the Asian increment is unstable.' },
+  'overseas-leadlag-method': { title: 'Overseas signals and the A-share open: timing, controls and ETF costs', summary: 'Assumed historical availability, annual folds, FX controls and ETF proxy limits.' },
   rotation: { title: "Style and Theme Rotation", summary: "From style and hotspot signals to ETF portfolios: historical model diagnostics, weekly allocation experiments, and the missing validation steps." },
   "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Ten selected L2 dates: CNY 100k median static costs are 9.27/8.87 bp; CNY 1m coverage is 62.12%/67.68%. Order-flow audit and strategy sensitivity are published; actual execution remains uncalibrated." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
