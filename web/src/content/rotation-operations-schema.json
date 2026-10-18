@@ -1,0 +1,242 @@
+{
+  "audit": {
+    "affected_weeks": "integer",
+    "audit_sha256": "sha256",
+    "baseline_gaps": [
+      {
+        "baseline": "text",
+        "first_week": {
+          "?": "date"
+        },
+        "last_week": {
+          "?": "date"
+        },
+        "reasons": [
+          {
+            "code": "text",
+            "count": "integer"
+          }
+        ],
+        "unavailable_weeks": "integer"
+      }
+    ],
+    "changed_records": "integer",
+    "dimensions": [
+      {
+        "admitted": "integer",
+        "reason": "text",
+        "records": "integer",
+        "rejected": "integer",
+        "rule": "text",
+        "state": "text",
+        "unknown": "integer"
+      }
+    ],
+    "historical_availability": "text",
+    "monthly": [
+      {
+        "changed_records": "integer",
+        "month": "text",
+        "unavailable_baseline_weeks": "integer"
+      }
+    ],
+    "panel_end": "date",
+    "panel_start": "date",
+    "panels": [
+      {
+        "affected_weeks": "integer",
+        "changed_records": "integer",
+        "id": "text",
+        "symbols": "integer"
+      }
+    ],
+    "reasons": [
+      "text"
+    ],
+    "registration_sha256": "sha256",
+    "rules": {
+      "amount_sessions": "integer",
+      "amount_unit": "text",
+      "minimum_history": "integer",
+      "minimum_median_amount": "number"
+    },
+    "sessions": "integer",
+    "source_hashes": [
+      {
+        "id": "text",
+        "sha256": "sha256"
+      }
+    ],
+    "symbol_week_records": "integer",
+    "symbols": "integer"
+  },
+  "base_evidence_id": "text",
+  "changes": [
+    {
+      "code": "text",
+      "kind": "text"
+    }
+  ],
+  "comparisons": {
+    "available_rows": "integer",
+    "budget_definition": "text",
+    "cases": [
+      {
+        "cost_bps": "number",
+        "execution_delay_sessions": "integer",
+        "id": "text"
+      }
+    ],
+    "historical_availability": "text",
+    "protocol_sha256": "sha256",
+    "report_sha256": "sha256",
+    "risk": {
+      "annualization": "integer",
+      "bond_above_ceiling": "text",
+      "ddof": "integer",
+      "lookback": "integer",
+      "max_risky_weight": "number",
+      "target_vol": "number"
+    },
+    "risk_definition": "text",
+    "row_count": "integer",
+    "rows": [
+      {
+        "baseline": "text",
+        "case_id": "text",
+        "ceiling_breaches": "integer",
+        "comparator_period": {
+          "?": {
+            "end": "date",
+            "sessions": "integer",
+            "start": "date"
+          }
+        },
+        "comparison": "text",
+        "cost_bps": "number",
+        "differences": {
+          "?": {
+            "cagr": "number",
+            "max_drawdown": "number",
+            "total_return": "number",
+            "volatility": "number"
+          }
+        },
+        "eligibility_case": "text",
+        "execution_delay_sessions": "integer",
+        "id": "text",
+        "inactive_count": "integer",
+        "metrics": {
+          "?": {
+            "comparator": {
+              "attribution": {
+                "bond": "number",
+                "costs": "number",
+                "residual": "number",
+                "risk": "number",
+                "total_return": "number"
+              },
+              "cagr": "number",
+              "cost_drag": "number",
+              "max_drawdown": "number",
+              "realized_risky_weight": "number",
+              "sharpe_zero_rf": "number",
+              "target_risky_weight": "number",
+              "total_return": "number",
+              "turnover": "number",
+              "volatility": "number"
+            },
+            "reference": {
+              "attribution": {
+                "bond": "number",
+                "costs": "number",
+                "residual": "number",
+                "risk": "number",
+                "total_return": "number"
+              },
+              "cagr": "number",
+              "cost_drag": "number",
+              "max_drawdown": "number",
+              "realized_risky_weight": "number",
+              "sharpe_zero_rf": "number",
+              "target_risky_weight": "number",
+              "total_return": "number",
+              "turnover": "number",
+              "volatility": "number"
+            }
+          }
+        },
+        "period": {
+          "?": {
+            "end": "date",
+            "sessions": "integer",
+            "start": "date"
+          }
+        },
+        "protocol_sha256": "sha256",
+        "realized_exposure_gap": {
+          "?": "number"
+        },
+        "reasons": [
+          "text"
+        ],
+        "reference_period": {
+          "?": {
+            "end": "date",
+            "sessions": "integer",
+            "start": "date"
+          }
+        },
+        "status": "text",
+        "target_budget_error": {
+          "?": "number"
+        },
+        "unavailable_count": "integer",
+        "window_id": "text"
+      }
+    ]
+  },
+  "created_at": "timestamp",
+  "health": {
+    "calendar_valid_through": {
+      "?": "date"
+    },
+    "capture_state": "text",
+    "captured_weeks": "integer",
+    "cutoff_local": "text",
+    "forward_timer": "text",
+    "metrics": {
+      "?": {
+        "cagr": "number",
+        "max_drawdown": "number",
+        "sharpe_zero_rf": "number",
+        "total_return": "number"
+      }
+    },
+    "missing_weeks": "integer",
+    "observed_at": "timestamp",
+    "pending_settlement": "integer",
+    "preparation_status": "text",
+    "preparation_timer": "text",
+    "readiness": "text",
+    "reasons": [
+      "text"
+    ],
+    "reviewed_at": {
+      "?": "timestamp"
+    },
+    "settled_weeks": "integer",
+    "source_observed_by": {
+      "?": "timestamp"
+    },
+    "source_session": {
+      "?": "date"
+    },
+    "state": "text",
+    "timezone": "text"
+  },
+  "producer_commit": "text",
+  "release_id": "text",
+  "reviewed_source_digest": "sha256",
+  "schema_version": "text"
+}

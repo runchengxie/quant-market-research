@@ -1,0 +1,30 @@
+---
+import type {RotationOperations} from '../content/rotation-operations';
+import {operationsCopy as c,operationCodes} from '../content/rotation-operations-copy';
+import T from './LocaleText.astro';
+const {evidence:a}=Astro.props as {evidence:RotationOperations};
+const h=a.health,u=a.audit;
+const rows=a.comparisons.rows.filter(r=>r.case_id==='primary'&&r.window_id==='common');
+const code=(value:string)=>operationCodes[value]??c.unavailable;
+const baseline=(value:string)=>value==='pool-core'?c.defensive:c.fixed;
+const number=(value:number)=>new Intl.NumberFormat('en-US').format(value);
+---
+<section id="rotation-operations" class="panel rotation-operations">
+ <T as="h2" text={c.title}/><T class="extension-callout" text={c.conclusion}/><T text={c.intro}/>
+ <p><T as="span" text={c.asOf}/> <time datetime={h.observed_at}>{h.observed_at}</time></p><T class="panel-note" text={c.freshness}/>
+ <T as="h3" text={c.health}/><p><T as="span" text={code(h.state)}/> · <T as="span" text={c[h.capture_state]}/></p>
+ <div class="rotation-facts"><div><strong>{number(h.captured_weeks)}</strong><T as="span" text={c.captured}/></div><div><strong>{number(h.settled_weeks)}</strong><T as="span" text={c.settled}/></div></div>
+ <p><T as="span" text={c.sourceSession}/>: {h.source_session??'—'} · <T as="span" text={c.cutoff}/>: {h.cutoff_local} {h.timezone}</p>
+ <p><T as="span" text={c.prepareTimer}/>: <T as="span" text={c[h.preparation_timer]}/> · <T as="span" text={c.forwardTimer}/>: <T as="span" text={c[h.forward_timer]}/></p>
+ <T text={c.readinessNote}/>
+ <section id="rotation-prefix-audit"><T as="h3" text={c.audit}/><T text={c.auditNote}/>
+  <div class="rotation-facts"><div><strong>{number(u.symbols)}</strong><T as="span" text={c.symbols}/></div><div><strong>{number(u.changed_records)}</strong><T as="span" text={c.changes}/></div><div><strong>{number(u.affected_weeks)}</strong><T as="span" text={c.affected}/></div></div>
+  <div class="table-scroll"><table><thead><tr><th><T as="span" text={c.baseline}/></th><th><T as="span" text={c.missing}/></th><th><T as="span" text={c.span}/></th></tr></thead><tbody>{u.baseline_gaps.map(g=><tr><td><T as="span" text={baseline(g.baseline)}/></td><td>{number(g.unavailable_weeks)}</td><td>{g.first_week??'—'} – {g.last_week??'—'}</td></tr>)}</tbody></table></div>
+  <details><T as="summary" text={c.dimensions}/><T text={c.dimensionNote}/><ul>{u.dimensions.map(d=><li><T as="span" text={code(d.rule)}/>: <T as="span" text={code(d.state)}/> — <T as="span" text={code(d.reason)}/>; <T as="span" text={c.unknown}/> {number(d.unknown)}; <T as="span" text={c.rejected}/> {number(d.rejected)}</li>)}</ul></details>
+  <T text={c.ruleNote}/>
+ </section>
+ <section id="rotation-matched"><T as="h3" text={c.matched}/><T text={c.matchedNote}/><T text={c.interpretation}/>
+  <p><T as="span" text={c.rowCount}/>: {number(a.comparisons.row_count)} · <T as="span" text={c.availableCount}/>: {number(a.comparisons.available_rows)}</p>
+  <div class="table-scroll"><table><thead><tr><th><T as="span" text={c.baseline}/></th><th><T as="span" text={c.comparison}/></th><th><T as="span" text={c.eligibility}/></th><th><T as="span" text={c.cagr}/></th><th><T as="span" text={c.reason}/></th></tr></thead><tbody>{rows.map(r=><tr><td><T as="span" text={baseline(r.baseline)}/></td><td><T as="span" text={r.comparison==='budget'?c.budget:c.risk}/></td><td><T as="span" text={r.eligibility_case==='retained_snapshot'?c.snapshot:c.prefix}/></td><td>{r.metrics?(100*r.metrics.reference.cagr).toFixed(2)+'%':'—'}</td><td>{r.reasons.map(reason=><p><T as="span" text={code(reason)}/></p>)}</td></tr>)}</tbody></table></div>
+ </section>
+</section>

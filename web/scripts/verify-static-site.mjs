@@ -2,7 +2,7 @@ import { validateRotationEvidence } from "../src/content/rotation-evidence.serve
 import fs from "node:fs";
 import {createHash} from "node:crypto";
 import {validateIndexedBinding,validateReleaseIndex} from "../src/content/rotation-extension.ts";
-import {validateRotationExtension} from "../src/content/rotation-extension.server.ts";
+import {validateReviewedRotationEnvelope} from "../src/content/rotation-operations.server.ts";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { publicDocs } from "../src/content/public-registry.ts";
@@ -82,8 +82,7 @@ export function verifyStaticSite(distDirectory) {
       const envelope=JSON.parse(raw.toString());
       validateIndexedBinding(entry,envelope);
       if(Object.keys(envelope).sort().join()!=='asset,review')throw Error('Invalid indexed envelope');
-      if(envelope.asset.schema_version==='research.rotation_extension.v1')validateRotationExtension(envelope.asset,envelope.review);
-      else validateRotationEvidence(envelope.asset,envelope.review);
+      validateReviewedRotationEnvelope(envelope);
       if(envelope.review.content_sha256!==entry.content_sha256||envelope.review.reviewer!==entry.reviewer)throw Error('Index review binding mismatch');
     }
   } catch(error){errors.push(`Missing or invalid rotation release registry: ${error.message}`);}

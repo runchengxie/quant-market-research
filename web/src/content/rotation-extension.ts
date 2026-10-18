@@ -1,5 +1,5 @@
 import schema from './rotation-extension-schema.json';
-import { validatePublicText, canonical } from './rotation-evidence';
+import { validatePublicText, canonical, validateShape } from './rotation-evidence';
 export type Metrics = {
     total_return: number;
     cagr: number;
@@ -141,7 +141,7 @@ export type ReleaseIndex = {
 };
 export const isHash = (v: unknown): v is string => typeof v === 'string' && /^[a-f0-9]{64}$/.test(v);
 const isObject = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v);
-function validateDescriptor(value: unknown, rule: unknown): void {
+export function validateDescriptor(value: unknown, rule: unknown): void {
     if (Array.isArray(rule)) {
         if (!Array.isArray(value))
             throw Error('Expected public array');
@@ -219,7 +219,9 @@ export function validateReleaseIndex(value: unknown): ReleaseIndex {
     if (index.schema_version !== 'research.rotation_release_index.v1' || !index.releases.length || new Set(index.releases.map(r => r.release_id)).size !== index.releases.length || !index.releases.some(r => r.release_id === index.current_release_id))
         throw Error('Invalid release index');
     for (const r of index.releases)
-        if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$/.test(r.release_id) || r.path !== `rotation/releases/${r.release_id}.json`)
+        if (!['research.rotation_evidence_public.v1','research.rotation_extension.v1','research.rotation_operations.v1'].includes(r.schema_version))
+            throw Error('Unknown rotation release schema');
+        else if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$/.test(r.release_id) || r.path !== `rotation/releases/${r.release_id}.json`)
             throw Error('Unsafe release path');
     return index;
 }
@@ -240,6 +242,16 @@ export async function loadIndexedRelease(entry: ReleaseEntry, baseUrl: string) {
         throw Error('Release content mismatch');
     if (envelope.asset.schema_version === 'research.rotation_extension.v1')
         validateExtensionShape(envelope.asset);
+    else if(envelope.asset.schema_version==='research.rotation_evidence_public.v1')
+        validateShape(envelope.asset);
+    else if(envelope.asset.schema_version==='research.rotation_operations.v1'){
+        const {validateOperationsShape,validateOperationsReview}=await import('./rotation-operations');
+        const asset=validateOperationsShape(envelope.asset);
+        validateOperationsReview(asset,envelope.review,{content:await shaBytes(canonical(asset)),asset:await shaBytes(canonical(asset)+'\n')});
+    }else throw Error('Unknown rotation release schema');
+    const review=envelope.review;
+    if(Object.keys(review).sort().join()!==['status','source_sha256','content_sha256','asset_sha256','reviewer','reviewed_at'].sort().join()||review.source_sha256!==envelope.asset.reviewed_source_digest||review.asset_sha256!==await shaBytes(canonical(envelope.asset)+'\n'))throw Error('Release review mismatch');
+    Object.values(review).forEach(validatePublicText);
     return envelope.asset as RotationExtension | Record<string, unknown>;
 }
 
