@@ -92,6 +92,12 @@
 
 SHA-256: `67ea16a685f1a483ffd39353f78cc45ed9e3e33cbffdb9df70df26941f22174c`
 
+### ST 资格与历史可比性
+
+这些研究没有共用一套已验证的历史 ST 剔除规则，目前也没有同样本含 ST／不含 ST 的收益对照。当前执行诊断使用重建历史，revision_safe=false；现有资格门禁不能追溯认证早期收益。
+
+[查看 ST 口径与可比性审计](https://runchengxie.github.io/quant-market-research/docs/research/experiments/microcap-st-comparability-audit-20261018/?lang=zh-CN)
+
 ### 已审查汇总的来源记录
 
 [下载已审查的持仓交集与账户汇总](https://runchengxie.github.io/quant-market-research/data/microcap_impact_review.json)

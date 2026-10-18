@@ -16,6 +16,9 @@ export const impactCopy={
  registerTitle:['Continuous records that retain earlier failures','保留先前失败状态的连续登记'],
  register:['A local register now imports the original two pending receipts in order: eight issues followed by seven. Original receipt times and the later import times remain separate. Subsequent manual reviews select the recorded predecessor automatically and bind inputs, code, lock file and available signal evidence. These imports are not new market observations: admitted and completed counts remain zero, and no scheduler is installed.','本地登记册已按顺序导入原有两份待定记录：先有八类问题，后有七类。原收据时间与后来的导入时间分开保留。后续人工复查自动取已登记的前一份记录，并绑定输入、代码、依赖锁和已有信号证据。两次导入不是新的市场观察，纳入和完成数量仍为零，也没有安装定时任务。'],
  registerBoundary:['The published head below anchors this two-entry prefix. Compare it with the reviewed version before continuing. Local hashes and witnesses do not independently prevent replacement of the entire directory; later unanchored entries need new independent anchors. Integrity checks do not prove historical availability or validate signal ranks.','下方公布的末项哈希锚定这两条记录。继续登记前，应与已审查版本对照。本地哈希和见证文件不能单独防止整个目录被替换，后续尚未锚定的记录需要新的独立锚点。完整性检查不证明历史信息可得性，也不验证信号排名。'],
+ stTitle:['ST eligibility and historical comparability','ST 资格与历史可比性'],
+ stBoundary:['These studies do not share one verified historical ST exclusion policy. No same-sample include-ST / exclude-ST return comparison is established. The current execution diagnostic uses reconstructed history with revision_safe=false; its present eligibility gates cannot retrospectively certify older returns.','这些研究没有共用一套已验证的历史 ST 剔除规则，目前也没有同样本含 ST／不含 ST 的收益对照。当前执行诊断使用重建历史，revision_safe=false；现有资格门禁不能追溯认证早期收益。'],
+ stLink:['Read the ST comparability audit','查看 ST 口径与可比性审计'],
  provenance:['Reviewed aggregate provenance','已审查汇总的来源记录'],
  download:['Download reviewed exposure and account aggregates','下载已审查的持仓交集与账户汇总'],
 } satisfies Record<string,LocalText>;
@@ -48,6 +51,7 @@ export function impactMarkdown(l:AgendaLocale){const t=(key:keyof typeof impactC
  `### ${t('stressTitle')}`,t('stress'),md(stressTable(l)),t('stressBoundary'),
  `### ${t('accountTitle')}`,t('account'),md(accountTable(l)),t('accountBoundary'),
  `### ${t('registerTitle')}`,t('register'),md(registerTable(l)),t('registerBoundary'),`SHA-256: \`${data.register.head_sha256}\``,
+ `### ${t('stTitle')}`,t('stBoundary'),`[${t('stLink')}](https://runchengxie.github.io/quant-market-research/docs/research/experiments/microcap-st-comparability-audit-20261018/?lang=${l})`,
  `### ${t('provenance')}`,`[${t('download')}](https://runchengxie.github.io/quant-market-research/data/microcap_impact_review.json)`,
  ...Object.entries(data.source_sha256).map(([role,hash])=>`- ${role}: \`${hash}\``),
 ].join('\n\n');}

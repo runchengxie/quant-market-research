@@ -18,6 +18,8 @@ for (const locale of ['en-US','zh-CN']) {
  });
  test(`impact download reuses the reviewed ${locale} section without private data`,async()=>{
   const section=impactMarkdown(locale);
+  assert.ok(section.includes('revision_safe=false'));
+  assert.ok(section.includes(`microcap-st-comparability-audit-20261018/?lang=${locale}`));
   assert.ok((await buildMicrocapReport(locale)).markdown.includes(section));
   assert.doesNotMatch(section,/undefined|NaN|\/home\/|PRIVATE|002729|20211012/);
   if(locale==='en-US')assert.doesNotMatch(section,/[\u3400-\u9fff]/);

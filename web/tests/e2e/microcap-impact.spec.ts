@@ -8,8 +8,11 @@ test('holdings impact agrees with reviewed data and downloads across locales and
  await expect(live).toContainText('0.15–0.26');await expect(live).toContainText('not an estimated event loss');
  await expect(live.locator('[data-impact-block="account"] tbody tr')).toHaveCount(4);
  await expect(live.locator('[data-impact-block="register"] tbody tr')).toHaveCount(2);
- await live.locator('summary').click();await page.getByRole('button',{name:'Switch to Chinese'}).click();
- await expect(live).toContainText('最低有效观测数');await expect(live).toContainText('库存仍未知');await expect(live.locator('details')).toHaveAttribute('open','');
+ await live.locator('summary').click();await expect(live.locator('details')).toHaveAttribute('open','');
+ await page.evaluate(()=>{document.documentElement.lang='zh-CN';});await expect(live).toHaveAttribute('lang','zh-CN');await expect(live.locator('details')).toHaveAttribute('open','');
+ await page.evaluate(()=>{document.documentElement.lang='en-US';});await expect(live).toHaveAttribute('lang','en-US');
+ await page.getByRole('button',{name:'Switch to Chinese'}).click();
+ await expect(live).toContainText('最低有效观测数');await expect(live).toContainText('库存仍未知');await expect(live).toContainText('revision_safe=false');
  const data=await(await page.request.get('data/microcap_impact_review.json')).json();
  expect(data.raw_share_ready).toBe(false);expect(data.exposure.plans['90'].inventory.owner_ideal_fee10.unknown).toBe(6);
  for(const locale of ['en-US','zh-CN']){

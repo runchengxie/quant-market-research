@@ -92,6 +92,12 @@ The published head below anchors this two-entry prefix. Compare it with the revi
 
 SHA-256: `67ea16a685f1a483ffd39353f78cc45ed9e3e33cbffdb9df70df26941f22174c`
 
+### ST eligibility and historical comparability
+
+These studies do not share one verified historical ST exclusion policy. No same-sample include-ST / exclude-ST return comparison is established. The current execution diagnostic uses reconstructed history with revision_safe=false; its present eligibility gates cannot retrospectively certify older returns.
+
+[Read the ST comparability audit](https://runchengxie.github.io/quant-market-research/docs/research/experiments/microcap-st-comparability-audit-20261018/?lang=en-US)
+
 ### Reviewed aggregate provenance
 
 [Download reviewed exposure and account aggregates](https://runchengxie.github.io/quant-market-research/data/microcap_impact_review.json)
