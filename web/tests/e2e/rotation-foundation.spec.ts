@@ -35,3 +35,12 @@ test('foundation keeps primary evidence readable without JavaScript',async({brow
  await expect(panel).toContainText('709');await expect(panel).toContainText('150');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();await context.close();
 });
+
+for(const locale of ['en-US','zh-CN'])test('foundation block units and identical release message '+locale,async({page})=>{
+ await page.goto(route+'?lang='+locale);const panel=page.locator('#rotation-foundation');await panel.locator('select').first().waitFor();
+ await expect(panel.getByRole('columnheader',{name:locale==='en-US'?'Expected block length · weeks':'预期区块长度（周）',exact:true})).toBeVisible();
+ const versions=page.locator('#rotation-versions');for(const label of locale==='en-US'?['Earlier release','Later release']:['较早版本','较新版本'])await versions.getByLabel(label,{exact:true}).selectOption('rotation-foundation-20261018-v1');
+ await versions.getByRole('button',{name:locale==='en-US'?'Compare releases':'比较版本',exact:true}).click();
+ await expect(versions).toContainText(locale==='en-US'?'The same reviewed release is selected on both sides. No return difference is calculated.':'两侧选择的是同一份已审查版本，不计算收益差。');
+ await expect(versions.getByRole('table')).toHaveCount(0);
+});
