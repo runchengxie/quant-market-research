@@ -17,6 +17,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  "valuation-denominators": { title: "Low valuation: definitions and a current illustration", summary: "Five earnings/equity denominators, six selected issuers and historical availability limits." },
   'overseas-leadlag': { title: 'Overseas signals and the A-share open', summary: 'FX and market controls, annual folds and T+1 ETF costs: the Asian increment is unstable.' },
   'overseas-leadlag-method': { title: 'Overseas signals and the A-share open: timing, controls and ETF costs', summary: 'Assumed historical availability, annual folds, FX controls and ETF proxy limits.' },
   rotation: { title: "Style and Theme Rotation", summary: "From style and hotspot signals to ETF portfolios: historical model diagnostics, weekly allocation experiments, and the missing validation steps." },

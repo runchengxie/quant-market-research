@@ -8,6 +8,7 @@ English and Chinese pages have separate stable URLs. Use the language link at th
 
 ## Factor research
 
+- [Valuation denominators](research/experiments/valuation-denominators-20261018.md): definitions and a six-name observed-snapshot illustration; no historical return claim.
 - [Research closeout status](research-closeout-status.md): what has been checked, what remains open, and what each status means.
 - [PB and ROE](research/factors/pb-roe.md): whether adding profitability information changed a historical valuation comparison.
 - [Low turnover](research/factors/low-turnover.md): what low trading activity may reflect, and whether its historical return gap survived further checks.
