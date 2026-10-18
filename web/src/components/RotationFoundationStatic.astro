@@ -1,0 +1,21 @@
+---
+import type {RotationFoundation} from '../content/rotation-foundation';
+import {foundationCopy as copy} from '../content/rotation-foundation-copy';
+import T from './LocaleText.astro';
+const {evidence:a}=Astro.props as {evidence:RotationFoundation};
+const labels:Record<string,typeof copy.combined|typeof copy.passive|typeof copy.selection|typeof copy.timing|typeof copy.theme>={combined:copy.combined,passive:copy.passive,'selection-only':copy.selection,'timing-only':copy.timing,'theme-overlay':copy.theme};
+const primary=a.comparisons.find(r=>r.case_id==='primary'&&r.left==='combined'&&r.right==='passive');
+const percent=(v:number)=>new Intl.NumberFormat('en-US',{style:'percent',maximumFractionDigits:2}).format(v);
+const n=(v:number)=>new Intl.NumberFormat('en-US').format(v);
+---
+<section id="rotation-foundation" class="panel foundation-panel">
+ <T as="h2" text={copy.title}/><T text={copy.conclusion}/><T text={copy.sampleNote}/>
+ <dl class="foundation-facts"><div><dt><T as="span" text={copy.first}/></dt><dd>{a.sample.first_signal}</dd></div><div><dt><T as="span" text={copy.signals}/></dt><dd>{n(a.sample.expected_signals)}</dd></div><div><dt><T as="span" text={copy.last}/></dt><dd>{a.sample.last_signal}</dd></div></dl>
+ <T as="h3" text={copy.causes}/><T text={copy.causeNote}/><div class="table-scroll"><table><thead><tr><th><T as="span" text={copy.causeFilter}/></th><th><T as="span" text={copy.cells}/></th><th><T as="span" text={copy.decisions}/></th></tr></thead><tbody>{a.causes.categories.map(c=><tr><td><T as="span" text={copy[c.code as 'prelisting'|'suspension'|'unresolved']}/></td><td>{n(c.cells)}</td><td>{n(c.decisions)}</td></tr>)}</tbody></table></div>
+ {primary?.uncertainty&&<p><T as="span" text={copy.uncertainty}/>: {percent(primary.uncertainty.estimate)} · <T as="span" text={copy.interval}/>: [{percent(primary.uncertainty.interval[0])}, {percent(primary.uncertainty.interval[1])}]</p>}
+ {primary?.uncertainty&&primary.uncertainty.interval[0]<=0&&primary.uncertainty.interval[1]>=0&&<T text={copy.crossesZero}/>}
+ <T as="h3" text={copy.compare}/><T text={copy.methodNote}/><T text={copy.intervalNote}/>
+ <div class="table-scroll"><table><thead><tr><th><T as="span" text={copy.pair}/></th><th><T as="span" text={copy.cagr}/></th><th><T as="span" text={copy.sessions}/></th></tr></thead><tbody>{a.comparisons.filter(r=>r.case_id==='primary').map(r=><tr><td><T as="span" text={labels[r.left]}/> · <T as="span" text={copy.against}/> · <T as="span" text={labels[r.right]}/></td><td>{r.metrics?`${percent(r.metrics.left.cagr)} / ${percent(r.metrics.right.cagr)}`:<T as="span" text={copy.unavailable}/>}</td><td>{n(r.expected_sessions)}</td></tr>)}</tbody></table></div>
+ <T as="h3" text={copy.progress}/><T text={a.readiness.status==='ready_for_future_registration'?copy.ready:copy.pending}/><T text={a.readiness.capture_state==='armed'?copy.armed:copy.unarmed}/><p>{n(a.readiness.settled_pairs)} · <T as="span" text={copy.settled}/></p><T text={copy.next}/><T text={copy.themeNote}/><T text={copy.policy}/><T text={copy.prospectiveDifference}/>
+ <details><T as="summary" text={copy.hashes}/><code>{a.registration_sha256}</code><p>{a.release_id}</p></details>
+</section>

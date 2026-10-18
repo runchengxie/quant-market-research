@@ -1,0 +1,148 @@
+{
+  "case_calendars": [
+    {
+      "case_id": "text",
+      "cost_bps": "number",
+      "end": "date",
+      "execution_delay_sessions": "integer",
+      "expected_signals": "integer",
+      "sessions": "integer",
+      "start": "date"
+    }
+  ],
+  "causes": {
+    "blocked_decisions": "integer",
+    "categories": [
+      {
+        "cells": "integer",
+        "code": "text",
+        "decisions": "integer"
+      }
+    ],
+    "cells": "integer",
+    "distinct_events": "integer",
+    "events": [
+      {
+        "effective_from": "date",
+        "effective_to": "date",
+        "published_at": {
+          "?": "date"
+        },
+        "publisher": "text",
+        "retrieved_at": "timestamp",
+        "sha256": "sha256",
+        "symbol": "text",
+        "url": "text"
+      }
+    ]
+  },
+  "comparisons": [
+    {
+      "case_id": "text",
+      "expected_sessions": "integer",
+      "left": "text",
+      "metrics": {
+        "?": {
+          "left": {
+            "cagr": "number",
+            "max_drawdown": "number",
+            "mean_risky_exposure": "number",
+            "total_cost": "number",
+            "total_return": "number",
+            "turnover": "number",
+            "volatility": "number"
+          },
+          "right": {
+            "cagr": "number",
+            "max_drawdown": "number",
+            "mean_risky_exposure": "number",
+            "total_cost": "number",
+            "total_return": "number",
+            "turnover": "number",
+            "volatility": "number"
+          }
+        }
+      },
+      "period": {
+        "end": "date",
+        "start": "date"
+      },
+      "reasons": [
+        "text"
+      ],
+      "right": "text",
+      "status": "text",
+      "uncertainty": {
+        "?": {
+          "estimate": "number",
+          "expected_block_weeks": "integer",
+          "interval": [
+            "number"
+          ],
+          "replicates": "integer",
+          "seed": "integer",
+          "sensitivity": [
+            {
+              "expected_block_weeks": "integer",
+              "interval": [
+                "number"
+              ]
+            }
+          ],
+          "weekly_pairs": "integer"
+        }
+      },
+      "weekly_pairs": "integer"
+    }
+  ],
+  "created_at": "timestamp",
+  "decision": "text",
+  "policy": {
+    "economic_boundary_net_annual_log_return": "number",
+    "expected_block_weeks": "integer",
+    "interval_level": "number",
+    "minimum_pairs": "integer",
+    "replicates": "integer",
+    "review_every_pairs": "integer",
+    "seed": "integer"
+  },
+  "producer_commit": "text",
+  "readiness": {
+    "capture_state": "text",
+    "observed_at": "timestamp",
+    "settled_pairs": "integer",
+    "source_session": {
+      "?": "date"
+    },
+    "status": "text"
+  },
+  "registration_sha256": "sha256",
+  "release_id": "text",
+  "reviewed_source_digest": "sha256",
+  "sample": {
+    "candidate_start": "date",
+    "expected_signals": "integer",
+    "first_signal": "date",
+    "historical_availability": "text",
+    "last_signal": "date",
+    "retained_end": "date",
+    "status": "text"
+  },
+  "schema_version": "text",
+  "theme": {
+    "admitted_signals": "integer",
+    "metrics": {
+      "?": {
+        "cagr": "number",
+        "max_drawdown": "number",
+        "mean_risky_exposure": "number",
+        "total_cost": "number",
+        "total_return": "number",
+        "turnover": "number",
+        "volatility": "number"
+      }
+    },
+    "required_signals": "integer",
+    "status": "text"
+  }
+}

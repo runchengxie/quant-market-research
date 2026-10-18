@@ -219,7 +219,7 @@ export function validateReleaseIndex(value: unknown): ReleaseIndex {
     if (index.schema_version !== 'research.rotation_release_index.v1' || !index.releases.length || new Set(index.releases.map(r => r.release_id)).size !== index.releases.length || !index.releases.some(r => r.release_id === index.current_release_id))
         throw Error('Invalid release index');
     for (const r of index.releases)
-        if (!['research.rotation_evidence_public.v1','research.rotation_extension.v1','research.rotation_operations.v1'].includes(r.schema_version))
+        if (!['research.rotation_evidence_public.v1','research.rotation_extension.v1','research.rotation_operations.v1','research.rotation_foundation.v1'].includes(r.schema_version))
             throw Error('Unknown rotation release schema');
         else if (!/^[A-Za-z0-9][A-Za-z0-9_-]{0,95}$/.test(r.release_id) || r.path !== `rotation/releases/${r.release_id}.json`)
             throw Error('Unsafe release path');
@@ -248,6 +248,10 @@ export async function loadIndexedRelease(entry: ReleaseEntry, baseUrl: string) {
         const {validateOperationsShape,validateOperationsReview}=await import('./rotation-operations');
         const asset=validateOperationsShape(envelope.asset);
         validateOperationsReview(asset,envelope.review,{content:await shaBytes(canonical(asset)),asset:await shaBytes(canonical(asset)+'\n')});
+    }else if(envelope.asset.schema_version==='research.rotation_foundation.v1'){
+        const {validateFoundationShape,validateFoundationReview}=await import('./rotation-foundation');
+        const asset=validateFoundationShape(envelope.asset);
+        validateFoundationReview(asset,envelope.review,{content:await shaBytes(canonical(asset)),asset:await shaBytes(canonical(asset)+'\n')});
     }else throw Error('Unknown rotation release schema');
     const review=envelope.review;
     if(Object.keys(review).sort().join()!==['status','source_sha256','content_sha256','asset_sha256','reviewer','reviewed_at'].sort().join()||review.source_sha256!==envelope.asset.reviewed_source_digest||review.asset_sha256!==await shaBytes(canonical(envelope.asset)+'\n'))throw Error('Release review mismatch');

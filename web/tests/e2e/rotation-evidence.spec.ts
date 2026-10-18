@@ -154,6 +154,7 @@ test("mobile numeric tables scroll horizontally without stacking digits", async 
 }) => {
   await page.setViewportSize({ width: 390, height: 900 });
   await page.goto(route + "?lang=zh-CN");
+  await expect(page.locator("#rotation-evidence select").first()).toBeVisible();
   const table = page.locator("#rotation-evidence table").first();
   await expect(table.locator("tbody tr")).toHaveCount(3);
   await expect(table).toBeVisible();

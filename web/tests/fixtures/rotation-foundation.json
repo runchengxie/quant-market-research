@@ -1,0 +1,453 @@
+{
+  "asset": {
+    "case_calendars": [
+      {
+        "case_id": "primary",
+        "cost_bps": 5,
+        "end": "2023-09-26",
+        "execution_delay_sessions": 1,
+        "expected_signals": 2,
+        "sessions": 5,
+        "start": "2023-09-18"
+      },
+      {
+        "case_id": "cost-zero",
+        "cost_bps": 0,
+        "end": "2023-09-26",
+        "execution_delay_sessions": 1,
+        "expected_signals": 2,
+        "sessions": 5,
+        "start": "2023-09-18"
+      },
+      {
+        "case_id": "cost-ten",
+        "cost_bps": 10,
+        "end": "2023-09-26",
+        "execution_delay_sessions": 1,
+        "expected_signals": 2,
+        "sessions": 5,
+        "start": "2023-09-18"
+      },
+      {
+        "case_id": "delay-two",
+        "cost_bps": 5,
+        "end": "2023-09-26",
+        "execution_delay_sessions": 2,
+        "expected_signals": 2,
+        "sessions": 4,
+        "start": "2023-09-19"
+      }
+    ],
+    "causes": {
+      "blocked_decisions": 2,
+      "categories": [
+        {
+          "cells": 1,
+          "code": "prelisting",
+          "decisions": 1
+        },
+        {
+          "cells": 1,
+          "code": "suspension",
+          "decisions": 1
+        },
+        {
+          "cells": 0,
+          "code": "unresolved",
+          "decisions": 0
+        }
+      ],
+      "cells": 2,
+      "distinct_events": 0,
+      "events": []
+    },
+    "comparisons": [
+      {
+        "case_id": "primary",
+        "expected_sessions": 5,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "primary",
+        "expected_sessions": 5,
+        "left": "selection-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "primary",
+        "expected_sessions": 5,
+        "left": "timing-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "primary",
+        "expected_sessions": 5,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "selection-only",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "primary",
+        "expected_sessions": 5,
+        "left": "theme-overlay",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "combined",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-zero",
+        "expected_sessions": 5,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-zero",
+        "expected_sessions": 5,
+        "left": "selection-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-zero",
+        "expected_sessions": 5,
+        "left": "timing-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-zero",
+        "expected_sessions": 5,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "selection-only",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-zero",
+        "expected_sessions": 5,
+        "left": "theme-overlay",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "combined",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-ten",
+        "expected_sessions": 5,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-ten",
+        "expected_sessions": 5,
+        "left": "selection-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-ten",
+        "expected_sessions": 5,
+        "left": "timing-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-ten",
+        "expected_sessions": 5,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "selection-only",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "cost-ten",
+        "expected_sessions": 5,
+        "left": "theme-overlay",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-18"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "combined",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "delay-two",
+        "expected_sessions": 4,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-19"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "delay-two",
+        "expected_sessions": 4,
+        "left": "selection-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-19"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "delay-two",
+        "expected_sessions": 4,
+        "left": "timing-only",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-19"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "passive",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "delay-two",
+        "expected_sessions": 4,
+        "left": "combined",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-19"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "selection-only",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      },
+      {
+        "case_id": "delay-two",
+        "expected_sessions": 4,
+        "left": "theme-overlay",
+        "metrics": null,
+        "period": {
+          "end": "2023-09-26",
+          "start": "2023-09-19"
+        },
+        "reasons": [
+          "whole_registered_arm_unavailable"
+        ],
+        "right": "combined",
+        "status": "unavailable",
+        "uncertainty": null,
+        "weekly_pairs": 0
+      }
+    ],
+    "created_at": "2026-10-18T04:00:00+00:00",
+    "decision": "unavailable",
+    "policy": {
+      "economic_boundary_net_annual_log_return": 0.0,
+      "expected_block_weeks": 13,
+      "interval_level": 0.95,
+      "minimum_pairs": 104,
+      "replicates": 10000,
+      "review_every_pairs": 52,
+      "seed": 20261018
+    },
+    "producer_commit": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "readiness": {
+      "capture_state": "unarmed",
+      "observed_at": "2026-10-18T03:38:35+00:00",
+      "settled_pairs": 0,
+      "source_session": "2026-10-16",
+      "status": "awaiting_weekday_evidence"
+    },
+    "registration_sha256": "08b6930ed89611a6ac9296c0a8d9c02fa94a20a4947406bb9c6d9daa7bfaafeb",
+    "release_id": "foundation-fixture",
+    "reviewed_source_digest": "b2a654fb71bce045deea3e94ed20c36543f929d0901c9b3aa9e73020806f62a1",
+    "sample": {
+      "candidate_start": "2023-09-15",
+      "expected_signals": 2,
+      "first_signal": "2023-09-15",
+      "historical_availability": "unverified",
+      "last_signal": "2023-09-22",
+      "retained_end": "2023-09-26",
+      "status": "inspected_retained_universe_retrospective"
+    },
+    "schema_version": "research.rotation_foundation.v1",
+    "theme": {
+      "admitted_signals": 0,
+      "metrics": null,
+      "required_signals": 2,
+      "status": "unavailable"
+    }
+  },
+  "review": {
+    "asset_sha256": "f8b1ca69a52cc3b00c32e6a34c28222b40864a5b562a6e1a0b55928f3e060a1c",
+    "content_sha256": "73a62b22eefb8ab005ad16132c70b662bfd22350b029dc5285875a5f5c58313c",
+    "reviewed_at": "2026-10-18T04:01:00+00:00",
+    "reviewer": "synthetic-source-review",
+    "source_sha256": "b2a654fb71bce045deea3e94ed20c36543f929d0901c9b3aa9e73020806f62a1",
+    "status": "approved"
+  }
+}
