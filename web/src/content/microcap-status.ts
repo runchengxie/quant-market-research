@@ -16,8 +16,8 @@ const conclusions: Record<string, LocalText> = {
 };
 const latest: Record<string, LocalText> = {
  'MC-C01': ['Eight retained synthetic-share scenarios document the worst episodes.', '八种保留的合成份额情景记录了最深回撤案例。'],
- 'MC-C02': ['Official schedule checked; seven future-input categories remain pending.', '官方交易日安排已核对，前瞻输入仍有七类待补材料。'],
- 'MC-C03': ['Three economic reviews; owner blockers remain 83 / 82.', '三项经济含义复查完成，原解析器阻塞仍为 83／82。'],
+ 'MC-C02': ['Two historical receipts registered in order; seven input categories remain pending.', '两份历史收据已按序登记，前瞻输入仍有七类待补材料。'],
+ 'MC-C03': ['Seven exposed events, six unknown; four mechanism accounts; owner blockers remain 83 / 82.', '七个涉持仓事件、六个未知，四个机制账户；原解析器阻塞仍为 83／82。'],
  'MC-C04': ['Same-input interventions retain shared raw-mean parity.', '同输入干预保留共同原始均值一致性。'],
  'MC-C05': ['Full-window query-evidence gaps are zero in both frozen plans.', '两套冻结方案的完整区间查询证据缺口均为零。'],
  'MC-C06': ['Threshold sensitivity narrows the return gap without identifying the run.', '门槛敏感性缩小收益差距，但没有确认运行身份。'],
@@ -30,7 +30,7 @@ const next: Record<string, LocalText> = {
  'MC-C05': ['Independently audit announcements, dates and entitlements.', '独立核对公告、日期与权益。'],
  'MC-C06': ['Recover a bound original invocation, code, inputs and daily outputs.', '找回相互绑定的原始调用、代码、输入与逐日输出。'],
 };
-const links: Record<string, string> = {'MC-C01':'#microcap-research-agenda','MC-C02':'#microcap-next-evidence','MC-C03':'#microcap-next-evidence','MC-C04':'#microcap-followup','MC-C05':'#microcap-followup','MC-C06':'#microcap-window-evidence'};
+const links: Record<string, string> = {'MC-C01':'#microcap-research-agenda','MC-C02':'#microcap-impact','MC-C03':'#microcap-impact','MC-C04':'#microcap-followup','MC-C05':'#microcap-followup','MC-C06':'#microcap-window-evidence'};
 export function statusRows(locale: AgendaLocale) {
  return agenda.claims.map(row => ({id:row.id, href:links[row.id], title:tAgenda(claimTranslations[row.id].title,locale), cells:[conclusions[row.id],claimStages[row.stage],latest[row.id],next[row.id]].map(value=>tAgenda(value,locale))}));
 }
