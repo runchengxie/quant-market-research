@@ -26,7 +26,7 @@ Four formation/issuer events initially lacked direct suspension matches: two for
 
 ## Reproduction and limits
 
-`audit_st_paired_exits.py` verifies the frozen selection audit SHA256, then produces the 235 selected rows, 107 distinct events, five terminal evidence matches and an input/output hash receipt. It preserves both basket code and suspension evidence code. Resume (R) events never count as suspension (S); absence of S never proves tradability. See the [reviewed facts](st-exit-reviewed-facts-20261019.json) and the complete event inventory below. CSVs are retained in a dedicated external task directory; frozen outputs and shared aliases were not changed.
+`audit_st_paired_exits.py` verifies the frozen selection audit SHA256, then produces the 235 selected rows, 107 distinct events, five terminal evidence matches and an input/output hash receipt. It preserves both basket code and suspension evidence code. Resume (R) events never count as suspension (S); absence of S never proves tradability. See the [reviewed facts](https://github.com/runchengxie/quant-market-research/blob/dbfbb4ef3686fe5c2959aa0256ab319b37c5fade/docs/research/experiments/st-exit-reviewed-facts-20261019.json) and the complete event inventory below. CSVs are retained in a dedicated external task directory; frozen outputs and shared aliases were not changed.
 
 Run with the existing project Python environment (new uv environment downloads were blocked by the network sandbox), resolving DATA_ROOT from local workspace settings:
 
@@ -41,7 +41,7 @@ python scripts/audit_st_paired_exits.py \
 The output directory must be new. Existing owner terminal-document facts cover only 000562 and 601268, neither matching this sample. No new provider API was called; this audit does not certify comprehensive corporate-action coverage or account settlement. Every failed row remains unresolved, without zero, total-loss, stale-price or future-constituent substitution.
 
 <details>
-<summary>107 formation / issuer events · 107条形成日/发行人事件</summary>
+<summary>107 formation / issuer events</summary>
 
 |Formation|Entry|Endpoint|Security|N|Arms|Missing|Terminal|
 |---|---|---|---|---|---|---|---|
@@ -153,6 +153,6 @@ The output directory must be new. Existing owner terminal-document facts cover o
 |20251031|20251103|20251201|603388.SH|50/100/200|I|end|False|
 |20251128|20251201|20260105|920641.BJ|50/100/200|E/I|end|False|
 
-I = include ST; E = exclude ST. Both arms retain original equal weights. / I为包含ST，E为排除ST，均保留原等权。
+I = include ST; E = exclude ST. Both arms retain original equal weights.
 
 </details>

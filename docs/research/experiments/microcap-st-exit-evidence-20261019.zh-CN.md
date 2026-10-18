@@ -26,7 +26,7 @@
 
 ## 可复现清单及证据边界
 
-`audit_st_paired_exits.py`先校验旧selection audit的SHA256，再输出每条原入选记录、107个事件清单、5个terminal证据表和输入/输出hash receipt。证据表保留原证券代码与实际停牌证据代码；不会将R复牌记录解释为S停牌，也不会根据缺少S记录认定可交易。事件来源与公告日期见[已审查事实表](st-exit-reviewed-facts-20261019.json)。完整清单见下方折叠表；外部task目录另保留CSV，未覆盖旧sealed输出或共享alias。
+`audit_st_paired_exits.py`先校验旧selection audit的SHA256，再输出每条原入选记录、107个事件清单、5个terminal证据表和输入/输出hash receipt。证据表保留原证券代码与实际停牌证据代码；不会将R复牌记录解释为S停牌，也不会根据缺少S记录认定可交易。事件来源与公告日期见[已审查事实表](https://github.com/runchengxie/quant-market-research/blob/dbfbb4ef3686fe5c2959aa0256ab319b37c5fade/docs/research/experiments/st-exit-reviewed-facts-20261019.json)。完整清单见下方折叠表；外部task目录另保留CSV，未覆盖旧sealed输出或共享alias。
 
 使用项目现有Python环境执行（新uv环境下载被网络沙箱阻断）。命令中的根路径由本机workspace配置解析：
 
@@ -41,7 +41,7 @@ python scripts/audit_st_paired_exits.py \
 输出路径必须全新。owner已有terminal_event_document_facts只覆盖000562及601268，和本次五家不匹配；它没有本次可借用的结算事实。此次没有新供应商API调用，没有证明完整公司行为覆盖或账户结算。所有235条失败记录均保持unresolved；不得以零、全损、末价持平或未来新成员代填。
 
 <details>
-<summary>107 formation / issuer events · 107条形成日/发行人事件</summary>
+<summary>107条形成日/发行人事件</summary>
 
 |Formation|Entry|Endpoint|Security|N|Arms|Missing|Terminal|
 |---|---|---|---|---|---|---|---|
@@ -153,6 +153,6 @@ python scripts/audit_st_paired_exits.py \
 |20251031|20251103|20251201|603388.SH|50/100/200|I|end|False|
 |20251128|20251201|20260105|920641.BJ|50/100/200|E/I|end|False|
 
-I = include ST; E = exclude ST. Both arms retain original equal weights. / I为包含ST，E为排除ST，均保留原等权。
+I为包含ST，E为排除ST，均保留原等权。
 
 </details>

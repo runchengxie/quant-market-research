@@ -51,6 +51,15 @@ def inventory(audit: pd.DataFrame, suspension: pd.DataFrame,
     return failed[columns].sort_values(['formation', 'ts_code', 'n', 'arm'])
 
 
+def output_directory(path: Path) -> Path:
+    """Resolve symlinks and reject existing or repository-contained output."""
+    output = path.resolve()
+    repo = Path(__file__).resolve().parents[1]
+    if output.exists() or output.is_relative_to(repo):
+        raise ValueError('output must be a new directory outside the repository')
+    return output
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', required=True, type=Path)
@@ -58,6 +67,7 @@ def main() -> None:
     parser.add_argument('--facts', required=True, type=Path)
     parser.add_argument('--output', required=True, type=Path)
     args = parser.parse_args()
+    args.output = output_directory(args.output)
     receipt_path = args.source / 'receipt.json'
     receipt = json.loads(receipt_path.read_text())
     audit_path = args.source / 'selection_audit.parquet'

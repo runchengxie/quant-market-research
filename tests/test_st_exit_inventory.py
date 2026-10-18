@@ -3,6 +3,7 @@ import importlib.util
 from pathlib import Path
 
 import pandas as pd
+import pytest
 
 spec = importlib.util.spec_from_file_location(
     'exit_audit', Path(__file__).parents[1] / 'scripts/audit_st_paired_exits.py')
@@ -60,3 +61,16 @@ def test_reviewed_identity_alias_only_links_suspension_evidence():
     assert result.end_suspension_evidence_code == '831039.BJ'
     assert result.end_dated_suspension
     assert result.resolution == 'unresolved'
+
+
+def test_output_boundary_rejects_repository_and_symlink_paths(tmp_path):
+    repo = Path(module.__file__).resolve().parents[1]
+    inside = repo / 'generated-exit-audit'
+    link = tmp_path / 'repository-link'
+    link.symlink_to(repo, target_is_directory=True)
+    for path in (inside, link / 'generated-exit-audit', tmp_path):
+        with pytest.raises(ValueError, match='new directory outside the repository'):
+            module.output_directory(path)
+    external = tmp_path / 'new-audit'
+    assert module.output_directory(external) == external.resolve()
+    assert not external.exists()
