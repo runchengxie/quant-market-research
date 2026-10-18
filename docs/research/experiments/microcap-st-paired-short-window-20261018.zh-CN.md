@@ -91,7 +91,7 @@
 
 ## 复现与下一步
 
-[英文主文](microcap-st-paired-short-window-20261018.md)保留完整命令与口径；对应的[运行脚本](../../../scripts/analyze_st_paired_short_window.py)、[方法模块](../../../src/market_research/st_paired.py)和[回归测试](../../../tests/test_st_paired.py)已公开。原始数据和逐证券审计记录保留在仓库外，公开的只有经过复核的汇总数量与均值。
+[英文主文](microcap-st-paired-short-window-20261018.md)保留完整命令与口径；对应的[运行脚本](https://github.com/runchengxie/quant-market-research/blob/e2dcfface24e83648dbe62a512c2c3e2fe2deba9/scripts/analyze_st_paired_short_window.py)、[方法模块](https://github.com/runchengxie/quant-market-research/blob/e2dcfface24e83648dbe62a512c2c3e2fe2deba9/src/market_research/st_paired.py)和[回归测试](https://github.com/runchengxie/quant-market-research/blob/e2dcfface24e83648dbe62a512c2c3e2fe2deba9/tests/test_st_paired.py)已公开。原始数据和逐证券审计记录保留在仓库外，公开的只有经过复核的汇总数量与均值。
 
 每次输出包含覆盖表、逐期配对表、汇总表、私有成员审计和版本凭证。凭证记录解析后的清洗版本、源清单、证券与名称文件、ST 版本、正状态来源、交易日历及代码哈希；以后复现必须核对这些版本，不能把更新后的 `latest` 自动当成同一次实验。凭证哈希覆盖清洗清单，未逐个哈希所有日线价格文件，因此逐字节复现还依赖数据所有者完整保留该版本。输出使用任务独立目录，不更新任何共享别名。
 

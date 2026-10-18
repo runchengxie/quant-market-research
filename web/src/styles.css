@@ -371,6 +371,10 @@ h1 { margin: 7px 0 8px; font-size: clamp(34px, 5vw, 56px); }
 .article-content code { overflow-wrap: anywhere; word-break: break-word; }
 .article-content table { display: block; width: 100%; max-width: 100%; margin: 20px 0; overflow-x: auto; table-layout: fixed; }
 .article-content th, .article-content td { white-space: normal; overflow-wrap: anywhere; }
+/* Coverage, rank and annual numeric tables scroll without splitting values. */
+.article-content[data-valuation-panel="true"] table:nth-of-type(-n+3) { table-layout: auto; }
+.article-content[data-valuation-panel="true"] table:nth-of-type(-n+3) th { min-width: 7rem; overflow-wrap: normal; }
+.article-content[data-valuation-panel="true"] table:nth-of-type(-n+3) td:nth-child(n+2) { white-space: nowrap; overflow-wrap: normal; }
 .article-content[data-valuation="true"] table:nth-of-type(n+2) { table-layout: auto; }
 .article-content[data-valuation="true"] table:nth-of-type(n+2) th { min-width: 7rem; overflow-wrap: normal; }
 .article-content[data-valuation="true"] table:nth-of-type(n+2) td { white-space: nowrap; overflow-wrap: normal; }
