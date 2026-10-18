@@ -8,13 +8,17 @@ export type ComparedRow = {
     drawdown_delta: number | null;
 };
 export function compareRotationReleases(left: unknown, right: unknown): {
-    status: 'comparable' | 'incompatible';
+    status: 'comparable' | 'incompatible' | 'identical';
     changes: string[];
     rows: ComparedRow[];
 } {
     if (!left || !right || typeof left !== 'object' || typeof right !== 'object')
         return {status:'incompatible',changes:['schema_changed'],rows:[]};
     const ls=(left as {schema_version?:string}).schema_version, rs=(right as {schema_version?:string}).schema_version;
+    if(ls==='research.rotation_foundation.v1' && rs==='research.rotation_foundation.v1')
+        return canonical(left) === canonical(right)
+            ? {status:'identical',changes:['same_release'],rows:[]}
+            : {status:'incompatible',changes:['foundation_comparison_unavailable'],rows:[]};
     if(ls==='research.rotation_operations.v1' && rs==='research.rotation_operations.v1')
         return compareOperations(left as RotationOperations,right as RotationOperations);
     if(ls==='research.rotation_operations.v1' || rs==='research.rotation_operations.v1')
