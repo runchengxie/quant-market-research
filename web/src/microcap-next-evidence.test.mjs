@@ -17,7 +17,7 @@ test('reviewed follow-up preserves owner blockers and pending prospective admiss
  assert.equal(data.calendar.vendor_calendar_mismatches,0);
  assert.equal(data.readiness.new_cohort_completed_windows,0);
 });
-for(const locale of ['en-US','zh-CN'])test(`latest ${locale} evidence matches downloads and preserves lesson boundaries`,async()=>{
+for(const locale of ['en-US','zh-CN'])test(`historical ${locale} evidence matches downloads and preserves lesson boundaries`,async()=>{
  const section=nextEvidenceMarkdown(locale);
  assert.ok((await buildMicrocapReport(locale)).markdown.includes(section));
  assert.equal(eventTable(locale).rows.length,4);
@@ -40,4 +40,14 @@ for(const locale of ['en-US','zh-CN'])test(`latest ${locale} evidence matches do
   assert.match(section,/不能补零/);
   assert.match(section,/实际价差、盘口深度和成交记录/);
  }
+});
+
+for (const locale of ['en-US', 'zh-CN']) test(`earlier event review remains a labeled snapshot with a current-review pointer in ${locale}`, async () => {
+ const { nextCopy } = await import('./content/microcap-next-evidence.ts');
+ assert.ok(nextCopy.snapshotBoundary);
+ const section = nextEvidenceMarkdown(locale);
+ assert.match(section, /1\.0\.5/);
+ assert.ok(section.includes('https://runchengxie.github.io/quant-market-research/research/microcap/#microcap-chain'));
+ assert.equal(data.events.retrospective_economic_adjudications, 3);
+ assert.equal(data.events.dated_unresolved, 91);
 });

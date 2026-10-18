@@ -3,7 +3,8 @@ import type { LocalText } from './microcap-hub';
 import { tAgenda, type AgendaLocale } from './microcap-agenda';
 export const impactEvidence=data;
 export const impactCopy={
- title:['Which unresolved events touch holdings?','哪些未解决事件真正碰到了持仓？'],
+ title:['Version 1.0.6 snapshot: holdings impact and mechanism checks','1.0.6 版快照：持仓影响与机制核验'],
+ snapshot:['This section preserves the version 1.0.6 evidence state. The account-chain review above supersedes its primary-notice coverage, while the retained inventory classifications and owner blockers remain unchanged.','本节保留 1.0.6 版的证据状态。上方账户链核验更新了原始公告覆盖；保留库存分类与原解析器阻塞数不变。'],
  intro:['Across the same union of 94 dated blocker groups, seven intersect at least one retained minimum-90 simulated inventory. Six other groups have record dates outside the retained fill-account window and remain unknown. One row without an ex-date remains separate. These counts prioritize source review; they do not clear action blockers.','在同一组 94 个已知日期阻塞事件中，7 个与至少一种保留的 90 观测方案模拟持仓相交；另有 6 个的登记日不在保留成交账本区间内，仍属未知。另有一行除权日未知，单独保留。这些计数用于安排补证优先级，没有解除事件阻塞。'],
  exposureTitle:['Targets, fills and unknown coverage','目标持仓、成交库存与未知覆盖'],
  exposureBoundary:['Minimum 45 / 90 means the minimum valid observations in the historical 120-session turnover window; it is separate from the future 60-session study. Each row independently partitions all 94 dated groups, rather than the separate owner totals of 83 / 82. Target membership uses the preceding formation; inventory uses record-date end-of-day fills. Minimum-45 fills were not retained, so its inventory is unavailable. The four minimum-90 ledgers cover June 1, 2015 through July 31, 2026. Synthetic adjusted units do not establish raw shares or holder entitlements.','45／90 指历史 120 个交易日换手窗口所需的最低有效观测数，与未来 60 日研究不同。每行各自划分全部 94 个已知日期事件，不是两套方案各自的 83／82 个阻塞数。目标持仓取登记日前的形成记录，库存取登记日收盘后的成交余额。45 观测方案没有保留成交账本，其库存仍未知；四种 90 观测账本覆盖 2015-06-01 至 2026-07-31。复权合成份额不能直接确定真实股份或持有人权益。'],
@@ -47,7 +48,7 @@ export function accountTable(l:AgendaLocale){return {headers:label('Constructed 
 export function registerTable(l:AgendaLocale){return {headers:label('Sequence|Original receipt as-of UTC|Imported UTC|Pending categories','顺序|原收据截至时间 UTC|导入时间 UTC|待补类别',l).split('|'),rows:data.register.observations.map(r=>[String(r.sequence),r.original_as_of_utc,r.imported_utc,String(r.issue_count)])};}
 const md=(table:{headers:string[];rows:string[][]})=>[table.headers,table.headers.map(()=>'---'),...table.rows].map(row=>`| ${row.map(s=>s.replaceAll('|','\\|')).join(' | ')} |`).join('\n');
 export function impactMarkdown(l:AgendaLocale){const t=(key:keyof typeof impactCopy)=>tAgenda(impactCopy[key],l);return [
- `## ${t('title')}`,t('intro'),`### ${t('exposureTitle')}`,md(impactTable(l)),t('exposureBoundary'),
+ `## ${t('title')}`,t('snapshot'),t('intro'),`### ${t('exposureTitle')}`,md(impactTable(l)),t('exposureBoundary'),
  `### ${t('stressTitle')}`,t('stress'),md(stressTable(l)),t('stressBoundary'),
  `### ${t('accountTitle')}`,t('account'),md(accountTable(l)),t('accountBoundary'),
  `### ${t('registerTitle')}`,t('register'),md(registerTable(l)),t('registerBoundary'),`SHA-256: \`${data.register.head_sha256}\``,

@@ -30,7 +30,7 @@ test('four followups retain scopes, current evidence and downloadable charts acr
   expect(response.status()).toBe(200);expect(await response.text()).toContain('<svg');
  }
  const md=await(await page.request.get('downloads/microcap-research.zh-CN.md')).text();
- expect(md).toContain('版本 1.0.6');expect(md).toContain('MC-C06');expect(md).toContain('1.47');
+ expect(md).toContain('版本 1.0.7');expect(md).toContain('MC-C06');expect(md).toContain('1.47');
  await page.setViewportSize({width:390,height:844});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await live.locator('.agenda-chart').first().screenshot({path:'/tmp/microcap-agenda-dark-chart.png'});

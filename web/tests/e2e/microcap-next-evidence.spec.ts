@@ -1,8 +1,11 @@
 import {expect,test} from '@playwright/test';
 
-test('latest event and future-input evidence stays scoped across locales',async({page})=>{
+test('historical event and future-input evidence stays scoped across locales',async({page})=>{
  await page.goto('research/microcap/?lang=en-US');
  const live=page.locator('#microcap-next-evidence [data-next-live]');
+ await expect(page.locator('#microcap-next-evidence h2')).toContainText('Version 1.0.5 snapshot');
+ await expect(live).toContainText('91 then unreviewed events');
+ await expect(live.locator('a[href="#microcap-chain"]')).toContainText('current account-chain review');
  await expect(live).toContainText('94 distinct dated blocked events');
  await expect(live).toContainText('resolver was not recomputed');
  await expect(live).toContainText('zero completed months');
