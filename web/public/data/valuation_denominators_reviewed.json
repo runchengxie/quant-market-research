@@ -1,0 +1,399 @@
+{
+  "schema_version": "valuation_denominators_illustration.v1",
+  "observed_at_utc": "2026-10-18T03:15:00.101753+00:00",
+  "price_date": "20261016",
+  "sample_selection": "six deliberately chosen A-only issuers; not a cheapness screen",
+  "historical_pit_certified": false,
+  "returns_backtested": false,
+  "deducted_asset_scope": "consolidated assets deducted from parent equity: unallocated proxy",
+  "common_rank_sample_count": 5,
+  "input_sha256": {
+    "archive_manifest": "da114a97ce8896cf6d74a11f3e4485cf9228a18682b4727632edf1cd2d5dea13",
+    "daily_basic": "c93089109c64953cd0fa4d34808347ed266c44330ae5956be46a1d3ce33ccd98",
+    "income/data/part.parquet": "58db7f9ae1e29613bac9959e722f2b57f0f6534c2d7fc78e6273201f6c92af91",
+    "fina_indicator/data/part.parquet": "1c4f45a69f18822b1664947a695988e10c32007a6be3c3218bb5c6b25320f70b",
+    "balancesheet/data/part.parquet": "9a91630839832422c978d60b623a61faf4764fc48c0365b425c4a9d0fa4e09c5"
+  },
+  "rows": [
+    {
+      "code": "000651.SZ",
+      "report_period": "20260630",
+      "pe_ttm": 7.9373200660014325,
+      "pe_ex_nonrecurring_ttm": 8.357699244010304,
+      "pb_parent": 1.489478014739845,
+      "pb_ex_goodwill_proxy": 1.5028778751942373,
+      "pb_ex_goodwill_intangibles_proxy": 1.6082547855480989,
+      "pe_ttm_common_rank": 1,
+      "pe_ex_nonrecurring_ttm_common_rank": 1,
+      "pb_parent_common_rank": 1,
+      "pb_ex_goodwill_proxy_common_rank": 1,
+      "pb_ex_goodwill_intangibles_proxy_common_rank": 1
+    },
+    {
+      "code": "002027.SZ",
+      "report_period": "20260630",
+      "pe_ttm": 21.856394294170816,
+      "pe_ex_nonrecurring_ttm": 29.277509846279163,
+      "pb_parent": 5.326636485785247,
+      "pb_ex_goodwill_proxy": 5.392868356377309,
+      "pb_ex_goodwill_intangibles_proxy": 5.428424580340377,
+      "pe_ttm_common_rank": 5,
+      "pe_ex_nonrecurring_ttm_common_rank": 5,
+      "pb_parent_common_rank": 5,
+      "pb_ex_goodwill_proxy_common_rank": 5,
+      "pb_ex_goodwill_intangibles_proxy_common_rank": 5
+    },
+    {
+      "code": "002415.SZ",
+      "report_period": "20260930",
+      "pe_ttm": 17.342924016253903,
+      "pe_ex_nonrecurring_ttm": 17.700990167605614,
+      "pb_parent": 3.6605192173532553,
+      "pb_ex_goodwill_proxy": 3.673906218662948,
+      "pb_ex_goodwill_intangibles_proxy": 3.7531452691526304,
+      "pe_ttm_common_rank": 2,
+      "pe_ex_nonrecurring_ttm_common_rank": 2,
+      "pb_parent_common_rank": 4,
+      "pb_ex_goodwill_proxy_common_rank": 4,
+      "pb_ex_goodwill_intangibles_proxy_common_rank": 3
+    },
+    {
+      "code": "300059.SZ",
+      "report_period": "20260630",
+      "pe_ttm": 19.65092447261092,
+      "pe_ex_nonrecurring_ttm": 20.2805103934578,
+      "pb_parent": 2.9118089285173556,
+      "pb_ex_goodwill_proxy": 3.001674401171714,
+      "pb_ex_goodwill_intangibles_proxy": 3.004394992985434,
+      "pe_ttm_common_rank": 3,
+      "pe_ex_nonrecurring_ttm_common_rank": 3,
+      "pb_parent_common_rank": 2,
+      "pb_ex_goodwill_proxy_common_rank": 2,
+      "pb_ex_goodwill_intangibles_proxy_common_rank": 2
+    },
+    {
+      "code": "600519.SH",
+      "report_period": "20260630",
+      "pe_ttm": 20.401291202938584,
+      "pe_ex_nonrecurring_ttm": 20.4180695436396,
+      "pb_parent": 6.61227732975692,
+      "pb_ex_goodwill_proxy": null,
+      "pb_ex_goodwill_intangibles_proxy": null,
+      "pe_ttm_common_rank": null,
+      "pe_ex_nonrecurring_ttm_common_rank": null,
+      "pb_parent_common_rank": null,
+      "pb_ex_goodwill_proxy_common_rank": null,
+      "pb_ex_goodwill_intangibles_proxy_common_rank": null
+    },
+    {
+      "code": "600900.SH",
+      "report_period": "20260630",
+      "pe_ttm": 19.857279379524453,
+      "pe_ex_nonrecurring_ttm": 20.80719088199604,
+      "pb_parent": 3.326108053377155,
+      "pb_ex_goodwill_proxy": 3.34285556489705,
+      "pb_ex_goodwill_intangibles_proxy": 3.7670049995186776,
+      "pe_ttm_common_rank": 4,
+      "pe_ex_nonrecurring_ttm_common_rank": 4,
+      "pb_parent_common_rank": 3,
+      "pb_ex_goodwill_proxy_common_rank": 3,
+      "pb_ex_goodwill_intangibles_proxy_common_rank": 4
+    }
+  ],
+  "source_dates": [
+    {
+      "code": "000651.SZ",
+      "dataset": "income",
+      "period": "20260630",
+      "disclosure": "2026-08-27",
+      "observed": "2026-10-17 18:48:39+00:00"
+    },
+    {
+      "code": "000651.SZ",
+      "dataset": "income",
+      "period": "20251231",
+      "disclosure": "2026-04-29",
+      "observed": "2026-10-17 18:48:15+00:00"
+    },
+    {
+      "code": "000651.SZ",
+      "dataset": "income",
+      "period": "20250630",
+      "disclosure": "2025-08-29",
+      "observed": "2026-10-17 18:47:46+00:00"
+    },
+    {
+      "code": "000651.SZ",
+      "dataset": "fina_indicator",
+      "period": "20260630",
+      "disclosure": "2026-08-27",
+      "observed": "2026-10-17 19:32:36+00:00"
+    },
+    {
+      "code": "000651.SZ",
+      "dataset": "fina_indicator",
+      "period": "20251231",
+      "disclosure": "2026-04-29",
+      "observed": "2026-10-17 19:31:55+00:00"
+    },
+    {
+      "code": "000651.SZ",
+      "dataset": "fina_indicator",
+      "period": "20250630",
+      "disclosure": "2025-08-29",
+      "observed": "2026-10-17 19:31:23+00:00"
+    },
+    {
+      "code": "000651.SZ",
+      "dataset": "balancesheet",
+      "period": "20260630",
+      "disclosure": "2026-08-27",
+      "observed": "2026-10-17 19:02:29+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "income",
+      "period": "20260630",
+      "disclosure": "2026-08-19",
+      "observed": "2026-10-17 18:48:39+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "income",
+      "period": "20251231",
+      "disclosure": "2026-04-29",
+      "observed": "2026-10-17 18:48:15+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "income",
+      "period": "20250630",
+      "disclosure": "2025-08-30",
+      "observed": "2026-10-17 18:47:46+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "fina_indicator",
+      "period": "20260630",
+      "disclosure": "2026-08-19",
+      "observed": "2026-10-17 19:32:36+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "fina_indicator",
+      "period": "20251231",
+      "disclosure": "2026-04-29",
+      "observed": "2026-10-17 19:31:55+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "fina_indicator",
+      "period": "20250630",
+      "disclosure": "2025-08-30",
+      "observed": "2026-10-17 19:31:23+00:00"
+    },
+    {
+      "code": "002027.SZ",
+      "dataset": "balancesheet",
+      "period": "20260630",
+      "disclosure": "2026-08-19",
+      "observed": "2026-10-17 19:02:29+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "income",
+      "period": "20260930",
+      "disclosure": "2026-10-17",
+      "observed": "2026-10-17 18:48:41+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "income",
+      "period": "20251231",
+      "disclosure": "2026-04-18",
+      "observed": "2026-10-17 18:48:15+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "income",
+      "period": "20250930",
+      "disclosure": "2025-10-18",
+      "observed": "2026-10-17 18:48:04+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "fina_indicator",
+      "period": "20260930",
+      "disclosure": "2026-10-17",
+      "observed": "2026-10-17 19:32:36+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "fina_indicator",
+      "period": "20251231",
+      "disclosure": "2026-04-18",
+      "observed": "2026-10-17 19:31:55+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "fina_indicator",
+      "period": "20250930",
+      "disclosure": "2025-10-18",
+      "observed": "2026-10-17 19:31:39+00:00"
+    },
+    {
+      "code": "002415.SZ",
+      "dataset": "balancesheet",
+      "period": "20260930",
+      "disclosure": "2026-10-17",
+      "observed": "2026-10-17 19:02:31+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "income",
+      "period": "20260630",
+      "disclosure": "2026-08-22",
+      "observed": "2026-10-17 18:48:39+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "income",
+      "period": "20251231",
+      "disclosure": "2026-03-20",
+      "observed": "2026-10-17 18:48:15+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "income",
+      "period": "20250630",
+      "disclosure": "2025-08-16",
+      "observed": "2026-10-17 18:47:46+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "fina_indicator",
+      "period": "20260630",
+      "disclosure": "2026-08-22",
+      "observed": "2026-10-17 19:32:36+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "fina_indicator",
+      "period": "20251231",
+      "disclosure": "2026-03-20",
+      "observed": "2026-10-17 19:31:55+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "fina_indicator",
+      "period": "20250630",
+      "disclosure": "2025-08-16",
+      "observed": "2026-10-17 19:31:23+00:00"
+    },
+    {
+      "code": "300059.SZ",
+      "dataset": "balancesheet",
+      "period": "20260630",
+      "disclosure": "2026-08-22",
+      "observed": "2026-10-17 19:02:29+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "income",
+      "period": "20260630",
+      "disclosure": "2026-08-15",
+      "observed": "2026-10-17 18:48:39+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "income",
+      "period": "20251231",
+      "disclosure": "2026-04-17",
+      "observed": "2026-10-17 18:48:15+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "income",
+      "period": "20250630",
+      "disclosure": "2025-08-13",
+      "observed": "2026-10-17 18:47:46+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "fina_indicator",
+      "period": "20260630",
+      "disclosure": "2026-08-15",
+      "observed": "2026-10-17 19:32:36+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "fina_indicator",
+      "period": "20251231",
+      "disclosure": "2026-04-17",
+      "observed": "2026-10-17 19:31:55+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "fina_indicator",
+      "period": "20250630",
+      "disclosure": "2025-08-13",
+      "observed": "2026-10-17 19:31:23+00:00"
+    },
+    {
+      "code": "600519.SH",
+      "dataset": "balancesheet",
+      "period": "20260630",
+      "disclosure": "2026-08-15",
+      "observed": "2026-10-17 19:02:29+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "income",
+      "period": "20260630",
+      "disclosure": "2026-08-31",
+      "observed": "2026-10-17 18:48:39+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "income",
+      "period": "20251231",
+      "disclosure": "2026-04-30",
+      "observed": "2026-10-17 18:48:15+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "income",
+      "period": "20250630",
+      "disclosure": "2025-08-30",
+      "observed": "2026-10-17 18:47:46+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "fina_indicator",
+      "period": "20260630",
+      "disclosure": "2026-08-31",
+      "observed": "2026-10-17 19:32:36+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "fina_indicator",
+      "period": "20251231",
+      "disclosure": "2026-04-30",
+      "observed": "2026-10-17 19:31:55+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "fina_indicator",
+      "period": "20250630",
+      "disclosure": "2025-08-30",
+      "observed": "2026-10-17 19:31:23+00:00"
+    },
+    {
+      "code": "600900.SH",
+      "dataset": "balancesheet",
+      "period": "20260630",
+      "disclosure": "2026-08-31",
+      "observed": "2026-10-17 19:02:29+00:00"
+    }
+  ]
+}
