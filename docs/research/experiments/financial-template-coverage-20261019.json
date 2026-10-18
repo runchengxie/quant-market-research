@@ -1,0 +1,286 @@
+{
+  "schema_version": "financial_template_coverage_review.v1",
+  "formation_date": "20261016",
+  "historical_pit_certified": false,
+  "returns_backtested": false,
+  "published_owner_asset": false,
+  "new_api_requests": 0,
+  "input_sha256": {
+    "vintage=20261018/manifest": "da114a97ce8896cf6d74a11f3e4485cf9228a18682b4727632edf1cd2d5dea13",
+    "vintage=20261018/income/data/part.parquet": "58db7f9ae1e29613bac9959e722f2b57f0f6534c2d7fc78e6273201f6c92af91",
+    "vintage=20261018/fina_indicator/data/part.parquet": "1c4f45a69f18822b1664947a695988e10c32007a6be3c3218bb5c6b25320f70b",
+    "vintage=20261018/balancesheet/data/part.parquet": "9a91630839832422c978d60b623a61faf4764fc48c0365b425c4a9d0fa4e09c5",
+    "diagnostic/income": "12b4c21a44f23bf4bf0fe4d6634d286a22eaf791d86ebf5b781eca31a6bed783",
+    "diagnostic/balancesheet": "6dbe85c84dd86ea420512ae40510183db92ac5abb2e29ab4b46cab74446e9cc1",
+    "daily_basic": "c93089109c64953cd0fa4d34808347ed266c44330ae5956be46a1d3ce33ccd98",
+    "diagnostic_receipt": "07edcdfa1623825b71398dcef3d2a7bc3ef7dd76c42f9db3841a4bceda40d223"
+  },
+  "availability_changes": [
+    {
+      "metric": "pe_ttm",
+      "gained": 92,
+      "lost": 0
+    },
+    {
+      "metric": "pe_deducted_proxy",
+      "gained": 0,
+      "lost": 0
+    },
+    {
+      "metric": "pb_parent",
+      "gained": 75,
+      "lost": 0
+    },
+    {
+      "metric": "pb_ex_goodwill_proxy",
+      "gained": 43,
+      "lost": 0
+    },
+    {
+      "metric": "pb_ex_intangibles_proxy",
+      "gained": 43,
+      "lost": 0
+    }
+  ],
+  "comparison": {
+    "all_quotes": {
+      "before": {
+        "quote_records": 5567,
+        "common_five": 1743,
+        "metrics": [
+          {
+            "metric": "pe_ttm",
+            "available": 3839,
+            "nonpositive": 1632,
+            "missing_or_invalid": 96
+          },
+          {
+            "metric": "pe_deducted_proxy",
+            "available": 3703,
+            "nonpositive": 1860,
+            "missing_or_invalid": 4
+          },
+          {
+            "metric": "pb_parent",
+            "available": 5447,
+            "nonpositive": 45,
+            "missing_or_invalid": 75
+          },
+          {
+            "metric": "pb_ex_goodwill_proxy",
+            "available": 2650,
+            "nonpositive": 42,
+            "missing_or_invalid": 2875
+          },
+          {
+            "metric": "pb_ex_intangibles_proxy",
+            "available": 2601,
+            "nonpositive": 87,
+            "missing_or_invalid": 2879
+          }
+        ]
+      },
+      "after": {
+        "quote_records": 5567,
+        "common_five": 1794,
+        "metrics": [
+          {
+            "metric": "pe_ttm",
+            "available": 3931,
+            "nonpositive": 1632,
+            "missing_or_invalid": 4
+          },
+          {
+            "metric": "pe_deducted_proxy",
+            "available": 3703,
+            "nonpositive": 1860,
+            "missing_or_invalid": 4
+          },
+          {
+            "metric": "pb_parent",
+            "available": 5522,
+            "nonpositive": 45,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pb_ex_goodwill_proxy",
+            "available": 2693,
+            "nonpositive": 42,
+            "missing_or_invalid": 2832
+          },
+          {
+            "metric": "pb_ex_intangibles_proxy",
+            "available": 2644,
+            "nonpositive": 87,
+            "missing_or_invalid": 2836
+          }
+        ]
+      }
+    },
+    "baseline_financial_templates": {
+      "before": {
+        "quote_records": 87,
+        "common_five": 0,
+        "metrics": [
+          {
+            "metric": "pe_ttm",
+            "available": 0,
+            "nonpositive": 0,
+            "missing_or_invalid": 87
+          },
+          {
+            "metric": "pe_deducted_proxy",
+            "available": 87,
+            "nonpositive": 0,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pb_parent",
+            "available": 12,
+            "nonpositive": 0,
+            "missing_or_invalid": 75
+          },
+          {
+            "metric": "pb_ex_goodwill_proxy",
+            "available": 6,
+            "nonpositive": 0,
+            "missing_or_invalid": 81
+          },
+          {
+            "metric": "pb_ex_intangibles_proxy",
+            "available": 6,
+            "nonpositive": 0,
+            "missing_or_invalid": 81
+          }
+        ]
+      },
+      "after": {
+        "quote_records": 87,
+        "common_five": 49,
+        "metrics": [
+          {
+            "metric": "pe_ttm",
+            "available": 87,
+            "nonpositive": 0,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pe_deducted_proxy",
+            "available": 87,
+            "nonpositive": 0,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pb_parent",
+            "available": 87,
+            "nonpositive": 0,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pb_ex_goodwill_proxy",
+            "available": 49,
+            "nonpositive": 0,
+            "missing_or_invalid": 38
+          },
+          {
+            "metric": "pb_ex_intangibles_proxy",
+            "available": 49,
+            "nonpositive": 0,
+            "missing_or_invalid": 38
+          }
+        ]
+      }
+    },
+    "baseline_general_template": {
+      "before": {
+        "quote_records": 5480,
+        "common_five": 1743,
+        "metrics": [
+          {
+            "metric": "pe_ttm",
+            "available": 3839,
+            "nonpositive": 1632,
+            "missing_or_invalid": 9
+          },
+          {
+            "metric": "pe_deducted_proxy",
+            "available": 3616,
+            "nonpositive": 1860,
+            "missing_or_invalid": 4
+          },
+          {
+            "metric": "pb_parent",
+            "available": 5435,
+            "nonpositive": 45,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pb_ex_goodwill_proxy",
+            "available": 2644,
+            "nonpositive": 42,
+            "missing_or_invalid": 2794
+          },
+          {
+            "metric": "pb_ex_intangibles_proxy",
+            "available": 2595,
+            "nonpositive": 87,
+            "missing_or_invalid": 2798
+          }
+        ]
+      },
+      "after": {
+        "quote_records": 5480,
+        "common_five": 1745,
+        "metrics": [
+          {
+            "metric": "pe_ttm",
+            "available": 3844,
+            "nonpositive": 1632,
+            "missing_or_invalid": 4
+          },
+          {
+            "metric": "pe_deducted_proxy",
+            "available": 3616,
+            "nonpositive": 1860,
+            "missing_or_invalid": 4
+          },
+          {
+            "metric": "pb_parent",
+            "available": 5435,
+            "nonpositive": 45,
+            "missing_or_invalid": 0
+          },
+          {
+            "metric": "pb_ex_goodwill_proxy",
+            "available": 2644,
+            "nonpositive": 42,
+            "missing_or_invalid": 2794
+          },
+          {
+            "metric": "pb_ex_intangibles_proxy",
+            "available": 2595,
+            "nonpositive": 87,
+            "missing_or_invalid": 2798
+          }
+        ]
+      }
+    }
+  },
+  "quarantine": {
+    "income": {
+      "keys": 31,
+      "rows": 62,
+      "issuers": 6
+    },
+    "balancesheet": {
+      "keys": 25,
+      "rows": 50,
+      "issuers": 4
+    },
+    "cashflow": {
+      "keys": 13,
+      "rows": 26,
+      "issuers": 6
+    }
+  }
+}
