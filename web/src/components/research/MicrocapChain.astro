@@ -1,0 +1,33 @@
+---
+import { chainEvidence, chainCopy as c, chainBlocks } from '../../content/microcap-chain';
+import { tAgenda } from '../../content/microcap-agenda';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<section id="microcap-chain" class="panel chain">
+ <h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+ {[{locale:'en-US' as const,live:true}, ...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
+  const Container=live?'div':'template'; const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
+  return <Container data-chain-live={live?'':undefined} data-chain-locale={live?undefined:locale} lang={locale}>
+   <p class="finding">{t('intro')}</p>
+   {chainBlocks.map(block=>{const table=block.table(locale);return <div data-chain-block={block.id}>
+    <h3>{t(block.title)}</h3><p>{t(block.intro)}</p>
+    <div class="chain-table" tabindex="0" role="region" aria-label={t(block.title)}><table><caption>{t(block.title)}</caption>
+     <thead><tr>{table.headers.map(header=><th scope="col">{header}</th>)}</tr></thead>
+     <tbody>{table.rows.map(row=><tr><th scope="row">{row[0]}</th><td>{row[1]}</td></tr>)}</tbody>
+    </table></div><p>{t(block.boundary)}</p>
+   </div>;})}
+   <details><summary>{t('descriptorsTitle')}</summary><p>{t('descriptors')}</p></details>
+   <details><summary>{t('provenance')}</summary><p>SHA-256: <code>{chainEvidence.prospective.anchored_head}</code></p><ul>{Object.entries(chainEvidence.source_sha256).map(([role,hash])=><li><code>{role}</code>: <code>{hash}</code></li>)}</ul></details>
+   <p><a href={`${base}/data/microcap_chain_review.json`} download>{t('download')}</a></p>
+  </Container>;
+ })}
+</section>
+<script>
+ const section=document.querySelector('#microcap-chain');
+ const live=section?.querySelector<HTMLElement>('[data-chain-live]');
+ const sync=()=>{const locale=document.documentElement.lang.startsWith('zh')?'zh-CN':'en-US';if(!live||live.lang===locale)return;const source=section?.querySelector<HTMLTemplateElement>(`template[data-chain-locale="${locale}"]`);if(!source)return;const expanded=Array.from(live.querySelectorAll('details'),detail=>detail.open);live.replaceChildren(source.content.cloneNode(true));live.lang=locale;live.querySelectorAll('details').forEach((detail,i)=>detail.open=expanded[i]??false);};
+ sync();new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<style>
+.chain{margin-block:1.5rem;min-width:0}.chain p{max-width:92ch;line-height:1.8}.chain h3{margin-top:1.6rem}.chain details{border-top:1px solid var(--rule);padding:.8rem 0}.chain summary{cursor:pointer;font-weight:600}.chain code{overflow-wrap:anywhere;white-space:normal}.chain-table{overflow-x:auto;margin-block:1rem}.chain-table table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.9rem;line-height:1.7}.chain-table caption{text-align:left;padding-bottom:.6rem;color:var(--muted)}.chain-table th,.chain-table td{vertical-align:top;text-align:left;padding:.65rem;border-bottom:1px solid var(--rule);overflow-wrap:anywhere;white-space:normal}.chain-table th{width:57%}.chain-table thead{background:var(--surface-strong)}.chain-table:focus-visible{outline:2px solid var(--accent-strong)}.finding{border-left:3px solid var(--accent-strong);padding-left:1rem}
+</style>

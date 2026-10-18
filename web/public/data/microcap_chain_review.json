@@ -1,0 +1,55 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-18",
+  "raw_share_strategy_ready": false,
+  "primary": {
+    "reviewed_held_events": 7,
+    "primary_notices": 7,
+    "explicit_fraction_methods": 6,
+    "listing_after_ex": 1,
+    "cash_numeric_unspecified": 3,
+    "holder_inventory_certified": false,
+    "tax_certified": false
+  },
+  "trace": {
+    "dated_inventory_unknown": 6,
+    "derived_pre_activation_cash_absence": 6,
+    "original_inventory_recovered": false,
+    "leading_cash_sessions": 63,
+    "matched_original_engine_files": 19,
+    "retained_account_files_checked": 38,
+    "min45_positive_prior_target_events": 1,
+    "min45_fills_recovered": false
+  },
+  "prospective": {
+    "kind": "manual_verification",
+    "actual_review_utc": "2026-10-18T15:17:12.882339+00:00",
+    "register_entries": 2,
+    "anchored_head": "67ea16a685f1a483ffd39353f78cc45ed9e3e33cbffdb9df70df26941f22174c",
+    "register_unchanged": true,
+    "pending_categories": 7,
+    "admitted": false,
+    "new_completed_windows": 0,
+    "scheduler_installed": false,
+    "stable_release_has_register_cli": false
+  },
+  "target_slice": {
+    "status": "blocked_by_sell_quantity_contract",
+    "fail_closed": true,
+    "accepted_nav": false,
+    "formations": 2,
+    "targets_per_formation": 40,
+    "distinct_target_names": 46,
+    "sessions": 21,
+    "query_rows_scanned": 2230,
+    "included_actions": 1,
+    "excluded_pre_entry_actions": 1,
+    "historical_account_recovered": false
+  },
+  "source_sha256": {
+    "primary": "32b02f89e2c6b6702fe10a24f8f07e34cfabdbea9fb0d0bd2462aed556bccb54",
+    "trace": "2f26d52e4d622387c616b9c84b2aac67a1873e3a6f164f0cf8a55f627daf5460",
+    "prospective": "03f3f87520a33e5a5d8368879d397adfedebf1b71d7be9d483241293b4abdc49",
+    "slice": "09f17741b3d48e5eaecd132511a3b7303900befaa9c4a795b2dbbb58228de01a"
+  }
+}
