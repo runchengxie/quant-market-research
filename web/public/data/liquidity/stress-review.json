@@ -1,0 +1,10 @@
+{
+  "schema_version": "liquidity.stress-review.v1",
+  "passed": true,
+  "reviewed_summary_sha256": "120540d29f0574a75e63d3d78c9d99bbe2d26b12979367b058cb567b372530c8",
+  "review_code_sha256": "2cbda46efe124844ec204c4c7c8134b7046aba76a38469a8ce11670a0fae6286",
+  "aggregate_cells_checked": 8549,
+  "cohort_formations_checked": 439,
+  "raw_minute_dates_checked": 15,
+  "method": "Independent dense observation-state arrays and NumPy/pandas stress/cohort reconstruction; DuckDB raw-minute window and qualification reconstruction. Missing states remain separate."
+}

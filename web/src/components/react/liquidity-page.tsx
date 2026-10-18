@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { LiquidityUniversePanel } from './liquidity-universe-panel';
+import { LiquidityStressPanel } from './liquidity-stress-panel';
 import { liquidityCaveats } from '../../liquidity-copy';
 import { liquidityResearchCopy as copy } from '../../content/liquidity-research-copy';
 import { formatNumber as num } from '../../lib/format';
@@ -76,6 +77,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
    <SimpleTable rows={markets.map(item=>({market:item.market,date:item.coverage_start===item.coverage_end?item.as_of??text('missing'):`${item.coverage_start} — ${item.coverage_end}`,status:auditLiquidityMarket(item).length?text('quarantined'):text('historical'),issues:issueText(item)||text('consistent'),fx:`${item.fx_start??''} — ${item.fx_end??''}`}))} columns={[["market",text('market')],["date",text('range')],["status",text('status')],["issues",text('issue')],["fx",text('fx')]]}/>
    <p className="panel-note">{text('jp')}</p><p className="panel-note">{text('sourceNote')}</p><p className="panel-note">{liquidityCaveats(summary.caveats,englishLocale()?'en-US':'zh-CN')}</p>
    <LiquidityUniversePanel />
+   <LiquidityStressPanel />
    <LiquidityStabilityPanel />
    <div className="data-notice" role="note"><h3>{text('sourceLimitTitle')}</h3><p>{text('sourceLimitText')}</p></div>
    <details><summary>{text('panelProfile')}</summary><SimpleTable rows={Object.entries(summary.source_profiles??{}).map(([name,p])=>({market:name,source:num(p.source_rows),included:num(p.eligible_observations)}))} columns={[["market",text('market')],["source",text('sourceRows')],["included",text('includedRows')]]}/></details>
