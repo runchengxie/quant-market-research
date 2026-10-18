@@ -1,9 +1,10 @@
 import { useState } from 'react';
+import { LiquidityUniversePanel } from './liquidity-universe-panel';
 import { liquidityCaveats } from '../../liquidity-copy';
 import { liquidityResearchCopy as copy } from '../../content/liquidity-research-copy';
 import { formatNumber as num } from '../../lib/format';
 import { withBase } from '../../lib/routes';
-import { auditLiquidityMarket, liquidityComparison, marketsForPeriod, mechanicalOrderBudget, type LiquidityMetric } from '../../lib/liquidity-quality';
+import { auditLiquidityMarket, liquidityComparison, marketsForPeriod, portfolioScenarioRange, type LiquidityMetric } from '../../lib/liquidity-quality';
 import { Panel, BarChart, ControlBar, Choice, SimpleTable, Loading, ResourceState, useJson, englishLocale } from './research-shared';
 import type { LiquiditySummary, LiquidityRelativeSummary, LiquidityCoverageSummary, LiquidityFollowupAudit } from './research-shared';
 
@@ -46,7 +47,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
  return <>
   <section className={`period-panel ${embedded?'embedded':''}`} id="market-profiles">
    <div className="period-heading"><div><span className="section-kicker">{text('explorer')}</span><h2>{text('profile')}</h2><p>{period==='latest'?text('dates'):text('aligned')}</p></div><span className={`status-badge ${period==='latest'?'mixed':selected?.status==='incomplete'?'incomplete':'verified'}`}>{period==='latest'?(englishLocale()?'Dates differ':'日期不一致'):selected?.status==='incomplete'?text('incomplete'):text('aligned')}</span></div>
-   <p className="panel-note">{text('method')}</p>
+   <p className="panel-note">{text('method')}</p><p className="data-notice" role="note">{text('shszNotice')}</p>
    <ControlBar><span className="control-label">{text('period')}</span>{['latest',...(summary.periods??[]).map(item=>item.period)].map(value=><Choice key={value} active={period===value} onClick={()=>setPeriod(value)}>{periodLabel(value)}{summary.periods?.find(item=>item.period===value)?.status==='pending'?` · ${text('pending')}`:''}</Choice>)}</ControlBar>
    {selected&&<div className="period-meta"><p>{text('range')}: {selected.common_start??text('missing')} — {selected.common_end??text('missing')} · {text('commonDays')}: {num(selected.common_dates)}</p>{!!selected.missing_markets?.length&&<p>{text('absent')}: {selected.missing_markets.join(', ')}</p>}</div>}
    {selected&&selected.common_dates!==1&&<p className="panel-note">{text('pooled')}</p>}
@@ -74,6 +75,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
   <section id="liquidity-quality" className="report-section"><h2>{text('quality')}</h2>
    <SimpleTable rows={markets.map(item=>({market:item.market,date:item.coverage_start===item.coverage_end?item.as_of??text('missing'):`${item.coverage_start} — ${item.coverage_end}`,status:auditLiquidityMarket(item).length?text('quarantined'):text('historical'),issues:issueText(item)||text('consistent'),fx:`${item.fx_start??''} — ${item.fx_end??''}`}))} columns={[["market",text('market')],["date",text('range')],["status",text('status')],["issues",text('issue')],["fx",text('fx')]]}/>
    <p className="panel-note">{text('jp')}</p><p className="panel-note">{text('sourceNote')}</p><p className="panel-note">{liquidityCaveats(summary.caveats,englishLocale()?'en-US':'zh-CN')}</p>
+   <LiquidityUniversePanel />
    <LiquidityStabilityPanel />
    <div className="data-notice" role="note"><h3>{text('sourceLimitTitle')}</h3><p>{text('sourceLimitText')}</p></div>
    <details><summary>{text('panelProfile')}</summary><SimpleTable rows={Object.entries(summary.source_profiles??{}).map(([name,p])=>({market:name,source:num(p.source_rows),included:num(p.eligible_observations)}))} columns={[["market",text('market')],["source",text('sourceRows')],["included",text('includedRows')]]}/></details>
@@ -81,7 +83,7 @@ export function LiquidityPeriodPanel({ embedded = false }: { embedded?: boolean 
    <LiquidityCoveragePanel data={coverageResource.data} error={coverageResource.error} retry={coverageResource.retry} market={market}/>
    <LiquidityFollowupPanel data={followupResource.data} error={followupResource.error} retry={followupResource.retry}/>
   </section>
-  <OrderBudget rows={rows} period={periodLabel(period)} bucket={buckets[bucket]?.label??''} basis={text(basis)} metric={text(metric)}/>
+  <OrderBudget rows={rows} period={periodLabel(period)} periodKey={period} grouping={grouping} bucketIndex={bucket} bucket={buckets[bucket]?.label??''} basis={text(basis)} metric={text(metric)}/>
  </>;
 }
 
@@ -89,7 +91,7 @@ type LiquidityStability = { summary: Array<{ market: string; year: number; bucke
 
 function LiquidityStabilityPanel() {
  const {data,error,retry}=useJson<LiquidityStability>('liquidity/stability.json');
- const [market,setMarket]=useState('A-share');const [bucket,setBucket]=useState('< $10m');
+ const [market,setMarket]=useState('A-share');const [bucket,setBucket]=useState('$100m-$1bn');
  if(error) return <div className="report-section"><h3>{text('stabilityTitle')}</h3><ResourceState error={error} retry={retry} label={text('stabilityTitle')}/></div>;
  if(!data) return <div className="report-section"><h3>{text('stabilityTitle')}</h3><Loading/></div>;
  const markets=[...new Set(data.summary.map(row=>row.market))];
@@ -167,20 +169,24 @@ function LiquidityCoveragePanel({data,error,retry,market}:{data:LiquidityCoverag
  </div>;
 }
 
-function OrderBudget({rows,period,bucket,basis,metric}:{rows:ReturnType<typeof liquidityComparison>;period:string;bucket:string;basis:string;metric:string}) {
+type ScenarioLimits = {absolute_summary_sha256:string;views:Array<{period:string;markets:Array<{market:string;absolute_min_daily_stocks:number[];relative_min_daily_stocks:number[]}>}>};
+function OrderBudget({rows,period,periodKey,grouping,bucketIndex,bucket,basis,metric}:{rows:ReturnType<typeof liquidityComparison>;period:string;periodKey:string;grouping:'absolute'|'relative';bucketIndex:number;bucket:string;basis:string;metric:string}) {
  const [participation,setParticipation]=useState('3');const [days,setDays]=useState('5');const [holdings,setHoldings]=useState('20');
+ const limits=useJson<ScenarioLimits>('liquidity/scenario-limits.json');
  const p=Number(participation)/100;const d=Number(days);const n=Number(holdings);
- const valid=Number.isFinite(p)&&p>0&&p<=1&&Number.isInteger(d)&&d>0&&Number.isInteger(n)&&n>0&&n<=1000;
+ const valid=Number.isFinite(p)&&p>0&&p<=1&&Number.isInteger(d)&&d>0&&d<=252&&Number.isInteger(n)&&n>0&&n<=1000;
  const scenarioRows=rows.map(row=>{
-  const enoughStocks=row.stocks==null||n<=row.stocks;
-  const benchmark=row.value;
-  const singleStockBudget=valid&&enoughStocks&&typeof benchmark==='number'?mechanicalOrderBudget(benchmark,p,d):null;
-  const oneWay=singleStockBudget==null?null:singleStockBudget*n;
-  return {market:row.market,baseline:row.value==null?text('missing'):money(row.value),holdings:row.stocks==null?text('missing'):`${num(n)} / ${num(row.stocks)}`,budget:oneWay==null?(enoughStocks?text('invalid'):text('holdingsExceedSample')):money(oneWay)};
+  const group=limits.data?.views.filter(view=>view.period===periodKey).flatMap(view=>view.markets).find(item=>item.market===row.market);
+  const minStocks=group?.[grouping==='absolute'?'absolute_min_daily_stocks':'relative_min_daily_stocks'][bucketIndex];
+  const enoughStocks=minStocks!=null&&n<=minStocks;
+  const budget=portfolioScenarioRange(row.value,row.p25,row.p75,p,d,n,minStocks);
+  const unavailable=minStocks==null?text('missing'):!enoughStocks?text('holdingsExceedSample'):text('invalid');
+  return {market:row.market,baseline:money(row.value),holdings:minStocks==null?text('missing'):`${num(n)} / ${num(minStocks)}`,budget:budget?money(budget.selected):unavailable,range:budget?`${money(budget.lower)} — ${money(budget.upper)}`:unavailable};
  });
- return <section id="order-budget" className="report-section"><h2>{text('budget')}</h2><p>{text('budgetNote')}</p><p className="panel-note">{period} · {bucket} · {basis} · {metric}</p><div className="liquidity-filters">
+ return <section id="order-budget" className="report-section"><h2>{text('budget')}</h2><p>{text('budgetNote')}</p><p className="panel-note">{period} · {bucket} · {basis} · {metric}</p><p className="panel-note">{text('budgetRangeNote')}</p><div className="liquidity-filters">
   <label>{text('participation')}<input type="number" min="0.01" max="100" step="0.1" value={participation} onChange={e=>setParticipation(e.target.value)}/></label>
   <label>{text('days')}<input type="number" min="1" max="252" step="1" value={days} onChange={e=>setDays(e.target.value)}/></label>
   <label>{text('holdings')}<input type="number" min="1" max="1000" step="1" value={holdings} onChange={e=>setHoldings(e.target.value)}/></label>
- </div><SimpleTable rows={scenarioRows} columns={[["market",text('market')],["baseline",text('selectedGroupBaseline')],["holdings",text('scenarioHoldings')],["budget",text('scenarioBudget')]]}/></section>;
+ </div>{!valid&&<p role="status">{text('invalid')}</p>}{limits.error?<ResourceState error={limits.error} retry={limits.retry} label={text('budget')}/>:!limits.data?<Loading/>:null}
+ <SimpleTable rows={scenarioRows} columns={[["market",text('market')],["baseline",text('selectedGroupBaseline')],["holdings",text('scenarioDailyMinimum')],["budget",text('scenarioBudget')],["range",text('budgetRange')]]}/></section>;
 }

@@ -52,7 +52,7 @@ def build(
     sources = {
         "US": "SimFin close × volume; turnover is a close-price proxy, not reported traded value. Sparse source date 2025-10-04 is excluded; latest eligible observation is 2025-10-03.",
         "HK": "RQData reported turnover in HKD; historical universe coverage remains unproven.",
-        "A-share": "TuShare daily turnover; prior-period status filters do not establish historical PIT.",
+        "A-share": "TuShare SH/SZ daily turnover; BSE excluded; prior-period status filters do not establish historical PIT.",
         "JP": "J-Quants daily traded value; market cap uses exploratory Yahoo share history.",
     }
     for name in ("US", "HK", "A-share", "JP"):

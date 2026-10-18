@@ -1,0 +1,71 @@
+{
+  "schema_version": "liquidity.universe-review.v1",
+  "aggregate_cells_checked": 390,
+  "independent_method": "pandas lifecycle join and NumPy statistics; daily counts reindexed to exact common calendars including empty groups",
+  "annual_lifecycle_counts": [
+    {
+      "year": 2015,
+      "base_observations": 446248,
+      "lifecycle_observations": 446248
+    },
+    {
+      "year": 2016,
+      "base_observations": 588048,
+      "lifecycle_observations": 588048
+    },
+    {
+      "year": 2017,
+      "base_observations": 692240,
+      "lifecycle_observations": 692240
+    },
+    {
+      "year": 2018,
+      "base_observations": 774550,
+      "lifecycle_observations": 774550
+    },
+    {
+      "year": 2019,
+      "base_observations": 845191,
+      "lifecycle_observations": 845191
+    },
+    {
+      "year": 2020,
+      "base_observations": 888909,
+      "lifecycle_observations": 888909
+    },
+    {
+      "year": 2021,
+      "base_observations": 996619,
+      "lifecycle_observations": 996619
+    },
+    {
+      "year": 2022,
+      "base_observations": 1096191,
+      "lifecycle_observations": 1096191
+    },
+    {
+      "year": 2023,
+      "base_observations": 1170851,
+      "lifecycle_observations": 1170851
+    },
+    {
+      "year": 2024,
+      "base_observations": 1198440,
+      "lifecycle_observations": 1198440
+    },
+    {
+      "year": 2025,
+      "base_observations": 1201411,
+      "lifecycle_observations": 1201411
+    },
+    {
+      "year": 2026,
+      "base_observations": 927293,
+      "lifecycle_observations": 927293
+    }
+  ],
+  "sensitivity_sha256": "56f2f0db980c4586fc0932e04c12ef5ed2c08eee2f9c2c39138a60454e5e59af",
+  "scenario_limits_sha256": "ac033d66f64a3029dcdfa14aad534a6f2e9a2755352c74ef06c15d65df79044b",
+  "review_code_sha256": "32cf26f5984d73d77977d8cd29660ad58d8f6deba84c35bb7b8f0897eb9ac8ac",
+  "passed": true
+}

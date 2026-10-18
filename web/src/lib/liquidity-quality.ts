@@ -42,7 +42,9 @@ export function liquidityComparison(markets: LiquidityPeriodMarket[], bucket: nu
     .map(market => {
       const selected = market.buckets.find(item => item.label === label);
       const value = selected?.[basis === 'adv20' ? metric : (`median20_${metric}` as const)];
-      return {market: market.market, stocks: selected?.count, totalStocks: market.unique_stocks ?? market.eligible_stocks, totalObservations: market.eligible_observations, capMin: selected?.cap_min_usd, capMax: selected?.cap_max_usd, observations: selected?.observations, value: typeof value === 'number' && Number.isFinite(value) ? value : null};
+      const p25 = selected?.[basis === 'adv20' ? 'p25_usd' : 'median20_p25_usd'];
+      const p75 = selected?.[basis === 'adv20' ? 'p75_usd' : 'median20_p75_usd'];
+      return {p25, p75, market: market.market, stocks: selected?.count, totalStocks: market.unique_stocks ?? market.eligible_stocks, totalObservations: market.eligible_observations, capMin: selected?.cap_min_usd, capMax: selected?.cap_max_usd, observations: selected?.observations, value: typeof value === 'number' && Number.isFinite(value) ? value : null};
     });
 }
 
@@ -55,4 +57,13 @@ export function mechanicalOrderBudget(turnover: number | null, participation: nu
   const result = turnover * participation * days;
   if (!Number.isFinite(result)) throw new RangeError('Order budget exceeds the finite numeric range');
   return result;
+}
+
+/** Conservative group-baseline sensitivity, constrained by simultaneous daily stock counts. */
+export function portfolioScenarioRange(baseline: number | null, p25: number | null | undefined, p75: number | null | undefined, participation: number, days: number, holdings: number, minDailyStocks: number | null | undefined) {
+ if (!Number.isInteger(days) || days < 1 || days > 252 || !Number.isInteger(holdings) || holdings < 1 || holdings > 1000 || minDailyStocks == null || !Number.isInteger(minDailyStocks) || holdings > minDailyStocks || !Number.isFinite(participation) || participation <= 0 || participation > 1) return null;
+ if (baseline == null || p25 == null || p75 == null || ![baseline,p25,p75].every(value=>Number.isFinite(value)&&value>=0) || p25 > p75) return null;
+ const scale=(value:number)=>mechanicalOrderBudget(value,participation,days)!*holdings;
+ const result={selected:scale(baseline),lower:scale(p25),upper:scale(p75)};
+ return Object.values(result).every(Number.isFinite)?result:null;
 }

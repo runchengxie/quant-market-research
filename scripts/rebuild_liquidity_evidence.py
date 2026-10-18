@@ -13,6 +13,7 @@ import duckdb
 import pandas as pd
 
 from market_research.liquidity_rebuild import build_features, summarize_period
+from market_research.liquidity_universe import normalize_a_share
 
 MARKETS = ["US", "HK", "A-share", "JP"]
 
@@ -89,15 +90,9 @@ def main():
     for market in MARKETS:
         print(f"{market}: normalizing read-only sources", flush=True)
         if market == "A-share":
-            con.execute(
-                """CREATE TABLE raw AS SELECT 'A-share' market,ts_code symbol,
-              try_strptime(trade_date,'%Y%m%d')::DATE date,'CNY' currency,
-              amount*1000.0 turnover,total_mv*10000.0 market_cap,
-              coalesce(is_st=false AND is_suspended=false,false)
-                AND regexp_full_match(ts_code,'(00[0-9]{4}|30[0-9]{4}|60[0-9]{4}|68[0-9]{4}|[48][0-9]{5}|92[0-9]{4})\\.(SH|SZ|BJ)') eligible
-              FROM read_parquet(?,union_by_name=true) WHERE trade_date>='20191101'
-                AND trade_date<=?""",
-                [[str(p) for p in sources["a_clean"]], cutoff.strftime("%Y%m%d")],
+            normalize_a_share(
+                con, [str(p) for p in sources["a_clean"]],
+                cutoff.strftime("%Y%m%d"), cfg.get("a_share_start", "20150105"),
             )
         elif market == "US":
             con.execute(

@@ -128,13 +128,13 @@ test('default size bucket includes A-share and empty buckets retain universe con
  await expect(bucket).toHaveValue('2');
  const table=page.locator('#market-profiles .panel table');
  const a=table.locator('tbody tr').filter({hasText:'A-share'});
- await expect(a).toContainText('2,757');
+ await expect(a).toContainText('2,501');
  await expect(a).not.toContainText('No observations');
  await bucket.selectOption('0');
- await expect(page.locator('.empty-bucket-notice')).toContainText('5,220 stocks and 5,220 security-days');
+ await expect(page.locator('.empty-bucket-notice')).toContainText('4,949 stocks and 4,949 security-days');
  await expect(page.locator('.empty-bucket-notice')).toContainText('not missing market data');
  await page.getByRole('button',{name:'2020-2024',exact:true}).click();
- await expect(page.locator('.empty-bucket-notice')).toContainText('4,829,392 security-days');
+ await expect(page.locator('.empty-bucket-notice')).toContainText('4,710,463 security-days');
 });
 
 test('relative quintiles preserve periods, show A-share and distinguish actual dollar sizes', async ({page})=>{
@@ -145,7 +145,7 @@ test('relative quintiles preserve periods, show A-share and distinguish actual d
  await expect(page.getByRole('combobox',{name:'Size rank within each market',exact:true})).toHaveValue('0');
  const table=page.locator('#market-profiles .panel table');
  await expect(table).toContainText('Observed market-cap range (USD)');
- await expect(table.locator('tbody tr').filter({hasText:'A-share'})).toContainText('1,044');
+ await expect(table.locator('tbody tr').filter({hasText:'A-share'})).toContainText('990');
  await expect(table).not.toContainText('No observations');
  await expect(page.locator('#market-profiles')).toContainText('not the same dollar size');
  await page.getByRole('button',{name:'2026 YTD',exact:true}).click();
@@ -165,4 +165,18 @@ test('relative source failure can retry while the absolute comparison remains us
  await page.unroute('**/data/liquidity/relative-summary.json');
  await page.locator('#market-profiles').getByRole('button',{name:/Retry/i}).click();
  await expect(page.getByRole('combobox',{name:'Size rank within each market',exact:true})).toBeVisible();
+});
+
+
+test('scope sensitivity separates BSE exclusions from lifecycle checks and constrains budgets',async({page})=>{
+ await page.goto('research/liquidity/?lang=en-US');
+ const evidence=page.locator('#liquidity-universe-sensitivity');
+ await expect(evidence).toContainText('34,947');
+ await expect(evidence).toContainText('500');
+ await expect(evidence).toContainText('not an independent historical membership archive');
+ await expect(page.locator('#liquidity-stability')).toContainText('2015');
+ await expect(page.locator('#order-budget')).toContainText('P25–P75');
+ await page.getByRole('button',{name:'2020-2024',exact:true}).click();
+ await page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true}).selectOption('1');
+ await expect(page.locator('#order-budget table tbody tr').filter({hasText:'A-share'})).toContainText('Holdings exceed minimum daily group stock count');
 });

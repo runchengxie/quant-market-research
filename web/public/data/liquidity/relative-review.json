@@ -1,12 +1,12 @@
 {
   "schema_version": "liquidity.relative-review.v1",
-  "reviewed_summary_sha256": "291bbaf6a0a0af1e0daec61c9a96f92d7d71593d05cc7565aa2a6f2addb6f55f",
+  "reviewed_summary_sha256": "f3642d2a4b637dac5c350fc69b5a2e6960f7ee9746bc747be8e7ab3b4c13fac9",
   "review_code_sha256": "513d5abb57b05ea0c083bf6f45b9c29b84129389df1442e10ba98574a1cf56a2",
   "aggregate_cells_reconciled": 1710,
   "absolute_aggregate_cells_reconciled": 1520,
   "feature_checksums_verified": true,
   "base_verification_code_sha256": "582f794dce6fc2ea25022e7a0024cea8431e7851bf668d4286a306805d3de955",
-  "security_day_entries_across_overlapping_views": 19275158,
+  "security_day_entries_across_overlapping_views": 19092484,
   "independent_daily_membership_checked": true,
   "full_raw_warehouse_audited": false
 }
