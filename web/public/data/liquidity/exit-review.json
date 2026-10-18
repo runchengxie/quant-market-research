@@ -1,0 +1,11 @@
+{
+  "schema_version": "liquidity.exit-review.v1",
+  "passed": true,
+  "reviewed_summary_sha256": "dd8af61a1267c824afd3c78f20240da617be3698107526e53bc1ae2cff675b11",
+  "review_code_sha256": "a6def1fa273494877011e0160a8be8276d884927f3ba722276b8abda05fdb3da",
+  "aggregate_cells_checked": 2772,
+  "raw_path_rows_checked": 2373680,
+  "formation_dates_checked": 24,
+  "source_partitions_checked": 1010,
+  "method": "Independent raw-source SQL classification, pandas frozen membership/session reconstruction and pivoted cumulative-budget statistics."
+}

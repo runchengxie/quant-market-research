@@ -1,0 +1,276 @@
+{
+  "schema_version": "liquidity.minute-clock-probe.v1",
+  "month": "2025-01",
+  "dates": 18,
+  "accepted_stock_days": 89250,
+  "feature_sha256": "2586aaa0770fdbf84abfb3e244977e64b5ba9dde0af6dfc3bd6ce90e2e87dfe8",
+  "quality": [
+    {
+      "date": "20250102",
+      "candidates": 4959,
+      "accepted": 4958,
+      "excluded": 1,
+      "open_edge_present": 4958,
+      "close_edge_present": 4958
+    },
+    {
+      "date": "20250103",
+      "candidates": 4962,
+      "accepted": 4961,
+      "excluded": 1,
+      "open_edge_present": 4961,
+      "close_edge_present": 4961
+    },
+    {
+      "date": "20250106",
+      "candidates": 4960,
+      "accepted": 4959,
+      "excluded": 1,
+      "open_edge_present": 4959,
+      "close_edge_present": 4959
+    },
+    {
+      "date": "20250107",
+      "candidates": 4959,
+      "accepted": 4958,
+      "excluded": 1,
+      "open_edge_present": 4958,
+      "close_edge_present": 4958
+    },
+    {
+      "date": "20250108",
+      "candidates": 4959,
+      "accepted": 4958,
+      "excluded": 1,
+      "open_edge_present": 4958,
+      "close_edge_present": 4958
+    },
+    {
+      "date": "20250109",
+      "candidates": 4961,
+      "accepted": 4960,
+      "excluded": 1,
+      "open_edge_present": 4960,
+      "close_edge_present": 4960
+    },
+    {
+      "date": "20250110",
+      "candidates": 4961,
+      "accepted": 4960,
+      "excluded": 1,
+      "open_edge_present": 4960,
+      "close_edge_present": 4960
+    },
+    {
+      "date": "20250113",
+      "candidates": 4960,
+      "accepted": 4959,
+      "excluded": 1,
+      "open_edge_present": 4959,
+      "close_edge_present": 4959
+    },
+    {
+      "date": "20250114",
+      "candidates": 4960,
+      "accepted": 4959,
+      "excluded": 1,
+      "open_edge_present": 4959,
+      "close_edge_present": 4959
+    },
+    {
+      "date": "20250115",
+      "candidates": 4959,
+      "accepted": 4958,
+      "excluded": 1,
+      "open_edge_present": 4958,
+      "close_edge_present": 4958
+    },
+    {
+      "date": "20250116",
+      "candidates": 4958,
+      "accepted": 4957,
+      "excluded": 1,
+      "open_edge_present": 4957,
+      "close_edge_present": 4957
+    },
+    {
+      "date": "20250117",
+      "candidates": 4957,
+      "accepted": 4956,
+      "excluded": 1,
+      "open_edge_present": 4956,
+      "close_edge_present": 4956
+    },
+    {
+      "date": "20250120",
+      "candidates": 4959,
+      "accepted": 4958,
+      "excluded": 1,
+      "open_edge_present": 4958,
+      "close_edge_present": 4958
+    },
+    {
+      "date": "20250121",
+      "candidates": 4960,
+      "accepted": 4959,
+      "excluded": 1,
+      "open_edge_present": 4959,
+      "close_edge_present": 4959
+    },
+    {
+      "date": "20250122",
+      "candidates": 4961,
+      "accepted": 4960,
+      "excluded": 1,
+      "open_edge_present": 4960,
+      "close_edge_present": 4960
+    },
+    {
+      "date": "20250123",
+      "candidates": 4960,
+      "accepted": 4959,
+      "excluded": 1,
+      "open_edge_present": 4959,
+      "close_edge_present": 4959
+    },
+    {
+      "date": "20250124",
+      "candidates": 4957,
+      "accepted": 4956,
+      "excluded": 1,
+      "open_edge_present": 4956,
+      "close_edge_present": 4956
+    },
+    {
+      "date": "20250127",
+      "candidates": 4956,
+      "accepted": 4955,
+      "excluded": 1,
+      "open_edge_present": 4955,
+      "close_edge_present": 4955
+    }
+  ],
+  "source_receipts": [
+    {
+      "date": "20250102",
+      "minute_sha256": "1af1e4746851bbb20638e3826dfc07be06bf51706e135c1b5b263a284724c54c",
+      "daily_sha256": "57d661899420b680268aae4372db087cd0d2aed671f287a4fb15c2024e215f9b"
+    },
+    {
+      "date": "20250103",
+      "minute_sha256": "7ce72572fe6f4beb76ed65cf9b5e8b2dd1603b03f1c7c6db062709f62b4294ac",
+      "daily_sha256": "bf934fa225c75dbdd9adfa35c5df11df39d5f1f7a0bb9a938084f8070a786b0f"
+    },
+    {
+      "date": "20250106",
+      "minute_sha256": "6fea439af1a9b56d76f9cb5dfe2d7741ad55928aeff1a679c69224cdc100aa2b",
+      "daily_sha256": "136102f79b6b155c82c4f760517232b75b0a5877226eb129d3cabe26d87520df"
+    },
+    {
+      "date": "20250107",
+      "minute_sha256": "014a2e372dc6d55b5db10e99f1a4c97ddd47ac111b6f433dc115066afb187156",
+      "daily_sha256": "a5d1f69f3f48c8d7cbf1dedbfe0e600545f0682078cece2fd0e89e2e3953ba41"
+    },
+    {
+      "date": "20250108",
+      "minute_sha256": "1bed2c4db89edaccfa2fae07ed1f093b85aa563186f5a829e4eb5a6d6ba3e0d0",
+      "daily_sha256": "49fbab97b2534b22f9c8826f8cea1ab954e3ea2f3539bf03677063c16014e62b"
+    },
+    {
+      "date": "20250109",
+      "minute_sha256": "b826cc1a7eae39499ee63606721d6c9559350885f03d13af992af1ef01286d23",
+      "daily_sha256": "051a45e2b47d550567e55f2011f81d94cc794a97cab240c5923b94104498ce8c"
+    },
+    {
+      "date": "20250110",
+      "minute_sha256": "1fccf018e6157f066d4af67c24834a9c1f08f2321631716b8173a0aa3c77d47f",
+      "daily_sha256": "0469dfe0f6d912d20c658679cc9d0bce726e22e28a2781c198ca41b9ac60eec9"
+    },
+    {
+      "date": "20250113",
+      "minute_sha256": "0e8c65fb154766ab2dbc0c8bdc44860d050638e82bed2644c355f0e254f5e3a0",
+      "daily_sha256": "2ed58cf9b216a20eb37c99444559ed3a386a635875fa6d58cea4aee265dd042f"
+    },
+    {
+      "date": "20250114",
+      "minute_sha256": "babd8e03c51625a03e33bf3ae474afe89037517a95037d9d8ed311a3ebb7c850",
+      "daily_sha256": "f70b996a0c45a89911a30fe9405f56a8ca8ec55e50294a1ca16855d1d4914cd5"
+    },
+    {
+      "date": "20250115",
+      "minute_sha256": "8ed1053e360a6e1d118f23ad54ba2df0d8190c3d7c4d2289d59c7dce2cc2706b",
+      "daily_sha256": "4fda1495df350d8762e8dee06c5165e14fe5fbbf4b79330ba2bbd8b745101da7"
+    },
+    {
+      "date": "20250116",
+      "minute_sha256": "f6c773eb58e5a0408da8a8917e22ae3e51f30647c33d3dc1b10676b14b2f6256",
+      "daily_sha256": "86a4a4a08c843ff1c64b87f6bde550ed2e78707f6967ec8eaec6dd1f6ad88cc1"
+    },
+    {
+      "date": "20250117",
+      "minute_sha256": "6b357174fc02e5c7623ae732ade6193d3e9587ec0d65937ae7bc7fe1506adedb",
+      "daily_sha256": "b673493eca1612fdedc383a74f2e5042d00f4f57a78d6dd0a5dbd38ff9e235db"
+    },
+    {
+      "date": "20250120",
+      "minute_sha256": "e8114c555341780a6ebd322f59fb0bec22640304ef02acea3429a6626ab2551d",
+      "daily_sha256": "ca31b5d08d16d9cc1c0b20042eaa6675eabd2c17eb1ba43d037ae977dbdbc819"
+    },
+    {
+      "date": "20250121",
+      "minute_sha256": "a9623eb8c419bc912021cbd6dc8a88cdb0557bedc407036d5eca5ef3627e8110",
+      "daily_sha256": "f7d8aee5af16aab3e6219727e049e1ccc3237a7539a19eabbd3409e2005a16ab"
+    },
+    {
+      "date": "20250122",
+      "minute_sha256": "6374589d2c4b40e14caad6b0f76ada3c76d55ef70b5b7fb58c7675071d61d0ac",
+      "daily_sha256": "2da3a501af74a0c0f2aea48148fce915244684d387039a37bfe0bfd90ec56135"
+    },
+    {
+      "date": "20250123",
+      "minute_sha256": "34051e24ebe365c420df9e1378ba1f1f98c019266568bb8aaacbd004c0ea4ab8",
+      "daily_sha256": "91da4d8b6a0b8cba4e718ab8a6e22311accaeb44062f077d5afc785ab65f9390"
+    },
+    {
+      "date": "20250124",
+      "minute_sha256": "83615016ed3987e2f01bc00fb549a3d346fd2dd2eb654735a0f054b05ff59adb",
+      "daily_sha256": "e677bb7433a7a745f6a2c77bc076f9052ec72aadfe82baf6792efce0b6cd5125"
+    },
+    {
+      "date": "20250127",
+      "minute_sha256": "9bd9be98294c6591da2f847bc5d9a5efca37b150f2399c5cc999cbd42fc39e71",
+      "daily_sha256": "a9a46773b0b830877ac01f573dc70578cb4ab8f09cde83a07dccea192f2023ec"
+    }
+  ],
+  "reviewed": true,
+  "review_method": "All accepted window amounts and daily totals independently regrouped from raw minute rows with pandas after DuckDB construction.",
+  "producer_sha256": "ebfb31f3356f5c9b13221997f86338d1c8dd7f9e7f7b514f189c0fb1d9f875f2",
+  "native_interval_semantics_verified": false,
+  "interpretation": "Recorded-clock boundary sensitivity in one consecutive month. Differences do not identify the correct interval convention. Not representative of other months, years or actual fills.",
+  "sources": [
+    "https://tushare.pro/document/2?doc_id=370"
+  ],
+  "statistics": {
+    "open_a": {
+      "observations": 89250,
+      "median": 0.28299997042044095
+    },
+    "open_b": {
+      "observations": 89250,
+      "median": 0.28265273250816636
+    },
+    "close_a": {
+      "observations": 89250,
+      "median": 0.13389145491982274
+    },
+    "close_b": {
+      "observations": 89250,
+      "median": 0.13107137705832522
+    }
+  },
+  "boundary_difference": {
+    "open_median": -0.0003705443907837669,
+    "open_absolute_p95": 0.024555774322401525,
+    "close_median": -0.0019119976367875935
+  }
+}

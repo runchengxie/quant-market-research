@@ -1,0 +1,26 @@
+{
+  "changed_rows": 0,
+  "removed_rows": 0,
+  "historical_added_rows": 0,
+  "new_date_rows": 0,
+  "baseline": {
+    "rows": 11468748,
+    "start": "2015-01-05",
+    "end": "2026-10-15"
+  },
+  "candidate": {
+    "rows": 11468748,
+    "start": "2015-01-05",
+    "end": "2026-10-15"
+  },
+  "status": "unchanged",
+  "schema_version": "liquidity.feature-revision.v1",
+  "sha256": {
+    "baseline": "2586aaa0770fdbf84abfb3e244977e64b5ba9dde0af6dfc3bd6ce90e2e87dfe8",
+    "candidate": "2586aaa0770fdbf84abfb3e244977e64b5ba9dde0af6dfc3bd6ce90e2e87dfe8"
+  },
+  "comparison_kind": "same_bytes_baseline_only",
+  "longitudinal_vendor_stability_verified": false,
+  "scope": "Exact full feature rows with identical schema; supplier raw partitions and minute reconciliation are separate checks.",
+  "baseline_policy": "Retain the prior feature file immutably outside Git and pass it explicitly. Do not reuse a mutable latest alias as the baseline."
+}
