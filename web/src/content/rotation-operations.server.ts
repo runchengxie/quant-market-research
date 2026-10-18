@@ -1,3 +1,4 @@
+import {validateRotationFoundation} from './rotation-foundation.server';
 import {validateRotationExtension} from './rotation-extension.server';
 import {validateRotationEvidence} from './rotation-evidence.server';
 import {createHash} from 'node:crypto';
@@ -14,6 +15,7 @@ export function validateReviewedRotationEnvelope(value:unknown){
  if(!value||typeof value!=='object'||Array.isArray(value)||Object.keys(value).sort().join()!=='asset,review')throw Error('Invalid reviewed release envelope');
  const e=value as {asset:{schema_version?:string};review:unknown};
  switch(e.asset?.schema_version){
+  case 'research.rotation_foundation.v1':return validateRotationFoundation(e.asset,e.review);
   case 'research.rotation_operations.v1':return validateRotationOperations(e.asset,e.review);
   case 'research.rotation_extension.v1':return validateRotationExtension(e.asset,e.review);
   case 'research.rotation_evidence_public.v1':return validateRotationEvidence(e.asset,e.review);

@@ -2,6 +2,10 @@
 import { readFileSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { createHash } from 'node:crypto';
+import RotationFoundationExplorer from '../../../components/RotationFoundationExplorer';
+import RotationFoundationStatic from '../../../components/RotationFoundationStatic.astro';
+import {validateRotationFoundation} from '../../../content/rotation-foundation.server';
+import {foundationCopy} from '../../../content/rotation-foundation-copy';
 import RotationForwardEvidence from '../../../components/RotationForwardEvidence';
 import RotationRobustnessExplorer from '../../../components/RotationRobustnessExplorer';
 import RotationReleaseComparison from '../../../components/RotationReleaseComparison';
@@ -42,12 +46,19 @@ if(extensionEntry){
  if(createHash('sha256').update(raw).digest('hex')!==extensionEntry.sha256)throw Error('Extension registry hash mismatch');
  const value=JSON.parse(raw.toString());extension=validateRotationExtension(value.asset,value.review);
  }
-const operationsEntry=releaseIndex.releases.find(r=>r.release_id===releaseIndex.current_release_id&&r.schema_version==='research.rotation_operations.v1');
+const operationsEntry=releaseIndex.releases.find(r=>r.release_id===releaseIndex.current_release_id&&r.schema_version==='research.rotation_operations.v1')??[...releaseIndex.releases].reverse().find(r=>r.schema_version==='research.rotation_operations.v1');
 let operations:RotationOperations|undefined;
 if(operationsEntry){
  const raw=readFileSync(resolve('public/data',operationsEntry.path));
  if(createHash('sha256').update(raw).digest('hex')!==operationsEntry.sha256)throw Error('Operations registry hash mismatch');
  const value=JSON.parse(raw.toString());validateIndexedBinding(operationsEntry,value);operations=validateRotationOperations(value.asset,value.review);
+}
+const foundationEntry=[...releaseIndex.releases].reverse().find(r=>r.schema_version==='research.rotation_foundation.v1');
+let foundation;
+if(foundationEntry){
+ const raw=readFileSync(resolve('public/data',foundationEntry.path));
+ if(createHash('sha256').update(raw).digest('hex')!==foundationEntry.sha256)throw Error('Foundation registry hash mismatch');
+ const value=JSON.parse(raw.toString());validateIndexedBinding(foundationEntry,value);foundation=validateRotationFoundation(value.asset,value.review);
 }
 const matchedOverview=operations?{row_count:operations.comparisons.row_count,available_rows:operations.comparisons.available_rows,window_ids:[...new Set(operations.comparisons.rows.map(r=>r.window_id))],rows:operations.comparisons.rows.filter(r=>r.case_id==='primary'&&r.window_id==='common')}:null;
 ---
@@ -59,7 +70,7 @@ const matchedOverview=operations?{row_count:operations.comparisons.row_count,ava
     </div></header>
     <section class="panel rotation-conclusion" aria-labelledby="conclusion">
       <h2 id="conclusion"><T as="span" text={pageCopy.currentConclusion} /></h2>
-      <T class="lede" text={operations?operationsCopy.conclusion:copy.conclusion} />
+      <T class="lede" text={foundation?foundationCopy.conclusion:operations?operationsCopy.conclusion:copy.conclusion} />
       <div class="rotation-facts">
         <div><strong>3</strong><T as="span" text={pageCopy.distinctEvidenceStreams} /></div>
         <div><strong>24</strong><T as="span" text={pageCopy.weeklyConfigurationsToExplore} /></div>
@@ -67,6 +78,7 @@ const matchedOverview=operations?{row_count:operations.comparisons.row_count,ava
       </div>
     </section>
     <nav class="rotation-nav" aria-label={pageCopy.topicSections[0]} data-locale-aria data-aria-en={pageCopy.topicSections[0]} data-aria-zh={pageCopy.topicSections[1]}>
+      {foundation&&<a href="#rotation-foundation"><T as="span" text={foundationCopy.title}/></a>}
       {operations&&<><a href="#rotation-operations"><T as="span" text={operationsCopy.health}/></a><a href="#rotation-prefix-audit"><T as="span" text={operationsCopy.audit}/></a><a href="#rotation-matched"><T as="span" text={operationsCopy.matched}/></a></>}
       <a href="#rotation-forward"><T as="span" text={extensionCopy.title}/></a>
       <a href="#rotation-robustness"><T as="span" text={extensionCopy.robust}/></a>
@@ -74,6 +86,7 @@ const matchedOverview=operations?{row_count:operations.comparisons.row_count,ava
       <a href="#rotation-evidence"><T as="span" text={evidenceCopy.title}/></a>
       {links.map(([id, en, zh]) => <a href={`#${id}`} data-locale-text data-en={en} data-zh={zh}>{en}</a>)}
     </nav>
+    {foundation&&<RotationFoundationExplorer evidence={foundation} notesBase={withBase('/research-notes/',import.meta.env.BASE_URL)} client:only="react"><RotationFoundationStatic slot="fallback" evidence={foundation}/></RotationFoundationExplorer>}
     {operations&&operationsEntry&&matchedOverview&&<>
       <RotationOperationalEvidence evidence={{health:operations.health,audit:operations.audit}} client:only="react"><RotationOperationsStatic slot="fallback" evidence={operations}/></RotationOperationalEvidence>
       <RotationMatchedExplorer overview={matchedOverview} releaseEntry={operationsEntry} dataBase={dataBase} client:only="react"/>
@@ -146,6 +159,16 @@ const matchedOverview=operations?{row_count:operations.comparisons.row_count,ava
   </article>
 </SiteLayout>
 <style is:global>
+  .foundation-panel section { margin-block: 1.8rem; scroll-margin-top: 6rem; }
+  .foundation-panel label { display: grid; gap: .5rem; max-width: 38rem; }
+  .foundation-panel select { max-width: 100%; min-width: 0; padding: .6rem; color: var(--ink); background: var(--paper); border: 1px solid var(--rule); border-radius: 6px; }
+  .foundation-facts { display: grid; grid-template-columns: repeat(auto-fit,minmax(145px,1fr)); gap: 1rem; margin-block: 1.5rem; }
+  .foundation-facts > div { display: grid; gap: .4rem; } .foundation-facts dd { margin: 0; } .foundation-facts strong { font-size: 1.8rem; }
+  .foundation-controls { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 1rem; }
+  .foundation-bars > div { display: grid; grid-template-columns: minmax(110px,1fr) 2fr 60px; gap: .7rem; align-items: center; margin-block: 1rem; }
+  .foundation-bars meter { width: 100%; } .foundation-panel small { display: block; } .foundation-metric-chart { width: 100%; height: auto; display: block; }
+  .foundation-panel code { overflow-wrap: anywhere; } .foundation-panel details { margin-block: 1rem; }
+  @media (max-width: 600px) { .foundation-controls { grid-template-columns: 1fr; } .foundation-bars > div { grid-template-columns: minmax(90px,1fr) 1fr 45px; } }
   .rotation-report { max-width: 1200px; margin-inline: auto; }
   .rotation-report > section, .rotation-report > article { scroll-margin-top: 6rem; margin-block: 1.5rem; }
   .rotation-conclusion { border-inline-start: 4px solid #317c72; }
