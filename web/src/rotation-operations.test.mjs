@@ -86,3 +86,16 @@ test('named comparison windows cannot relabel shortened periods',async()=>{
   assert.throws(()=>validateOperationsShape(asset),/window/);
  }
 });
+
+test('complete named windows retain their declared count and endpoint',async()=>{
+ const {validateOperationsShape}=await import('./content/rotation-operations.ts');
+ for(const [window,sessions] of [['last_252',252],['last_756',756],['rolling_252_2024-12-31',252],['rolling_756_2024-12-31',756],['year_2024',250]]){
+  const asset=structuredClone(fixture.asset),row=asset.comparisons.rows[0];row.window_id=window;row.id=row.id.replace(/common$/,String(window));
+  for(const key of ['period','reference_period','comparator_period'])row[key]={start:sessions===756?'2021-01-04':'2024-01-02',end:'2024-12-31',sessions};
+  assert.ok(validateOperationsShape(asset));
+  if(String(window).startsWith('rolling_')||String(window).startsWith('year_')){
+   for(const key of ['period','reference_period','comparator_period'])row[key].end='2024-11-29';
+   assert.throws(()=>validateOperationsShape(asset),/window/);
+  }
+ }
+});
