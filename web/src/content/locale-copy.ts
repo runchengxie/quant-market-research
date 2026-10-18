@@ -17,6 +17,9 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  "valuation-panel": { title: "Low valuation: historical coverage and ranks", summary: "Five denominator definitions across 130 formations, common-sample ranks and availability limits." },
+  "microcap-st-paired": { title: "Microcaps with and without ST: paired short-window exploration", summary: "Paired samples, unresolved exits and the effect of coverage selection." },
+  "overseas-forward": { title: "Overseas signals: forward archive protocol v1", summary: "A fixed signal, 08:45 deadline, immutable receipts and evaluation after at least 60 eligible days." },
   "valuation-denominators": { title: "Low valuation: definitions and a current illustration", summary: "Five earnings/equity denominators, six selected issuers and historical availability limits." },
   "microcap-st-audit": { title: "Microcap ST Eligibility and Comparability Audit", summary: "Historical ST rules, delisting exits, weighting, timing and costs differ across study versions." },
   'overseas-leadlag': { title: 'Overseas signals and the A-share open', summary: 'FX and market controls, annual folds and T+1 ETF costs: the Asian increment is unstable.' },

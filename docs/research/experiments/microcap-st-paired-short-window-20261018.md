@@ -97,7 +97,7 @@ Even with more complete endpoints, this shorter label cannot recover a liquidati
 
 ## Reproduction and next useful evidence
 
-The implementation is [the runner](../../../scripts/analyze_st_paired_short_window.py), [status and pairing methods](../../../src/market_research/st_paired.py), and [regression fixtures](../../../tests/test_st_paired.py). Raw and security-level audit records remain outside this public repository. The public report includes aggregate derived counts and means only.
+The implementation is [the runner](https://github.com/runchengxie/quant-market-research/blob/e2dcfface24e83648dbe62a512c2c3e2fe2deba9/scripts/analyze_st_paired_short_window.py), [status and pairing methods](https://github.com/runchengxie/quant-market-research/blob/e2dcfface24e83648dbe62a512c2c3e2fe2deba9/src/market_research/st_paired.py), and [regression fixtures](https://github.com/runchengxie/quant-market-research/blob/e2dcfface24e83648dbe62a512c2c3e2fe2deba9/tests/test_st_paired.py). Raw and security-level audit records remain outside this public repository. The public report includes aggregate derived counts and means only.
 
 With owner-published assets under an explicitly supplied `MARKET_DATA_ROOT` and a task-specific external `RESEARCH_OUTPUT` directory:
 

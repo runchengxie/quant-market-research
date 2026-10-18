@@ -24,3 +24,7 @@ Historical research results are evidence for further investigation. They are not
 ## Where factor research is published
 
 Use this site for independent market research projects and their reproducible methods, sample definitions, results, and limitations. The [Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) owns factor catalog organization, standardized factor studies, publication status, and reviewed projections under its publication contract. When a topic appears on both sites, follow the source identity in its study page or publication manifest; link to the authoritative material rather than copying it. Private strategy research remains in `quant-research`; publication there requires a separate review and redacted projection.
+
+- [Historical valuation coverage and ranks](research/experiments/valuation-panel-20261018.md): 130 formations, missingness and common-sample ranks.
+- [Microcaps with and without ST](research/experiments/microcap-st-paired-short-window-20261018.md): paired short-window exploration and coverage selection.
+- [Overseas forward archive](research/experiments/overseas-forward-v1.md): fixed signal and actual receipts; eligible forward observations are still pending.

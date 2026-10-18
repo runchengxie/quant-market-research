@@ -28,3 +28,7 @@
 历史研究结果用于支持进一步调查，不构成投资建议，也不代表未来收益。
 
 独立市场研究项目及其可复现方法、样本定义、结果和限制放在本站。[Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) 负责因子目录组织、标准化因子专题、发布状态和符合其发布契约的审核投影。同一主题同时出现在两站时，以专题页或发布 manifest 中的来源身份为准，链接到权威材料，不复制整份内容。私有策略研究仍由 `quant-research` 维护；公开发布需要单独审核并生成脱敏投影。
+
+- [低估值历史覆盖与排名](research/experiments/valuation-panel-20261018.zh-CN.md)：130 个月份，先核对缺失与共同样本，再比较排名。
+- [小微盘含 ST / 剔除 ST 成对探索](research/experiments/microcap-st-paired-short-window-20261018.zh-CN.md)：短窗口结果与覆盖选择限制。
+- [海外信号真实时点归档协议](research/experiments/overseas-forward-v1.zh-CN.md)：固定信号与实际收据，尚未积累合格前向样本。
