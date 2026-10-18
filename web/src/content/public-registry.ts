@@ -16,6 +16,8 @@ export type PublicPage = {
 export type PublicDoc = PublicPage & { source: string; slug: string };
 
 const docSources = new Set([
+  'docs/research/experiments/valuation-denominators-20261018.md',
+  'docs/research/experiments/valuation-denominators-20261018.zh-CN.md',
   'docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md',
   'docs/research/experiments/microcap-st-comparability-audit-20261018.md',
   'docs/research/experiments/overseas-leadlag-20261018.md',
@@ -48,6 +50,8 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
+  page({ id: 'valuation-denominators', route: '/docs/research/experiments/valuation-denominators-20261018/', title: '低估值口径与当前样本', summary: '五种利润和权益分母、六家公司计算样本及历史可得性限制。', section: 'docs', topic: 'style', aliases: [], related: ['pb-roe', 'barra-factor-dictionary'], snapshotKeys: [] }),
+  page({ id: 'valuation-denominators-zh-CN', route: '/docs/research/experiments/valuation-denominators-20261018.zh-CN/', title: '低估值口径与当前样本', summary: '五种利润和权益分母、六家公司计算样本及历史可得性限制。', section: 'docs', topic: 'style', aliases: [], related: ['pb-roe', 'barra-factor-dictionary'], snapshotKeys: [] }),
   page({ id: 'microcap-st-audit-zh-CN', route: '/docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN/', title: '小微盘ST口径与可比性审计', summary: '逐版本核对历史ST、退市退出、权重、调仓与成本边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
   page({ id: 'microcap-st-audit', route: '/docs/research/experiments/microcap-st-comparability-audit-20261018/', title: '小微盘ST口径与可比性审计', summary: '逐版本核对历史ST、退市退出、权重、调仓与成本边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
   page({ id: 'overseas-leadlag', route: '/research/overseas-leadlag/', title: '海外盘面对 A 股开盘的领先信息', summary: '控制汇率与美股共同因素后，亚洲盘面增量是否稳定，以及 T+1 ETF 成本检验。', section: 'research', topic: 'overseas', aliases: [], related: ['overseas-leadlag-method', 'indices', 'execution-costs'], snapshotKeys: [] }),
@@ -64,7 +68,7 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'cross-market-liquidity', route: '/research/microcap/cross-market-liquidity/', title: '跨市场流动性', summary: '不同市场的股票交易有多活跃，这些数据能否放在一起比较。', section: 'research', topic: 'microcap', aliases: [], related: ['microcap', 'liquidity'], snapshotKeys: ['liquidity.cross-market'] }),
   page({ id: 'indices', route: '/research/indices/', title: '指数与长期回报', summary: '网站展示了哪些指数和 ETF，它们的历史收益为什么不能直接比较。', section: 'research', topic: 'indices', aliases: [], related: ['cashflow', 'style'], snapshotKeys: ['indices.returns'] }),
   page({ id: 'style', route: '/research/style-factors-18y/', title: '18 年风格因子', summary: '价值、规模等股票分组在不同年份和市场阶段的表现。', section: 'research', topic: 'style', aliases: [], related: ['low-turnover', 'indices'], snapshotKeys: ['barra.returns'] }),
-  page({ id: 'pb-roe', route: '/research/factors/pb-roe/', title: 'PB 与 ROE 历史对照', summary: '在同一批股票中加入盈利指标后，估值排序的历史结果怎样变化。', section: 'research', topic: 'style', aliases: [], related: ['pb-roe-method', 'style'], snapshotKeys: [] }),
+  page({ id: 'pb-roe', route: '/research/factors/pb-roe/', title: 'PB 与 ROE 历史对照', summary: '在同一批股票中加入盈利指标后，估值排序的历史结果怎样变化。', section: 'research', topic: 'style', aliases: [], related: ['valuation-denominators', 'pb-roe-method', 'style'], snapshotKeys: [] }),
   page({ id: 'execution-costs', route: '/research/execution-costs/', title: 'A股交易成本与策略容量', summary: '十日静态探索与策略敏感性已公开：10万元买卖成本中位数9.27/8.87基点，100万元十档覆盖62.12%/67.68%；真实执行待校准。', section: 'research', topic: 'execution-costs', aliases: [], related: ['liquidity', 'microcap-execution-diagnostic', 'low-turnover'], snapshotKeys: ['execution_costs','execution_strategy'] }),
   page({ id: 'liquidity', route: '/research/liquidity/', title: '流动性、交易成本与策略容量', summary: '统一查看跨市场画像、盘口成本、执行情景和数据核查；实盘容量尚待校准。', section: 'research', topic: 'liquidity', aliases: [], related: ['cross-market-liquidity', 'microcap', 'execution-costs'], snapshotKeys: ['liquidity.summary'] }),
   page({ id: 'low-turnover', route: '/research/factors/low-turnover/', title: '低换手因子', summary: '低换手股票过去表现如何，考虑其他股票特征后差距还剩多少。', section: 'research', topic: 'low-turnover', aliases: [], related: ['style', 'microcap'], snapshotKeys: ['low-turnover.ledger'] }),
@@ -90,6 +94,8 @@ export const publicPages: readonly PublicPage[] = [
 ];
 
 export const publicDocs: readonly PublicDoc[] = [
+  { ...publicPages.find((p) => p.id === 'valuation-denominators'), source: 'docs/research/experiments/valuation-denominators-20261018.md', slug: 'research/experiments/valuation-denominators-20261018' },
+  { ...publicPages.find((p) => p.id === 'valuation-denominators-zh-CN'), source: 'docs/research/experiments/valuation-denominators-20261018.zh-CN.md', slug: 'research/experiments/valuation-denominators-20261018.zh-CN' },
   { ...publicPages.find((p) => p.id === 'microcap-st-audit-zh-CN'), source: 'docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md', slug: 'research/experiments/microcap-st-comparability-audit-20261018.zh-CN' },
   { ...publicPages.find((p) => p.id === 'microcap-st-audit'), source: 'docs/research/experiments/microcap-st-comparability-audit-20261018.md', slug: 'research/experiments/microcap-st-comparability-audit-20261018' },
   { ...publicPages.find((p) => p.id === 'overseas-leadlag-method'), source: 'docs/research/experiments/overseas-leadlag-20261018.md', slug: 'research/experiments/overseas-leadlag-20261018' },

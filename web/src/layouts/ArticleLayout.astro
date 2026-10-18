@@ -13,11 +13,11 @@ const localized = englishCopy(meta);
   <Breadcrumbs items={[{ label: '方法与字典', labelEn: 'Methods and dictionary', href: withBase('/docs/', import.meta.env.BASE_URL) }, { label: meta.title, labelEn: localized.title }]} />
   <article class="article-body public-article">
     <div data-document-body data-document-locale={documentLocale}>
-      <div class="article-content" set:html={html}></div>
+      <div class="article-content" data-valuation={meta.id.startsWith('valuation-denominators') ? 'true' : undefined} set:html={html}></div>
       {headings.length > 2 && <aside class="article-toc" aria-label="Table of contents" data-locale-aria data-aria-en="Table of contents" data-aria-zh="本文目录"><strong data-locale-text data-en="On this page" data-zh="本文目录">On this page</strong><ol>{headings.filter(h => h.depth > 1).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></aside>}
     </div>
     {alternate && <template data-document-translation data-translation-locale={alternate.locale}>
-      <div class="article-content" set:html={alternate.html}></div>
+      <div class="article-content" data-valuation={meta.id.startsWith('valuation-denominators') ? 'true' : undefined} set:html={alternate.html}></div>
       {alternate.headings.length > 2 && <aside class="article-toc" aria-label="Table of contents" data-locale-aria data-aria-en="Table of contents" data-aria-zh="本文目录"><strong data-locale-text data-en="On this page" data-zh="本文目录">On this page</strong><ol>{alternate.headings.filter(h => h.depth > 1).map(h => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}</ol></aside>}
     </template>}
     {meta.id.replace(/-zh-CN$/, '') === 'barra-factor-dictionary' && <p><FactorContextLink target="/research/style-factors-18y/" label="回到因子图表" labelEn="Back to factor charts" base={import.meta.env.BASE_URL} /></p>}

@@ -11,3 +11,5 @@ This page preserves the public summary of historical PB/ROE experiments and thei
 The published numbers are historical derived results through 2026-08-31. They were checked against source CSV files, run manifests, and audit records. This site does not independently rerun the complete history and does not present the comparison as a tradable strategy.
 
 Interpretation must distinguish valuation, profitability, portfolio construction, and execution assumptions. Any conclusion is limited by the source data's point-in-time availability and the documented sample definition.
+
+For PE, nonrecurring PE and asset-deducted PB definitions, see the [separate current-snapshot illustration](../experiments/valuation-denominators-20261018.md). It does not extend this historical PB/ROE return experiment.

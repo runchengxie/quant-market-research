@@ -9,14 +9,16 @@ import {resolve} from 'node:path';
 const rebuilt=JSON.parse(await readFile(resolve(process.cwd(),'public/data/liquidity/summary.json'),'utf8'));
 const commonDate=rebuilt.periods?.find((p:any)=>p.period==='common snapshot')?.common_end??'';
 const verdict=c.rebuiltVerdict.map(value=>value.replace('{date}',commonDate));
+import {liquidityStressCopy as stressCopy} from '../content/liquidity-stress-copy';
 import { liquidityResearchCopy as c } from '../content/liquidity-research-copy';
 import { withBase } from '../lib/routes';
 const sections = [
- ['market-profiles',c.explorer],['liquidity-universe-sensitivity',c.universeTitle],['liquidity-quality',c.quality],['capacity-data-coverage',c.coverageTitle],['liquidity-evidence',c.evidenceTitle],['order-budget',c.budget],
+ ['market-profiles',c.explorer],['liquidity-stress',stressCopy.title],['liquidity-universe-sensitivity',c.universeTitle],['liquidity-quality',c.quality],['capacity-data-coverage',c.coverageTitle],['liquidity-evidence',c.evidenceTitle],['order-budget',c.budget],
  ['expanded-results',['Static costs','静态交易成本']],['strategy-diagnostic',['Strategy scenarios','策略情景']],
  ['minute-execution',['Minute execution','分钟执行']],['research-notes',c.notes],
 ].map(([id,label])=>({id:id as string,label:label[1],labelEn:label[0],available:true}));
 const notes = [
+ ['2026-10-18','Stress months, frozen cohorts and recorded clock windows','低成交月份、冻结名单与记录时刻窗口','Within-year low-turnover months are compared with other months; month-end groups are followed for 20 observations. A 15-date minute sample adds window-share sensitivity with stock-day qualification gates.','比较同年低成交月份与其余月份，冻结月末名单跟踪20个观察日；15个选定分钟日期在证券日筛选后提供窗口占比敏感性。','docs/research/experiments/liquidity-stress-20261018'],
  ['2026-10-18','SH/SZ scope and lifecycle sensitivity','沪深范围与生命周期敏感性','SH/SZ-only results replace the mixed BSE daily aggregates. Lifecycle cross-checks leave tested observations unchanged, while daily minimum stock counts constrain turnover-budget ranges.','沪深限定结果替换混入北交所的日线汇总。生命周期核对未改变被测观测；预算情景新增区间，并受每日最小股票数约束。','docs/research/experiments/liquidity-universe-20261018'],
  ['2026-10-16','Daily, minute and Level 2 coverage audit','日线、分钟与 Level 2 覆盖审计','A-share 1-minute turnover now reconciles to daily turnover over the published history. Aggregate totals are close, with residual stock-day discrepancies and selected-date L2 limits disclosed.','已对发布范围内的 A 股 1 分钟成交额与日线成交额进行核对。全市场总额接近，但仍有证券日差异；Level 2 的选日样本限制也已单列。','docs/research/experiments/capacity-data-quality-20261016'],
  ['2026-10-16','Empty buckets and relative size','空桶与相对市值分组','Market coverage remains visible when a size bucket is empty. Daily within-market quintiles add a separate relative comparison.','市值桶为空时仍显示市场覆盖；每日市场内部五等分提供另一种相对比较。','docs/research/experiments/liquidity-size-groups-20261016'],

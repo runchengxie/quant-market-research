@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-18",
+  "raw_share_ready": false,
+  "original_runtime_recovered": false,
+  "account_engine_commit": "15ec62b66e894395d694049eaaace931de4a1265",
+  "exposure": {
+    "unique_events": 94,
+    "unknown_exdate_rows": 1,
+    "plans": {
+      "45": {
+        "target": {
+          "definite": 6,
+          "possible": 0,
+          "absent": 88,
+          "unknown": 0
+        },
+        "inventory": {},
+        "inventory_status": "not_retained"
+      },
+      "90": {
+        "target": {
+          "definite": 6,
+          "possible": 0,
+          "absent": 88,
+          "unknown": 0
+        },
+        "inventory": {
+          "owner_ideal_fee10": {
+            "definite": 7,
+            "possible": 0,
+            "absent": 81,
+            "unknown": 6
+          },
+          "capacity_without_limits": {
+            "definite": 6,
+            "possible": 0,
+            "absent": 82,
+            "unknown": 6
+          },
+          "capacity_with_limits": {
+            "definite": 6,
+            "possible": 0,
+            "absent": 82,
+            "unknown": 6
+          },
+          "prior20_budget_realized_guard": {
+            "definite": 7,
+            "possible": 0,
+            "absent": 81,
+            "unknown": 6
+          }
+        }
+      }
+    },
+    "account_impact": "nonidentifiable_without_raw_share_ledger_and_complete_action_terms",
+    "materiality": {
+      "owner_ideal_fee10": {
+        "observations": 7,
+        "assumed_one_event_haircut": 0.1,
+        "position_value_cny_min": 965438.6634682713,
+        "position_value_cny_max": 3197512.8260549656,
+        "position_fraction_nav_min": 0.015203963194317207,
+        "position_fraction_nav_max": 0.026230396678187055,
+        "conditional_nav_loss_fraction_min": 0.001520396319431721,
+        "conditional_nav_loss_fraction_max": 0.0026230396678187055
+      },
+      "prior20_budget_realized_guard": {
+        "observations": 7,
+        "assumed_one_event_haircut": 0.1,
+        "position_value_cny_min": 1306725.5845374365,
+        "position_value_cny_max": 3191142.811613689,
+        "position_fraction_nav_min": 0.02113547619171453,
+        "position_fraction_nav_max": 0.026288233810662615,
+        "conditional_nav_loss_fraction_min": 0.002113547619171453,
+        "conditional_nav_loss_fraction_max": 0.0026288233810662616
+      }
+    }
+  },
+  "account": {
+    "cases": [
+      {
+        "case_id": "account-1",
+        "sessions": 4,
+        "fills": 1,
+        "actions": [
+          "record",
+          "ex",
+          "stock_release"
+        ],
+        "max_identity_error": 1.8189894035458565e-12
+      },
+      {
+        "case_id": "account-2",
+        "sessions": 4,
+        "fills": 1,
+        "actions": [
+          "record",
+          "ex",
+          "cash_payment"
+        ],
+        "max_identity_error": 7.275957614183426e-12
+      },
+      {
+        "case_id": "account-3",
+        "sessions": 4,
+        "fills": 1,
+        "actions": [
+          "record",
+          "ex",
+          "stock_release"
+        ],
+        "max_identity_error": 1.4551915228366852e-11
+      },
+      {
+        "case_id": "account-4",
+        "sessions": 3,
+        "fills": 1,
+        "actions": [],
+        "max_identity_error": 5.4569682106375694e-12
+      }
+    ],
+    "exposed_blocker_clearance": false,
+    "tax_and_historical_broker_fees_known": false,
+    "historical_availability_certified": false,
+    "ordinary_historical_gates_certified": false,
+    "selected_portfolio_entitlement_certified": false,
+    "synthetic_delayed_settlement_tests": true,
+    "conditional_conservative_gate_zero_fills": true,
+    "provider_suspension_vs_primary_resumption_conflict": true,
+    "accounting_oracle_source_bound": true,
+    "coherent_wrong_rights_marks_fees_rejected": true,
+    "additional_exposed_event_primary_economics_reviewed": 1,
+    "empirical_delayed_receivable_days": 0
+  },
+  "register": {
+    "entry_count": 2,
+    "head_sha256": "67ea16a685f1a483ffd39353f78cc45ed9e3e33cbffdb9df70df26941f22174c",
+    "observations": [
+      {
+        "sequence": 1,
+        "original_as_of_utc": "2026-10-17T23:39:31+00:00",
+        "imported_utc": "2026-10-18T03:16:10.556284+00:00",
+        "status": "pending_before_cutoff",
+        "issue_count": 8
+      },
+      {
+        "sequence": 2,
+        "original_as_of_utc": "2026-10-17T23:48:39.452223+00:00",
+        "imported_utc": "2026-10-18T03:16:10.604703+00:00",
+        "status": "pending_before_cutoff",
+        "issue_count": 7
+      }
+    ],
+    "admitted": false,
+    "new_completed_windows": 0,
+    "scheduler_installed": false,
+    "whole_directory_replacement_protected": false
+  },
+  "source_sha256": {
+    "exposure": "a7565209ec866c24e9de738b14fee17a5a9aff6044769138ee7b6b2ab9927406",
+    "account": "20d1be54e77163331bb4e65c001ddb5afe89c4cf9065a1b4733a58106ebc1680",
+    "register": "8b19a192c43802406857034ae2210f528d8ce0cae2a12f520ab3300e31fa8d23",
+    "account_reproduction": "f5bdc873fcaf5c5bf39d69e21af0b079c40201a54eed2e63728f29967e82267a",
+    "register_guard_manifest": "fbec5de1dd9d65347160393c3b8eeda20075071487ebae4559c6b0b69619934a"
+  }
+}

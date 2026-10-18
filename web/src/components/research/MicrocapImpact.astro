@@ -1,0 +1,27 @@
+---
+import {impactEvidence,impactCopy as c,impactTable,stressTable,accountTable,registerTable} from '../../content/microcap-impact';
+import { tAgenda } from '../../content/microcap-agenda';
+const base=import.meta.env.BASE_URL.replace(/\/$/,'');
+---
+<section id="microcap-impact" class="panel impact">
+<h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+{[{locale:'en-US' as const,live:true},...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
+ const Container=live?'div':'template';const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
+ const blocks=[{id:'exposure',title:'exposureTitle',intro:null,table:impactTable(locale),boundary:'exposureBoundary'},{id:'stress',title:'stressTitle',intro:'stress',table:stressTable(locale),boundary:'stressBoundary'},{id:'account',title:'accountTitle',intro:'account',table:accountTable(locale),boundary:'accountBoundary'},{id:'register',title:'registerTitle',intro:'register',table:registerTable(locale),boundary:'registerBoundary'}] as const;
+ return <Container data-impact-live={live?'':undefined} data-impact-locale={live?undefined:locale} lang={locale}>
+ <p class="finding">{t('intro')}</p>
+ {blocks.map(block=><div data-impact-block={block.id}><h3>{t(block.title)}</h3>{block.intro&&<p>{t(block.intro)}</p>}<div class="impact-table" tabindex="0" role="region" aria-label={t(block.title)}><table><caption>{t(block.title)}</caption><thead><tr>{block.table.headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{block.table.rows.map(row=><tr><th scope="row">{row[0]}</th>{row.slice(1).map(cell=><td>{cell}</td>)}</tr>)}</tbody></table></div><p>{t(block.boundary)}</p>{block.id==='register'&&<p>SHA-256: <code>{impactEvidence.register.head_sha256}</code></p>}</div>)}
+ <h3>{t('stTitle')}</h3><p>{t('stBoundary')}</p><p><a href={`${base}/docs/research/experiments/microcap-st-comparability-audit-20261018/?lang=${locale}`}>{t('stLink')}</a></p>
+ <details><summary>{t('provenance')}</summary><ul>{Object.entries(impactEvidence.source_sha256).map(([role,hash])=><li><code>{role}</code>: <code>{hash}</code></li>)}</ul></details><p><a href={`${base}/data/microcap_impact_review.json`} download>{t('download')}</a></p>
+ </Container>;
+})}
+</section>
+<script>
+ const section=document.querySelector('#microcap-impact');
+ const live=section?.querySelector<HTMLElement>('[data-impact-live]');
+ const sync=()=>{const locale=document.documentElement.lang.startsWith('zh')?'zh-CN':'en-US';if(!live||live.lang===locale)return;const source=section?.querySelector<HTMLTemplateElement>(`template[data-impact-locale="${locale}"]`);if(!source)return;const expanded=Array.from(live.querySelectorAll('details'),d=>d.open);live.replaceChildren(source.content.cloneNode(true));live.lang=locale;live.querySelectorAll('details').forEach((d,i)=>d.open=expanded[i]??false);};
+ sync();new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<style>
+.impact{margin-block:1.5rem;min-width:0}.impact p{max-width:92ch;line-height:1.8}.impact h3{margin-top:1.5rem}.impact details{border-top:1px solid var(--rule);padding:.8rem 0}.impact summary{cursor:pointer;font-weight:600}.impact-table{overflow-x:auto;margin-block:1rem}.impact-table table{border-collapse:collapse;width:100%;font-size:.86rem;line-height:1.7}.impact-table th,.impact-table td{text-align:left;vertical-align:top;padding:.6rem;border-bottom:1px solid var(--rule);white-space:normal;overflow-wrap:anywhere}.impact code{overflow-wrap:anywhere;white-space:normal}.impact-table table{min-width:560px}.impact-table caption{text-align:left;padding-bottom:.6rem}.finding{border-left:3px solid var(--accent-strong);padding-left:1rem}.impact-table:focus-visible{outline:2px solid var(--accent-strong)}
+</style>
