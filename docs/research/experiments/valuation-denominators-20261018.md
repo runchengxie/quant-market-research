@@ -32,7 +32,7 @@ Missing goodwill or intangible values remain missing; they are never silently re
 
 ## Six-name illustration
 
-Purposively chosen issuers span several business models and are not a representative cross-section. Multiples below share each issuer's latest period available across income, indicator and balance-sheet sources. Report periods may differ between issuers. Figures are rounded only for display.
+Purposively chosen issuers span several business models and are not a representative cross-section. Multiples below share each issuer's latest period available across income, indicator and balance-sheet sources. Report periods may differ between issuers. Figures are rounded only for display. On narrow screens, scroll the numeric tables horizontally.
 
 | Code | Issuer | Report period | PE TTM | Nonrecurring PE proxy | Parent PB | Ex-goodwill PB proxy | Ex-goodwill/intangibles PB proxy |
 | --- | --- | --- | ---: | ---: | ---: | ---: | ---: |

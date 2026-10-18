@@ -18,6 +18,8 @@ export type PublicDoc = PublicPage & { source: string; slug: string };
 const docSources = new Set([
   'docs/research/experiments/valuation-denominators-20261018.md',
   'docs/research/experiments/valuation-denominators-20261018.zh-CN.md',
+  'docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md',
+  'docs/research/experiments/microcap-st-comparability-audit-20261018.md',
   'docs/research/experiments/overseas-leadlag-20261018.md',
   'docs/research/experiments/overseas-leadlag-20261018.zh-CN.md',
   'docs/index.md',
@@ -50,6 +52,8 @@ const page = (value: PublicPage): PublicPage => value;
 export const publicPages: readonly PublicPage[] = [
   page({ id: 'valuation-denominators', route: '/docs/research/experiments/valuation-denominators-20261018/', title: '低估值口径与当前样本', summary: '五种利润和权益分母、六家公司计算样本及历史可得性限制。', section: 'docs', topic: 'style', aliases: [], related: ['pb-roe', 'barra-factor-dictionary'], snapshotKeys: [] }),
   page({ id: 'valuation-denominators-zh-CN', route: '/docs/research/experiments/valuation-denominators-20261018.zh-CN/', title: '低估值口径与当前样本', summary: '五种利润和权益分母、六家公司计算样本及历史可得性限制。', section: 'docs', topic: 'style', aliases: [], related: ['pb-roe', 'barra-factor-dictionary'], snapshotKeys: [] }),
+  page({ id: 'microcap-st-audit-zh-CN', route: '/docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN/', title: '小微盘ST口径与可比性审计', summary: '逐版本核对历史ST、退市退出、权重、调仓与成本边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
+  page({ id: 'microcap-st-audit', route: '/docs/research/experiments/microcap-st-comparability-audit-20261018/', title: '小微盘ST口径与可比性审计', summary: '逐版本核对历史ST、退市退出、权重、调仓与成本边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
   page({ id: 'overseas-leadlag', route: '/research/overseas-leadlag/', title: '海外盘面对 A 股开盘的领先信息', summary: '控制汇率与美股共同因素后，亚洲盘面增量是否稳定，以及 T+1 ETF 成本检验。', section: 'research', topic: 'overseas', aliases: [], related: ['overseas-leadlag-method', 'indices', 'execution-costs'], snapshotKeys: [] }),
   page({ id: 'overseas-leadlag-method', route: '/docs/research/experiments/overseas-leadlag-20261018/', title: '海外盘面对 A 股的领先信息：时间、控制变量与 ETF 成本', summary: '历史可得时间、年度滚动、汇率控制和 T+1 ETF 代理的方法与证据限制。', section: 'docs', topic: 'overseas', aliases: [], related: ['overseas-leadlag'], snapshotKeys: [] }),
   page({ id: 'overseas-leadlag-method-zh-CN', route: '/docs/research/experiments/overseas-leadlag-20261018.zh-CN/', title: '海外盘面对 A 股的领先信息：时间、控制变量与 ETF 成本', summary: '历史可得时间、年度滚动、汇率控制和 T+1 ETF 代理的方法与证据限制。', section: 'docs', topic: 'overseas', aliases: [], related: ['overseas-leadlag'], snapshotKeys: [] }),
@@ -92,6 +96,8 @@ export const publicPages: readonly PublicPage[] = [
 export const publicDocs: readonly PublicDoc[] = [
   { ...publicPages.find((p) => p.id === 'valuation-denominators'), source: 'docs/research/experiments/valuation-denominators-20261018.md', slug: 'research/experiments/valuation-denominators-20261018' },
   { ...publicPages.find((p) => p.id === 'valuation-denominators-zh-CN'), source: 'docs/research/experiments/valuation-denominators-20261018.zh-CN.md', slug: 'research/experiments/valuation-denominators-20261018.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'microcap-st-audit-zh-CN'), source: 'docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md', slug: 'research/experiments/microcap-st-comparability-audit-20261018.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'microcap-st-audit'), source: 'docs/research/experiments/microcap-st-comparability-audit-20261018.md', slug: 'research/experiments/microcap-st-comparability-audit-20261018' },
   { ...publicPages.find((p) => p.id === 'overseas-leadlag-method'), source: 'docs/research/experiments/overseas-leadlag-20261018.md', slug: 'research/experiments/overseas-leadlag-20261018' },
   { ...publicPages.find((p) => p.id === 'overseas-leadlag-method-zh-CN'), source: 'docs/research/experiments/overseas-leadlag-20261018.zh-CN.md', slug: 'research/experiments/overseas-leadlag-20261018.zh-CN' },
   { ...publicPages.find((p) => p.id === 'docs'), source: 'docs/index.md', slug: '' },

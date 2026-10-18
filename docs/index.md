@@ -8,6 +8,7 @@ English and Chinese pages have separate stable URLs. Use the language link at th
 
 ## Factor research
 
+- [Microcap ST comparability audit](research/experiments/microcap-st-comparability-audit-20261018.md): eligibility, delisting, weights and costs differ across study versions.
 - [Valuation denominators](research/experiments/valuation-denominators-20261018.md): definitions and a six-name observed-snapshot illustration; no historical return claim.
 - [Research closeout status](research-closeout-status.md): what has been checked, what remains open, and what each status means.
 - [PB and ROE](research/factors/pb-roe.md): whether adding profitability information changed a historical valuation comparison.
