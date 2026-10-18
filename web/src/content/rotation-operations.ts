@@ -65,8 +65,20 @@ function validateComparisons(c:RotationOperations['comparisons']){
   if(!v||r.protocol_sha256!==c.protocol_sha256||r.cost_bps!==v.cost_bps||r.execution_delay_sessions!==v.execution_delay_sessions||!['fixed-base','pool-core'].includes(r.baseline)||!['budget','estimated-risk'].includes(r.comparison)||!['retained_snapshot','historical_prefix'].includes(r.eligibility_case))throw Error('Invalid paired protocol');
   if(r.id!==[r.eligibility_case,r.baseline,r.case_id,r.comparison,r.window_id].join('-'))throw Error('Invalid pair identity');
   const available=r.status==='available';if(!['available','unavailable'].includes(r.status)||[r.period,r.reference_period,r.comparator_period,r.metrics,r.differences].some(v=>(v!==null)!==available))throw Error('Unavailable metrics or calendar');r.reasons.forEach(code);
+  validateWindow(r);
   if(available)validateAvailable(r);
  }
+}
+function validateWindow(r:MatchedRow){
+ const name=r.window_id;if(name==='common')return;
+ const last=/^last_(252|756)$/.exec(name),rolling=/^rolling_(252|756)_(\d{4}-\d{2}-\d{2})$/.exec(name),year=/^year_(\d{4})$/.exec(name);
+ if(!last&&!rolling&&!year)throw Error('Unknown comparison window');
+ if(year&&Number(year[1])<1)throw Error('Invalid window year');
+ if(rolling){const date=new Date(rolling[2]+'T00:00:00Z');if(Number(rolling[2].slice(0,4))<1||!Number.isFinite(date.valueOf())||date.toISOString().slice(0,10)!==rolling[2])throw Error('Invalid window date');}
+ const p=r.period;if(!p)return;
+ if((last||rolling)&&p.sessions!==Number((last||rolling)![1]))throw Error('Incomplete named window');
+ if(rolling&&p.end!==rolling[2])throw Error('Rolling window endpoint mismatch');
+ if(year&&(!p.start.startsWith(year[1]+'-01-')||!p.end.startsWith(year[1]+'-12-')))throw Error('Incomplete calendar-year window');
 }
 function validateAvailable(r:MatchedRow){
  if(!same(r.period,r.reference_period)||!same(r.period,r.comparator_period))throw Error('Unequal paired calendars');period(r.period!);

@@ -78,3 +78,11 @@ test('empty audit dimensions remain explicitly unknown',async()=>{
  asset.audit.dimensions=[dimension];assert.ok(validateOperationsShape(asset));
  dimension.state='admitted';assert.throws(()=>validateOperationsShape(asset),/dimension/);
 });
+
+test('named comparison windows cannot relabel shortened periods',async()=>{
+ const {validateOperationsShape}=await import('./content/rotation-operations.ts');
+ for(const window of ['last_252','last_756','rolling_252_2024-01-03','rolling_756_2024-01-03','year_2024','rolling_252_2024-02-30','unknown_window']){
+  const asset=structuredClone(fixture.asset),row=asset.comparisons.rows[0];row.window_id=window;row.id=row.id.replace(/common$/,window);
+  assert.throws(()=>validateOperationsShape(asset),/window/);
+ }
+});
