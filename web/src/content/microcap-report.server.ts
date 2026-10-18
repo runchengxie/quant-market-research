@@ -1,3 +1,4 @@
+import { impactMarkdown } from './microcap-impact';
 import { nextEvidenceMarkdown } from './microcap-next-evidence';
 import { statusMarkdown } from './microcap-status';
 import { agendaMarkdown } from './microcap-agenda';
@@ -44,7 +45,7 @@ export async function buildMicrocapReport(locale: ReportLocale) {
     statusMarkdown(locale),
     `## ${t('Contents', '阅读顺序')}`,
     t('0. Latest event accounting and future-input readiness review (2026-10-18)\n0. New evidence, prospective protocol and claim review\n0. Follow-up findings (2026-10-17)\n1. Research map and evidence status\n2. Comparable portfolio definitions\n3. Turnover-window comparison\n4. Definition × rebalance matrix\n5. Research history and coverage register\n6. All published snapshot table families\n7. Revisions and limits\n8. Open questions and resumption criteria\n9. Public methodology appendices and sources', '0. 最新事件核算与前瞻输入就绪复查（2026-10-18）\n0. 新增证据、前瞻协议与结论复查\n0. 后续核查（2026-10-17）\n1. 研究地图与证据状态\n2. 可比较的组合定义\n3. 换手窗口对照\n4. 换手定义 × 调仓频率矩阵\n5. 研究历史与覆盖清单\n6. 公开快照完整表组\n7. 修正记录与局限\n8. 待解问题与恢复研究条件\n9. 公开方法附录与来源'),
-    nextEvidenceMarkdown(locale), agendaMarkdown(locale), followupMarkdown(locale),
+    impactMarkdown(locale), nextEvidenceMarkdown(locale), agendaMarkdown(locale), followupMarkdown(locale),
     editionMarkdown(locale),
     `## ${text(hubCopy.title, locale)}`,
     ...researchQuestions.map(q => `### ${text(q.title, locale)}\n\n**${text(q.status, locale)}**\n\n${text(q.finding, locale)}\n\n**${text(hubCopy.sample, locale)}：** ${text(q.sample, locale)}\n\n**${text(hubCopy.next, locale)}：** ${text(q.next, locale)}\n\n[${text(q.action, locale).replace(/[↓↗]/g, '').trim()}](${origin}${q.href.startsWith('#') ? '/research/microcap/' : ''}${q.href})`),
