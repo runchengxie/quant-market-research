@@ -157,3 +157,32 @@ test("publishes aggregate-only daily, minute and Level 2 coverage checks",()=>{
  assert.equal(quality.audit_receipts.l2_actual_order_calibrated,false);
  assert.doesNotMatch(raw.toString(),/\/home\/|\/mnt\/|ts_code|security_id|source_path/);
 });
+
+test('lifecycle sensitivity and scenario limits bind to independent aggregate review',()=>{
+ const sensitivity=fs.readFileSync(path.join(root,'liquidity/universe-sensitivity.json'));
+ const limitsRaw=fs.readFileSync(path.join(root,'liquidity/scenario-limits.json'));
+ const review=JSON.parse(fs.readFileSync(path.join(root,'liquidity/universe-review.json')));
+ assert.equal(review.passed,true);
+ assert.equal(review.sensitivity_sha256,createHash('sha256').update(sensitivity).digest('hex'));
+ assert.equal(review.scenario_limits_sha256,createHash('sha256').update(limitsRaw).digest('hex'));
+ const audit=JSON.parse(sensitivity),limits=JSON.parse(limitsRaw);
+ assert.equal(audit.historical_pit_eligible,false);
+ assert.equal(limits.absolute_summary_sha256,createHash('sha256').update(fs.readFileSync(path.join(root,'liquidity/summary.json'))).digest('hex'));
+ for(const view of audit.periods) assert.ok(view.lifecycle.eligible_observations<=view.base.eligible_observations);
+ for(const view of limits.views)for(const row of view.markets)for(const key of ['absolute_min_daily_stocks','relative_min_daily_stocks']) {
+  assert.equal(row[key].length,5);
+  assert.ok(row[key].every(n=>Number.isInteger(n)&&n>=0));
+ }
+ const a=limits.views.find(v=>v.period==='2020-2024').markets.find(m=>m.market==='A-share');
+ assert.equal(a.absolute_min_daily_stocks[1],0);
+ assert.doesNotMatch(sensitivity.toString()+limitsRaw.toString(),/\/home\/|source_path|\b\d{6}\.(SH|SZ|BJ)\b/);
+});
+
+test('full-history trend aggregates bind to their independent temporal review',()=>{
+ const raw=fs.readFileSync(path.join(root,'liquidity/stability.json'));
+ const review=JSON.parse(fs.readFileSync(path.join(root,'liquidity/stability-review.json')));
+ assert.equal(review.passed,true);
+ assert.equal(review.reviewed_summary_sha256,createHash('sha256').update(raw).digest('hex'));
+ const data=JSON.parse(raw);
+ assert.ok(data.summary.some(row=>row.market==='A-share'&&row.year===2015&&row.bucket==='$100m-$1bn'));
+});

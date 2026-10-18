@@ -1,5 +1,16 @@
 /** English first; all new research UI copy lives in this catalog. */
 export const liquidityResearchCopy = {
+ universeDownload: ['Download universe-comparison aggregates', '下载股票范围对照汇总'],
+ universeTitle: ['How much does the universe definition change the result?', '股票范围改变后，结论差多少？'],
+ universeIntro: ['The first comparison removes Beijing-exchange coverage and predecessor-code duplicates. The second keeps the same SH/SZ observations and cross-checks current listing/delisting dates at the prior market session. These are different tests.', '第一项比较排除北交所覆盖和前身代码重复；第二项在相同沪深观察日上，按前一市场观察日核对当前证券表的上市、退市日期。两项检查解决不同问题。'],
+ oldScope: ['Archived scope including BSE', '旧范围（包含北交所）'], shszScope: ['SH/SZ historical observations', '沪深历史观测'], lifecycleScope: ['SH/SZ with lifecycle cross-check', '沪深加生命周期核对'],
+ universePeriod: ['Universe sensitivity period', '股票范围敏感性区间'], universeBucket: ['Universe sensitivity size bucket', '股票范围敏感性市值桶'], scopeVariant: ['Universe variant', '股票范围口径'], changeFromShsz: ['Median change vs SH/SZ', '中位数相对沪深口径变化'],
+ universeCaveat: ['Small differences only show robustness to this particular retrospective screen. Current lifecycle dates are not an independent historical membership archive. BSE remains excluded; an empty bucket means no eligible observed stock-days, not proof that no such listed stocks existed.', '差异很小，只说明结果对这项回顾性筛选较稳健。当前生命周期日期不等同于独立历史股票名单。北交所继续排除；空桶表示已观察样本中无合格证券日，不能证明当时没有这一市值的上市股票。'],
+ shszNotice: ['A-share daily liquidity results cover Shanghai and Shenzhen only. BSE is excluded because historical coverage remains unresolved. Existing local daily data starts in 2015; shared cross-market windows start in 2020.', 'A 股日线流动性结果仅含沪深。北交所历史覆盖仍待解决，暂时排除。本地日线始于2015年，跨市场共同区间从2020年开始。'],
+ budgetRange: ['P25–P75 baseline scenario range (USD)', 'P25–P75基准情景区间（美元）'],
+ budgetRangeNote: ['The range substitutes the selected group’s P25 and P75 daily-turnover baselines in the same arithmetic. It is a scenario range, not a confidence interval. Holdings must fit the smallest observed daily group; historical union stock counts do not establish simultaneous holdings.', '区间把所选组单股成交额的P25和P75代入同一公式，是情景范围，不是置信区间。持仓数须不超过观察期内该组每日最少股票数；历史上出现过的股票总数不能证明可以同时持有。'],
+ scenarioDailyMinimum: ['Holdings / minimum daily group stocks', '持仓数／该组每日最少股票数'],
+
  title: ['Liquidity, trading costs and capacity', '流动性、交易成本与策略容量'],
  lead: ['Historical turnover describes trading activity; static books and execution models describe separate constraints. Actual portfolio capacity is not calibrated.', '历史成交额描述交易活跃程度，静态盘口与执行模型分别检验不同约束。实盘组合容量尚未完成校准。'],
  explorer: ['Cross-market micro-cap liquidity', '跨市场小微盘流动性'],
@@ -49,7 +60,7 @@ export const liquidityResearchCopy = {
  raw: ['Inspect selected-period aggregates', '查看所选区间的分组汇总'],
  stockNote: ['Stock counts are not security-day observation counts. Missing observations are not filled with stock counts.', '股票数量不等于证券日观测数；缺失的观测数不会用股票数量填充。'],
  budget: ['ADV-based turnover-budget scenarios', '基于 ADV 的成交额预算情景'], participation: ['Participation rate (%)', '参与率（%）'], days: ['Execution days', '执行天数'],
- budgetNote: ['For each market, multiply the selected size group’s per-stock turnover statistic by the participation rate, trading days and assumed holdings. This is a one-way notional sensitivity anchored to historical ADV20, not demonstrated fills, trading costs or portfolio capacity. It omits stock-level membership, limits, suspensions, lots, fees, spread, impact and correlations.', '每个市场按“所选市值组的单股成交额统计值×参与率×交易日数×假设持仓只数”计算单边名义金额。它只是锚定历史 ADV20 的敏感性试算，不是实测成交、交易成本或组合容量；未纳入逐股持仓、涨跌停、停牌、整手、费用、价差、冲击及股票间相关性。'], holdings: ['Assumed holdings', '假设持仓只数'], selectedGroupBaseline: ['Selected group turnover baseline / stock / day', '所选组单股日成交额基准'], scenarioHoldings: ['Assumed holdings / observed stocks', '假设持仓数／该组股票数'], scenarioBudget: ['One-way notional budget (USD)', '单边名义成交额预算（美元）'], holdingsExceedSample: ['Holdings exceed selected group stock count', '持仓数超过所选组股票数'],
+ budgetNote: ['For each market, multiply the selected size group’s per-stock turnover statistic by the participation rate, trading days and assumed holdings. This is a one-way notional sensitivity anchored to historical ADV20, not demonstrated fills, trading costs or portfolio capacity. It omits stock-level membership, limits, suspensions, lots, fees, spread, impact and correlations.', '每个市场按“所选市值组的单股成交额统计值×参与率×交易日数×假设持仓只数”计算单边名义金额。它只是锚定历史 ADV20 的敏感性试算，不是实测成交、交易成本或组合容量；未纳入逐股持仓、涨跌停、停牌、整手、费用、价差、冲击及股票间相关性。'], holdings: ['Assumed holdings', '假设持仓只数'], selectedGroupBaseline: ['Selected group turnover baseline / stock / day', '所选组单股日成交额基准'], scenarioHoldings: ['Assumed holdings / observed stocks', '假设持仓数／该组股票数'], scenarioBudget: ['One-way notional budget (USD)', '单边名义成交额预算（美元）'], holdingsExceedSample: ['Holdings exceed minimum daily group stock count', '持仓数超过该组每日最少股票数'],
  invalid: ['Enter a participation rate above 0 and at most 100%, positive whole-number days, and 1–1,000 holdings.', '请输入大于0且不超过100%的参与率、正整数交易日数，以及1—1,000只持仓。'],
  notes: ['Research notes and evidence history', '研究笔记与证据演进'],
  current: ['Current finding', '当前结论'], next: ['Next evidence to collect', '下一步补证'],
@@ -70,7 +81,7 @@ export const liquidityResearchCopy = {
  noMarket: ['This market has no published data in the selected period.', '所选区间没有该市场的已发布数据。'],
  noObservations: ['No observations', '无观测'],
  archive: ['Archived inherited snapshot and its unresolved count conflicts ↗', '历史快照及其未解决的数量冲突（归档）↗'],
- panelProfile: ['Source panels from November 2019', '2019年11月起的来源面板'],
+ panelProfile: ['Source panels and usable observations', '来源面板与可用观测'],
  sourceRows: ['Source rows', '来源记录数'],
  includedRows: ['Usable security-days', '可用证券日'],
  sourceNote: ['US turnover uses closing price × volume rather than reported traded value. Japanese caps use exploratory share history. Common dates do not make these different source universes or measures fully comparable.', '美股成交额由收盘价×成交量估算，日股市值依赖探索性历史股数。共同日期不会让不同来源的证券范围和指标自动变成完全相同的口径。'],
@@ -94,6 +105,6 @@ export const liquidityResearchCopy = {
 export const liquiditySourceCopy = [
  ['US',['Close × volume / close × shares outstanding','收盘价×成交量／收盘价×总股数'],['SimFin share-price universe; positive-price stocks including penny stocks. Dollar turnover is a closing-price proxy, not measured traded value. Historical share-class treatment is not independently verified.','SimFin股价样本，纳入正价格股票及低价股；成交额为收盘价代理值，不是实际逐笔成交额。历史股类处理尚未独立核验。']],
  ['HK',['Reported HKD total_turnover / hk_total_market_val','来源成交额total_turnover（港元）／hk_total_market_val'],['RQData common stocks, using listing/delisting intervals and including delisted names in the supplied instrument snapshot. Complete historical-universe coverage is not proven.','RQData普通股，按上市、退市日期筛选，纳入证券表中已有的退市股票；尚未证明历史股票池完整。']],
- ['A-share',['amount × 1,000 CNY / total_mv × 10,000 CNY','amount×1000元／total_mv×10000元'],['TuShare daily-clean stocks; prior observed ST/suspension flags. Reconstructed flags and source vintages do not establish historical PIT.','TuShare清洗日线，使用上期观察到的ST及停牌标记；重建状态与来源版本不构成历史PIT证明。']],
+ ['A-share',['amount × 1,000 CNY / total_mv × 10,000 CNY','amount×1000元／total_mv×10000元'],['TuShare SH/SZ daily-clean stocks; BSE and known predecessor codes excluded; prior observed ST/suspension flags. Reconstructed flags and source vintages do not establish historical PIT.','TuShare沪深清洗日线，排除北交所及已知前身代码，使用上期观察到的ST及停牌标记；重建状态与来源版本不构成历史PIT证明。']],
  ['JP',['Reported JPY Va / unadjusted C × dated Yahoo shares','Va成交额（日元）／未复权C×按日期匹配的Yahoo股数'],['Dated J-Quants domestic-equity market codes; excludes Others and TOKYO PRO. Yahoo share history is exploratory and incomplete, with unverified revision and share-class history.','J-Quants按日国内股票市场代码，排除“其他”及TOKYO PRO；Yahoo股数侧表覆盖不完整，修订与股类历史待核验。']],
 ] as const;

@@ -1,0 +1,386 @@
+{
+  "schema_version": "liquidity.scenario-limits.v1",
+  "absolute_summary_sha256": "f8fbabee8ee0ab14f7db70e66a1d9c4c88026566cae3906f980a32b1db9aa683",
+  "method": "Minimum daily eligible stock count on exact published common dates; empty bucket-days count as zero. Relative quintiles follow NTILE(5).",
+  "views": [
+    {
+      "period": "latest",
+      "common_start": "2025-10-03",
+      "common_end": "2025-10-03",
+      "markets": [
+        {
+          "market": "US",
+          "absolute_min_daily_stocks": [
+            230,
+            640,
+            1336,
+            1360,
+            845
+          ],
+          "relative_min_daily_stocks": [
+            883,
+            882,
+            882,
+            882,
+            882
+          ]
+        }
+      ]
+    },
+    {
+      "period": "latest",
+      "common_start": "2026-05-26",
+      "common_end": "2026-05-26",
+      "markets": [
+        {
+          "market": "HK",
+          "absolute_min_daily_stocks": [
+            215,
+            1044,
+            670,
+            361,
+            93
+          ],
+          "relative_min_daily_stocks": [
+            477,
+            477,
+            477,
+            476,
+            476
+          ]
+        }
+      ]
+    },
+    {
+      "period": "latest",
+      "common_start": "2026-10-15",
+      "common_end": "2026-10-15",
+      "markets": [
+        {
+          "market": "A-share",
+          "absolute_min_daily_stocks": [
+            0,
+            0,
+            2591,
+            2132,
+            265
+          ],
+          "relative_min_daily_stocks": [
+            998,
+            998,
+            998,
+            997,
+            997
+          ]
+        }
+      ]
+    },
+    {
+      "period": "latest",
+      "common_start": "2026-05-01",
+      "common_end": "2026-05-01",
+      "markets": [
+        {
+          "market": "JP",
+          "absolute_min_daily_stocks": [
+            58,
+            1408,
+            1372,
+            572,
+            145
+          ],
+          "relative_min_daily_stocks": [
+            711,
+            711,
+            711,
+            711,
+            711
+          ]
+        }
+      ]
+    },
+    {
+      "period": "common snapshot",
+      "common_start": "2025-09-30",
+      "common_end": "2025-09-30",
+      "markets": [
+        {
+          "market": "US",
+          "absolute_min_daily_stocks": [
+            233,
+            645,
+            1336,
+            1360,
+            843
+          ],
+          "relative_min_daily_stocks": [
+            884,
+            884,
+            883,
+            883,
+            883
+          ]
+        },
+        {
+          "market": "HK",
+          "absolute_min_daily_stocks": [
+            265,
+            1006,
+            684,
+            381,
+            91
+          ],
+          "relative_min_daily_stocks": [
+            486,
+            486,
+            485,
+            485,
+            485
+          ]
+        },
+        {
+          "market": "A-share",
+          "absolute_min_daily_stocks": [
+            0,
+            0,
+            2501,
+            2219,
+            229
+          ],
+          "relative_min_daily_stocks": [
+            990,
+            990,
+            990,
+            990,
+            989
+          ]
+        },
+        {
+          "market": "JP",
+          "absolute_min_daily_stocks": [
+            22,
+            1490,
+            1450,
+            560,
+            132
+          ],
+          "relative_min_daily_stocks": [
+            731,
+            731,
+            731,
+            731,
+            730
+          ]
+        }
+      ]
+    },
+    {
+      "period": "2020-2024",
+      "common_start": "2020-01-06",
+      "common_end": "2024-12-30",
+      "markets": [
+        {
+          "market": "US",
+          "absolute_min_daily_stocks": [
+            61,
+            324,
+            1132,
+            1103,
+            406
+          ],
+          "relative_min_daily_stocks": [
+            717,
+            717,
+            716,
+            716,
+            716
+          ]
+        },
+        {
+          "market": "HK",
+          "absolute_min_daily_stocks": [
+            123,
+            939,
+            654,
+            288,
+            29
+          ],
+          "relative_min_daily_stocks": [
+            445,
+            445,
+            445,
+            445,
+            444
+          ]
+        },
+        {
+          "market": "A-share",
+          "absolute_min_daily_stocks": [
+            0,
+            0,
+            1846,
+            1160,
+            119
+          ],
+          "relative_min_daily_stocks": [
+            711,
+            711,
+            711,
+            710,
+            710
+          ]
+        },
+        {
+          "market": "JP",
+          "absolute_min_daily_stocks": [
+            5,
+            1109,
+            1346,
+            444,
+            90
+          ],
+          "relative_min_daily_stocks": [
+            671,
+            671,
+            671,
+            671,
+            671
+          ]
+        }
+      ]
+    },
+    {
+      "period": "2025",
+      "common_start": "2025-01-06",
+      "common_end": "2025-09-30",
+      "markets": [
+        {
+          "market": "US",
+          "absolute_min_daily_stocks": [
+            227,
+            645,
+            1321,
+            1329,
+            733
+          ],
+          "relative_min_daily_stocks": [
+            884,
+            884,
+            883,
+            883,
+            883
+          ]
+        },
+        {
+          "market": "HK",
+          "absolute_min_daily_stocks": [
+            263,
+            987,
+            634,
+            308,
+            63
+          ],
+          "relative_min_daily_stocks": [
+            484,
+            484,
+            483,
+            483,
+            483
+          ]
+        },
+        {
+          "market": "A-share",
+          "absolute_min_daily_stocks": [
+            0,
+            0,
+            2438,
+            1641,
+            177
+          ],
+          "relative_min_daily_stocks": [
+            978,
+            978,
+            978,
+            978,
+            977
+          ]
+        },
+        {
+          "market": "JP",
+          "absolute_min_daily_stocks": [
+            18,
+            1463,
+            1348,
+            481,
+            113
+          ],
+          "relative_min_daily_stocks": [
+            721,
+            721,
+            720,
+            720,
+            720
+          ]
+        }
+      ]
+    },
+    {
+      "period": "2026 YTD",
+      "common_start": "2026-01-05",
+      "common_end": "2026-04-30",
+      "markets": [
+        {
+          "market": "HK",
+          "absolute_min_daily_stocks": [
+            206,
+            899,
+            566,
+            311,
+            79
+          ],
+          "relative_min_daily_stocks": [
+            413,
+            412,
+            412,
+            412,
+            412
+          ]
+        },
+        {
+          "market": "A-share",
+          "absolute_min_daily_stocks": [
+            0,
+            0,
+            2186,
+            2236,
+            246
+          ],
+          "relative_min_daily_stocks": [
+            980,
+            980,
+            979,
+            979,
+            979
+          ]
+        },
+        {
+          "market": "JP",
+          "absolute_min_daily_stocks": [
+            37,
+            1399,
+            1357,
+            553,
+            134
+          ],
+          "relative_min_daily_stocks": [
+            710,
+            710,
+            709,
+            709,
+            709
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -47,3 +47,13 @@ test('empty size bucket retains its market universe and zero bucket counts',()=>
  assert.equal(row.totalObservations,5220);
  assert.equal(row.value,null);
 });
+
+test('portfolio scenario uses a quantile range and the minimum daily group, not historical union',async()=>{
+ const {portfolioScenarioRange}=await import('./lib/liquidity-quality.ts');
+ assert.deepEqual(portfolioScenarioRange(100,50,200,.1,5,10,10),{selected:500,lower:250,upper:1000});
+ assert.equal(portfolioScenarioRange(100,50,200,.1,5,11,10),null);
+ assert.equal(portfolioScenarioRange(100,50,200,.1,5,1,0),null);
+ assert.equal(portfolioScenarioRange(100,50,200,.1,253,1,10),null);
+ assert.equal(portfolioScenarioRange(100,50,200,.1,5,1,undefined),null);
+ assert.equal(portfolioScenarioRange(null,null,null,.1,5,1,10),null);
+});

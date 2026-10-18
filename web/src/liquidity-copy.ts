@@ -1,4 +1,5 @@
 export const liquidityCaveatTranslations: Record<string, string> = {
+  "A股仅含沪深，排除北交所和已确认的前身代码；本地日线始于2015年，跨市场比较从2020年起。": "A-shares cover SH/SZ only; BSE and confirmed predecessor codes are excluded. Local daily data starts in 2015 and shared cross-market comparisons start in 2020.",
   "日股市值使用Yahoo历史股数侧表，覆盖不完整且未证明历史修订安全，只作探索性比较。": "Japanese market values use an exploratory Yahoo historical-share sidecar with incomplete coverage and unverified revision safety.",
   "共同日期只统一观察时间，不会消除各来源证券范围、估值和状态记录的差异。": "Common dates align observation time, but do not remove differences in source universes, valuations or status histories.",
   "本结果是可复算的回顾性流动性描述，不是策略容量、真实成交或历史PIT证明。": "These reproducible retrospective profiles establish neither portfolio capacity, actual fills nor historical point-in-time validity.",

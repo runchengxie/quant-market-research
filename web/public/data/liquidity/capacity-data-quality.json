@@ -88,10 +88,10 @@
     {
       "market": "A-share",
       "daily": {
-        "start": "2019-11-01",
+        "start": "2015-01-05",
         "end": "2026-10-15",
         "latest": "2026-10-15",
-        "basis": "TuShare daily turnover; prior-period status filters do not establish historical PIT."
+        "basis": "TuShare SH/SZ daily turnover; BSE excluded; prior-period status filters do not establish historical PIT."
       },
       "minute": {
         "status": "available",

@@ -1,0 +1,8 @@
+{
+  "schema_version": "liquidity.stability-review.v1",
+  "passed": true,
+  "aggregate_cells_checked": 1280,
+  "reviewed_summary_sha256": "9e5b4f7d4556e2f44384e7f518997b3729b27ff93f08c74676982481fc2efe0c",
+  "review_code_sha256": "88ad0fda1881cea9871bc4c110532514ea1ee04101a598c2d0ad281c2a84e2f3",
+  "method": "Independent pandas daily medians, monthly medians and NumPy annual quantiles; no reuse of stability aggregation helper"
+}
