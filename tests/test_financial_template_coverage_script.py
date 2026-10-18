@@ -58,7 +58,7 @@ def test_rejects_changed_diagnostic_or_baseline(script, diagnostic, target, mess
         script.load_diagnostics(vintage, output, {})
 
 
-@pytest.mark.parametrize("observation", [None, "invalid", "2999-01-01T00:00:00Z", "missing_column"])
+@pytest.mark.parametrize("observation", [None, "invalid", (pd.Timestamp.now(tz="UTC") + pd.Timedelta(days=1)).isoformat(), "missing_column"])
 def test_rejects_missing_invalid_or_future_actual_observation(script, diagnostic, observation):
     vintage, output = diagnostic
     path = output / "income_diagnostic.parquet"
