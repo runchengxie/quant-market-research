@@ -11,6 +11,34 @@ from analyze_valuation_panel import digest, load_snapshot
 from market_research.valuation_panel import METRICS, make_panel, summarize
 
 
+def load_diagnostics(vintage: Path, diagnostic: Path, hashes: dict) -> tuple[dict, dict]:
+    """Verify diagnostic content, baseline lineage and actual observation clocks."""
+    receipt_path = diagnostic / "diagnostic_receipt.json"
+    receipt = json.loads(receipt_path.read_text())
+    if receipt.get("published_asset") is not False or receipt.get("historical_pit_certified") is not False:
+        raise ValueError("expected non-published diagnostic receipt")
+    repaired = {}
+    for name in ["income", "balancesheet"]:
+        path = diagnostic / f"{name}_diagnostic.parquet"
+        if digest(path) != receipt["datasets"][name]["diagnostic_sha256"]:
+            raise ValueError("diagnostic data hash differs")
+        old_manifest = vintage / "normalized" / name / "manifest.yml"
+        if digest(old_manifest) != receipt["datasets"][name]["old_normalized_manifest_sha256"]:
+            raise ValueError("diagnostic baseline differs")
+        raw_manifest = vintage / "raw" / name / "manifest.yml"
+        if digest(raw_manifest) != receipt["datasets"][name]["raw_manifest_sha256"]:
+            raise ValueError("diagnostic raw vintage differs")
+        repaired[name] = pd.read_parquet(path)
+        if "_source_retrieved_at" not in repaired[name]:
+            raise ValueError("diagnostic observation timestamp is missing")
+        observed = pd.to_datetime(repaired[name]["_source_retrieved_at"], utc=True, errors="coerce")
+        if observed.isna().any() or (observed > pd.Timestamp.now(tz="UTC")).any():
+            raise ValueError("invalid or future diagnostic observation timestamp")
+        hashes[f"diagnostic/{name}"] = digest(path)
+    hashes["diagnostic_receipt"] = digest(receipt_path)
+    return repaired, receipt
+
+
 def run(args):
     args.output = args.output.resolve()
     repo = Path(__file__).resolve().parents[1]
@@ -18,26 +46,10 @@ def run(args):
         raise ValueError("output must be new and outside the repository")
     hashes = {}
     original = load_snapshot(args.vintage, hashes)
-    receipt_path = args.diagnostic / "diagnostic_receipt.json"
-    receipt = json.loads(receipt_path.read_text())
-    if receipt.get("published_asset") is not False or receipt.get("historical_pit_certified") is not False:
-        raise ValueError("expected non-published diagnostic receipt")
-    repaired = dict(original)
-    for name in ["income", "balancesheet"]:
-        path = args.diagnostic / f"{name}_diagnostic.parquet"
-        if digest(path) != receipt["datasets"][name]["diagnostic_sha256"]:
-            raise ValueError("diagnostic data hash differs")
-        old_manifest = args.vintage / "normalized" / name / "manifest.yml"
-        if digest(old_manifest) != receipt["datasets"][name]["old_normalized_manifest_sha256"]:
-            raise ValueError("diagnostic baseline differs")
-        raw_manifest = args.vintage / "raw" / name / "manifest.yml"
-        if digest(raw_manifest) != receipt["datasets"][name]["raw_manifest_sha256"]:
-            raise ValueError("diagnostic raw vintage differs")
-        repaired[name] = pd.read_parquet(path)
-        hashes[f"diagnostic/{name}"] = digest(path)
+    diagnostic, receipt = load_diagnostics(args.vintage, args.diagnostic, hashes)
+    repaired = {**original, **diagnostic}
     prices = pq.ParquetFile(args.prices).read(columns=["ts_code", "trade_date", "total_mv"]).to_pandas()
     hashes["daily_basic"] = digest(args.prices)
-    hashes["diagnostic_receipt"] = digest(receipt_path)
     before = make_panel(original, prices, args.date, require_observed=False)
     after = make_panel(repaired, prices, args.date, require_observed=False)
     groups = {

@@ -1,6 +1,6 @@
 # Financial statement template coverage repair
 
-[中文](financial-template-coverage-20261019.zh-CN.md)
+[Chinese version](financial-template-coverage-20261019.zh-CN.md)
 
 The 87 financial-template companies in the original 2026-10-16 valuation panel recover PE coverage from 0 to 87 and parent-equity PB coverage from 12 to 87 after correcting the owner's statement normalization. Their five-metric common sample increases from 0 to 49. This is a single-date coverage diagnosis using retained raw data, with conflicting observation keys quarantined. It is not a published replacement asset, a historical PIT certification, or a return backtest.
 
