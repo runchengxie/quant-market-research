@@ -70,3 +70,11 @@ test('unknown release schemas fail explicit dispatch before publication',async(t
  await assert.rejects(importRotationRelease({envelopePath:candidate,outputDirectory:join(root,'public')}),/schema/i);
  await assert.rejects(access(join(root,'public')));
 });
+
+test('empty audit dimensions remain explicitly unknown',async()=>{
+ const {validateOperationsShape}=await import('./content/rotation-operations.ts');
+ const asset=structuredClone(fixture.asset);
+ const dimension={rule:'minimum_history',state:'unknown',records:0,reason:'missing_evidence',admitted:0,unknown:0,rejected:0};
+ asset.audit.dimensions=[dimension];assert.ok(validateOperationsShape(asset));
+ dimension.state='admitted';assert.throws(()=>validateOperationsShape(asset),/dimension/);
+});
