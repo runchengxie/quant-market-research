@@ -1,0 +1,58 @@
+{
+  "schema_version": 1,
+  "reviewed_on": "2026-10-19",
+  "status": "bounded_account_reconciled",
+  "raw_share_strategy_ready": false,
+  "new_prospective_observations": 0,
+  "comparison": {
+    "noncode_inputs_matched": 57,
+    "captured_artifacts_matched": 4,
+    "window_targets_calendar_match": true,
+    "inputs_unchanged": true,
+    "prior_failure_retained": true
+  },
+  "policy": {
+    "explicit_sell_round_lot": 100,
+    "buy_lot_independent": true,
+    "sell_round_lot_default_is_continuous": true,
+    "default_compatibility_scope": "provider_regression_tests",
+    "full_integer_liquidation_allowed": true,
+    "adjusted_price_basis_allowed": false,
+    "capacity_weight_ledger_allowed": false,
+    "fraction_tolerance_cap": 1e-08,
+    "tiny_float_residue_preserved": true,
+    "capacity_expansion": false
+  },
+  "account": {
+    "sessions": 21,
+    "formations": 2,
+    "targets_per_formation": 40,
+    "distinct_target_names": 46,
+    "query_rows_scanned": 2230,
+    "included_actions": 1,
+    "excluded_pre_entry_actions": 1,
+    "fills": 79,
+    "buy_fills": 73,
+    "sell_fills": 6,
+    "all_inventory_integral": true,
+    "max_errors_cny": {
+      "cash": 1.4551915228366852e-10,
+      "marked_value": 1.1641532182693481e-10,
+      "fees": 5.684341886080802e-14,
+      "identity": 1.4551915228366852e-10
+    },
+    "tolerance_cny": 1e-07
+  },
+  "certification": {
+    "full_period": false,
+    "historical_account": false,
+    "tax": false,
+    "registrar_holder": false,
+    "historical_information_set": false
+  },
+  "source_sha256": {
+    "account_manifest": "788ff3d34422051440538621cd71f7f94bb56784b1f491aa5f87d1d9ad8eedf7",
+    "independent_review": "29353c48b340f2cd4e5404ab7f20ebd486a92da52df5ec7d1e2d7873bf0f3836",
+    "prior_failed_receipt": "09f17741b3d48e5eaecd132511a3b7303900befaa9c4a795b2dbbb58228de01a"
+  }
+}

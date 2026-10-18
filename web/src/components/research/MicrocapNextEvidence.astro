@@ -8,7 +8,7 @@ const base=import.meta.env.BASE_URL.replace(/\/$/,'');
 {[{locale:'en-US' as const,live:true},...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
  const Container=live?'div':'template';const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
  return <Container data-next-live={live?'':undefined} data-next-locale={live?undefined:locale} lang={locale}>
- <p>{t('snapshotBoundary')}</p><p><a href="#microcap-chain">{t('currentReview')}</a></p>
+ <p>{t('snapshotBoundary')}</p><p><a href="#microcap-raw-sell">{t('currentReview')}</a></p>
  <h3>{t('eventTitle')}</h3><p class="finding">{eventFinding(locale)}</p>
  <h4>{t('outcomesTitle')}</h4><p>{t('outcomesBoundary')}</p>
  <div class="next-table case-outcomes" tabindex="0" role="region" aria-label={t('outcomesTitle')}><table><caption>{t('outcomesTitle')}</caption><thead><tr>{caseOutcomeTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{caseOutcomeTable(locale).rows.map(row=><tr><th scope="row"><a href={row.source}>{row.cells[0]}</a></th>{row.cells.slice(1).map(cell=><td>{cell}</td>)}</tr>)}</tbody></table></div>

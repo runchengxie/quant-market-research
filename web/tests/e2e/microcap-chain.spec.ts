@@ -4,7 +4,7 @@ test('account-chain navigation, locale changes, downloads and dark mobile preser
  await page.goto('research/microcap/?lang=en-US');
  const live = page.locator('#microcap-chain [data-chain-live]');
  const nav = page.locator('a[href="#microcap-chain"]').first();
- await expect(nav).toContainText('Account-chain review');
+ await expect(nav).toContainText('1.0.7 snapshot');
  await nav.click();
  await expect(page).toHaveURL(/#microcap-chain$/);
  await expect(live.locator('[data-chain-block="primary"] tbody tr td')).toHaveText(['7', '7', '6', '1', '3']);
@@ -29,7 +29,7 @@ test('account-chain navigation, locale changes, downloads and dark mobile preser
  await expect(live).toContainText('不能据此判断底层历史数据不存在');
  for (const locale of ['en-US', 'zh-CN']) {
   const latest = await (await page.request.get(`downloads/microcap-research.${locale}.md`)).text();
-  const fixed = await (await page.request.get(`downloads/archive/microcap-research.v1.0.7.${locale}.md`)).text();
+  const fixed = await (await page.request.get(`downloads/archive/microcap-research.v1.0.8.${locale}.md`)).text();
   expect(latest).toBe(fixed);
   expect(latest).toContain(data.prospective.actual_review_utc);
   expect(latest).toContain(data.source_sha256.primary);
