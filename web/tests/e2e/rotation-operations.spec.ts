@@ -37,3 +37,14 @@ test('static summaries preserve the current negative result without JavaScript',
  await expect(page.locator('#rotation-matched tbody tr')).toHaveCount(8);await expect(page.locator('#rotation-matched')).toContainText('8,640');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBeTruthy();await context.close();
 });
+
+test('selected aggregate download preserves unavailable values and methods are reachable',async({page,request})=>{
+ await page.goto(route+'?lang=zh-CN');const panel=page.locator('#rotation-matched');
+ await panel.getByLabel('资格口径',{exact:true}).selectOption('historical_prefix');
+ const downloaded=page.waitForEvent('download');
+ await panel.getByRole('button',{name:'下载当前汇总CSV',exact:true}).click();
+ const download=await downloaded;expect(download.suggestedFilename()).toContain('historical_prefix');
+ const stream=await download.createReadStream();let csv='';for await(const chunk of stream!)csv+=chunk.toString();
+ expect(csv).toContain('"unavailable"');expect(csv).toContain('"","","",""');
+ for(const suffix of ['', '.zh-CN']){const result=await request.get('research-notes/rotation-operations-review'+suffix+'.md');expect(result.ok()).toBeTruthy();expect((await result.text()).length).toBeGreaterThan(1000);}
+});
