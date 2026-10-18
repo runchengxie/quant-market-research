@@ -1,0 +1,46 @@
+# Microcap studies: ST eligibility and comparability audit
+
+[中文](microcap-st-comparability-audit-20261018.zh-CN.md)
+
+Reviewed on 2026-10-18. **The studies do not share one verified historical ST exclusion rule.** The current execution diagnostic has the strongest explicit status gates, but its reconstructed history is not revision safe. Earlier long-history returns and retained screening tables cannot inherit those gates retrospectively. No matched return premium from including or excluding ST stocks is established here.
+
+This is a document and code audit, not a backtest rerun. Public code was inspected at `d569806`; the current private research implementation was read only. Current code describes available safeguards, not proof that an earlier retained run used them. No private configurations, security-level records or reproduction locations are published.
+
+## Audit by evidence family
+
+| Study or version | Historical ST / *ST evidence | Delisting boundary | Portfolio and return identity | Permitted comparison |
+| --- | --- | --- | --- | --- |
+| Early same-close microcap reconstruction; mixed-source 2014–2015 interval | Earlier status coverage does not repair the execution timing or source mismatch | Not a verified settlement history | Superseded returns | None as current performance evidence |
+| [2008–2026 daily smallest-N reconstruction](turnover-microcap-followup-20260915.md), N = 50 / 100 / 200 / 400 / 800 | Before 2015, the loader sets the daily `is_st` field to false, then applies reconstructed ST intervals only when `ann_date < formation_date`. Since 2015 it also uses cleaned `is_st`. No complete historical status coverage is proved for the early period; the loader does not enforce the execution diagnostic's versioned availability receipt | Formation requires an instrument record and a date before delisting; previously held terminal prices and cash settlement remain incomplete | Daily equal weight; formation close → next observed close execution → following close valuation. No fees or cash ledger; unresolved prices have flat and total-loss sensitivity cases | Compare N and missing-price scenarios within the same reconstruction and valid dates; do not splice into a trading ledger |
+| [Low-turnover candidate and window exploration](../factors/low-turnover.md), including 20 / 60 / 120 sessions | Current formation helper removes date-symbol keys found in historical ST data; this is more specific than excluding today's ST list. The helper itself does not require announcement timestamps or a revision-safe receipt | Current simulator consumes delisting dates and a terminal-return assumption; an assumed terminal return is not recovered settlement | Published window snapshot: monthly formation, 40 targets, 60-name buffer, 10 bp protocol fee; continuous-weight and share-ledger results are separate | Within one frozen input, engine, dates and fee setup only. Older attribution windows were superseded; do not compare their magnitudes as a new ST effect |
+| Retained 0% / 10% / 20% / 30% size-tail exclusion and weighting matrix | Current robustness helper calls the same historical date-symbol ST filter. Historical source commit and command receipt remain unknown; current code cannot authenticate the retained run | Same distinction between formation eligibility and eventual exit accounting | Monthly screening, alternative weights and separate capacity outputs. Historical fee is unverified even though dated notes report 10 bp | Descriptive comparisons inside the retained matrix, explicitly conditional on its unresolved provenance; not a fully reconciled execution experiment |
+| Early January 2025 execution diagnostic | Old cleaned daily input and temporary instrument snapshot; one later corrected historical ST classification is documented | Extension encountered an unresolved delisting exit | Short continuous simulation; superseded input identity | Migration record only |
+| [Current execution diagnostic](microcap-execution-diagnostic-20260928.zh-CN.md), Q1 2025 and H1 2026 replays | Complete versioned reconstructed-ST receipt plus `st_available_from`; historical namechange requires announcement strictly before the decision date and effectiveness on that date. Unknown names, names containing ST (including *ST), and delisting-period names are excluded; cleaned `is_st` adds a second gate. Policy: `announced_prior_close_only.v1` | No new targets on/after known delisting; exit audit blocks residual shares or trades on/after delisting. The two documented replays have no in-window delisting targets, so do not validate settlement | Equal smallest-N targets; persistent shares and cash, T+1, 5% participation, price-limit blocking, adjusted-close proxy, 5 bp assumed cost | Mechanism diagnosis within this ledger only; not direct comparison with paper NAV or the 10 bp window table |
+| Later historical repair, exclusion and execution reconciliation work | Status evidence, company actions and common-support checks are separate gates; no single repaired series has been certified by this audit | Event classification and exit evidence do not by themselves supply settlement prices | Retained aggregates, reconstructed screening and cash-ledger outputs retain separate identities | Follow the [current research map](../factors/microcap.md); unresolved provenance and accounting gaps remain visible |
+
+## What “exclude ST” does and does not establish
+
+Historical date membership, announcement-time availability, and completeness are different requirements. A dated ST interval is stronger than applying today's name backwards, but later corrections can still change it. The current execution note records `revision_safe=false` and missing original input release times. Its prior-day announcement convention is conservative because announcement receipt times are absent; it is not a certified intraday availability history.
+
+Removing a stock from tomorrow's target does not liquidate an existing holding. Removing every company that eventually delisted from all earlier dates would introduce survivorship bias. The reviewed public history instead checks listing dates at formation; it still needs holding-level terminal valuation. A stale last price, an assumed loss and a recovered cash settlement cannot be treated as interchangeable.
+
+The 0–30% exclusion matrix removes the smallest market-cap tail **after** its eligible reference universe is formed. It is not an include-ST versus exclude-ST experiment. Size quintiles in the cross-market liquidity explorer describe traded value and coverage, not portfolio returns, and cannot answer the ST return question either.
+
+## Conditions for a useful matched test
+
+Freeze a versioned historical universe including later delistings; document ST and *ST coverage and announcement availability for every formation date. Keep the same sample, prices, weighting, rebalance clock, benchmark, missing-price policy, execution engine, costs and settlement treatment in both arms. Report unknown status separately rather than treating it as non-ST. Carry existing holdings through blocked exits. Only then vary the ST inclusion rule and report common-support results and coverage sensitivity.
+
+This audit did not establish those conditions across the full historical sample, so it publishes no invented return difference. It also makes no claim about Wind or Tonghuashun index rules: a vendor reference series is not a replication, and vendor eligibility would require a dated primary methodology document.
+
+## Is this already displayed?
+
+The market-research source already exposes `/research/microcap/` with historical charts, the research map, retained exclusion comparisons, window sensitivity and separate execution evidence. Its low-turnover page also links the research record. These are existing evidence displays, not a previously completed unified ST audit. This note adds the explicit version-by-version boundary. Live deployment and the separate factor-observatory consumer must be checked independently; repository content alone does not establish their deployed state.
+
+## Inspectable public sources
+
+- [History input eligibility and interval timing](../../../scripts/analyze_microcap_history.py), and [history return construction](../../../src/market_research/microcap_history.py).
+- [Execution status receipts, historical names and delisting checks](../../../src/market_research/microcap_execution.py).
+- [Retained comparison provenance contract](../../../src/market_research/microcap_review.py).
+- [Historical revisions and study identities](../factors/microcap.md).
+
+The private read-only review confirmed that the current candidate eligibility helper uses historical date-symbol ST keys, and that the robustness reference universe calls that helper. This verifies current implementation structure only; historical run identity remains unknown where stated above.
