@@ -8,7 +8,7 @@
 
 `python -m market_research.studies.overseas_leadlag.forward --receipt-directory <MDP-run> --output <QMR-owner-data>/forward/overseas-v1`
 
-读取时核对原始 CSV hash；派生 JSON 保留 receipt hash、代码 hash、固定信号身份、选用 bar、预测和不合格原因。scheduled 每个目标日只允许独占创建一个文件，包括迟到/失败弃样，禁止覆写或事后挑选重跑。probe 独立封存，永不计入前向观察。若进程在 CSV/receipt/预测封存前失败，保留现有证据，次日人工核对缺口；不回填成合格记录。完整 started 而无 receipt 表示采集中断，完整 receipt 而无 forecast 表示封存失败。
+读取时核对原始 CSV hash；先独占写入 `.prediction.json` 并 fsync，再读取实际写入完成时钟。随后独占写入 `.json` manifest，其 `eligible` 是资格判定依据，包含 payload hash 和实际 `sealed_utc`，跨截止一律弃样。只有 payload 而无 manifest 表示封存中断。派生 JSON 保留 receipt hash、代码 hash、固定信号身份、选用 bar、预测和不合格原因。scheduled 每个目标日只允许独占创建一个文件，包括迟到/失败弃样，禁止覆写或事后挑选重跑。probe 独立封存，永不计入前向观察。若进程在 CSV/receipt/预测封存前失败，保留现有证据，次日人工核对缺口；不回填成合格记录。完整 started 而无 receipt 表示采集中断，完整 receipt 而无 forecast 表示封存失败。
 
 v1 不消费任何目标日之后的国内价格。不自动打分、不发送消息、不下单。未来评分须另加 append-only outcome 记录，以真实后续获取的目标开盘价标注标签与接收时间；不改写预测。累计至至少 60 个合格 SSE 目标日再做首次方向命中率及不确定性评估，同时列出所有缺失、迟到和美国假期弃样；期间不因结果改规则。变更信号、截止或依赖必须启用新协议版本并重新起算。
 

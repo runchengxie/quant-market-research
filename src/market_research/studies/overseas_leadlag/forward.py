@@ -4,6 +4,7 @@ import csv
 import hashlib
 import json
 import math
+import os
 from datetime import datetime, timedelta
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -23,15 +24,12 @@ def read_verified(run, record):
 def seal_forecast(run: Path, output: Path) -> Path:
     receipt_bytes = (run / "receipt.json").read_bytes()
     receipt = json.loads(receipt_bytes)
-    sealed_at = datetime.now(ZoneInfo("UTC"))
     cutoff = datetime.fromisoformat(receipt["cutoff_utc"])
     reasons = []
     if receipt["protocol"] != "overseas-receipt-v1":
         raise ValueError("Unsupported receipt protocol")
     if not receipt["timely_capture"]:
         reasons.append("capture_outside_frozen_window")
-    if sealed_at > cutoff:
-        reasons.append("prediction_sealed_after_cutoff")
     prediction = None
     selected = []
     try:
@@ -73,21 +71,37 @@ def seal_forecast(run: Path, output: Path) -> Path:
         "signal_id": SIGNAL, "target": "CSI300 today open to next SSE session open direction",
         "model": "fixed sign of SPX last completed session close return; no fitting",
         "protocol": "overseas-forward-v1", "target_date": receipt["target_date"],
-        "sealed_utc": sealed_at.isoformat(), "cutoff_utc": receipt["cutoff_utc"],
+        "cutoff_utc": receipt["cutoff_utc"],
         "receipt_path": str(run.resolve()),
         "receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest(),
         "code_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
-        "eligible": not reasons, "exclusion_reasons": reasons,
+        "exclusion_reasons": reasons,
         "prediction": prediction, "selected_spx_bars": selected,
     }
     category = "signals" if receipt["mode"] == "scheduled" else "probes"
     output = output / category
     output.mkdir(parents=True, exist_ok=True)
     name = receipt["target_date"] if category == "signals" else run.name
+    # Persist the prediction before observing its actual completed write time.
+    # The manifest is the authoritative qualification record; the payload is immutable.
+    payload_path = output / (name + ".prediction.json")
+    content = (json.dumps(payload, indent=2, allow_nan=False) + "\n").encode()
+    with payload_path.open("xb") as handle:
+        handle.write(content)
+        handle.flush()
+        os.fsync(handle.fileno())
+    sealed_at = datetime.now(ZoneInfo("UTC"))
+    if sealed_at > cutoff:
+        reasons.append("prediction_sealed_after_cutoff")
+    payload.update(sealed_utc=sealed_at.isoformat(), eligible=not reasons,
+                   prediction_file=payload_path.name,
+                   prediction_sha256=hashlib.sha256(content).hexdigest())
     path = output / (name + ".json")
     with path.open("x", encoding="utf-8") as handle:
         json.dump(payload, handle, indent=2, allow_nan=False)
         handle.write("\n")
+        handle.flush()
+        os.fsync(handle.fileno())
     return path
 
 
