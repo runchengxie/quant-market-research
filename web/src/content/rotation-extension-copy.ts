@@ -27,6 +27,12 @@ export const extensionCopy = {
     more: ['Show more rows', '显示更多行'], less: ['Show fewer rows', '收起部分行'],
 } satisfies Record<string, Copy>;
 export const codeCopy: Record<string, Copy> = {
+    matched_protocol_changed: ['Paired comparison definitions changed; numerical deltas are unavailable.', '配对比较定义发生变化，不提供数值差额。'],
+    decision_cutoff_changed: ['Decision cutoff changed; numerical deltas are unavailable.', '决策截止时间发生变化，不提供数值差额。'],
+    complete_execution_calendar_required: ['The complete execution calendar is now checked; incomplete performance remains unavailable.', '现已检查完整执行日历，不完整的绩效保持不可用。'],
+    weekday_preparation_enabled: ['Weekday source preparation is enabled; capture readiness is separate.', '已启用工作日数据准备，采样就绪情况单独确认。'],
+    prefix_audit_added: ['Historical-prefix eligibility and source gaps are recorded.', '已记录历史截面资格与来源缺口。'],
+    matched_protocol_added: ['Conditional budget and estimated-risk comparisons are registered.', '已登记条件预算与估计风险比较。'],
     forward_controls_hardened: ['Forward accounting and frozen implementation controls strengthened; historical results are unchanged.', '已加强前瞻核算与冻结代码校验，历史结果保持不变。'],
     source_availability_changed: ['Source availability evidence changed; numerical deltas are suppressed.', '数据可用性证据发生变化，不显示数值差额。'],
     row_definitions_changed: ['Some experiment or window definitions differ; affected deltas are suppressed.', '部分实验或窗口定义不同，相应结果不显示数值差额。'],

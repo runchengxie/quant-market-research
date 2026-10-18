@@ -6,7 +6,13 @@ import RotationForwardEvidence from '../../../components/RotationForwardEvidence
 import RotationRobustnessExplorer from '../../../components/RotationRobustnessExplorer';
 import RotationReleaseComparison from '../../../components/RotationReleaseComparison';
 import RotationExtensionStatic from '../../../components/RotationExtensionStatic.astro';
-import {validateReleaseIndex} from '../../../content/rotation-extension';
+import {validateReleaseIndex,validateIndexedBinding} from '../../../content/rotation-extension';
+import RotationOperationalEvidence from '../../../components/RotationOperationalEvidence';
+import RotationMatchedExplorer from '../../../components/RotationMatchedExplorer';
+import RotationOperationsStatic from '../../../components/RotationOperationsStatic.astro';
+import {validateRotationOperations} from '../../../content/rotation-operations.server';
+import type {RotationOperations} from '../../../content/rotation-operations';
+import {operationsCopy} from '../../../content/rotation-operations-copy';
 import {validateRotationExtension} from '../../../content/rotation-extension.server';
 import {extensionCopy} from '../../../content/rotation-extension-copy';
 import RotationEvidenceExplorer from '../../../components/RotationEvidenceExplorer';
@@ -29,13 +35,21 @@ const releaseUrl=withBase('/data/rotation-evidence-release.json',import.meta.env
 const summary={...evidence,replay:[]};
 const dataBase=withBase('/data/',import.meta.env.BASE_URL);
 const releaseIndex=validateReleaseIndex(JSON.parse(readFileSync(resolve('public/data/rotation-release-index.json'),'utf8')));
-const extensionEntry=releaseIndex.releases.find(r=>r.release_id===releaseIndex.current_release_id&&r.schema_version==='research.rotation_extension.v1');
+const extensionEntry=releaseIndex.releases.find(r=>r.release_id===releaseIndex.current_release_id&&r.schema_version==='research.rotation_extension.v1')??[...releaseIndex.releases].reverse().find(r=>r.schema_version==='research.rotation_extension.v1');
 let extension;
 if(extensionEntry){
  const raw=readFileSync(resolve('public/data',extensionEntry.path));
  if(createHash('sha256').update(raw).digest('hex')!==extensionEntry.sha256)throw Error('Extension registry hash mismatch');
  const value=JSON.parse(raw.toString());extension=validateRotationExtension(value.asset,value.review);
+ }
+const operationsEntry=releaseIndex.releases.find(r=>r.release_id===releaseIndex.current_release_id&&r.schema_version==='research.rotation_operations.v1');
+let operations:RotationOperations|undefined;
+if(operationsEntry){
+ const raw=readFileSync(resolve('public/data',operationsEntry.path));
+ if(createHash('sha256').update(raw).digest('hex')!==operationsEntry.sha256)throw Error('Operations registry hash mismatch');
+ const value=JSON.parse(raw.toString());validateIndexedBinding(operationsEntry,value);operations=validateRotationOperations(value.asset,value.review);
 }
+const matchedOverview=operations?{row_count:operations.comparisons.row_count,available_rows:operations.comparisons.available_rows,window_ids:[...new Set(operations.comparisons.rows.map(r=>r.window_id))],rows:operations.comparisons.rows.filter(r=>r.case_id==='primary'&&r.window_id==='common')}:null;
 ---
 <SiteLayout title={copy.title[1]} titleEn={copy.title[0]} description={copy.intro[0]} section="research" workbench>
   <article class="rotation-report">
@@ -45,7 +59,7 @@ if(extensionEntry){
     </div></header>
     <section class="panel rotation-conclusion" aria-labelledby="conclusion">
       <h2 id="conclusion"><T as="span" text={pageCopy.currentConclusion} /></h2>
-      <T class="lede" text={copy.conclusion} />
+      <T class="lede" text={operations?operationsCopy.conclusion:copy.conclusion} />
       <div class="rotation-facts">
         <div><strong>3</strong><T as="span" text={pageCopy.distinctEvidenceStreams} /></div>
         <div><strong>24</strong><T as="span" text={pageCopy.weeklyConfigurationsToExplore} /></div>
@@ -53,12 +67,19 @@ if(extensionEntry){
       </div>
     </section>
     <nav class="rotation-nav" aria-label={pageCopy.topicSections[0]} data-locale-aria data-aria-en={pageCopy.topicSections[0]} data-aria-zh={pageCopy.topicSections[1]}>
+      {operations&&<><a href="#rotation-operations"><T as="span" text={operationsCopy.health}/></a><a href="#rotation-prefix-audit"><T as="span" text={operationsCopy.audit}/></a><a href="#rotation-matched"><T as="span" text={operationsCopy.matched}/></a></>}
       <a href="#rotation-forward"><T as="span" text={extensionCopy.title}/></a>
       <a href="#rotation-robustness"><T as="span" text={extensionCopy.robust}/></a>
       <a href="#rotation-versions"><T as="span" text={extensionCopy.versions}/></a>
       <a href="#rotation-evidence"><T as="span" text={evidenceCopy.title}/></a>
       {links.map(([id, en, zh]) => <a href={`#${id}`} data-locale-text data-en={en} data-zh={zh}>{en}</a>)}
     </nav>
+    {operations&&operationsEntry&&matchedOverview&&<>
+      <RotationOperationalEvidence evidence={{health:operations.health,audit:operations.audit}} client:only="react"><RotationOperationsStatic slot="fallback" evidence={operations}/></RotationOperationalEvidence>
+      <RotationMatchedExplorer overview={matchedOverview} releaseEntry={operationsEntry} dataBase={dataBase} client:only="react"/>
+      <details class="panel rotation-operations"><T as="summary" text={operationsCopy.methods}/><p><a href={`${dataBase.replace(/data\/$/,'research-notes/')}rotation-operations-review.md`} data-locale-link data-href-en={`${dataBase.replace(/data\/$/,'research-notes/')}rotation-operations-review.md`} data-href-zh={`${dataBase.replace(/data\/$/,'research-notes/')}rotation-operations-review.zh-CN.md`}><T as="span" text={operationsCopy.methods}/></a></p><p><a href={`${dataBase}${operationsEntry.path}`}><T as="span" text={extensionCopy.download}/></a></p><p>SHA-256: <code>{operationsEntry.sha256}</code></p></details>
+      <T class="panel-note" text={operationsCopy.archive}/>
+    </>}
     {extension&&<>
       <RotationForwardEvidence evidence={{sources:extension.sources,forward:extension.forward,theme:extension.theme}} client:only="react"><RotationExtensionStatic slot="fallback" evidence={extension} index={releaseIndex} dataBase={dataBase}/></RotationForwardEvidence>
       <RotationRobustnessExplorer evidence={{robustness:{...extension.robustness,rows:extension.robustness.rows.filter(r=>!r.window_id.startsWith('rolling_')),benchmarks:extension.robustness.benchmarks.filter(r=>!r.window_id.startsWith('rolling_'))}}} releaseEntry={extensionEntry!} dataBase={dataBase} client:only="react"/>
@@ -176,4 +197,29 @@ if(extensionEntry){
 .rotation-extension button:disabled { opacity: .6; cursor: wait; }
 .rotation-extension :is(button, select, input):focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .rotation-extension code { overflow-wrap: anywhere; }
+</style>
+
+<style is:global>
+.rotation-operations { min-width:0;scroll-margin-top:5rem; }
+.rotation-operations section {margin-top:2rem;}
+.rotation-operations .rotation-facts {display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1rem;margin:1.5rem 0;}
+.rotation-operations .rotation-facts>div {display:grid;gap:.4rem;min-width:0;}
+.rotation-operations .rotation-facts strong {font-size:clamp(1.6rem,3vw,2.4rem);line-height:1.1;}
+.operations-timeline {list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;}
+.operations-timeline li {border-top:3px solid var(--rule);padding:1rem .4rem;display:grid;gap:.5rem;}
+.operations-timeline li[data-ready=true] {border-color:var(--accent);}
+.operations-details {display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:1rem;margin:1.5rem 0;}
+.operations-details div {min-width:0;}.operations-details dt {font-size:.85rem;opacity:.75;}.operations-details dd {margin:.3rem 0;overflow-wrap:anywhere;}
+.rotation-operations .table-scroll {max-width:100%;overflow-x:auto;}.rotation-operations table {min-width:650px;table-layout:auto;}
+.rotation-operations td,.rotation-operations th {vertical-align:top;}.rotation-operations td ul {min-width:15rem;padding-left:1.2rem;}
+.rotation-operations code {overflow-wrap:anywhere;word-break:break-all;}
+.rotation-operations select,.rotation-operations button {font:inherit;min-height:44px;max-width:100%;border:1px solid var(--rule);border-radius:6px;padding:.65rem .8rem;background:var(--surface-strong);color:var(--ink);}
+.rotation-operations button {cursor:pointer;background:var(--accent-soft);}.rotation-operations button:disabled {opacity:.6;cursor:wait;}
+.rotation-operations :is(button,select):focus-visible {outline:2px solid var(--accent);outline-offset:3px;}
+.operations-year {display:grid;gap:.5rem;max-width:18rem;margin-top:1.5rem;}
+.rotation-operations figure {margin:1.5rem 0;}.rotation-operations figcaption {font-size:.85rem;opacity:.75;}
+.operations-panel-bars>div {display:grid;grid-template-columns:minmax(7rem,1fr) 3fr auto;align-items:center;gap:.7rem;margin:.8rem 0;}
+.operations-panel-bars small {grid-column:2 / -1;}.operations-bar-track {height:12px;background:var(--surface-2);border-radius:8px;overflow:hidden;}.operations-bar-track i {display:block;height:100%;background:var(--accent);}
+.operations-controls select {width:100%;}.operations-controls label {max-width:100%;}
+@media(max-width:680px){.operations-timeline{grid-template-columns:repeat(2,minmax(0,1fr));}.operations-panel-bars>div{grid-template-columns:1fr 2fr auto;}.operations-controls label{flex-basis:100%;}.rotation-operations .rotation-facts{gap:.75rem;}}
 </style>
