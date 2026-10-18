@@ -24,8 +24,11 @@
     "dimensions": [
       {
         "admitted": "integer",
+        "reason": "text",
+        "records": "integer",
         "rejected": "integer",
         "rule": "text",
+        "state": "text",
         "unknown": "integer"
       }
     ],

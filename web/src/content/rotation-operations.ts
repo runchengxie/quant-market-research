@@ -27,7 +27,7 @@ export type RotationOperations = {
  audit:{historical_availability:string;panel_start:string;panel_end:string;sessions:number;symbols:number;
   symbol_week_records:number;changed_records:number;affected_weeks:number;audit_sha256:string;registration_sha256:string;
   rules:{minimum_history:number;amount_sessions:number;minimum_median_amount:number;amount_unit:string};
-  dimensions:{rule:string;admitted:number;unknown:number;rejected:number}[];
+  dimensions:{rule:string;state:string;records:number;reason:string;admitted:number;unknown:number;rejected:number}[];
   panels:{id:string;symbols:number;changed_records:number;affected_weeks:number}[];
   baseline_gaps:{baseline:string;unavailable_weeks:number;first_week:string|null;last_week:string|null;reasons:{code:string;count:number}[]}[];
   monthly:{month:string;changed_records:number;unavailable_baseline_weeks:number}[];
@@ -50,7 +50,7 @@ export function validateOperationsShape(value:unknown):RotationOperations{
  if(h.source_observed_by&&h.reviewed_at&&Date.parse(h.source_observed_by)>Date.parse(h.reviewed_at))throw Error('Review precedes source');h.reasons.forEach(code);
  const u=a.audit;
  if(u.historical_availability!=='unverified'||!same(u.rules,{minimum_history:252,amount_sessions:252,minimum_median_amount:10000,amount_unit:'thousand_cny'})||u.panel_start>u.panel_end||u.changed_records>u.symbol_week_records)throw Error('Invalid prefix audit');
- u.dimensions.forEach(d=>code(d.rule));u.monthly.forEach(d=>{if(!/^\d{4}-(?:0[1-9]|1[0-2])$/.test(d.month))throw Error('Invalid audit month');});
+ u.dimensions.forEach(d=>{code(d.rule);const count=d.admitted+d.unknown+d.rejected;const state=!count||d.unknown?'unknown':d.rejected?'rejected':'admitted';if(d.records!==count||d.state!==state||d.reason!==(count?'see_rule_records':'missing_evidence'))throw Error('Invalid audit dimension state');});u.monthly.forEach(d=>{if(!/^\d{4}-(?:0[1-9]|1[0-2])$/.test(d.month))throw Error('Invalid audit month');});
  u.baseline_gaps.forEach(g=>{if(!['fixed-base','pool-core'].includes(g.baseline))throw Error('Unknown baseline');g.reasons.forEach(r=>code(r.code));});u.reasons.forEach(code);
  validateComparisons(a.comparisons);a.changes.forEach(c=>{code(c.kind);code(c.code);});return a;
 }

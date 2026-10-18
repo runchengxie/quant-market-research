@@ -15,6 +15,7 @@ export const operationsCopy={
  panel:['Panel','样本面板'],changedRecords:['Changed records','变化记录'],affectedWeeks:['Affected weeks','受影响周数'],
  year:['Audit year','审计年份'],allYears:['All years','全部年份'],monthChart:['Monthly eligibility changes','各月资格变化'],
  dimensions:['Separate evidence dimensions','分别看待各项证据'],dimensionNote:['Admitted numerical rules and historically verified delivery are different evidence claims. Unknown and rejected records remain visible.','规则计算成立与历史交付已核实是两项证据结论。未知和未接纳的记录分别保留。'],
+ state:['Evidence state','证据状态'],
  dimension:['Evidence dimension','证据项目'],admitted:['Admitted rule records','已接纳的规则记录'],unknown:['Unknown','未知'],rejected:['Rejected','未接纳'],
  overlap:['Several reasons can affect the same week; their counts overlap.','同一周可能触发多项原因，各项原因的数量存在重叠。'],
  panelNote:['Panels overlap. Each bar counts changes within its own retained panel.','各面板包含重复ETF，柱形分别统计各自面板内的变化记录。'],
@@ -40,6 +41,7 @@ export const operationsCopy={
  enabled:['Enabled','已启用'],disabled:['Disabled','未启用'],armed:['Armed','已开启'],unarmed:['Unarmed','未开启'],met:['Observed','已观察到'],notYet:['Pending','待观察'],
 } as const;
 export const operationCodes:Record<string,readonly[string,string]>={
+ unknown:['Unknown','未知'],admitted:['Admitted','已接纳'],rejected:['Rejected','未接纳'],missing_evidence:['No retained evidence records','没有留存的证据记录'],see_rule_records:['See separate rule record counts','见各类规则记录数量'],
  awaiting_registration:['Awaiting a future registration','等待未来登记'],not_started:['Not started','尚未开始'],prepared:['Reviewed inputs prepared','已完成数据验收与准备'],already_prepared:['Current session already prepared','当期数据已准备完成'],running:['Running','运行中'],incomplete:['Preparation interrupted','准备过程未完成'],unavailable:['Unavailable','不可用'],
  registration_required:['A future-effective registration is required','需要未来生效的登记'],weekday_readiness_pending:['Actual weekday readiness is pending','等待工作日就绪验证'],capture_not_armed:['Weekly capture remains unarmed','周度采样尚未开启'],
  historical_delivery_unverified:['Historical delivery is unverified','历史交付时间尚未核实'],historical_prefix_inputs_incomplete:['Historical-prefix inputs are incomplete','历史截面输入不完整'],

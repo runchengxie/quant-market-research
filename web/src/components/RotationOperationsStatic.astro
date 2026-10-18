@@ -19,7 +19,7 @@ const baseline=(value:string)=>value==='pool-core'?c.defensive:c.fixed;
  <section id="rotation-prefix-audit"><T as="h3" text={c.audit}/><T text={c.auditNote}/>
   <div class="rotation-facts"><div><strong>{u.symbols}</strong><T as="span" text={c.symbols}/></div><div><strong>{u.changed_records}</strong><T as="span" text={c.changes}/></div><div><strong>{u.affected_weeks}</strong><T as="span" text={c.affected}/></div></div>
   <div class="table-scroll"><table><thead><tr><th><T as="span" text={c.baseline}/></th><th><T as="span" text={c.missing}/></th><th><T as="span" text={c.span}/></th></tr></thead><tbody>{u.baseline_gaps.map(g=><tr><td><T as="span" text={baseline(g.baseline)}/></td><td>{g.unavailable_weeks}</td><td>{g.first_week??'—'} – {g.last_week??'—'}</td></tr>)}</tbody></table></div>
-  <details><T as="summary" text={c.dimensions}/><T text={c.dimensionNote}/><ul>{u.dimensions.map(d=><li><T as="span" text={code(d.rule)}/>: <T as="span" text={c.unknown}/> {d.unknown}; <T as="span" text={c.rejected}/> {d.rejected}</li>)}</ul></details>
+  <details><T as="summary" text={c.dimensions}/><T text={c.dimensionNote}/><ul>{u.dimensions.map(d=><li><T as="span" text={code(d.rule)}/>: <T as="span" text={code(d.state)}/> — <T as="span" text={code(d.reason)}/>; <T as="span" text={c.unknown}/> {d.unknown}; <T as="span" text={c.rejected}/> {d.rejected}</li>)}</ul></details>
   <T text={c.ruleNote}/>
  </section>
  <section id="rotation-matched"><T as="h3" text={c.matched}/><T text={c.matchedNote}/><T text={c.interpretation}/>
