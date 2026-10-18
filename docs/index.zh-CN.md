@@ -10,6 +10,8 @@
 
 ## 因子研究
 
+- [小微盘 ST 口径审计](research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md)：逐版本核对历史资格、退市退出、权重及成本，不能把市值尾部剔除当作 ST 对照。
+- [低估值口径与当前样本](research/experiments/valuation-denominators-20261018.zh-CN.md)：五种分母、六家公司当前快照计算及尚未完成的历史检验。
 - [公开研究收口状态](research-closeout-status.zh-CN.md)：查看已完成的核对、仍待补充的数据或人工验证，以及各状态的含义。
 - [PB 与 ROE：怎样比较估值和盈利能力](research/factors/pb-roe.zh-CN.md)：在同一批候选股票中，加入盈利能力指标后，历史对照发生了什么变化。
 - [低换手：它可能反映哪些特征](research/factors/low-turnover.zh-CN.md)：低换手可能和什么特征同时出现，控制这些特征后收益差还剩多少。
