@@ -2,6 +2,8 @@
 
 [English version](valuation-panel-20261018.md)
 
+[金融模板覆盖补充](financial-template-coverage-20261019.zh-CN.md)：独立单日诊断恢复部分覆盖，保留本页原基线。
+
 **五种口径目前还不足以做一份全市场可比的“最低估值榜”。** 2026 年 10 月 16 日，5,567 只具备有效市值的股票中，只有 1,743 只的五种分母都为正、资料齐全且报告期一致，占 31.3%。在这批股票中，PE 与 PB 的排名相关系数为 0.507，两者最低五分之一名单的交并比为 28.1%。本轮只比较覆盖和排名，没有回测收益。
 
 面板覆盖 2016 年 1 月 29 日至 2026 年 10 月 16 日的 130 个按月形成日，共 556,948 条股票—日期记录；10 月尚未结束。[下载已复核的汇总数据](https://runchengxie.github.io/quant-market-research/data/valuation_panel_reviewed.json)。各分母的定义见[口径表与六家公司样本](valuation-denominators-20261018.zh-CN.md)。

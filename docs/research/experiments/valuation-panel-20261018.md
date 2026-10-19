@@ -2,6 +2,8 @@
 
 [Chinese version](valuation-panel-20261018.zh-CN.md)
 
+[Financial-template coverage follow-up](financial-template-coverage-20261019.md): a separate single-date diagnosis restores coverage without replacing this baseline.
+
 **The five valuation definitions cannot yet support a comparable whole-market cheapest-stock list.** On October 16, 2026, only 1,743 of 5,567 priced names (31.3%) have all five positive, available denominators from the same reporting period. On those names, PE and PB rank correlation is 0.507; the Jaccard overlap of their cheapest fifth is 28.1%. These are descriptive rank results, with no return backtest.
 
 The panel contains 556,948 stock-date records at 130 monthly formations from January 29, 2016 to October 16, 2026. October is partial. [Download the reviewed aggregate](https://runchengxie.github.io/quant-market-research/data/valuation_panel_reviewed.json). The [definition and six-company checks](valuation-denominators-20261018.md) explain the original accounting choices.

@@ -1,5 +1,7 @@
 # ST paired monthly comparison: missing exit evidence (2026-10-19)
 
+[Chinese version](microcap-st-exit-evidence-20261019.zh-CN.md)
+
 The 235 failed selected rows represent 107 formation/issuer events. **Zero events were restored.** All 50 missing entry rows match dated suspensions. Of 220 missing endpoint rows, 205 match dated suspensions; the remaining 15 are five terminal events repeated across N=50/100/200. Suspension matches corroborate absence using the same provider; they do not establish fills. Baskets, dates, weights and returns remain unchanged. There is no new executable return or NAV.
 
 This supplements the [original monthly study](microcap-st-paired-short-window-20261018.md). Complete pairs remain 15/13/9 out of 36 months for N=50/100/200, with mean include-minus-exclude differences of +0.202/−0.514/−1.028 percentage points. On the common nine months they remain −0.752/−0.927/−1.028 points. The N50 sign reversal illustrates conditional sample selection. Inputs remain retrospective 2026 snapshots with `revision_safe=false`.

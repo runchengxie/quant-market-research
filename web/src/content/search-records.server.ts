@@ -12,7 +12,7 @@ export async function buildSearchRecords(): Promise<SearchRecord[]> {
   for (const document of documents) {
     const chinese = document.meta.id.endsWith('-zh-CN');
     const en = englishCopy(document.meta);
-    records.push({ id: document.meta.id, title: document.meta.title, titleEn: en.title, kind: 'method', href: document.meta.route, text: document.body, locale: chinese ? 'zh-CN' : 'en-US', aliases: document.meta.aliases });
+    records.push({ id: document.meta.id, title: document.meta.title, titleEn: en.title, kind: 'method', href: document.meta.route, text: Array.from(document.body).slice(0, 1200).join(''), locale: chinese ? 'zh-CN' : 'en-US', aliases: document.meta.aliases });
   }
   const factors = await readFactorRecords(root);
   for (const factor of factors.filter((record) => record.model !== 'core-proxy')) records.push({ id: `factor-${factor.key}`, title: factor.name, titleEn: factor.key, kind: 'factor', href: `/research/style-factors-18y/?factor=${factor.factorId}#barra-factor-detail`, text: `${factor.feature} ${factor.calculation} ${factor.direction} ${factor.verification}`, textEn: `${factor.key} ${factor.factorId}`, aliases: [factor.factorId, factor.family] });
