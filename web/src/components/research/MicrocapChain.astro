@@ -8,6 +8,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
  {[{locale:'en-US' as const,live:true}, ...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
   const Container=live?'div':'template'; const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
   return <Container data-chain-live={live?'':undefined} data-chain-locale={live?undefined:locale} lang={locale}>
+   <p>{t('historicalSnapshot')}</p><p><a href="#microcap-raw-sell">{t('currentReview')}</a></p>
    <p class="finding">{t('intro')}</p>
    {chainBlocks.map(block=>{const table=block.table(locale);return <div data-chain-block={block.id}>
     <h3>{t(block.title)}</h3><p>{t(block.intro)}</p>
