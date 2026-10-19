@@ -53,3 +53,27 @@ test('online report exposes the same bounded pass before its historical evidence
  await expect(page.locator('main')).toContainText('Version 1.0.7 snapshot');
  await expect(page.locator('main')).toContainText('1.455e-10');
 });
+
+for(const locale of ['en-US','zh-CN']) for(const theme of ['light','dark']) {
+ test(`research evidence labels wrap at 320px in ${locale} ${theme}`,async({page})=>{
+  await page.setViewportSize({width:320,height:900});
+  await page.addInitScript(theme=>localStorage.setItem('market-research-theme',theme),theme);
+  await page.goto(`research/microcap/?lang=${locale}`);
+  await page.waitForLoadState('networkidle');
+  await expect(page.locator('#microcap-raw-sell [data-raw-sell-live]')).toHaveAttribute('lang',locale);
+  await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+  await page.locator('#research-method > summary').click();
+  const badges=page.locator('.research-verdict .evidence-status,.report-context .evidence-status');
+  await expect(badges).toHaveCount(2);
+  for(const badge of await badges.all()) {
+   await expect(badge).toBeVisible();
+   expect(await badge.evaluate(el=>el.scrollWidth<=el.clientWidth+1)).toBe(true);
+   expect(await badge.evaluate(el=>{
+    const container=el.closest('.research-verdict,.report-context')!;
+    return el.getBoundingClientRect().right<=container.getBoundingClientRect().right+1;
+   })).toBe(true);
+  }
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth+1)).toBe(true);
+ });
+}
