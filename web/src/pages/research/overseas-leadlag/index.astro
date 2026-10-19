@@ -1,4 +1,6 @@
 ---
+import OverseasCostChart from '../../../components/OverseasCostChart';
+import { overseasChartCopy as chartCopy } from '../../../content/overseas-chart-copy';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import Text from '../../../components/research/HubText.astro';
 import { overseasCopy as c } from '../../../content/overseas-leadlag-copy';
@@ -28,7 +30,8 @@ const budgets = data.costs.filter(r => r.scenario === 'budget' && r.lag_sessions
     </section>
     <section class="report-section" id="etf-costs"><h2><Text text={c.costTitle}/></h2><p><Text text={c.costCorrection}/></p><p><Text text={c.costHelp}/></p>
       <div class="table-scroll"><table><caption><Text text={c.costCaption}/></caption><thead><tr><th>ETF</th><th><Text text={c.model}/></th><th><Text text={c.mean}/></th><th><Text text={c.sharpe}/></th><th><Text text={c.exposure}/></th></tr></thead><tbody>{etfs.map(r => <tr><th>{r.target}</th><td><Text text={label(c.models,r.model)}/></td><td>{r.mean_daily_net_bp.toFixed(2)}</td><td>{r.sharpe?.toFixed(2) ?? '—'}</td><td>{pct(r.exposure_fraction)}</td></tr>)}</tbody></table></div>
-      <figure><img src={withBase('/charts/overseas-leadlag-cost.svg',base)} alt={c.chartAlt[0]} data-locale-image data-image-en={withBase('/charts/overseas-leadlag-cost.svg',base)} data-image-zh={withBase('/charts/overseas-leadlag-cost.svg',base)} data-alt-en={c.chartAlt[0]} data-alt-zh={c.chartAlt[1]} width="1000" height="370" loading="lazy"/><figcaption><Text text={c.costCaption}/></figcaption></figure>
+      <OverseasCostChart rows={data.costs} svg={withBase('/charts/overseas-leadlag-cost.svg',base)} client:load />
+      <noscript><p><Text text={chartCopy.fallback}/></p><figure><img src={withBase('/charts/overseas-leadlag-cost.svg',base)} alt={c.chartAlt[0]} width="1000" height="370"/><figcaption><Text text={chartCopy.caption}/></figcaption></figure></noscript>
       <details><summary><Text text={c.budgetTitle}/></summary><p><Text text={c.budgetHelp}/></p><div class="table-scroll"><table><thead><tr><th>ETF</th><th><Text text={c.budget}/></th><th><Text text={c.slippage}/></th><th><Text text={c.mean}/></th></tr></thead><tbody>{budgets.map(r => <tr><th>{r.target}</th><td>{r.notional_budget_yuan.toLocaleString('en-US')}</td><td>{'slippage_one_way_bp' in r ? r.slippage_one_way_bp : '—'}</td><td>{r.mean_daily_net_bp.toFixed(2)}</td></tr>)}</tbody></table></div></details>
     </section>
     <section class="report-section"><h2><Text text={c.boundary}/></h2><p><Text text={c.boundaryBody}/></p></section>
@@ -37,4 +40,12 @@ const budgets = data.costs.filter(r => r.scenario === 'budget' && r.lag_sessions
 </SiteLayout>
 <style>
   .table-scroll{overflow-x:auto;max-width:100%;margin:1rem 0} table{border-collapse:collapse;min-width:40rem;width:100%;font-variant-numeric:tabular-nums} th,td{padding:.7rem;text-align:left;border-bottom:1px solid var(--border-color,#ddd);vertical-align:top}caption{text-align:left;margin-bottom:.8rem} details{margin:1.2rem 0}summary{cursor:pointer;font-weight:600}figure{margin:1.5rem 0}figure img{width:100%;height:auto;background:white}figcaption{font-size:.9rem;margin-top:.5rem}
+</style>
+<style is:global>
+[data-overseas-cost-chart] select{font:inherit;color:var(--ink);background:var(--surface);border:1px solid var(--rule,#888);border-radius:.3rem;padding:.35rem;max-width:100%}
+[data-overseas-cost-chart] table{border-collapse:collapse;min-width:36rem;width:100%;font-variant-numeric:tabular-nums}
+[data-overseas-cost-chart] th,[data-overseas-cost-chart] td{padding:.7rem;text-align:left;border-bottom:1px solid var(--rule,#888)}
+[data-overseas-cost-chart] caption{text-align:left;padding:.7rem 0}
+[data-overseas-cost-chart] summary{cursor:pointer;font-weight:600;margin:1rem 0}
+[data-overseas-cost-chart]{min-width:0}
 </style>
