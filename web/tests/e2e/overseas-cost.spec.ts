@@ -13,10 +13,6 @@ test('cost scenarios expose exact reviewed values across controls, locales and t
  const row=data.costs.find((r: any)=>r.target==='512480'&&r.lag_sessions===1&&r.model==='global'&&r.scenario==='flat_bps'&&'round_trip_bp' in r&&r.round_trip_bp===10)!;
  await expect(root.locator('tbody')).toContainText(row.mean_daily_net_bp.toFixed(4));
  await root.locator('canvas').evaluate(el=>el.scrollIntoView({block:'center'}));
- const bounds=await root.locator('canvas').boundingBox();
- await page.mouse.move(bounds!.x+bounds!.width/2,bounds!.y+190);
- await expect(root).toContainText('Total round-trip cost (bp): 10');
- await expect(root).toContainText(row.mean_daily_net_bp.toFixed(4)+' bp');
  // Locate the rendered legend label, click it, and verify the resulting tooltip.
  const legend = await root.locator('canvas').evaluate(async canvas => {
   const url = performance.getEntriesByType('resource').map(r=>r.name).find(url=>/\/echarts[^/]*\.js/.test(url))!;
@@ -25,15 +21,23 @@ test('cost scenarios expose exact reviewed values across controls, locales and t
   const chart = api.getInstanceByDom(canvas.closest('[_echarts_instance_]')!);
   const text = chart.getZr().storage.getDisplayList().find((item: any)=>item.style?.text==='Domestic + FX');
   const rect = text.getBoundingRect().clone(); rect.applyTransform(text.getComputedTransform());
-  return {x:rect.x+rect.width/2,y:rect.y+rect.height/2};
+  return {x:rect.x+rect.width/2,y:rect.y+rect.height/2,cost10:chart.convertToPixel({xAxisIndex:0},10),cost20:chart.convertToPixel({xAxisIndex:0},20),cost40:chart.convertToPixel({xAxisIndex:0},40),cost0:chart.convertToPixel({xAxisIndex:0},0)};
  });
+ expect(legend.cost20-legend.cost0).toBeCloseTo((legend.cost40-legend.cost0)/2,4);
+ expect(legend.cost10-legend.cost0).toBeCloseTo((legend.cost40-legend.cost0)/4,4);
+ const bounds=await root.locator('canvas').boundingBox();
+ await page.mouse.move(bounds!.x+legend.cost10,bounds!.y+190);
+ await expect(root).toContainText('Total round-trip cost (bp): 10');
+ await expect(root).toContainText(row.mean_daily_net_bp.toFixed(4)+' bp');
  await root.locator('canvas').evaluate(el=>{el.scrollIntoView({block:'center'});window.scrollBy(0,-150);});
  const visibleBounds=await root.locator('canvas').boundingBox();
  await page.mouse.click(visibleBounds!.x+legend.x,visibleBounds!.y+legend.y);
- await page.mouse.move(visibleBounds!.x+visibleBounds!.width/2,visibleBounds!.y+190);
+ await page.mouse.move(visibleBounds!.x+legend.cost10,visibleBounds!.y+190);
  const domestic=data.costs.find((r:any)=>r.target==='512480'&&r.lag_sessions===1&&r.model==='domestic_fx'&&r.scenario==='flat_bps'&&r.round_trip_bp===10)!;
  await expect(root).not.toContainText(domestic.mean_daily_net_bp.toFixed(4)+' bp');
  await expect(root).toContainText(row.mean_daily_net_bp.toFixed(4)+' bp');
+ await expect(root.locator('div').filter({hasText:'Total round-trip cost (bp): 10'}).last()).toHaveCSS('color','rgb(237, 240, 242)');
+ await root.getByRole('img').screenshot({path:test.info().outputPath('desktop-light-chart.png')});
  await page.getByRole('button',{name:'Theme: System',exact:true}).click();
  await page.getByRole('button',{name:'Theme: Light',exact:true}).click();
  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
@@ -47,6 +51,7 @@ test('cost scenarios expose exact reviewed values across controls, locales and t
  await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
  expect(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor)).toBe('rgb(21, 25, 30)');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await root.getByRole('img').screenshot({path:test.info().outputPath('mobile-dark-chart.png')});
  await page.screenshot({path:test.info().outputPath('mobile-dark.png'),fullPage:true});
 });
 test('static numeric evidence and SVG survive without JavaScript',async({browser,baseURL})=>{

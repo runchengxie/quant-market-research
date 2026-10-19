@@ -48,17 +48,17 @@ export default function OverseasCostChart({ rows, svg }: { rows: CostRow[]; svg:
    ...baseChartOptions(theme, matchMedia('(prefers-reduced-motion: reduce)').matches),
    grid: { left: 12, right: 20, top: 80, bottom: 55, containLabel: true },
    legend: { type: 'scroll', top: 0, textStyle: { color: theme.label } },
-   tooltip: { ...baseChartOptions(theme,true).tooltip, trigger: 'axis', confine: true, formatter: (params: any) => {
+   tooltip: { ...baseChartOptions(theme,true).tooltip, textStyle: { color: '#edf0f2', fontSize: 12 }, trigger: 'axis', confine: true, formatter: (params: any) => {
     const points = Array.isArray(params) ? params : [params];
-    const cost = Number(points[0]?.axisValue);
+    const cost = Number(points[0]?.value?.[0]);
     return [ `${t('cost')}: ${cost}`, sample, t(lag === 0 ? 'scheduled' : 'delayed'), ...points.map((p: any) => {
      const row = selected.find(r => r.model === p.seriesId && r.round_trip_bp === cost);
      return `${p.marker}${p.seriesName}: ${costValue(row?.mean_daily_net_bp) === null ? t('missing') : row!.mean_daily_net_bp!.toFixed(4)} bp · n=${row?.n ?? '—'}`;
     }) ].join('<br/>');
    } },
-   xAxis: { type: 'category', data: costs, name: t('cost'), nameLocation: 'middle', nameGap: 32, axisLabel: { color: theme.label }, axisLine: { lineStyle: { color: theme.axis } } },
-   yAxis: { type: 'value', name: t('axis'), axisLabel: { color: theme.label }, splitLine: { lineStyle: { color: theme.grid } } },
-   series: costModels.map((model,i) => ({ id: model, name: modelName(model), type: 'line', connectNulls: false, symbolSize: 9, data: costs.map(cost => costValue(selected.find(r => r.model === model && r.round_trip_bp === cost)?.mean_daily_net_bp)), lineStyle: { color: ['#5276b8','#b77b42','#1d9d89','#a76c9f'][i] }, itemStyle: { color: ['#5276b8','#b77b42','#1d9d89','#a76c9f'][i] } })),
+   xAxis: { type: 'value', min: 0, max: 40, axisPointer: { snap: true }, splitLine: { lineStyle: { color: theme.grid } }, name: t('cost'), nameLocation: 'middle', nameGap: 32, axisLabel: { color: theme.label }, axisLine: { lineStyle: { color: theme.axis } } },
+   yAxis: { type: 'value', name: t('axis'), nameTextStyle: { align: 'left' }, axisLabel: { color: theme.label }, splitLine: { lineStyle: { color: theme.grid } } },
+   series: costModels.map((model,i) => ({ id: model, name: modelName(model), type: 'line', connectNulls: false, symbolSize: 9, data: costs.map(cost => [cost, costValue(selected.find(r => r.model === model && r.round_trip_bp === cost)?.mean_daily_net_bp)]), lineStyle: { color: ['#5276b8','#b77b42','#1d9d89','#a76c9f'][i] }, itemStyle: { color: ['#5276b8','#b77b42','#1d9d89','#a76c9f'][i] } })),
   }, true);
  }, [target,lag,locale,revision]);
  return <section data-overseas-cost-chart>
