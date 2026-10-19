@@ -10,3 +10,11 @@ test('Chinese and English search are normalized and never invent results', () =>
   assert.deepEqual(searchRecords(items, '<script>alert(1)</script>'), []);
   assert.equal(normalizeQuery('ＡＢＣ'), 'abc');
 });
+
+
+test('body matches beyond the 200-character query limit and preserves Unicode', () => {
+  const record = { ...items[0], id: 'long-method', text: '字'.repeat(250) + ' terminal evidence ' + '🌏'.repeat(600) + ' financial template' };
+  assert.deepEqual(searchRecords([record], 'terminal evidence'), [record]);
+  assert.deepEqual(searchRecords([record], 'financial template'), [record]);
+  assert.equal(Array.from(normalizeQuery('🌏'.repeat(250))).length, 200);
+});

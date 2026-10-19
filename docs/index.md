@@ -27,4 +27,7 @@ Use this site for independent market research projects and their reproducible me
 
 - [Historical valuation coverage and ranks](research/experiments/valuation-panel-20261018.md): 130 formations, missingness and common-sample ranks.
 - [Microcaps with and without ST](research/experiments/microcap-st-paired-short-window-20261018.md): paired short-window exploration and coverage selection.
-- [Overseas forward archive](research/experiments/overseas-forward-v1.md): fixed signal and actual receipts; eligible forward observations are still pending.
+- [Overseas forward archive](research/experiments/overseas-forward-v1.md): the first scheduled archive retained one eligible observation on October 19; effectiveness awaits at least 60 eligible days.
+
+- [ST paired exit evidence](research/experiments/microcap-st-exit-evidence-20261019.md): 107 events, suspension identity matches and unresolved terminal values.
+- [Financial template coverage diagnosis](research/experiments/financial-template-coverage-20261019.md): 87 financial-template issuers and quarantined ambiguous statements.

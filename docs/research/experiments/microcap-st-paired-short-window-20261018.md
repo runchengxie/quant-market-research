@@ -2,6 +2,8 @@
 
 [Chinese version](microcap-st-paired-short-window-20261018.zh-CN.md)
 
+[Exit evidence follow-up](microcap-st-exit-evidence-20261019.md): all 107 failed formation/issuer events remain unresolved; no returns are restored.
+
 Reviewed on 2026-10-18. **This run produces an actual matched descriptive comparison, but does not establish a reliable return benefit from including ST stocks.** Status coverage is much better documented in this recent window. Missing endpoint prices still remove most monthly pairs, and the sign depends on which complete months are compared. These are adjusted-price basket labels, with zero assumed costs; they are not trades, a cash ledger or an investable performance series.
 
 The [preceding ST comparability audit](microcap-st-comparability-audit-20261018.md) left this measurement open. This follow-up adds executable methods, same-sample comparisons and explicit member-level failure records. It does not revise the earlier frozen studies or certify their historical inputs.

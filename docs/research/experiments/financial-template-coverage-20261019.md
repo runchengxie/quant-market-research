@@ -28,7 +28,7 @@ For example, 603093.SH has `report_type=1`, the same final announcement date and
 
 No new API requests were made. Both baseline and diagnostic use the same raw observations and 2026-10-16 daily-basic partition. The diagnostic preserves exact raw retrieval timestamps from 2026-10-17/18 and separately records its actual generation time. It neither changes sealed inputs nor makes information available earlier. The consumer retains independent latest reports, positive finite denominators, the 550-day freshness guard, and equal report periods for the five-way sample. Parent/minority, preferred-equity and multiclass ownership limitations from the [original study](valuation-panel-20261018.md) still apply. No historical formation dates were added or recalculated.
 
-The dedicated [aggregate evidence](financial-template-coverage-20261019.json) records source hashes, metric counts and quarantine totals. The shared website registry and existing published panel JSON are unchanged.
+The dedicated [aggregate evidence](https://runchengxie.github.io/quant-market-research/data/financial_template_coverage_reviewed.json) records source hashes, metric counts and quarantine totals. This diagnosis is published as a separate reviewed aggregate. The original published valuation panel JSON remains unchanged.
 
 Provider source: [repair PR 105](https://github.com/runchengxie/quant-market-data-platform/pull/105), diagnostic code commit `616f789`. Reproduce after checking out the provider repair and this consumer revision. Resolve `MDP_CODE`, `QMR_CODE`, `MDP_DATA`, and `QMR_DATA` from the workspace configuration. Use new output directories for each run:
 
@@ -45,4 +45,4 @@ python scripts/analyze_financial_template_coverage.py \
   --output "$QMR_DATA/task_outputs/financial-template-coverage-20261019/run01"
 ```
 
-The price alias is a locator; the evidence records the exact partition hash. Source amounts remain outside both repositories. Provider integration must precede consumer integration.
+The price alias is a locator; the evidence records the exact partition hash. Source amounts remain outside both repositories. The provider repair was merged before this consumer diagnosis; reproduce with the merged revisions above.

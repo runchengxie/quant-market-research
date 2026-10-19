@@ -28,4 +28,4 @@
 
 本次没有新增API请求。修补前后使用相同原始观测和2026年10月16日报价分区。诊断保留2026年10月17日至18日的原始精确抓取时间，另行记录实际生成时间，没有改写封存输入或将可得时间提前。每项指标独立选择最新报告、550天时效限制、正且有限的分母、五项共同样本报告期一致等规则均保留。[原研究](valuation-panel-20261018.zh-CN.md)关于归母与少数股东、优先股和多类别股份市值的限制仍然适用。没有新增或重算历史形成日。
 
-[专属汇总证据](financial-template-coverage-20261019.json)保存输入哈希、覆盖数和隔离数量。数据平台代码见[修补PR105](https://github.com/runchengxie/quant-market-data-platform/pull/105)，诊断提交为 `616f789`。复现命令见[英文页](financial-template-coverage-20261019.md)。原始金额继续存放在仓库外，现有网站索引和公开面板JSON未更新。后续应先集成数据平台修补，再集成消费者诊断。
+[专属汇总证据](https://runchengxie.github.io/quant-market-research/data/financial_template_coverage_reviewed.json)保存输入哈希、覆盖数和隔离数量。数据平台代码见[修补PR105](https://github.com/runchengxie/quant-market-data-platform/pull/105)，诊断提交为 `616f789`。复现命令见[英文页](financial-template-coverage-20261019.md)。原始金额继续存放在仓库外，本诊断以独立复核汇总发布，原有公开估值面板JSON保持不变。数据平台修补已先于本诊断完成合并；复现时使用上述已合并版本。

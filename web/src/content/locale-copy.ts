@@ -17,6 +17,8 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  "microcap-st-exits": { title: "ST paired comparison: missing exit evidence", summary: "107 formation/issuer events explained by suspension and termination evidence; zero returns restored." },
+  "financial-template-coverage": { title: "Financial statement template coverage diagnosis", summary: "PE restored for 87 financial-template issuers; 49 common five-metric observations, without a historical return claim." },
   "valuation-panel": { title: "Low valuation: historical coverage and ranks", summary: "Five denominator definitions across 130 formations, common-sample ranks and availability limits." },
   "microcap-st-paired": { title: "Microcaps with and without ST: paired short-window exploration", summary: "Paired samples, unresolved exits and the effect of coverage selection." },
   "overseas-forward": { title: "Overseas signals: forward archive protocol v1", summary: "A fixed signal, 08:45 deadline, immutable receipts and evaluation after at least 60 eligible days." },
