@@ -6,13 +6,13 @@ import {buildMicrocapReport} from './content/microcap-report.server.ts';
 import {windowRecheck,windowReviewMarkdown} from './content/microcap-window-review.ts';
 for (const locale of ['en-US','zh-CN']) {
  test(`frozen ${locale} editions preserve the current report and prior bytes`,async()=>{
-  const frozen=await readFile(`public/downloads/archive/microcap-research.v1.0.7.${locale}.md`,'utf8');
-  const previous=await readFile(`public/downloads/archive/microcap-research.v1.0.6.${locale}.md`,'utf8');
+  const frozen=await readFile(`public/downloads/archive/microcap-research.v1.0.8.${locale}.md`,'utf8');
+  const previous=await readFile(`public/downloads/archive/microcap-research.v1.0.7.${locale}.md`,'utf8');
   assert.equal(frozen,(await buildMicrocapReport(locale)).markdown);
   const prior=await readFile(`public/downloads/archive/microcap-research.pre-v1.0.0.3966176.${locale}.md`);
   assert.equal(createHash('sha256').update(prior).digest('hex'),locale==='en-US'?'73e508cc2fbfc9c4a4e5e65fd3f77bdcdc133d2621f99ef0b351a7d78cf9a066':'6e86b33badfc4c82fe780d80bbc77ebdf1e54997b3aa40e226a3c6a39a9dd539');
-  assert.match(frozen,/1\.0\.7/);
-  assert.match(previous,/1\.0\.6/);
+  assert.match(frozen,/1\.0\.8/);
+  assert.match(previous,/1\.0\.7/);
   assert.ok(frozen.includes(windowReviewMarkdown(locale)));
  });
 }

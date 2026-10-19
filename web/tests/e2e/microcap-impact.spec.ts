@@ -17,7 +17,7 @@ test('holdings impact agrees with reviewed data and downloads across locales and
  expect(data.raw_share_ready).toBe(false);expect(data.exposure.plans['90'].inventory.owner_ideal_fee10.unknown).toBe(6);
  for(const locale of ['en-US','zh-CN']){
   const latest=await(await page.request.get(`downloads/microcap-research.${locale}.md`)).text();
-  const fixed=await(await page.request.get(`downloads/archive/microcap-research.v1.0.7.${locale}.md`)).text();
+  const fixed=await(await page.request.get(`downloads/archive/microcap-research.v1.0.8.${locale}.md`)).text();
   expect(latest).toBe(fixed);expect(latest).toContain(data.register.head_sha256);expect(latest).toContain('0.15–0.26');
  }
  await page.evaluate(()=>{document.documentElement.dataset.theme='dark';});await page.setViewportSize({width:390,height:844});

@@ -1,0 +1,39 @@
+---
+import { rawSellCopy as c, rawSellTables, validateRawSellReview, type RawSellReview } from '../../content/microcap-raw-sell';
+import { tAgenda } from '../../content/microcap-agenda';
+const { evidence } = Astro.props as {evidence:RawSellReview};
+validateRawSellReview(evidence);
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<section id="microcap-raw-sell" class="panel raw-sell">
+ <h2 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+ {[{locale:'en-US' as const,live:true},...(['en-US','zh-CN'] as const).map(locale=>({locale,live:false}))].map(({locale,live})=>{
+  const Container=live?'div':'template';const t=(key:keyof typeof c)=>tAgenda(c[key],locale);
+  const tables=rawSellTables(evidence,locale);
+  const blocks=[{id:'gates',title:'gatesTitle',table:tables.gates,boundary:'gatesBoundary'},
+   {id:'scope',title:'scopeTitle',table:tables.scope,boundary:'scopeBoundary'},
+   {id:'errors',title:'errorsTitle',table:tables.errors,boundary:'errorsBoundary'}] as const;
+  return <Container data-raw-sell-live={live?'':undefined} data-raw-sell-locale={live?undefined:locale} lang={locale}>
+   <p class="finding">{t('conclusion')}</p><p>{t('reviewed')}: <time datetime={evidence.reviewed_on}>{evidence.reviewed_on}</time></p>
+   {blocks.map(block=><div data-raw-sell-block={block.id}>
+    <h3>{t(block.title)}</h3><div class={`raw-sell-table ${block.id}`} tabindex="0" role="region" aria-label={t(block.title)}>
+     <table><caption>{t(block.title)}</caption><thead><tr>{block.table.headers.map(header=><th scope="col">{header}</th>)}</tr></thead>
+      <tbody>{block.table.rows.map(row=><tr><th scope="row">{row[0]}</th>{row.slice(1).map(cell=><td>{cell}</td>)}</tr>)}</tbody>
+     </table></div><p>{t(block.boundary)}</p>
+   </div>)}
+   <details><summary>{t('policyTitle')}</summary><p>{t('policy')}</p><p>{t('policyLimits')}</p></details>
+   <h3>{t('boundaryTitle')}</h3><p>{t('boundary')}</p><p>{t('next')}</p><p><a href="#microcap-chain">{t('prior')}</a></p>
+   <details><summary>{t('provenance')}</summary><ul>{Object.entries(evidence.source_sha256).map(([role,hash])=><li><code>{role}</code>: <code>{hash}</code></li>)}</ul></details>
+   <p><a href={`${base}/data/microcap_raw_sell_review.json`} download>{t('download')}</a></p>
+  </Container>;
+ })}
+</section>
+<script>
+ const section=document.querySelector('#microcap-raw-sell');
+ const live=section?.querySelector<HTMLElement>('[data-raw-sell-live]');
+ const sync=()=>{const locale=document.documentElement.lang.startsWith('zh')?'zh-CN':'en-US';if(!live||live.lang===locale)return;const source=section?.querySelector<HTMLTemplateElement>(`template[data-raw-sell-locale="${locale}"]`);if(!source)return;const expanded=Array.from(live.querySelectorAll('details'),detail=>detail.open);live.replaceChildren(source.content.cloneNode(true));live.lang=locale;live.querySelectorAll('details').forEach((detail,i)=>detail.open=expanded[i]??false);};
+ sync();new MutationObserver(sync).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});
+</script>
+<style>
+.raw-sell{margin-block:1.5rem;min-width:0}.raw-sell p{max-width:92ch;line-height:1.8}.raw-sell h3{margin-top:1.6rem}.raw-sell details{border-top:1px solid var(--rule);padding:.8rem 0}.raw-sell summary{cursor:pointer;font-weight:600}.raw-sell code{overflow-wrap:anywhere;white-space:normal}.raw-sell-table{overflow-x:auto;margin-block:1rem}.raw-sell-table table{width:100%;border-collapse:collapse;table-layout:fixed;font-size:.88rem;line-height:1.7}.raw-sell-table th,.raw-sell-table td{vertical-align:top;text-align:left;padding:.65rem;border-bottom:1px solid var(--rule);overflow-wrap:anywhere;white-space:normal}.raw-sell-table caption{text-align:left;padding-bottom:.6rem;color:var(--muted)}.raw-sell-table thead{background:var(--surface-strong)}.raw-sell-table.gates table{min-width:650px}.raw-sell-table.errors table{min-width:470px}.raw-sell-table.scope th{width:65%}.raw-sell-table:focus-visible{outline:2px solid var(--accent-strong)}.finding{border-left:3px solid var(--accent-strong);padding-left:1rem}
+</style>
