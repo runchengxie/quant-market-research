@@ -16,3 +16,5 @@ Validation: 249 web tests passed; build:pages passed with zero Astro diagnostics
 Follow-up review: merged current main including ST evidence PR #218. Browser coverage now clicks the actual canvas legend, verifies omitted-rule tooltip behavior, uses the real theme button with persisted dark preference, and asserts dark body RGB after mobile resize. ETF and lag selections persist across the real language navigation. Rebuilt and repeated all 249 unit tests plus both Chromium cases successfully.
 
 Numeric-axis review: the 80 flat-bp scenarios use [cost, value] coordinates on a 0–40 bp value axis, with null outcomes retained. Browser assertions pin the proportional 10/20/40 bp positions and hover at the actual 10 bp coordinate. Dedicated light-desktop and dark-mobile chart screenshots are retained outside the repository; tooltip text contrast and numeric-grid theme colors are explicit.
+
+Final integration: normally merged main through financial-template coverage PR #219, reran all 249 web tests and build:pages. Updated the pre-existing overseas smoke test to check the interactive canvas and retained SVG download, replacing its obsolete visible-image assertion.
