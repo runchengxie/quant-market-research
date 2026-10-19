@@ -1,0 +1,80 @@
+{
+  "schema_version": "market-research.st-exit-reviewed-facts.v1",
+  "observed_on": "20261019",
+  "events": [
+    {
+      "ts_code": "600260.SH",
+      "formation": "20230131",
+      "delist_date": "20230215",
+      "last_clean_trade_date": "20230202",
+      "source_url": "https://www.sse.com.cn/disclosure/announcement/listing/stock/c/c_20230208_88298117.shtml",
+      "source_publication_date": "20230208",
+      "no_delisting_trading_period": true,
+      "settlement_amount_verified": false,
+      "endpoint_trade_verified": false,
+      "protocol_resolution": "unresolved"
+    },
+    {
+      "ts_code": "600311.SH",
+      "formation": "20230228",
+      "delist_date": "20230327",
+      "last_clean_trade_date": "20230302",
+      "source_url": "https://www.sse.com.cn/disclosure/announcement/listing/stock/c/c_20230320_88719293.shtml",
+      "source_publication_date": "20230320",
+      "no_delisting_trading_period": true,
+      "settlement_amount_verified": false,
+      "endpoint_trade_verified": false,
+      "protocol_resolution": "unresolved"
+    },
+    {
+      "ts_code": "600070.SH",
+      "formation": "20250331",
+      "delist_date": "20250430",
+      "last_clean_trade_date": "20250410",
+      "source_url": "https://www.sse.com.cn/disclosure/announcement/listing/stock/c/c_20250428_10777920.shtml",
+      "source_publication_date": "20250428",
+      "no_delisting_trading_period": true,
+      "settlement_amount_verified": false,
+      "endpoint_trade_verified": false,
+      "protocol_resolution": "unresolved"
+    },
+    {
+      "ts_code": "300117.SZ",
+      "formation": "20250331",
+      "delist_date": "20250430",
+      "last_clean_trade_date": "20250331",
+      "source_url": "https://static.cninfo.com.cn/finalpage/2025-04-29/1223411144.PDF",
+      "source_publication_date": "20250429",
+      "no_delisting_trading_period": true,
+      "settlement_amount_verified": false,
+      "endpoint_trade_verified": false,
+      "protocol_resolution": "unresolved",
+      "entry_suspension_source": "https://static.cninfo.com.cn/finalpage/2025-04-01/1222971960.PDF"
+    },
+    {
+      "ts_code": "000040.SZ",
+      "formation": "20250331",
+      "delist_date": "20250430",
+      "last_clean_trade_date": "20250331",
+      "source_url": "https://disc.static.szse.cn/download/disc/disk03/finalpage/2025-04-30/c0354752-af8d-457d-996f-5e87ed3aff35.PDF",
+      "source_publication_date": "20250430",
+      "no_delisting_trading_period": true,
+      "settlement_amount_verified": false,
+      "endpoint_trade_verified": false,
+      "protocol_resolution": "unresolved",
+      "source_date_conflict": "Issuer delisting notice states decision 20250425; receipt notice states received 20250428; exchange republication dated 20250429. No arbitrary decision-date reconciliation."
+    }
+  ],
+  "suspension_identity_aliases": [
+    {
+      "canonical_code": "920039.BJ",
+      "historical_code": "831039.BJ",
+      "source_url": "https://www.bse.cn/service/code_mapping.html"
+    },
+    {
+      "canonical_code": "920680.BJ",
+      "historical_code": "839680.BJ",
+      "source_url": "https://www.bse.cn/service/code_mapping.html"
+    }
+  ]
+}
