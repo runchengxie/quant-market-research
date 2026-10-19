@@ -2,7 +2,15 @@
 
 [Chinese version](overseas-forward-v1.zh-CN.md)
 
-Evidence starts with an actual receipt. Existing historical data remain research inputs; downloading them today cannot establish historical availability or create an untouched holdout. The October 18 installation probe is ineligible. The first scheduled attempt is October 19, 2026 at 08:44 Shanghai time.
+Evidence starts with an actual receipt. Existing historical data remain research inputs; downloading them today cannot establish historical availability or create an untouched holdout. The October 18 installation probe is ineligible. The first scheduled archive completed on October 19, 2026 at 08:44 Shanghai time; one eligible observation is now retained.
+
+## First scheduled acceptance: October 19, 2026
+
+The timer started the service at 08:44:00 Shanghai time and it exited successfully at 08:44:02, without a manual trigger or rerun. Collection ran from `2026-10-19T00:44:00.373965Z` to `00:44:02.093013Z`; the prediction was sealed at `00:44:02.236136Z`. The dated manifest records `eligible=true` with no exclusion reasons. All eight archived CSV hashes, the receipt hash and the prediction hash were independently checked.
+
+One eligible observation verifies this collection and sealing chain only. It does not establish predictive accuracy or returns. The first evaluation still requires at least 60 eligible target days; no outcome was automatically scored, no message was sent and no trade was placed.
+
+Stable acceptance hashes: qualification manifest SHA256 `7e2a388e925d0b46d846793781e055c1338a73afbf3d87958d07c6c163cef139`; raw receipt SHA256 `6827020df51f990fb8fce1c74454c5a349fa5574f3b677c4c54ec337251ff3a4`. These identify the retained evidence without publishing source rows, signal direction or machine-local paths.
 
 ## Fixed signal and timing
 

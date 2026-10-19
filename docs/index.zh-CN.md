@@ -31,7 +31,7 @@
 
 - [低估值历史覆盖与排名](research/experiments/valuation-panel-20261018.zh-CN.md)：130 个月份，先核对缺失与共同样本，再比较排名。
 - [小微盘含 ST / 剔除 ST 成对探索](research/experiments/microcap-st-paired-short-window-20261018.zh-CN.md)：短窗口结果与覆盖选择限制。
-- [海外信号真实时点归档协议](research/experiments/overseas-forward-v1.zh-CN.md)：固定信号与实际收据，尚未积累合格前向样本。
+- [海外信号真实时点归档协议](research/experiments/overseas-forward-v1.zh-CN.md)：10月19日首次定时归档保留1个合格观察，效果评估仍待至少60个合格目标日。
 
 - [ST成对退出证据](research/experiments/microcap-st-exit-evidence-20261019.zh-CN.md)：107个事件、停牌身份匹配和仍未解决的退市终值。
 - [金融模板报表覆盖诊断](research/experiments/financial-template-coverage-20261019.zh-CN.md)：87家金融模板公司与歧义报表隔离。
