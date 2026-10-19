@@ -22,3 +22,12 @@ for (const locale of ['en-US','zh-CN']) {
   }
  });
 }
+
+test('current capacity status leads with the bounded pass and advances the next gate',()=>{
+ const row=statusRows('en-US').find(row=>row.id==='MC-C03');
+ assert.equal(row.href,'#microcap-raw-sell');
+ assert.match(row.cells[0],/reconciles/);
+ assert.match(row.cells[2],/79 fills pass/);
+ assert.match(row.cells[3],/full history/);
+ assert.doesNotMatch(row.cells[3],/Resolve the raw-share sell-quantity contract/);
+});

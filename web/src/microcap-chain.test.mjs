@@ -35,3 +35,12 @@ for (const locale of ['en-US', 'zh-CN']) {
   assert.equal(targetSliceTable(locale).rows.at(-1)[1], locale === 'zh-CN' ? '暂不接受' : 'Withheld');
  });
 }
+
+for (const locale of ['en-US', 'zh-CN']) test(`1.0.7 chain keeps its rejected account and manual receipt as historical evidence in ${locale}`, async () => {
+ const { chainCopy, chainMarkdown, chainEvidence } = await import('./content/microcap-chain.ts');
+ assert.ok(chainCopy.historicalSnapshot);
+ assert.match(chainMarkdown(locale), /1\.0\.7/);
+ assert.equal(chainEvidence.reviewed_on, '2026-10-18');
+ assert.equal(chainEvidence.target_slice.accepted_nav, false);
+ assert.equal(chainEvidence.prospective.new_completed_windows, 0);
+});

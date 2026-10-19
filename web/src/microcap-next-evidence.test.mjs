@@ -47,7 +47,7 @@ for (const locale of ['en-US', 'zh-CN']) test(`earlier event review remains a la
  assert.ok(nextCopy.snapshotBoundary);
  const section = nextEvidenceMarkdown(locale);
  assert.match(section, /1\.0\.5/);
- assert.ok(section.includes('https://runchengxie.github.io/quant-market-research/research/microcap/#microcap-chain'));
+ assert.ok(section.includes('https://runchengxie.github.io/quant-market-research/research/microcap/#microcap-raw-sell'));
  assert.equal(data.events.retrospective_economic_adjudications, 3);
  assert.equal(data.events.dated_unresolved, 91);
 });
