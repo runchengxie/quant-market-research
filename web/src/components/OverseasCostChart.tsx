@@ -15,8 +15,16 @@ export default function OverseasCostChart({ rows, svg }: { rows: CostRow[]; svg:
  const t = (key: keyof typeof c) => c[key][locale];
  const modelName = (model: typeof costModels[number]) => overseasCopy.models[model][locale];
  const selected = selectCostRows(rows, target, lag);
+ const updateSelection = (nextTarget: string, nextLag: number) => {
+  setTarget(nextTarget); setLag(nextLag);
+  try { sessionStorage.setItem('overseas-cost-selection', JSON.stringify({target: nextTarget, lag: nextLag})); } catch { /* Storage is optional. */ }
+ };
  const sample = t(target === '510300' ? 'window510300' : 'window512480');
  useEffect(() => {
+  try {
+   const saved = JSON.parse(sessionStorage.getItem('overseas-cost-selection') ?? '{}');
+   if (['510300','512480'].includes(saved.target) && [0,1].includes(saved.lag)) { setTarget(saved.target); setLag(saved.lag); }
+  } catch { /* Tables remain available when storage is unavailable. */ }
   const sync = () => { setLocale(document.documentElement.lang === 'zh-CN' ? 1 : 0); setRevision(v => v + 1); };
   sync();
   const observer = new MutationObserver(sync);
@@ -56,8 +64,8 @@ export default function OverseasCostChart({ rows, svg }: { rows: CostRow[]; svg:
  return <section data-overseas-cost-chart>
   <h3>{t('title')}</h3><p>{t('help')}</p>
   <div style={{display:'flex',flexWrap:'wrap',gap:'1rem'}}>
-   <label>{t('etf')} <select aria-label={t('etf')} value={target} onChange={e=>setTarget(e.target.value)}><option>510300</option><option>512480</option></select></label>
-   <label>{t('delay')} <select aria-label={t('delay')} value={lag} onChange={e=>setLag(Number(e.target.value))}><option value={0}>{t('scheduled')}</option><option value={1}>{t('delayed')}</option></select></label>
+   <label>{t('etf')} <select aria-label={t('etf')} value={target} onChange={e=>updateSelection(e.target.value,lag)}><option>510300</option><option>512480</option></select></label>
+   <label>{t('delay')} <select aria-label={t('delay')} value={lag} onChange={e=>updateSelection(target,Number(e.target.value))}><option value={0}>{t('scheduled')}</option><option value={1}>{t('delayed')}</option></select></label>
   </div>
   <p aria-live="polite" data-cost-sample>{sample} {t(lag === 0 ? 'scheduled' : 'delayed')}</p>
   <div ref={canvas} role="img" aria-label={`${t('title')}. ${t('mean')}. ${sample}`} style={{height:'380px',width:'100%'}} />

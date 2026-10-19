@@ -12,3 +12,5 @@
 Review focus: missing values stay missing; each lag/ETF filters only real observations; legend operates without changing source data; language and theme changes redraw; no-JS readers retain SVG and numeric evidence.
 
 Validation: 249 web tests passed; build:pages passed with zero Astro diagnostics and static verification; two Chromium tests passed on dedicated port 4488, covering real locale switching, dark mobile layout, exact reviewed tooltip/table values, ETF/delay controls and no-JavaScript fallback. Reviewed JSON and SVG are unchanged.
+
+Follow-up review: merged current main including ST evidence PR #218. Browser coverage now clicks the actual canvas legend, verifies omitted-rule tooltip behavior, uses the real theme button with persisted dark preference, and asserts dark body RGB after mobile resize. ETF and lag selections persist across the real language navigation. Rebuilt and repeated all 249 unit tests plus both Chromium cases successfully.

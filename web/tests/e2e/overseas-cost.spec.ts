@@ -17,18 +17,41 @@ test('cost scenarios expose exact reviewed values across controls, locales and t
  await page.mouse.move(bounds!.x+bounds!.width/2,bounds!.y+190);
  await expect(root).toContainText('Total round-trip cost (bp): 10');
  await expect(root).toContainText(row.mean_daily_net_bp.toFixed(4)+' bp');
+ // Locate the rendered legend label, click it, and verify the resulting tooltip.
+ const legend = await root.locator('canvas').evaluate(async canvas => {
+  const url = performance.getEntriesByType('resource').map(r=>r.name).find(url=>/\/echarts[^/]*\.js/.test(url))!;
+  const module = await import(url);
+  const api: any = Object.values(module).map((v: any)=>v?.echarts ?? v).find((v: any)=>v?.getInstanceByDom);
+  const chart = api.getInstanceByDom(canvas.closest('[_echarts_instance_]')!);
+  const text = chart.getZr().storage.getDisplayList().find((item: any)=>item.style?.text==='Domestic + FX');
+  const rect = text.getBoundingRect().clone(); rect.applyTransform(text.getComputedTransform());
+  return {x:rect.x+rect.width/2,y:rect.y+rect.height/2};
+ });
+ await root.locator('canvas').evaluate(el=>{el.scrollIntoView({block:'center'});window.scrollBy(0,-150);});
+ const visibleBounds=await root.locator('canvas').boundingBox();
+ await page.mouse.click(visibleBounds!.x+legend.x,visibleBounds!.y+legend.y);
+ await page.mouse.move(visibleBounds!.x+visibleBounds!.width/2,visibleBounds!.y+190);
+ const domestic=data.costs.find((r:any)=>r.target==='512480'&&r.lag_sessions===1&&r.model==='domestic_fx'&&r.scenario==='flat_bps'&&r.round_trip_bp===10)!;
+ await expect(root).not.toContainText(domestic.mean_daily_net_bp.toFixed(4)+' bp');
+ await expect(root).toContainText(row.mean_daily_net_bp.toFixed(4)+' bp');
+ await page.getByRole('button',{name:'Theme: System',exact:true}).click();
+ await page.getByRole('button',{name:'Theme: Light',exact:true}).click();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+ expect(await page.evaluate(()=>localStorage.getItem('market-research-theme'))).toBe('dark');
  await page.getByRole('button',{name:'Switch to Chinese'}).click();
- await page.evaluate(()=>{document.documentElement.dataset.theme='dark';});
- await expect(root.getByLabel('输入可用时间')).toBeVisible();
+ await expect(root.getByLabel('ETF',{exact:true})).toHaveValue('512480');
+ await expect(root.getByLabel('输入可用时间')).toHaveValue('1');
  await expect(root.locator('summary')).toHaveText('当前选择的费用情景与样本量');
  await page.setViewportSize({width:390,height:844});
  await expect(root.locator('canvas')).toBeVisible();
+ await expect(page.locator('html')).toHaveAttribute('data-theme','dark');
+ expect(await page.evaluate(()=>getComputedStyle(document.body).backgroundColor)).toBe('rgb(21, 25, 30)');
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await page.screenshot({path:test.info().outputPath('mobile-dark.png'),fullPage:true});
 });
-test('static numeric evidence and SVG survive without JavaScript',async({browser})=>{
+test('static numeric evidence and SVG survive without JavaScript',async({browser,baseURL})=>{
  const context=await browser.newContext({javaScriptEnabled:false});const page=await context.newPage();
- await page.goto('http://127.0.0.1:4488/quant-market-research/research/overseas-leadlag/');
+ await page.goto(new URL('research/overseas-leadlag/',baseURL!).href);
  await expect(page.locator('noscript img')).toBeVisible();
  await expect(page.locator('[data-overseas-cost-chart] tbody tr')).toHaveCount(20);
  await context.close();
