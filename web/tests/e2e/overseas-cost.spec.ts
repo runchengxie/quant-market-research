@@ -1,0 +1,35 @@
+import { test, expect } from '@playwright/test';
+import fs from 'node:fs';
+const data=JSON.parse(fs.readFileSync(new URL('../../public/data/overseas_leadlag_reviewed.json',import.meta.url),'utf8'));
+test('cost scenarios expose exact reviewed values across controls, locales and themes',async({page})=>{
+ await page.goto('research/overseas-leadlag/');
+ page.on('pageerror',error=>console.log('PAGE ERROR',error.message));
+ const root=page.locator('[data-overseas-cost-chart]');
+ await expect(root.locator('canvas')).toBeVisible();
+ await root.getByLabel('ETF',{exact:true}).selectOption('512480');
+ await root.getByLabel('Input availability').selectOption('1');
+ await expect(root.locator('[data-cost-sample]')).toContainText('2021–2026');
+ await root.locator('summary').click();
+ const row=data.costs.find((r: any)=>r.target==='512480'&&r.lag_sessions===1&&r.model==='global'&&r.scenario==='flat_bps'&&'round_trip_bp' in r&&r.round_trip_bp===10)!;
+ await expect(root.locator('tbody')).toContainText(row.mean_daily_net_bp.toFixed(4));
+ await root.locator('canvas').evaluate(el=>el.scrollIntoView({block:'center'}));
+ const bounds=await root.locator('canvas').boundingBox();
+ await page.mouse.move(bounds!.x+bounds!.width/2,bounds!.y+190);
+ await expect(root).toContainText('Total round-trip cost (bp): 10');
+ await expect(root).toContainText(row.mean_daily_net_bp.toFixed(4)+' bp');
+ await page.getByRole('button',{name:'Switch to Chinese'}).click();
+ await page.evaluate(()=>{document.documentElement.dataset.theme='dark';});
+ await expect(root.getByLabel('输入可用时间')).toBeVisible();
+ await expect(root.locator('summary')).toHaveText('当前选择的费用情景与样本量');
+ await page.setViewportSize({width:390,height:844});
+ await expect(root.locator('canvas')).toBeVisible();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+ await page.screenshot({path:test.info().outputPath('mobile-dark.png'),fullPage:true});
+});
+test('static numeric evidence and SVG survive without JavaScript',async({browser})=>{
+ const context=await browser.newContext({javaScriptEnabled:false});const page=await context.newPage();
+ await page.goto('http://127.0.0.1:4488/quant-market-research/research/overseas-leadlag/');
+ await expect(page.locator('noscript img')).toBeVisible();
+ await expect(page.locator('[data-overseas-cost-chart] tbody tr')).toHaveCount(20);
+ await context.close();
+});

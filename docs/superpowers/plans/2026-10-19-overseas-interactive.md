@@ -1,0 +1,14 @@
+# Overseas cost sensitivity implementation plan
+
+**Goal:** Explore reviewed cost scenarios by ETF and input delay with exact values.
+**Architecture:** A dedicated React island renders existing flat-bp aggregates with ECharts and an accessible table. The existing SVG remains a fallback and download.
+**Tech Stack:** Astro, React, ECharts, existing reviewed JSON.
+**Spec:** Authorized parent task: preserve research values, conclusions, sample differences and partial-2026 limits; English default with Chinese switch.
+
+- [x] Add locale copy and cost-row adapter; verify filtering and missing values.
+- [x] Build chart with ETF/delay controls, legend, exact hover and responsive theme support; integrate with overseas page.
+- [x] Run relevant and complete web tests, build:pages, browser interaction checks on port 4488; commit and open PR without merging.
+
+Review focus: missing values stay missing; each lag/ETF filters only real observations; legend operates without changing source data; language and theme changes redraw; no-JS readers retain SVG and numeric evidence.
+
+Validation: 249 web tests passed; build:pages passed with zero Astro diagnostics and static verification; two Chromium tests passed on dedicated port 4488, covering real locale switching, dark mobile layout, exact reviewed tooltip/table values, ETF/delay controls and no-JavaScript fallback. Reviewed JSON and SVG are unchanged.
