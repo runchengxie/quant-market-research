@@ -3,6 +3,8 @@
 
   const target = legacyHashTarget(window.location.hash, import.meta.env.BASE_URL);
   if (target) {
-    window.location.replace(target);
+    const destination = new URL(target, window.location.origin);
+    destination.search = window.location.search;
+    window.location.replace(destination.href);
   }
 </script>

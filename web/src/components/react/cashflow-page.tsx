@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { cashflowIndexNames, cashflowSections, cashflowTopicCopy } from '../../content/cashflow-topic';
 import {
   displayLabels,
   displayValue,
@@ -21,11 +22,43 @@ import {
 import type { CashflowBasis } from "./research-shared";
 
 export function CashflowPage() {
+  const localeIndex = englishLocale() ? 0 : 1;
+  useEffect(() => {
+    // Preserve the requested section as independent data and charts change
+    // height. Stop following it as soon as the reader starts interacting.
+    let followAnchor = true;
+    let frame = 0;
+    const restore = () => {
+      if (!followAnchor || !cashflowSections.some(section => `#${section.id}` === window.location.hash)) return;
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        if (followAnchor) document.getElementById(window.location.hash.slice(1))?.scrollIntoView({ block: 'start' });
+      });
+    };
+    const navigate = () => { followAnchor = true; restore(); };
+    const stop = () => { followAnchor = false; };
+    const observer = new ResizeObserver(restore);
+    const content = document.getElementById('topic-content');
+    if (content) observer.observe(content);
+    window.addEventListener('hashchange', navigate);
+    for (const event of ['pointerdown', 'wheel', 'touchstart', 'keydown']) window.addEventListener(event, stop, { passive: true });
+    restore();
+    return () => {
+      observer.disconnect();
+      cancelAnimationFrame(frame);
+      window.removeEventListener('hashchange', navigate);
+      for (const event of ['pointerdown', 'wheel', 'touchstart', 'keydown']) window.removeEventListener(event, stop);
+    };
+  }, []);
   return (
     <>
-      <ReplicationSection scope="cashflow" />
-      <CashflowPageContent />
-      <RecoverySection scope="cashflow" />
+      {cashflowSections.slice(0, 3).map((section, index) => <section key={section.id} id={section.id} aria-labelledby={`${section.id}-title`}>
+        <h2 id={`${section.id}-title`} data-locale-text data-en={section.labelEn} data-zh={section.label}>{localeIndex === 0 ? section.labelEn : section.label}</h2>
+        {index === 0 ? <CashflowPageContent /> : index === 1 ? <>
+          <p data-locale-text data-en={cashflowTopicCopy.recovery[0]} data-zh={cashflowTopicCopy.recovery[1]}>{cashflowTopicCopy.recovery[localeIndex]}</p>
+          <RecoverySection scope="cashflow" embedded />
+        </> : <ReplicationSection scope="cashflow" />}
+      </section>)}
     </>
   );
 }
@@ -54,7 +87,7 @@ export function CashflowPageContent() {
       row.window === windowKey &&
       (basis === "all" || row.return_basis === basis),
   );
-  const comparison =
+  const comparisonData =
     basis === "all"
       ? matching
       : codes.map(
@@ -68,6 +101,7 @@ export function CashflowPageContent() {
               cagr: "",
             },
         );
+  const comparison = comparisonData.map(row => ({ ...row, name: english ? cashflowIndexNames[row.ts_code] ?? row.ts_code : row.name }));
   const windowLabel = displayValue("window", windowKey);
   const basisLabel = basis === "all" ? t("全部回报口径", "all return bases") : displayValue("basis", basis);
   const asOf = [...new Set(rows.map((row) => row.as_of).filter(Boolean))]

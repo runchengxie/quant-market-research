@@ -112,7 +112,7 @@ export function LineChart({ series, labels }: { series: Series[]; labels: string
 export function ControlBar({ children }: { children: React.ReactNode }) { return <div className="control-bar">{children}</div>; }
 export function Choice({ active, children, onClick }: { active: boolean; children: React.ReactNode; onClick: () => void }) { return <button className={`choice ${active ? "active" : ""}`} onClick={onClick}>{children}</button>; }
 export function MicrocapSubTabs({ scope, onChange }: { scope: MicrocapScope; onChange: (value: MicrocapScope) => void }) { const ui = (zh: string, en: string) => englishLocale() ? en : zh; return <div className="sub-tabs" aria-label={ui("小微盘研究子主题", "Micro-cap research topics")}><button className={scope === "a-share" ? "active" : ""} onClick={() => onChange("a-share")}>{ui("A股小微盘", "A-share micro-caps")}</button><button className={scope === "cross-market" ? "active" : ""} onClick={() => onChange("cross-market")}>{ui("跨市场小微盘流动性", "Cross-market micro-cap liquidity")}</button></div>; }
-export function StyleSubTabs({ scope }: { scope: StyleScope }) { const base = import.meta.env.BASE_URL ?? "/"; const ui = (zh: string, en: string) => englishLocale() ? en : zh; return <div className="sub-tabs" aria-label={ui("市场长期风格研究子主题", "Long-run market style topics")}><a className={scope === "indices" ? "active" : ""} href={withBase("/research/indices/", base)}>{ui("指数与 ETF", "Indices and ETFs")}</a><a className={scope === "barra" ? "active" : ""} href={withBase("/research/style-factors-18y/", base)}>{ui("Barra 风格因子研究（18年）", "18-year Barra-style factor research")}</a></div>; }
+export function StyleSubTabs({ scope }: { scope: StyleScope }) { const base = import.meta.env.BASE_URL ?? "/"; const ui = (zh: string, en: string) => englishLocale() ? en : zh; return <div className="sub-tabs" aria-label={ui("市场长期风格研究子主题", "Long-run market style topics")}><a className={scope === "indices" ? "active" : ""} href={withBase("/research/indices/", base)}>{ui("指数与 ETF 长期表现", "Long-run index and ETF performance")}</a><a className={scope === "barra" ? "active" : ""} href={withBase("/research/style-factors-18y/", base)}>{ui("Barra 风格因子研究（18年）", "18-year Barra-style factor research")}</a></div>; }
 
 export function formatTurnover(value: number) {
   const english = englishLocale();
@@ -169,7 +169,7 @@ export function SortableTable({ rows, columns, percentColumns = [], searchPlaceh
     </nav>}
   </>;
 }
-export function Loading() { return <p className="loading">{englishLocale() ? "Loading research data…" : "正在加载研究数据……"}</p>; }
+export function Loading() { return <p className="loading" data-locale-text data-en="Loading research data…" data-zh="正在加载研究数据……">{englishLocale() ? "Loading research data…" : "正在加载研究数据……"}</p>; }
 
 export type LiquidityRelativeSummary = { schema_version: string; absolute_summary_sha256: string; markets: LiquidityPeriodMarket[]; periods: LiquidityPeriod[] };
 export type LiquidityCoverageSummary = {

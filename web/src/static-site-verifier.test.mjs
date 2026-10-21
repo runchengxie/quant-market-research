@@ -13,11 +13,11 @@ const routes = [
   ["research/style-theme-rotation/index.html", "Style and theme rotation: from signals to ETF portfolios"],
   ["research/etf-rotation/index.html", "Style and theme rotation"],
   ["research/hotsector/index.html", "Style and theme rotation"],
-  ["research/cashflow/index.html", "Cash-flow history"],
-  ["research/cashflow/recovery/index.html", "Cash-flow drawdowns and recovery time"],
+  ["research/cashflow/index.html", "Cash-flow index research"],
+  ["research/cashflow/recovery/index.html", "Cash-flow index research"],
   ["research/microcap/index.html", "A-share micro-cap history"],
   ["research/microcap/cross-market-liquidity/index.html", "Cross-market micro-cap liquidity"],
-  ["research/indices/index.html", "Index and ETF history"],
+  ["research/indices/index.html", "Long-run index and ETF performance"],
   ["research/style-factors-18y/index.html", "18-year A-share style factors"],
   ["research/liquidity/index.html", "Cross-market liquidity"],
   ["research/factors/low-turnover/index.html", "Low-turnover factor: what information remains?"],
@@ -59,7 +59,7 @@ test("static site verifier reports missing routes and private material", async (
   const root = await makeSite();
   t.after(() => fs.rm(root, { recursive: true, force: true }));
   await fs.rm(path.join(root, "research/microcap/index.html"));
-  await fs.writeFile(path.join(root, "index.html"), "<html>/home/richard private output</html>");
+  await fs.writeFile(path.join(root, "index.html"), "<html>/home/example private output</html>");
   const errors = verifyStaticSite(root).join("\n");
   assert.match(errors, /Missing route output: research\/microcap\/index\.html/);
   assert.match(errors, /forbidden local path or credential marker/);

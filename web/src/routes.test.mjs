@@ -6,7 +6,7 @@ test("public routes and legacy hashes preserve every existing research entry", (
   assert.deepEqual(Object.values(PUBLIC_ROUTES), [
     "/",
     "/research/cashflow/",
-    "/research/cashflow/recovery/",
+    "/research/cashflow/#cashflow-recovery",
     "/research/microcap/",
     "/research/microcap/cross-market-liquidity/",
     "/research/indices/",

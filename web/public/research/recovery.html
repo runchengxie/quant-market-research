@@ -3,12 +3,17 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <noscript><meta http-equiv="refresh" content="0; url=../#cashflow-recovery"></noscript>
+  <noscript><meta http-equiv="refresh" content="0; url=./cashflow/#cashflow-recovery"></noscript>
   <title>Recovery research has moved</title>
-  <script>window.location.replace('../#cashflow-recovery');</script>
+  <script>
+    const destination = new URL('./cashflow/', window.location.href);
+    destination.search = window.location.search;
+    destination.hash = window.location.hash || 'cashflow-recovery';
+    window.location.replace(destination.href);
+  </script>
 </head>
 <body>
   <p>Recovery research is now part of the cash-flow and micro-cap topics.</p>
-  <p><a href="../#cashflow-recovery">View cash-flow recovery research</a> or <a href="../#microcap">view micro-cap research</a>.</p>
+  <p><a href="./cashflow/#cashflow-recovery">View cash-flow recovery research</a> or <a href="./microcap/">view micro-cap research</a>.</p>
 </body>
 </html>

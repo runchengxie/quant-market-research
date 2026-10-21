@@ -39,7 +39,7 @@ test('microcap recovery cannot silently display a cashflow result', () => {
   assert.match(html, /Tonghuashun Micro-cap/);
   assert.doesNotMatch(html, /CSI 800 Cash Flow/);
   assert.match(html, /Dividend treatment still needs review/);
-  assert.match(html, /href="\/research\/cashflow\/recovery\/"/);
+  assert.match(html, /href="\/research\/cashflow\/#cashflow-recovery"/);
 });
 
 test('Chinese locale retains the source-language series labels and method copy', () => {

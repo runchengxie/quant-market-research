@@ -184,16 +184,20 @@ export const overviewCopy = {
     "因子与风格"
   ],
   "cashflowTitle": [
-    "Cash flow",
-    "现金流"
+    "Cash-flow index research",
+    "现金流指数研究"
   ],
+  "indicesTitle": ["Long-run index and ETF performance", "指数与 ETF 长期表现"],
+  "indicesConclusion": ["Index price returns exclude dividends. ETF histories use the return definitions and dates shown in each table.", "指数价格收益不含分红，ETF 历史表现按各表注明的回报口径和日期查看。"],
+  "indicesCoverage": ["Coverage varies by index and ETF; see the topic tables.", "覆盖日期因指数和 ETF 而异，详见专题表格。"],
+  "indicesScope": ["Index catalog, ten-year price returns, representative ETFs and performance across horizons.", "指数目录、十年价格收益、代表 ETF 与多期限表现。"],
   "microcapTitle": [
     "Micro-caps",
     "小微盘"
   ],
   "styleTitle": [
-    "Long-run style",
-    "长期风格"
+    "18-year style factors",
+    "18 年风格因子"
   ],
   "lowTurnoverTitle": [
     "Low-turnover factor",

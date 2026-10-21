@@ -1,7 +1,17 @@
 ---
-import ResearchPage from "../../../../components/ResearchPage.astro";
-import { CashflowPage } from "../../../../components/react/cashflow-page";
+import { PUBLIC_ROUTES, withBase } from '../../../../lib/routes';
+const canonical = withBase(PUBLIC_ROUTES.cashflow, import.meta.env.BASE_URL);
+const target = withBase(PUBLIC_ROUTES.cashflowRecovery, import.meta.env.BASE_URL);
 ---
-<ResearchPage title="现金流回撤与回本时间" titleEn="Cash-flow drawdowns and recovery time" description="现金流指数历史回撤区间、最长水下时间与回本记录。" snapshotKey="cashflow" activeRoute="cashflow" kicker="现金流历史研究 · 回撤与回本" kickerEn="Cash-flow history · drawdowns and recovery" introduction="按每次前高记录跌至谷底、重新回到前高所需的时间，并区分已经回本与样本结束时仍未回本的区间。" introductionEn="Measure the time from each prior high to its low and back. Separate declines that recovered during the sample from those still below the old high when the data ends." boundary="价格回报与税前全收益使用各自的序列。样本结束时仍未回到前高的区间，只能确认至少持续了这么久；之后何时回本尚不清楚（统计上称为右删失）。" boundaryEn="Price return and pre-tax total return use separate series. If an index is still below its old high when the sample ends, we know the decline lasted at least as long as observed, but not when it will recover. Statistics call this right-censoring." evidenceEn="Historical recovery record" question="指数从高点下跌后，通常多久能回到原来的高点？" questionEn="After an index falls from a high, how long does it take to return to that level?" nextStep="核对价格序列、分红处理方式，以及尚未回本时如何记录观察时长。" nextStepEn="Check the price series, dividend treatment, and how ongoing declines are counted.">
-  <CashflowPage client:visible />
-</ResearchPage>
+<!doctype html>
+<html lang="en-US"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Cash-flow index research · moved</title><link rel="canonical" href={new URL(canonical, Astro.site)} />
+<noscript><meta http-equiv="refresh" content={`0;url=${target}`} /></noscript>
+</head><body><p>Drawdowns and recovery are now part of <a href={target}>Cash-flow index research</a>.</p>
+<script is:inline define:vars={{ canonical }}>
+  const destination = new URL(canonical, window.location.origin);
+  destination.search = window.location.search;
+  destination.hash = window.location.hash || 'cashflow-recovery';
+  window.location.replace(destination.href);
+</script>
+</body></html>

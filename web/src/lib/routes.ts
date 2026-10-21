@@ -1,7 +1,7 @@
 export const PUBLIC_ROUTES = {
   overview: "/",
   cashflow: "/research/cashflow/",
-  cashflowRecovery: "/research/cashflow/recovery/",
+  cashflowRecovery: "/research/cashflow/#cashflow-recovery",
   microcap: "/research/microcap/",
   crossMarketLiquidity: "/research/microcap/cross-market-liquidity/",
   indices: "/research/indices/",
@@ -16,7 +16,7 @@ export const LEGACY_HASH_ROUTES: Record<string, string> = {
   "": PUBLIC_ROUTES.overview,
   "#overview": PUBLIC_ROUTES.overview,
   "#cashflow": PUBLIC_ROUTES.cashflow,
-  "#cashflow-recovery": `${PUBLIC_ROUTES.cashflowRecovery}#cashflow-recovery`,
+  "#cashflow-recovery": PUBLIC_ROUTES.cashflowRecovery,
   "#microcap": PUBLIC_ROUTES.microcap,
   "#microcap-recovery": `${PUBLIC_ROUTES.microcap}#microcap-recovery`,
   "#cross-market": PUBLIC_ROUTES.crossMarketLiquidity,

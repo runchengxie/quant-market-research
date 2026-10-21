@@ -51,7 +51,7 @@ test("Astro 页面直接挂载研究组件，不保留 React 二次路由", () =
 });
 
 test("研究总览使用三个研究域和小微盘子主题", () => {
-  assert.match(site, /现金流历史研究/);
+  assert.match(site, /现金流指数研究/);
   assert.match(site, /小微盘研究/);
   assert.match(site, /长期风格研究/);
   assert.match(site, /历史研究档案/);

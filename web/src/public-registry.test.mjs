@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { publicDocs, publicPages, validateRegistry } from './content/public-registry.ts';
 
 test('the reviewed English and Chinese documents are admissible', () => {
-  assert.equal(publicDocs.length, 34);
+  assert.equal(publicDocs.length, 36);
   assert.equal(publicDocs.filter((d) => d.route === '/docs/').length, 1);
   assert.ok(publicDocs.every((d) => !/superpowers|runbooks/.test(d.source)));
   assert.doesNotThrow(() => validateRegistry(publicPages, publicDocs));
@@ -41,4 +41,15 @@ test('execution topic binds the two reviewed aggregate snapshots', () => {
   const topic = publicPages.find((page) => page.id === 'execution-costs');
   assert.deepEqual(topic.snapshotKeys, ['execution_costs', 'execution_strategy']);
   assert.doesNotThrow(() => validateRegistry(publicPages, publicDocs));
+});
+
+
+test('grouped valuation draft is discoverable with both method languages', () => {
+  const topic = publicPages.find(p => p.id === 'valuation-groups');
+  assert.equal(topic.route, '/research/valuation-groups/');
+  assert.equal(topic.title, '低估值研究');
+  assert.ok(['style', 'microcap', 'cashflow'].every(id => topic.related.includes(id)));
+  assert.ok(topic.related.includes('valuation-groups-method'));
+  assert.ok(publicDocs.some(d => d.id === 'valuation-groups-method'));
+  assert.ok(publicDocs.some(d => d.id === 'valuation-groups-method-zh-CN'));
 });

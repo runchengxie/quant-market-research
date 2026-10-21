@@ -1,0 +1,17 @@
+---
+import SiteLayout from '../../../layouts/SiteLayout.astro';
+import { ValuationGroupsPage } from '../../../components/react/valuation-groups-page';
+import { valuationCopy as c } from '../../../content/valuation-groups-copy';
+import { withBase } from '../../../lib/routes';
+import '../../../styles/valuation-groups.css';
+---
+<SiteLayout title={c.title[1]} titleEn={c.title[0]} description={c.introduction[0]} section="research">
+  <header class="theme-heading"><div><span class="section-kicker" data-locale-text data-en={c.draft[0]} data-zh={c.draft[1]}>{c.draft[0]}</span>
+    <h1 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h1>
+    <p data-locale-text data-en={c.introduction[0]} data-zh={c.introduction[1]}>{c.introduction[0]}</p></div></header>
+  <ValuationGroupsPage client:load />
+  <nav class="report-links">
+    <a href={withBase('/docs/research/experiments/grouped-valuation-20261021/', import.meta.env.BASE_URL)} data-locale-text data-en={c.method[0]} data-zh={c.method[1]}>{c.method[0]}</a>
+    <a href={withBase('/data/grouped_valuation_draft.json', import.meta.env.BASE_URL)} data-locale-text data-en={c.download[0]} data-zh={c.download[1]}>{c.download[0]}</a>
+  </nav>
+</SiteLayout>

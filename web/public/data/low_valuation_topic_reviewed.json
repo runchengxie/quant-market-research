@@ -1,0 +1,200 @@
+{
+  "schema_version": "low_valuation_topic.v1",
+  "evidence_status": "unpublished_retrospective_draft",
+  "early_coverage": {
+    "date": "20160129",
+    "available": 10,
+    "quoted": 2558
+  },
+  "ranking": {
+    "date": "20261016",
+    "common_n": 1743,
+    "quoted_n": 5567,
+    "pairs": [
+      {
+        "first": "pe_ttm",
+        "second": "pe_deducted_proxy",
+        "n": 1743,
+        "spearman": 0.946569974843345,
+        "bottom_quintile_jaccard": 0.7537688442211056
+      },
+      {
+        "first": "pe_ttm",
+        "second": "pb_parent",
+        "n": 1743,
+        "spearman": 0.5066281870563905,
+        "bottom_quintile_jaccard": 0.28073394495412846
+      },
+      {
+        "first": "pe_ttm",
+        "second": "pb_ex_goodwill_proxy",
+        "n": 1743,
+        "spearman": 0.5044582775761496,
+        "bottom_quintile_jaccard": 0.285451197053407
+      },
+      {
+        "first": "pe_ttm",
+        "second": "pb_ex_intangibles_proxy",
+        "n": 1743,
+        "spearman": 0.46057673113376424,
+        "bottom_quintile_jaccard": 0.2737226277372263
+      },
+      {
+        "first": "pe_deducted_proxy",
+        "second": "pb_parent",
+        "n": 1743,
+        "spearman": 0.449878855086568,
+        "bottom_quintile_jaccard": 0.24865831842576028
+      },
+      {
+        "first": "pe_deducted_proxy",
+        "second": "pb_ex_goodwill_proxy",
+        "n": 1743,
+        "spearman": 0.44778504302400246,
+        "bottom_quintile_jaccard": 0.25314183123877915
+      },
+      {
+        "first": "pe_deducted_proxy",
+        "second": "pb_ex_intangibles_proxy",
+        "n": 1743,
+        "spearman": 0.4050269238011856,
+        "bottom_quintile_jaccard": 0.24865831842576028
+      },
+      {
+        "first": "pb_parent",
+        "second": "pb_ex_goodwill_proxy",
+        "n": 1743,
+        "spearman": 0.9831586760873126,
+        "bottom_quintile_jaccard": 0.8967391304347826
+      },
+      {
+        "first": "pb_parent",
+        "second": "pb_ex_intangibles_proxy",
+        "n": 1743,
+        "spearman": 0.9343185693344648,
+        "bottom_quintile_jaccard": 0.7581863979848866
+      },
+      {
+        "first": "pb_ex_goodwill_proxy",
+        "second": "pb_ex_intangibles_proxy",
+        "n": 1743,
+        "spearman": 0.9558181633576874,
+        "bottom_quintile_jaccard": 0.8224543080939948
+      }
+    ]
+  },
+  "legacy": {
+    "source": "style-factors/weekly-20260904",
+    "start": "20080201",
+    "end": "20260904",
+    "days": 4518,
+    "missing_holding_return": "zero",
+    "integrity": {
+      "checked_receipts": 32,
+      "matching_receipts": 31,
+      "mismatch": "meta.json",
+      "published_numerical_files_match_run_package": true,
+      "exact_generating_revision_recovered": false
+    },
+    "factors": [
+      {
+        "factor": "value",
+        "days": 4518,
+        "geometric_annual_ret": 10.64,
+        "max_drawdown": -20.61
+      },
+      {
+        "factor": "earnings_yield",
+        "days": 4518,
+        "geometric_annual_ret": 5.24,
+        "max_drawdown": -23.41
+      },
+      {
+        "factor": "ps_value",
+        "days": 4518,
+        "geometric_annual_ret": 6.04,
+        "max_drawdown": -20.13
+      }
+    ]
+  },
+  "gaps": [
+    {
+      "group": "all_market",
+      "metric": "pb_parent",
+      "resolved": 185237,
+      "unresolved": 4560,
+      "total": 189797,
+      "reasons": [
+        {
+          "reason": "end_limit_down_unknown",
+          "count": 686
+        },
+        {
+          "reason": "end_price_missing_invalid",
+          "count": 351
+        },
+        {
+          "reason": "entry_limit_up_unknown",
+          "count": 3373
+        },
+        {
+          "reason": "entry_price_missing_invalid",
+          "count": 125
+        },
+        {
+          "reason": "terminal_before_endpoint",
+          "count": 25
+        }
+      ],
+      "minimum_missing_by_quintile": [
+        3,
+        4,
+        4,
+        6,
+        10
+      ]
+    },
+    {
+      "group": "all_market",
+      "metric": "pe_deducted_proxy",
+      "resolved": 131115,
+      "unresolved": 2160,
+      "total": 133275,
+      "reasons": [
+        {
+          "reason": "end_limit_down_unknown",
+          "count": 196
+        },
+        {
+          "reason": "end_price_missing_invalid",
+          "count": 140
+        },
+        {
+          "reason": "entry_limit_up_unknown",
+          "count": 1785
+        },
+        {
+          "reason": "entry_price_missing_invalid",
+          "count": 37
+        },
+        {
+          "reason": "terminal_before_endpoint",
+          "count": 2
+        }
+      ],
+      "minimum_missing_by_quintile": [
+        1,
+        1,
+        1,
+        1,
+        4
+      ]
+    }
+  ],
+  "source_sha256": {
+    "valuation_panel": "59de7704c15b034de40128b956d7d571504f357ca1be85d7524e726c6f9fe4c5",
+    "historical_factors": "33592ad2b326307aefd0ff0575fc62d020aea4554480e358b949dd8e9140b36b",
+    "historical_manifest": "bb815e511d183e93edb117d203f469747e62325731268e5868c2a749add0b23f",
+    "endpoint_gap_audit": "21bfe44590ad5114cd4f24f59856ad89943b20192b04193117b0bb33283fff0e"
+  }
+}
