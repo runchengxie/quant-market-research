@@ -40,6 +40,8 @@ export function isReplicationSnapshot(x: unknown): x is Snapshot {
 }
 
 export default function ReplicationSection({scope}: {scope: Scope}) {
+  const locale = typeof document !== 'undefined' ? document.documentElement.lang : 'en-US';
+  const t = copy(locale);
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [loading, setLoading] = useState(true);
   useEffect(() => {
@@ -51,9 +53,9 @@ export default function ReplicationSection({scope}: {scope: Scope}) {
       .finally(() => { if (!controller.signal.aborted) setLoading(false); });
     return () => controller.abort();
   }, []);
-  if (loading) return <p role="status" data-locale-text data-en="Loading replication research…" data-zh="正在读取复刻研究…">Loading replication research…</p>;
-  if (!snapshot) return <section className="panel" role="status" data-locale-text data-en="Replication research data is temporarily unavailable. Other topic data remains available." data-zh="复刻研究数据暂不可用，请稍后重试。其他专题数据仍可查看。">Replication research data is temporarily unavailable. Other topic data remains available.</section>;
-  return <ReplicationContent scope={scope} snapshot={snapshot} locale={typeof document !== 'undefined' ? document.documentElement.lang : 'en-US'}/>;
+  if (loading) return <p role="status" data-locale-text data-en={copy('en-US').loading} data-zh={copy('zh-CN').loading}>{t.loading}</p>;
+  if (!snapshot) return <section className="panel" role="status" data-locale-text data-en={copy('en-US').unavailableData} data-zh={copy('zh-CN').unavailableData}>{t.unavailableData}</section>;
+  return <ReplicationContent scope={scope} snapshot={snapshot} locale={locale}/>;
 }
 
 const pct = (x: number | null, unavailable: string) => x === null ? unavailable : `${(x * 100).toFixed(2)}%`;

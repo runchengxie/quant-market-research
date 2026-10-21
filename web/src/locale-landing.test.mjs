@@ -14,13 +14,13 @@ test("research and documentation directories render English-first localized copy
   assert.match(research, /data-locale-text data-en=\{topic\.en\} data-zh=\{topic\.zh\}/);
   assert.doesNotMatch(research, /\{page\.topic\}/);
   for (const label of [
-    "Cash-flow research",
+    "Cash-flow index research",
     "Micro-cap research",
     "Style research",
     "Low-turnover research",
     "Index research",
     "Liquidity, costs and capacity",
-    "现金流研究",
+    "现金流指数研究",
     "微盘研究",
     "风格研究",
     "低换手研究",

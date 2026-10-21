@@ -3,7 +3,7 @@ import type { PublicPage, TopicId } from "./public-registry";
 const topicLabels: Record<TopicId, { en: string; zh: string }> = {
   overseas: { en: 'Overseas lead-lag research', zh: '海外领先指标研究' },
   rotation: { en: "Style and theme rotation", zh: "风格与主题轮动" },
-  cashflow: { en: "Cash-flow research", zh: "现金流研究" },
+  cashflow: { en: "Cash-flow index research", zh: "现金流指数研究" },
   microcap: { en: "Micro-cap research", zh: "微盘研究" },
   style: { en: "Style research", zh: "风格研究" },
   "low-turnover": { en: "Low-turnover research", zh: "低换手研究" },
@@ -17,6 +17,8 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  'valuation-groups': { title: 'Low-valuation research', summary: 'Annual minima and percentiles, five accounting definitions, ST groups and the limits of valuation-factor evidence.' },
+  'valuation-groups-method': { title: 'Low-valuation research: evidence and methods', summary: 'Annual sample support, accounting definitions, historical portfolio versions and conditional return limits.' },
   "microcap-st-exits": { title: "ST paired comparison: missing exit evidence", summary: "107 formation/issuer events explained by suspension and termination evidence; zero returns restored." },
   "financial-template-coverage": { title: "Financial statement template coverage diagnosis", summary: "PE restored for 87 financial-template issuers; 49 common five-metric observations, without a historical return claim." },
   "valuation-panel": { title: "Low valuation: historical coverage and ranks", summary: "Five denominator definitions across 130 formations, common-sample ranks and availability limits." },
@@ -30,11 +32,10 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
   "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Ten selected L2 dates: CNY 100k median static costs are 9.27/8.87 bp; CNY 1m coverage is 62.12%/67.68%. Order-flow audit and strategy sensitivity are published; actual execution remains uncalibrated." },
   overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
-  cashflow: { title: "Cash Flow and Dividends", summary: "What historical cash-flow groups returned, how long losses lasted, and which checks remain open." },
-  "cashflow-recovery": { title: "Cash-Flow Recovery", summary: "How long past declines lasted, how well the results were rebuilt, and what real trading would still require." },
+  cashflow: { title: "Cash-flow index research", summary: "Return and dividend definitions, investment drawdowns and recovery, index replication and tradability." },
   microcap: { title: "Micro-cap Research", summary: "What historical small-stock portfolios returned and lost, with their data gaps shown." },
   "cross-market-liquidity": { title: "Cross-market Liquidity", summary: "How much stocks traded in each market and whether those figures can be compared." },
-  indices: { title: "Indices and Long-run Returns", summary: "Which index and ETF histories are included, and why their returns use different definitions." },
+  indices: { title: "Long-run index and ETF performance", summary: "Which index and ETF histories are included, and why their returns use different definitions." },
   style: { title: "18 Years of Style Factors", summary: "How value, size, and other stock groups behaved across years and market conditions." },
   "pb-roe": { title: "Historical PB and ROE Comparison", summary: "Whether adding profitability data changed a historical valuation comparison using the same stocks." },
   liquidity: { title: "Liquidity, Trading Costs and Capacity", summary: "Cross-market profiles, book costs, execution scenarios and quality checks in one study. Actual capacity remains uncalibrated." },

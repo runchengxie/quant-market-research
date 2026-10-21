@@ -44,10 +44,12 @@ function overviewTree({recovery, barra}: OverviewProps, locale: 'en-US' | 'zh-CN
         conclusion={microcap ? microcap.longest_completed_underwater_calendar_days == null ? text('microcapNoRecovery') : `${text('microcapRecoveryPrefix')} ${dayCount(microcap.longest_completed_underwater_calendar_days)}${englishLocale() ? '.' : '。'}` : text('microcapUnavailable')}
         date={microcap ? `${microcap.start} ${text('rangeSeparator')} ${microcap.end}` : text('unavailable')}
         scope={text('microcapScope')}/>
-      <EvidenceCard locale={locale} domain="市场与板块" title="长期风格" href={withBase(PUBLIC_ROUTES.indices, import.meta.env?.BASE_URL ?? "/")} status={styleAvailable ? '历史结果供研究参考' : '数据暂不可用'}
+      <EvidenceCard locale={locale} domain="市场与板块" title="长期风格" href={withBase(PUBLIC_ROUTES.styleFactors, import.meta.env?.BASE_URL ?? "/")} status={styleAvailable ? '历史结果供研究参考' : '数据暂不可用'}
         conclusion={styleAvailable ? `${text('factorsPrefix')} ${history.factor_count} ${text('factorsConclusionSuffix')}` : text('styleUnavailable')}
         date={styleAvailable ? `${text('styleCoveragePrefix')} ${history.coverage_end}` : text('unavailable')}
         scope={text('styleScope')}/>
+      <EvidenceCard locale={locale} domain="市场与板块" title={text("indicesTitle")} href={withBase(PUBLIC_ROUTES.indices, import.meta.env?.BASE_URL ?? "/")} status="历史结果供研究参考"
+        conclusion={text("indicesConclusion")} date={text("indicesCoverage")} scope={text("indicesScope")} />
       <EvidenceCard locale={locale} domain="因子与风格" title="低换手因子" href={withBase(PUBLIC_ROUTES.lowTurnover, import.meta.env?.BASE_URL ?? "/")} status="探索性研究"
         conclusion={text('lowTurnoverConclusion')}
         date={text('lowTurnoverCoverage')} scope={text('lowTurnoverScope')}/>

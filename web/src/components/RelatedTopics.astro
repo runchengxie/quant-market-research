@@ -1,0 +1,11 @@
+---
+import { publicPages } from '../content/public-registry';
+import { englishCopy } from '../content/locale-copy';
+import { withBase } from '../lib/routes';
+const { ids } = Astro.props as { ids: readonly string[] };
+const topics = ids.map(id => publicPages.find(page => page.id === id)).filter(page => page !== undefined);
+---
+<aside class="panel related-topics" aria-labelledby="related-topics-title">
+  <h2 id="related-topics-title" data-locale-text data-en="Related research" data-zh="相关研究">Related research</h2>
+  <ul>{topics.map(page => <li><a href={withBase(page.route, import.meta.env.BASE_URL)} data-locale-text data-en={englishCopy(page).title} data-zh={page.title}>{englishCopy(page).title}</a><p data-locale-text data-en={englishCopy(page).summary} data-zh={page.summary}>{englishCopy(page).summary}</p></li>)}</ul>
+</aside>

@@ -2,11 +2,11 @@ import { expect, test } from "@playwright/test";
 
 const routes = [
   ["", "Start with the main findings"],
-  ["research/cashflow/", "Cash-flow history"],
-  ["research/cashflow/recovery/", "Cash-flow drawdowns and recovery time"],
+  ["research/cashflow/", "Cash-flow index research"],
+  ["research/cashflow/recovery/", "Cash-flow index research"],
   ["research/microcap/", "A-share micro-cap history"],
   ["research/microcap/cross-market-liquidity/", "Cross-market micro-cap liquidity"],
-  ["research/indices/", "Index and ETF history"],
+  ["research/indices/", "Long-run index and ETF performance"],
   ["research/style-factors-18y/", "18-year A-share style factors"],
   ["research/liquidity/", "Liquidity, trading costs and capacity"],
   ["research/factors/low-turnover/", "Low-turnover factor: what information remains?"],

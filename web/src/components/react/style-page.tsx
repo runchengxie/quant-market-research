@@ -131,7 +131,7 @@ export function IndicesPage() {
     <>
       <ThemeHeading
         kicker={ui("指数长期回报 · ETF 可投资性", "Long-run index returns · ETF investability")}
-        title={ui("指数长期回报与可投资的基金产品", "Long-run index returns and investable ETFs")}
+        title={ui("指数与 ETF 长期表现", "Long-run index and ETF performance")}
         text={ui("查看指数目录、十年价格回报，以及跟踪指数的代表性交易型开放式指数基金（ETF）。价格回报不含分红，基金回报还受费用和跟踪误差影响。", "Review the index catalog, ten-year price returns, and representative exchange-traded funds (ETFs). Price returns exclude dividends; fund returns also reflect fees and tracking error.")}
         asof={ui("已发布的历史数据", "Published historical data")}
       />

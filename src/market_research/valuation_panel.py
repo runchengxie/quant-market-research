@@ -50,7 +50,7 @@ def trailing_values(latest: pd.DataFrame, source: pd.DataFrame, field: str) -> p
     return current.where(periods.str.endswith("1231"), current + take(annual_dates) - take(prior_dates))
 
 
-def make_panel(statements: dict[str, pd.DataFrame], prices: pd.DataFrame, date: str, *, require_observed: bool) -> pd.DataFrame:
+def make_panel(statements: dict[str, pd.DataFrame], prices: pd.DataFrame, date: str, *, require_observed: bool, private_denominators: bool = False) -> pd.DataFrame:
     if prices.ts_code.duplicated().any():
         raise ValueError("duplicate daily-basic issuer")
     if set(prices.trade_date.astype(str)) != {date}:
@@ -86,6 +86,7 @@ def make_panel(statements: dict[str, pd.DataFrame], prices: pd.DataFrame, date: 
     fresh = [out.income_age_days.between(0, 550), out.fina_indicator_age_days.between(0, 550), *[out.balancesheet_age_days.between(0, 550)] * 3]
     for name, denominator, age_valid in zip(METRICS, denominators, fresh, strict=True):
         denominator = pd.to_numeric(denominator, errors="coerce").where(age_valid)
+        out["denominator_" + name] = denominator.where(np.isfinite(denominator))
         out[name + "_nonpositive"] = np.isfinite(denominator) & (denominator <= 0)
         out[name] = (out.market_value / denominator).where(np.isfinite(denominator) & (denominator > 0))
         out[name] = out[name].where(np.isfinite(out[name]))
@@ -103,6 +104,8 @@ def make_panel(statements: dict[str, pd.DataFrame], prices: pd.DataFrame, date: 
     out["preferred_equity_unknown"] = pd.to_numeric(out.oth_eqt_tools_p_shr, errors="coerce").isna()
     # Retain derived outputs only; do not copy financial source amounts into research outputs.
     columns = ["ts_code", "formation_date", "end_date", "report_age_days", "income_period", "fina_indicator_period", "balancesheet_period", "same_report_period", "all_metrics_available", "reporting_group", "size_bucket", "profitability_bucket", "common_five", "stale_statement", "minority_equity_present", "preferred_equity_present", "preferred_equity_unknown", *METRICS, *[m + "_nonpositive" for m in METRICS]]
+    if private_denominators:
+        columns += ["market_value", *["denominator_" + m for m in METRICS]]
     result = out[columns].reset_index(drop=True)
     result.attrs["input_quote_records"] = len(prices)
     return result
