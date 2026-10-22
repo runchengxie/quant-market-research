@@ -1,4 +1,5 @@
 ---
+import ClaimReview from '../../../components/ClaimReview.astro';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import { ValuationGroupsPage } from '../../../components/react/valuation-groups-page';
 import { valuationCopy as c } from '../../../content/valuation-groups-copy';
@@ -10,6 +11,7 @@ import '../../../styles/valuation-groups.css';
     <h1 data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h1>
     <p data-locale-text data-en={c.introduction[0]} data-zh={c.introduction[1]}>{c.introduction[0]}</p></div></header>
   <ValuationGroupsPage client:load />
+  <ClaimReview topic="valuation" />
   <nav class="report-links">
     <a href={withBase('/docs/research/experiments/grouped-valuation-20261021/', import.meta.env.BASE_URL)} data-locale-text data-en={c.method[0]} data-zh={c.method[1]}>{c.method[0]}</a>
     <a href={withBase('/data/grouped_valuation_draft.json', import.meta.env.BASE_URL)} data-locale-text data-en={c.download[0]} data-zh={c.download[1]}>{c.download[0]}</a>

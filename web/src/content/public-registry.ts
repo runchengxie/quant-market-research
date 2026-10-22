@@ -16,6 +16,9 @@ export type PublicPage = {
 export type PublicDoc = PublicPage & { source: string; slug: string };
 
 const docSources = new Set([
+  'docs/research/experiments/reader-forward-registration-20261022.md',
+  'docs/research/experiments/reader-forward-registration-20261022.zh-CN.md',
+
   'docs/research/experiments/grouped-valuation-20261021.md',
   'docs/research/experiments/grouped-valuation-20261021.zh-CN.md',
   'docs/research/experiments/microcap-st-exit-evidence-20261019.md',
@@ -62,6 +65,8 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
+  page({ id: 'reader-forward-registration', route: '/docs/research/experiments/reader-forward-registration-20261022/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
+  page({ id: 'reader-forward-registration-zh-CN', route: '/docs/research/experiments/reader-forward-registration-20261022.zh-CN/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
   page({ id: 'valuation-groups', route: '/research/valuation-groups/', title: '低估值研究', summary: '年度最低值、五口径、分组因子与交易账本，统一查看已核对的观察、探索结果和待补证问题。', section: 'research', topic: 'style', aliases: [], related: ['valuation-groups-method', 'valuation-panel', 'valuation-denominators', 'financial-template-coverage', 'pb-roe', 'style', 'microcap', 'cashflow'], snapshotKeys: [] }),
   page({ id: 'valuation-groups-method', route: '/docs/research/experiments/grouped-valuation-20261021/', title: '低估值研究的方法与证据', summary: '年度比较、历史状态、会计口径、收益实验版本与条件样本限制。', section: 'docs', topic: 'style', aliases: [], related: ['valuation-groups', 'valuation-panel'], snapshotKeys: [] }),
   page({ id: 'valuation-groups-method-zh-CN', route: '/docs/research/experiments/grouped-valuation-20261021.zh-CN/', title: '低估值研究的方法与证据', summary: '年度比较、历史状态、会计口径、收益实验版本与条件样本限制。', section: 'docs', topic: 'style', aliases: [], related: ['valuation-groups', 'valuation-panel'], snapshotKeys: [] }),
@@ -119,6 +124,9 @@ export const publicPages: readonly PublicPage[] = [
 ];
 
 export const publicDocs: readonly PublicDoc[] = [
+  { ...publicPages.find(p => p.id === 'reader-forward-registration'), source: 'docs/research/experiments/reader-forward-registration-20261022.md', slug: 'research/experiments/reader-forward-registration-20261022' },
+  { ...publicPages.find(p => p.id === 'reader-forward-registration-zh-CN'), source: 'docs/research/experiments/reader-forward-registration-20261022.zh-CN.md', slug: 'research/experiments/reader-forward-registration-20261022.zh-CN' },
+
   { ...publicPages.find((p) => p.id === 'valuation-groups-method'), source: 'docs/research/experiments/grouped-valuation-20261021.md', slug: 'research/experiments/grouped-valuation-20261021' },
   { ...publicPages.find((p) => p.id === 'valuation-groups-method-zh-CN'), source: 'docs/research/experiments/grouped-valuation-20261021.zh-CN.md', slug: 'research/experiments/grouped-valuation-20261021.zh-CN' },
 

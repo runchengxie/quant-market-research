@@ -1,0 +1,49 @@
+{
+  "schemaVersion": 1,
+  "unit": "percentage_points",
+  "rankingMode": "formation_signal_support_fixed_before_forward_return_filter",
+  "evidenceDate": "2026-09-16",
+  "reviewedAt": "2026-10-22",
+  "formationStart": "2019-05-31",
+  "formationEnd": "2026-06-30",
+  "firstReturnEnd": "2019-06-28",
+  "lastReturnEnd": "2026-07-31",
+  "months": 86,
+  "manifestSha256": "9638fd5f4a3edc39896ac20dcfb7e47ddb4cd0f0d861e4033a4751e82b5f543f",
+  "summarySha256": "3d52f7713be407752fc0dc36252fb1830f3b214a31ac4720f8314d2a65b243e4",
+  "monthlySha256": "f93821d03d8ac265a29cef035d55b1a26f9b32986430401aeba1b7a6c3d720d2",
+  "controls": [
+    {
+      "id": "raw",
+      "low": 1.0797648680019947,
+      "high": -0.30232872434106467,
+      "spread": 1.3820935923430593,
+      "ciLow": 0.9357947252376033,
+      "ciHigh": 1.9177776970976197
+    },
+    {
+      "id": "size",
+      "low": 1.289487734711931,
+      "high": -0.3391272220487444,
+      "spread": 1.6286149567606754,
+      "ciLow": 1.2307048601825747,
+      "ciHigh": 2.05509728786487
+    },
+    {
+      "id": "size_lowvol",
+      "low": 0.7289991764393955,
+      "high": -0.13077080966942942,
+      "spread": 0.8597699861088248,
+      "ciLow": 0.5712380593452328,
+      "ciHigh": 1.1820488674267622
+    },
+    {
+      "id": "plus_beta_value",
+      "low": 1.0253347074133712,
+      "high": -0.17472212327221237,
+      "spread": 1.2000568306855834,
+      "ciLow": 0.8691925131292189,
+      "ciHigh": 1.6184141245373884
+    }
+  ]
+}

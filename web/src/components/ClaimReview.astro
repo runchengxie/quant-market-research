@@ -1,0 +1,19 @@
+---
+import LocaleText from './LocaleText.astro';
+import { readerToolsCopy as c } from '../content/reader-tools-copy';
+import { withBase } from '../lib/routes';
+interface Props { topic: 'low-turnover' | 'valuation'; }
+const {topic}=Astro.props;
+const lt=topic==='low-turnover';
+const values=lt?[c.ltCurrent,c.ltStronger,c.ltChange,c.ltTrigger]:[c.vgCurrent,c.vgStronger,c.vgChange,c.vgTrigger];
+const protocol=lt?'/research/microcap/#microcap-research-agenda':'https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/grouped-valuation-forward-protocol-20261021.md';
+---
+<section class="report-section" data-testid="claim-review">
+  <LocaleText as="h3" text={c.claims} />
+  <p class="panel-note">{lt?'LT-C01':'VG-C01'} · 2026-10-22</p>
+  {[c.current,c.stronger,c.change,c.trigger].map((title,i)=><div><LocaleText as="h3" text={title} /><LocaleText text={values[i]} /></div>)}
+  <div data-testid="forward-review"><LocaleText as="h3" text={c.forward} /><LocaleText text={lt?c.ltForward:c.vgForward} />
+    <a href={protocol.startsWith('https:')?protocol:withBase(protocol,import.meta.env.BASE_URL)}><LocaleText as="span" text={c.protocol} /></a>
+    <p><a href={withBase('/docs/research/experiments/reader-forward-registration-20261022/',import.meta.env.BASE_URL)} data-locale-link data-href-en={withBase('/docs/research/experiments/reader-forward-registration-20261022/?lang=en-US',import.meta.env.BASE_URL)} data-href-zh={withBase('/docs/research/experiments/reader-forward-registration-20261022.zh-CN/?lang=zh-CN',import.meta.env.BASE_URL)}><LocaleText as="span" text={c.registrationGuide} /></a></p>
+  </div>
+</section>

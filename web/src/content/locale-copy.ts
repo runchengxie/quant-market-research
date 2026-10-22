@@ -17,6 +17,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  'reader-forward-registration': { title: 'Future-observation registration', summary: 'Pre-entry receipts, independent time proof and pending evidence.' },
   'valuation-groups': { title: 'Low-valuation research', summary: 'Annual minima and percentiles, five accounting definitions, ST groups and the limits of valuation-factor evidence.' },
   'valuation-groups-method': { title: 'Low-valuation research: evidence and methods', summary: 'Annual sample support, accounting definitions, historical portfolio versions and conditional return limits.' },
   "microcap-st-exits": { title: "ST paired comparison: missing exit evidence", summary: "107 formation/issuer events explained by suspension and termination evidence; zero returns restored." },

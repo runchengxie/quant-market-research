@@ -1,4 +1,6 @@
 ---
+import ClaimReview from '../../../../components/ClaimReview.astro';
+import ResearchImageExport from '../../../../components/ResearchImageExport';
 import SiteLayout from '../../../../layouts/SiteLayout.astro';
 import { withBase } from '../../../../lib/routes';
 import LowTurnoverExecutionEvidence from '../../../../components/LowTurnoverExecutionEvidence';
@@ -16,6 +18,7 @@ const docsUrl = withBase('/docs/research/factors/low-turnover/', base);
       <LocaleText as="span" class="section-kicker" text={c.findings} /><LocaleText as="h3" text={c.conclusion} />
       <LocaleText text={c.lead} /><LocaleText text={c.scope} /><LocaleText class="panel-note" text={c.date} />
     </section>
+    <ResearchImageExport client:load />
     <section class="stat-grid report-stats">
       <article class="stat accent"><LocaleText as="span" text={c.common} /><LocaleText as="strong" text={c.months} /><small><LocaleText as="span" text={c.formation} /></small></article>
       <article class="stat"><LocaleText as="span" text={c.raw} /><strong>+{controls[0].spread.toFixed(2)}</strong><small><LocaleText as="span" text={c.spreadUnit} /></small></article>
@@ -46,6 +49,7 @@ const docsUrl = withBase('/docs/research/factors/low-turnover/', base);
     </section>
     <span id="research-method" class="anchor-target"></span><LowTurnoverExecutionEvidence client:load />
     <section class="report-section report-next"><LocaleText as="span" class="section-kicker" text={c.next} /><LocaleText as="h3" text={c.nextTitle} /><LocaleText text={c.nextText} /></section>
+    <ClaimReview topic="low-turnover" />
     <details class="report-section"><summary><LocaleText as="span" text={c.versions} /></summary><LocaleText text={c.versionNote} />
       <dl><dt><LocaleText as="span" text={c.manifest} /></dt><dd><code>{evidence.manifestSha256}</code></dd><dt><LocaleText as="span" text={c.summary} /></dt><dd><code>{evidence.summarySha256}</code></dd></dl>
     </details>

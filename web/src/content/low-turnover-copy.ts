@@ -1,18 +1,10 @@
-// Reviewed aggregate observations. Returns below are percentage points, not account returns.
-export const lowTurnoverEvidence = {
-  evidenceDate: '2026-09-16', reviewedAt: '2026-10-22',
-  formationStart: '2019-05-31', formationEnd: '2026-06-30',
-  firstReturnEnd: '2019-06-28', lastReturnEnd: '2026-07-31', months: 86,
-  manifestSha256: '9638fd5f4a3edc39896ac20dcfb7e47ddb4cd0f0d861e4033a4751e82b5f543f',
-  summarySha256: '3d52f7713be407752fc0dc36252fb1830f3b214a31ac4720f8314d2a65b243e4',
-} as const;
-
-export const lowTurnoverControls = [
-  { id: 'raw', label: ['Raw signal', '原始信号'], low: 1.079765, high: -0.302329, spread: 1.3820935923430594, ciLow: 0.9357947252376033, ciHigh: 1.9177776970976196 },
-  { id: 'size', label: ['Control for size', '控制市值'], low: 1.289488, high: -0.339127, spread: 1.6286149567606753, ciLow: 1.2307048601825746, ciHigh: 2.0550972878648703 },
-  { id: 'size_lowvol', label: ['Add low volatility', '再控制低波动'], low: 0.728999, high: -0.130771, spread: 0.8597699861088248, ciLow: 0.5712380593452328, ciHigh: 1.1820488674267621 },
-  { id: 'plus_beta_value', label: ['Full listed controls', '加入其余控制'], low: 1.025335, high: -0.174722, spread: 1.2000568306855836, ciLow: 0.8691925131292189, ciHigh: 1.6184141245373884 },
-] as const;
+import reader from '../../public/data/low_turnover_reader.json';
+const labels: Record<string, readonly [string,string]> = {
+ raw: ['Raw signal', '原始信号'], size: ['Control for size', '控制市值'],
+ size_lowvol: ['Add low volatility', '再控制低波动'], plus_beta_value: ['Full listed controls', '加入其余控制'],
+};
+export const lowTurnoverEvidence = reader;
+export const lowTurnoverControls = reader.controls.map(row => ({...row,label:labels[row.id]}));
 
 const raw = lowTurnoverControls[0].spread.toFixed(2);
 const full = lowTurnoverControls[3].spread.toFixed(2);

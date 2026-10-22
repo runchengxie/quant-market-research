@@ -8,7 +8,7 @@ import { resolve } from 'node:path';
 test('public search retains a bounded Unicode excerpt for every method and respects the size budget', async () => {
   const records = await buildSearchRecords();
   const methods = records.filter(record => record.kind === 'method');
-  assert.equal(methods.length, 36);
+  assert.equal(methods.length, 38);
   for (const record of methods) {
     assert.ok(record.text.length > 0);
     assert.ok(Array.from(record.text).length <= 1200);

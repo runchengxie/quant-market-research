@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url';
 import { publicDocs, publicPages, validateRegistry } from './content/public-registry.ts';
 
 test('the reviewed English and Chinese documents are admissible', () => {
-  assert.equal(publicDocs.length, 36);
+  assert.equal(publicDocs.length, 38);
   assert.equal(publicDocs.filter((d) => d.route === '/docs/').length, 1);
   assert.ok(publicDocs.every((d) => !/superpowers|runbooks/.test(d.source)));
   assert.doesNotThrow(() => validateRegistry(publicPages, publicDocs));
