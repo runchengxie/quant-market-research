@@ -9,7 +9,7 @@ const routes = [
   ["research/indices/", "Long-run index and ETF performance"],
   ["research/style-factors-18y/", "18-year A-share style factors"],
   ["research/liquidity/", "Liquidity, trading costs and capacity"],
-  ["research/factors/low-turnover/", "Low-turnover factor: what information remains?"],
+  ["research/factors/low-turnover/", "Low-turnover stocks and subsequent returns"],
   ["research/factors/pb-roe/", "PB and ROE: historical comparison and evidence boundary"],
 ] as const;
 
@@ -96,7 +96,7 @@ test("low-turnover charts show uncertainty and snapshot-driven execution limits"
   await page.goto("research/factors/low-turnover/");
   const controls = page.locator('figure[aria-labelledby="control-chart-title"]');
   await expect(controls.locator(".interval-row")).toHaveCount(4);
-  await expect(controls).toContainText("0.57–1.18%");
+  await expect(controls).toContainText("0.57 to 1.18");
   await expect(page.locator('figure[aria-labelledby="capacity-chart-title"]')).toBeVisible();
   await expect(page.locator('figure[aria-labelledby="window-chart-title"] .evidence-chart-row')).toHaveCount(3);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth + 1)).toBeTruthy();

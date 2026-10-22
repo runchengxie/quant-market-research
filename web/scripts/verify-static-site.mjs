@@ -23,7 +23,7 @@ const routes = [
   ["research/indices/index.html", "Long-run index and ETF performance"],
   ["research/style-factors-18y/index.html", "18-year A-share style factors"],
   ["research/liquidity/index.html", "Cross-market liquidity"],
-  ["research/factors/low-turnover/index.html", "Low-turnover factor: what information remains?"],
+  ["research/factors/low-turnover/index.html", "Low-turnover stocks and subsequent returns"],
   ["research/factors/pb-roe/index.html", "PB and ROE: historical comparison and evidence boundary"],
   ["research/index.html", "Explore data and charts by research question"],
   ["data-sources/index.html", "Every public snapshot has its own dates and boundaries"],

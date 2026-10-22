@@ -25,7 +25,7 @@ test('followup tables, chart, locale and downloads agree in light and dark modes
   await expect(section).toContainText('全窗口查询证据');
   await expect(section).toContainText('真实股数');
   const md=await (await page.request.get('downloads/microcap-research.zh-CN.md')).text();
-  expect(md).toContain('1.0.8');expect(md).toContain('688');expect(md).toContain('114');
+  expect(md).toContain('1.0.9');expect(md).toContain('688');expect(md).toContain('114');
   for(const locale of ['en-US','zh-CN']) {
     const svg=await page.request.get(`downloads/microcap-execution-followup.${locale}.svg`);
     expect(svg.status()).toBe(200);expect(await svg.text()).toContain('5.41%');
