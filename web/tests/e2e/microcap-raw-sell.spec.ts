@@ -1,3 +1,4 @@
+import { reportEdition } from '../../src/content/microcap-editions';
 import { expect, test } from '@playwright/test';
 
 test('approved sell-policy replay leads the page and retains the historical rejection across locales', async ({ page }) => {
@@ -35,7 +36,7 @@ test('approved sell-policy replay leads the page and retains the historical reje
  await expect(page.locator('#microcap-chain h2')).toContainText('1.0.7 版快照');
  for(const locale of ['en-US','zh-CN']){
   const latest=await(await page.request.get(`downloads/microcap-research.${locale}.md`)).text();
-  const frozen=await(await page.request.get(`downloads/archive/microcap-research.v1.0.8.${locale}.md`)).text();
+  const frozen=await(await page.request.get(`downloads/archive/microcap-research.v${reportEdition}.${locale}.md`)).text();
   expect(latest).toBe(frozen);expect(latest).toContain(data.source_sha256.account_manifest);
   expect(latest).toContain('1.455e-10');expect(latest).toContain('79');
  }

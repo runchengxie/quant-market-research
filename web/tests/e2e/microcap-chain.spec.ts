@@ -1,3 +1,4 @@
+import { reportEdition } from '../../src/content/microcap-editions';
 import { expect, test } from '@playwright/test';
 
 test('account-chain navigation, locale changes, downloads and dark mobile preserve evidence states', async ({ page }) => {
@@ -29,7 +30,7 @@ test('account-chain navigation, locale changes, downloads and dark mobile preser
  await expect(live).toContainText('不能据此判断底层历史数据不存在');
  for (const locale of ['en-US', 'zh-CN']) {
   const latest = await (await page.request.get(`downloads/microcap-research.${locale}.md`)).text();
-  const fixed = await (await page.request.get(`downloads/archive/microcap-research.v1.0.8.${locale}.md`)).text();
+  const fixed = await (await page.request.get(`downloads/archive/microcap-research.v${reportEdition}.${locale}.md`)).text();
   expect(latest).toBe(fixed);
   expect(latest).toContain(data.prospective.actual_review_utc);
   expect(latest).toContain(data.source_sha256.primary);
