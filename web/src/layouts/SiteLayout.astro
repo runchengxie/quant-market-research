@@ -1,5 +1,9 @@
 ---
 import "../styles.css";
+import '../styles/reading.css';
+import ResearchReadingTools from '../components/ResearchReadingTools.astro';
+import {summaryForRoute} from '../content/research-reading.server';
+import {readingCopy} from '../content/research-reading';
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
@@ -14,6 +18,7 @@ interface Props {
 
 const { title, titleEn = title, description, activeRoute = "overview", section, workbench = false } = Astro.props;
 const pageTitle = `${titleEn} · Quant Market Research`;
+const readingSummary=summaryForRoute(Astro.url.pathname);
 ---
 
 <!doctype html>
@@ -54,12 +59,29 @@ const pageTitle = `${titleEn} · Quant Market Research`;
     <div class:list={["app", { "research-workbench": workbench }]}>
       <SiteHeader activeRoute={activeRoute} section={section} />
       <a class="skip-link" href="#main-content" data-locale-text data-en="Skip to content" data-zh="跳到正文">Skip to content</a>
-      <main id="main-content" class="site-main"><slot /></main>
+      <main id="main-content" class="site-main">{readingSummary && !workbench && readingSummary.id!=='low-turnover' && <a class="reading-shortcut" href="#research-summary" data-locale-text data-en={readingCopy.summaryLink[0]} data-zh={readingCopy.summaryLink[1]}>{readingCopy.summaryLink[0]}</a>}<slot />{readingSummary && <ResearchReadingTools summary={readingSummary}/>}</main>
       <SiteFooter />
     </div>
   </body>
   <script is:inline>
     (() => {
+      const revealHash = () => {
+        let id;
+        try { id=decodeURIComponent(location.hash.slice(1)); } catch { return; }
+        if(!id)return;
+        const target=document.getElementById(id);
+        if(!target)return;
+        let parent=target.parentElement;
+        while(parent){if(parent instanceof HTMLDetailsElement)parent.open=true;parent=parent.parentElement;}
+        if(target instanceof HTMLDetailsElement)target.open=true;
+        requestAnimationFrame(()=>target.scrollIntoView());
+      };
+      window.addEventListener('hashchange',revealHash);
+      document.addEventListener('click',(event)=>{
+        const anchor=event.target instanceof Element?event.target.closest('a'):null;
+        if(anchor?.hash && anchor.pathname===location.pathname && anchor.search===location.search)setTimeout(revealHash,0);
+      });
+      revealHash();
       const storageKey = "quant-market-research-locale";
       const locale = document.documentElement.dataset.locale === "zh-CN" ? "zh-CN" : "en-US";
       document.documentElement.lang = locale;

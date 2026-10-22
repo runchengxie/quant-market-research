@@ -3,8 +3,9 @@ import { expect, test } from '@playwright/test';
 
 test('account-chain navigation, locale changes, downloads and dark mobile preserve evidence states', async ({ page }) => {
  await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const live = page.locator('#microcap-chain [data-chain-live]');
- const nav = page.locator('a[href="#microcap-chain"]').first();
+ const nav = page.locator('#microcap-archive .topic-nav a[href="#microcap-chain"]');
  await expect(nav).toContainText('1.0.7 snapshot');
  await nav.click();
  await expect(page).toHaveURL(/#microcap-chain$/);

@@ -4,6 +4,7 @@ for (const theme of ['dark','light']) {
  test(`liquidity panels, badges and accented statistics follow ${theme} theme`, async ({page}) => {
   await page.addInitScript(value => localStorage.setItem('market-research-theme', value), theme);
   await page.goto('research/liquidity/?lang=zh-CN');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator('astro-island[component-export="LiquidityPage"]').scrollIntoViewIfNeeded();
   const panel=page.locator('.period-panel');
   await expect(panel).toBeVisible();
@@ -33,6 +34,7 @@ for (const theme of ['dark','light']) {
 
 test('shared dates, real historical windows and distinct turnover measures remain explicit', async ({page}) => {
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await expect(page.locator('#market-profiles')).toBeVisible();
  await expect(page.locator('#market-profiles .period-meta').first()).toContainText('2025-09-30');
  await page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true}).selectOption('1');
@@ -58,6 +60,7 @@ test('shared dates, real historical windows and distinct turnover measures remai
 
 test('ADV-based scenario uses the selected market group and rejects invalid inputs', async ({page}) => {
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const row=page.locator('#order-budget table tbody tr').filter({hasText:'A-share'});
  await expect(row).toContainText('$');
  const initial=await row.innerText();
@@ -69,6 +72,7 @@ test('ADV-based scenario uses the selected market group and rejects invalid inpu
 
 test('coverage panel distinguishes daily overlap, A-share minute and sampled Level 2 evidence', async ({page})=>{
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const panel=page.locator('#capacity-data-coverage');
  await expect(panel).toContainText('2020-01-06');
  await expect(panel).toContainText('2026-04-30');
@@ -82,10 +86,12 @@ test('coverage panel distinguishes daily overlap, A-share minute and sampled Lev
 
 test('one directory entry and preserved old routes lead to the unified study', async ({page}) => {
  await page.goto('research/?lang=en-US');
- await expect(page.locator('.directory-grid a[href$="/research/liquidity/"]')).toHaveCount(1);
- await expect(page.locator('.directory-grid a[href$="/research/execution-costs/"]')).toHaveCount(0);
- await expect(page.locator('.directory-grid a[href$="/cross-market-liquidity/"]')).toHaveCount(0);
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
+ await expect(page.locator('.directory-grid h2 a[href$="/research/liquidity/"]')).toHaveCount(1);
+ await expect(page.locator('.directory-grid h2 a[href$="/research/execution-costs/"]')).toHaveCount(0);
+ await expect(page.locator('.directory-grid h2 a[href$="/cross-market-liquidity/"]')).toHaveCount(0);
  await page.goto('research/microcap/cross-market-liquidity/?lang=zh-CN');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await page.locator('#unified-entry a').click();
  await expect(page.locator('h1')).toHaveText('流动性、交易成本与策略容量');
  await expect(page.locator('#expanded-results')).toHaveCount(1);
@@ -98,6 +104,7 @@ for(const width of [390,1280]) {
   const errors:string[]=[];page.on('pageerror',e=>errors.push(e.message));
   await page.setViewportSize({width,height:900});
   await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page.locator('#market-profiles')).toBeVisible();
   await page.locator('#market-profiles details summary').click();
   await expect(page.locator('#market-profiles details table')).toContainText('Security-day observations');
@@ -115,6 +122,7 @@ for(const route of ['research/microcap/','research/cashflow/']) {
  test(`accented summary cards follow the dark theme on ${route}`,async({page})=>{
   await page.addInitScript(()=>localStorage.setItem('market-research-theme','dark'));
   await page.goto(`${route}?lang=zh-CN`);
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator('#topic-content').scrollIntoViewIfNeeded();
   const card=page.locator('.stat.accent').first();
   await expect(card).toBeVisible();
@@ -124,6 +132,7 @@ for(const route of ['research/microcap/','research/cashflow/']) {
 
 test('default size bucket includes A-share and empty buckets retain universe context', async ({page})=>{
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const bucket=page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true});
  await expect(bucket).toHaveValue('2');
  const table=page.locator('#market-profiles .panel table');
@@ -141,6 +150,7 @@ test('relative quintiles preserve periods, show A-share and distinguish actual d
  await page.setViewportSize({width:390,height:900});
  await page.addInitScript(()=>localStorage.setItem('market-research-theme','dark'));
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await page.getByRole('combobox',{name:'Size grouping',exact:true}).selectOption('relative');
  await expect(page.getByRole('combobox',{name:'Size rank within each market',exact:true})).toHaveValue('0');
  const table=page.locator('#market-profiles .panel table');
@@ -159,6 +169,7 @@ test('relative quintiles preserve periods, show A-share and distinguish actual d
 test('relative source failure can retry while the absolute comparison remains usable',async({page})=>{
  await page.route('**/data/liquidity/relative-summary.json',route=>route.fulfill({status:503,body:'temporary failure'}));
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await expect(page.getByRole('combobox',{name:'Market-cap bucket (USD)',exact:true})).toHaveValue('2');
  await page.getByRole('combobox',{name:'Size grouping',exact:true}).selectOption('relative');
  await expect(page.locator('#market-profiles')).toContainText('503');
@@ -170,6 +181,7 @@ test('relative source failure can retry while the absolute comparison remains us
 
 test('scope sensitivity separates BSE exclusions from lifecycle checks and constrains budgets',async({page})=>{
  await page.goto('research/liquidity/?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const evidence=page.locator('#liquidity-universe-sensitivity');
  await expect(evidence).toContainText('34,947');
  await expect(evidence).toContainText('500');

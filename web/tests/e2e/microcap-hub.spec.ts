@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('hub connects questions, source-backed charts and revised evidence in both languages', async ({ page }) => {
   await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page.locator('#microcap-map').getByRole('link')).toHaveCount(6);
   await page.locator('.topic-nav').getByRole('link', { name: 'Research map', exact: true }).click();
   const mapHeading = await page.locator('#microcap-map h2').boundingBox();
@@ -35,6 +36,7 @@ test('hub and numerical evidence remain readable without JavaScript on mobile', 
   const context = await browser.newContext({ javaScriptEnabled: false, viewport: { width: 390, height: 844 } });
   const page = await context.newPage();
   await page.goto('research/microcap/');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page.locator('#microcap-map')).toContainText('Research map');
   await expect(page.locator('#microcap-window-evidence')).toContainText('7.60%');
   const sourceLink = page.locator('#microcap-window-evidence a[href$="low_turnover_exploration.json"]');
@@ -45,6 +47,7 @@ test('hub and numerical evidence remain readable without JavaScript on mobile', 
 
 test('history register, report and download retain the same reviewed families in Chinese dark mode', async ({ page }) => {
   await page.goto('research/microcap/?lang=zh-CN');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const register=page.locator('#microcap-coverage');
   await expect(register.locator('details')).toHaveCount(35);
   await register.locator('#history-H19 summary').click();

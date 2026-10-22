@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('followup tables, chart, locale and downloads agree in light and dark modes', async ({page}) => {
   await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const section=page.locator('#microcap-followup');
   await expect(section.locator('table').first().locator('tbody tr')).toHaveCount(8);
   await expect(section).toContainText('688');

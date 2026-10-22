@@ -11,7 +11,7 @@ test("research and documentation directories render English-first localized copy
   const docs = await fs.readFile(path.join(root, "pages/docs/index.astro"), "utf8");
   const copy = await fs.readFile(path.join(root, "content/locale-copy.ts"), "utf8");
 
-  assert.match(research, /data-locale-text data-en=\{topic\.en\} data-zh=\{topic\.zh\}/);
+  assert.match(research, /<ResearchDirectory/);
   assert.doesNotMatch(research, /\{page\.topic\}/);
   for (const label of [
     "Cash-flow index research",
@@ -30,8 +30,8 @@ test("research and documentation directories render English-first localized copy
     assert.ok(copy.includes(label), `missing localized topic label ${label}`);
   }
   assert.match(research, /titleEn="Research topics"/);
-  assert.match(research, /data-en="Explore data and charts by research question"/);
-  assert.match(research, /data-zh="从研究问题进入数据与图表"/);
+
+
   assert.match(docs, /titleEn="Methods and dictionary"/);
   assert.match(docs, /data-en="Public documentation"/);
   assert.match(docs, /filter\(\(doc\) => !doc\.id\.endsWith\('-zh-CN'\)\)/);

@@ -9,9 +9,9 @@ export function searchRecords(records: readonly SearchRecord[], query: string): 
   if (!normalized) return [];
   const terms = normalized.split(/\s+/).filter(Boolean);
   return records.filter((record) => {
-    const title = normalizeQuery(record.title);
+    const title = normalizeText(`${record.title} ${record.titleEn??''}`);
     const aliases = record.aliases.map(normalizeQuery).join(' ');
-    const body = normalizeText(`${record.text} ${record.id}`);
+    const body = normalizeText(`${record.text} ${record.textEn??''} ${record.id}`);
     return terms.every((term) => title.includes(term) || aliases.includes(term) || body.includes(term));
   }).sort((a, b) => a.id.localeCompare(b.id));
 }

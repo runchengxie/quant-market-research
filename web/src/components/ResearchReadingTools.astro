@@ -1,0 +1,17 @@
+---
+import type { ReadingSummary } from '../content/research-reading';
+import { readingCopy as c } from '../content/research-reading';
+import T from './LocaleText.astro';
+import ResearchImageExport from './ResearchImageExport';
+import { withBase } from '../lib/routes';
+interface Props { summary: ReadingSummary }
+const {summary:r}=Astro.props;
+---
+<aside id="research-summary" class="panel research-reading-tools" aria-label={c.summary[0]} data-locale-aria data-aria-en={c.summary[0]} data-aria-zh={c.summary[1]}>
+  <h2><T as="span" text={c.summary}/></h2>
+  <p><T as="span" text={r.conclusion}/></p>
+  <dl><dt><T as="span" text={c.stage}/></dt><dd><T as="span" text={c[r.stage]}/></dd><dt><T as="span" text={c.coverage}/></dt><dd><T as="span" text={r.coverage}/></dd><dt><T as="span" text={c.scope}/></dt><dd><T as="span" text={r.scope}/></dd><dt><T as="span" text={c.limit}/></dt><dd><T as="span" text={r.limit}/></dd></dl>
+  <details><summary><T as="span" text={c.guide}/></summary><T text={c.units}/><T text={c.costs}/></details>
+  <a href={withBase(`/data-sources/#research-${r.id}`,import.meta.env.BASE_URL)}><T as="span" text={c.sources}/></a>
+  {r.id!=='low-turnover' && <ResearchImageExport summary={r} client:visible />}
+</aside>

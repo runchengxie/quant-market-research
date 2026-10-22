@@ -2,6 +2,7 @@ import { expect, test } from '@playwright/test';
 
 test('reviewed comparison has one live locale, complete tables and reversible language switching', async ({ page }) => {
   await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const section=page.locator('#microcap-reviewed-comparison');
   const live=section.locator('[data-comparison-live]');
   await expect(live).toHaveAttribute('lang','en-US');
@@ -32,6 +33,7 @@ for(const locale of ['en-US','zh-CN']){
   await page.addInitScript(()=>localStorage.setItem('market-research-theme','dark'));
   await page.setViewportSize({width:390,height:844});
   await page.goto(`research/microcap/?lang=${locale}`);
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const section=page.locator('#microcap-reviewed-comparison'),live=section.locator('[data-comparison-live]');
   await expect(live).toHaveAttribute('lang',locale);
   await expect(page.locator('html')).toHaveAttribute('data-theme','dark');

@@ -2,6 +2,7 @@ import {expect,test} from '@playwright/test';
 
 test('four followups retain scopes, current evidence and downloadable charts across locales',async({page})=>{
  await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const section=page.locator('#microcap-research-agenda');
  const live=section.locator('[data-agenda-live]');
  await expect(live).toContainText('New eligible completed months: 0');

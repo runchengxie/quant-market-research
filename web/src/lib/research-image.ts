@@ -3,7 +3,7 @@ import { readerToolsCopy as r } from '../content/reader-tools-copy';
 export async function createResearchImage(locale: 'en-US'|'zh-CN'): Promise<Blob> {
   const n=locale==='zh-CN'?1:0;
   const family='"Noto Sans SC Variable", sans-serif';
-  const paragraphs=[c.kicker[n],c.title[n],c.conclusion[n],c.lead[n],r.imageScope[n],r.chartNote[n],r.imageHistory[n],r.imageTrading[n],c.chart[n],r.limits[n],...controls.map(row=>row.label[n])];
+  const paragraphs=[c.kicker[n],c.title[n],c.conclusion[n],c.introduction[n],c.controlsList[n],c.lead[n],r.imageScope[n],r.chartNote[n],r.imageHistory[n],r.imageTrading[n],c.chart[n],r.limits[n],...controls.map(row=>row.label[n])];
   // Load every subset used by the exported text, including material not yet visible on screen.
   await document.fonts.load(`400 30px ${family}`, paragraphs.join(''));
   await document.fonts.load(`700 48px ${family}`, paragraphs.join(''));
@@ -31,7 +31,7 @@ export async function createResearchImage(locale: 'en-US'|'zh-CN'): Promise<Blob
   text(c.kicker[n],23,'#a74730');
   text(c.title[n],48,'#252525',true);
   text(c.conclusion[n],36,'#a74730',true);
-  text(c.lead[n]);text(r.imageScope[n],26,'#625b52');
+  text(c.lead[n]);text(c.introduction[n],26,'#625b52');text(r.imageScope[n],26,'#625b52');
   text(c.chart[n],32,'#252525',true);
   for(const row of controls){
     text(row.label[n],29,'#34312d',true);
@@ -43,7 +43,7 @@ export async function createResearchImage(locale: 'en-US'|'zh-CN'): Promise<Blob
     ctx.font=`700 30px ${family}`;ctx.fillStyle='#34312d';ctx.fillText(`+${row.spread.toFixed(2)}`,790,y);
     y+=58;text(`${c.range[n]} ${row.ciLow.toFixed(2)}${c.between[n]}${row.ciHigh.toFixed(2)}`,25,'#625b52');
   }
-  text(r.chartNote[n],26,'#625b52');text(r.limits[n],32,'#252525',true);
+  text(r.chartNote[n],26,'#625b52');text(c.controlsList[n],25,'#625b52');text(r.limits[n],32,'#252525',true);
   text(r.imageHistory[n],27);text(r.imageTrading[n],27);
   text(`${r.date[n]} ${evidence.evidenceDate} · ${r.reviewDate[n]} ${evidence.reviewedAt}`,23,'#625b52');
   if(y>6400)throw new Error('Image exceeds safe canvas height');

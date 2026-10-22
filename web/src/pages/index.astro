@@ -1,19 +1,14 @@
 ---
-import SiteLayout from "../layouts/SiteLayout.astro";
-import LegacyHashRedirect from "../components/LegacyHashRedirect.astro";
-import FreshnessStrip from "../components/FreshnessStrip.astro";
-import { OverviewContent } from "../components/ResearchOverview";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
-import type { Snapshot } from "../components/recovery-data";
-
-const recovery = JSON.parse(await readFile(resolve(process.cwd(), "public/data/research/recovery.json"), "utf8")) as Snapshot;
-const barra = JSON.parse(await readFile(resolve(process.cwd(), "public/data/barra/barra_summary.json"), "utf8"));
-const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
+import SiteLayout from '../layouts/SiteLayout.astro';
+import LegacyHashRedirect from '../components/LegacyHashRedirect.astro';
+import ResearchDirectory from '../components/ResearchDirectory.astro';
+import T from '../components/LocaleText.astro';
+import {readingCopy as c} from '../content/research-reading';
+import {withBase} from '../lib/routes';
 ---
-
-<SiteLayout title="研究总览" titleEn="Research overview" description="An overview of historical market research and public data." activeRoute="overview">
-  <LegacyHashRedirect />
-  <OverviewContent recovery={recovery} barra={barra} />
-  <FreshnessStrip snapshot={manifest.snapshots?.overview ?? {}} snapshotKey="overview" label="公开快照总览" />
+<SiteLayout title="研究总览" titleEn="Research overview" description="Current findings and evidence limits across public market research." activeRoute="overview">
+  <LegacyHashRedirect/>
+  <section class="theme-heading"><div><h1><T as="span" text={c.catalog}/></h1><T text={c.intro}/></div></section>
+  <aside class="reading-update"><span><T as="span" text={c.recent}/></span><T text={c.recentBody}/><a href={withBase('/research/',import.meta.env.BASE_URL)} data-locale-text data-en="Browse reports and archives →" data-zh="查看报告与档案 →">Browse reports and archives →</a></aside>
+  <ResearchDirectory compact/>
 </SiteLayout>

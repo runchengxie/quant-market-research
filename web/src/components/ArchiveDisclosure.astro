@@ -1,0 +1,17 @@
+---
+import T from './LocaleText.astro';
+import {withBase} from '../lib/routes';
+---
+<details class="research-archive" id="microcap-archive">
+  <summary><T as="span" text={['Earlier reviews and complete evidence','早期复查与完整证据']}/></summary>
+  <p><T as="span" text={['These records preserve earlier findings and corrections. The current report above carries the present judgment.','这里保留早期判断与修正过程，当前判断见上方报告。']}/></p>
+  <p><a href={withBase('/research/microcap/report/',import.meta.env.BASE_URL)}><T as="span" text={['Open the research history and evidence report','阅读研究历史与证据汇编']}/></a></p>
+  <slot/>
+</details>
+<script>
+  const archive=document.querySelector<HTMLDetailsElement>('#microcap-archive');
+  if(archive){
+    try {if(sessionStorage.getItem('microcap-archive-open')==='true')archive.open=true;} catch { /* optional storage */ }
+    archive.addEventListener('toggle',()=>{try{sessionStorage.setItem('microcap-archive-open',String(archive.open));}catch{/* optional storage */}});
+  }
+</script>

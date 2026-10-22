@@ -29,6 +29,7 @@ for (const route of [
 ]) {
   test(`${route} keeps visible report text English in the default locale`, async ({ page }) => {
     await page.goto(route);
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
     await expect(page.locator('main h1')).toBeVisible();
     await page.waitForLoadState('networkidle');
     if (route === 'research/factors/low-turnover/') {
@@ -54,16 +55,18 @@ for (const route of [
 
 test('English research overview uses English punctuation in generated findings', async ({ page }) => {
   await page.goto('?lang=en-US');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
-  const conclusions = await page.locator('.evidence-conclusion').allInnerTexts();
+  const conclusions = await page.locator('.reading-conclusion').allInnerTexts();
   expect(conclusions.length).toBeGreaterThan(0);
   expect(conclusions.join('\n')).not.toMatch(/[。，；：“”]/);
-  expect(conclusions[0]).toMatch(/calendar days\.$/);
-  expect(conclusions[1]).toMatch(/calendar days\.$/);
+  expect(conclusions[0]).toContain('percentage points');
+  expect(conclusions[1]).toContain('unverified');
 });
 
 test('style-factor language switch preserves the selected factor and its metrics', async ({ page }) => {
   await page.goto('research/style-factors-18y/?factor=quality');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const metrics = page.locator('.factor-stats');
   await expect(metrics).toBeVisible();
   await expect(metrics.locator('.stat strong')).toHaveText([
@@ -79,6 +82,7 @@ test('style-factor language switch preserves the selected factor and its metrics
 
 test('recovery reports localize source labels and expanded methodology in English', async ({ page }) => {
   await page.goto('research/cashflow/recovery/');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator('astro-island[component-export="CashflowPage"]').scrollIntoViewIfNeeded();
   const recovery = page.getByRole('region', { name: 'Recovery and holding-period risk' });
   await expect(recovery).toContainText('CSI 800 Cash Flow');
@@ -89,6 +93,7 @@ test('recovery reports localize source labels and expanded methodology in Englis
   )).toBeVisible();
 
   await page.goto('research/microcap/#microcap-recovery');
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator('astro-island[component-export="MicrocapPage"]').scrollIntoViewIfNeeded();
   const microcapRecovery = page.getByRole('region', { name: 'Recovery and holding-period risk' });
   await expect(microcapRecovery).toContainText('Tonghuashun Micro-cap');

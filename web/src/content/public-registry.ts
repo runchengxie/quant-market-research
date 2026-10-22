@@ -57,6 +57,7 @@ const docSources = new Set([
   'docs/research/factors/barra-source-inventory.zh-CN.md',
 ]);
 const allowedSnapshotKeys = new Set([
+  'valuation.grouped', 'overseas.leadlag', 'rotation.releases',
   'cashflow.performance', 'cashflow.recovery', 'microcap.summary',
   'liquidity.cross-market', 'indices.returns', 'barra.returns', 'liquidity.summary', 'low-turnover.ledger',
   'execution_costs', 'execution_strategy', 'execution_replay', 'execution_calibration',
@@ -67,7 +68,7 @@ const page = (value: PublicPage): PublicPage => value;
 export const publicPages: readonly PublicPage[] = [
   page({ id: 'reader-forward-registration', route: '/docs/research/experiments/reader-forward-registration-20261022/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
   page({ id: 'reader-forward-registration-zh-CN', route: '/docs/research/experiments/reader-forward-registration-20261022.zh-CN/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
-  page({ id: 'valuation-groups', route: '/research/valuation-groups/', title: '低估值研究', summary: '年度最低值、五口径、分组因子与交易账本，统一查看已核对的观察、探索结果和待补证问题。', section: 'research', topic: 'style', aliases: [], related: ['valuation-groups-method', 'valuation-panel', 'valuation-denominators', 'financial-template-coverage', 'pb-roe', 'style', 'microcap', 'cashflow'], snapshotKeys: [] }),
+  page({ id: 'valuation-groups', route: '/research/valuation-groups/', title: '低估值研究', summary: '年度最低值、五口径、分组因子与交易账本，统一查看已核对的观察、探索结果和待补证问题。', section: 'research', topic: 'style', aliases: [], related: ['valuation-groups-method', 'valuation-panel', 'valuation-denominators', 'financial-template-coverage', 'pb-roe', 'style', 'microcap', 'cashflow'], snapshotKeys: ['valuation.grouped'] }),
   page({ id: 'valuation-groups-method', route: '/docs/research/experiments/grouped-valuation-20261021/', title: '低估值研究的方法与证据', summary: '年度比较、历史状态、会计口径、收益实验版本与条件样本限制。', section: 'docs', topic: 'style', aliases: [], related: ['valuation-groups', 'valuation-panel'], snapshotKeys: [] }),
   page({ id: 'valuation-groups-method-zh-CN', route: '/docs/research/experiments/grouped-valuation-20261021.zh-CN/', title: '低估值研究的方法与证据', summary: '年度比较、历史状态、会计口径、收益实验版本与条件样本限制。', section: 'docs', topic: 'style', aliases: [], related: ['valuation-groups', 'valuation-panel'], snapshotKeys: [] }),
 
@@ -85,11 +86,11 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'valuation-denominators-zh-CN', route: '/docs/research/experiments/valuation-denominators-20261018.zh-CN/', title: '低估值口径与当前样本', summary: '五种利润和权益分母、六家公司计算样本及历史可得性限制。', section: 'docs', topic: 'style', aliases: [], related: ['pb-roe', 'barra-factor-dictionary'], snapshotKeys: [] }),
   page({ id: 'microcap-st-audit-zh-CN', route: '/docs/research/experiments/microcap-st-comparability-audit-20261018.zh-CN/', title: '小微盘ST口径与可比性审计', summary: '逐版本核对历史ST、退市退出、权重、调仓与成本边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
   page({ id: 'microcap-st-audit', route: '/docs/research/experiments/microcap-st-comparability-audit-20261018/', title: '小微盘ST口径与可比性审计', summary: '逐版本核对历史ST、退市退出、权重、调仓与成本边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
-  page({ id: 'overseas-leadlag', route: '/research/overseas-leadlag/', title: '海外盘面对 A 股开盘的领先信息', summary: '控制汇率与美股共同因素后，亚洲盘面增量是否稳定，以及 T+1 ETF 成本检验。', section: 'research', topic: 'overseas', aliases: [], related: ['overseas-forward', 'overseas-leadlag-method', 'indices', 'execution-costs'], snapshotKeys: [] }),
+  page({ id: 'overseas-leadlag', route: '/research/overseas-leadlag/', title: '海外盘面对 A 股开盘的领先信息', summary: '控制汇率与美股共同因素后，亚洲盘面增量是否稳定，以及 T+1 ETF 成本检验。', section: 'research', topic: 'overseas', aliases: [], related: ['overseas-forward', 'overseas-leadlag-method', 'indices', 'execution-costs'], snapshotKeys: ['overseas.leadlag'] }),
   page({ id: 'overseas-leadlag-method', route: '/docs/research/experiments/overseas-leadlag-20261018/', title: '海外盘面对 A 股的领先信息：时间、控制变量与 ETF 成本', summary: '历史可得时间、年度滚动、汇率控制和 T+1 ETF 代理的方法与证据限制。', section: 'docs', topic: 'overseas', aliases: [], related: ['overseas-leadlag'], snapshotKeys: [] }),
   page({ id: 'overseas-leadlag-method-zh-CN', route: '/docs/research/experiments/overseas-leadlag-20261018.zh-CN/', title: '海外盘面对 A 股的领先信息：时间、控制变量与 ETF 成本', summary: '历史可得时间、年度滚动、汇率控制和 T+1 ETF 代理的方法与证据限制。', section: 'docs', topic: 'overseas', aliases: [], related: ['overseas-leadlag'], snapshotKeys: [] }),
 
-  page({ id: 'rotation', route: '/research/style-theme-rotation/', title: '风格与主题轮动', summary: '从风格和热点信号到 ETF 组合：统一查看模型、周频配置和热点筛选的历史证据与验证缺口。', section: 'research', topic: 'rotation', aliases: ['/research/etf-rotation/', '/research/hotsector/'], related: ['style', 'indices', 'execution-costs'], snapshotKeys: [] }),
+  page({ id: 'rotation', route: '/research/style-theme-rotation/', title: '风格与主题轮动', summary: '从风格和热点信号到 ETF 组合：统一查看模型、周频配置和热点筛选的历史证据与验证缺口。', section: 'research', topic: 'rotation', aliases: ['/research/etf-rotation/', '/research/hotsector/'], related: ['style', 'indices', 'execution-costs'], snapshotKeys: ['rotation.releases'] }),
   page({ id: 'overview', route: '/', title: '研究总览', summary: '每项研究发现了什么、数据覆盖哪些日期，还有哪些问题没有答案。', section: 'overview', aliases: ['/index.html'], related: ['research', 'docs', 'data-sources'], snapshotKeys: [] }),
   page({ id: 'research', route: '/research/', title: '研究专题', summary: '从研究问题出发，先看结论，再查数据和证据限制。', section: 'research', aliases: [], related: ['overseas-leadlag', 'rotation', 'cashflow', 'microcap', 'style', 'pb-roe', 'low-turnover', 'indices', 'liquidity', 'execution-costs'], snapshotKeys: [] }),
   page({ id: 'cashflow', route: '/research/cashflow/', title: '现金流指数研究', summary: '收益与分红口径、投资回撤与回本，以及指数复刻与可交易性。', section: 'research', topic: 'cashflow', aliases: ['/research/cashflow/recovery/'], related: ['indices', 'microcap'], snapshotKeys: ['cashflow.performance', 'cashflow.recovery'] }),

@@ -22,7 +22,7 @@ const routes = [
   ["research/liquidity/index.html", "Cross-market liquidity"],
   ["research/factors/low-turnover/index.html", "Low-turnover stocks and subsequent returns"],
   ["research/factors/pb-roe/index.html", "PB and ROE: historical comparison and evidence boundary"],
-  ["research/index.html", "Explore data and charts by research question"],
+  ["research/index.html", "Current findings by topic"],
   ["data-sources/index.html", "Every public snapshot has its own dates and boundaries"],
   ["search/index.html", "Search research, methods, and factor definitions"],
   ...publicDocs.map((doc) => [

@@ -2,6 +2,7 @@ import { reportEdition } from '../../src/content/microcap-editions';
 import {expect,test} from '@playwright/test';
 test('holdings impact agrees with reviewed data and downloads across locales and dark mobile',async({page})=>{
  await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const live=page.locator('#microcap-impact [data-impact-live]');
  await expect(live).toContainText('seven intersect');await expect(live).toContainText('Six other groups');
  await expect(live.locator('[data-impact-block="exposure"] tbody tr')).toHaveCount(6);

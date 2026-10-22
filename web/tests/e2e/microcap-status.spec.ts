@@ -2,6 +2,7 @@ import {expect,test} from '@playwright/test';
 
 test('status table leads evidence and survives locale/theme changes',async({page})=>{
  await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const status=page.locator('#microcap-current-status');
  const live=status.locator('[data-status-live]');
  await expect(live.locator('tbody tr')).toHaveCount(6);

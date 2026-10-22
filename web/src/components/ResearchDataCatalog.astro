@@ -1,0 +1,14 @@
+---
+import {readingSummaries,readingCopy as c} from '../content/research-reading.server';
+import T from './LocaleText.astro';
+import {withBase} from '../lib/routes';
+const base=import.meta.env.BASE_URL;
+---
+<section class="research-data-links"><T text={c.sourceNote}/>
+<div class="data-catalog">{readingSummaries.map(r=><article class="panel data-card" id={`research-${r.id}`}>
+  <h2><a href={withBase(r.route,base)}><T as="span" text={r.title}/></a></h2>
+  <p><T as="span" text={c[r.stage]}/></p>
+  <dl><dt><T as="span" text={c.coverage}/></dt><dd><T as="span" text={r.coverage}/></dd><dt><T as="span" text={c.date}/></dt><dd>{r.date??<T as="span" text={c.missing}/>}</dd></dl>
+  <T text={r.scope}/><T text={r.limit}/>
+  <details><summary><T as="span" text={c.file}/></summary><ul>{r.sources.map(s=><li><a href={withBase(`/data/${s.path}`,base)}>{s.path}</a><br/><code>SHA-256 {s.sha256}</code></li>)}</ul></details>
+</article>)}</div></section>

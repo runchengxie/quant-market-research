@@ -1,7 +1,7 @@
 import { expect, test } from "@playwright/test";
 
 const routes = [
-  ["", "Start with the main findings"],
+  ["", "Current findings by topic"],
   ["research/cashflow/", "Cash-flow index research"],
   ["research/cashflow/recovery/", "Cash-flow index research"],
   ["research/microcap/", "A-share micro-cap history"],
@@ -35,6 +35,7 @@ test("Barra hydration preserves pagination ARIA references", async ({ page }) =>
     if (message.type() === "error" && /React|hydrat|did not match/i.test(message.text())) errors.push(message.text());
   });
   await page.goto("research/style-factors-18y/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page.locator("#barra-annual canvas")).toBeVisible();
   await page.getByText(/补充研究：市值十分组与稳定性诊断|Supplement: size deciles and stability diagnostics/, { exact: true }).click();
   const pagination = page.locator('nav[aria-label="Table pagination"], nav[aria-label="表格分页"]');
@@ -52,6 +53,7 @@ test("Barra hydration preserves pagination ARIA references", async ({ page }) =>
 for (const [route, heading] of routes) {
   test(`${route || "overview"} opens directly and survives a refresh`, async ({ page }) => {
     await page.goto(route, { waitUntil: "domcontentloaded" });
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
     await expect(page.getByRole("heading", { name: heading, exact: true }).first()).toBeVisible();
     await page.reload({ waitUntil: "domcontentloaded" });
     await expect(page.getByRole("heading", { name: heading, exact: true }).first()).toBeVisible();
@@ -61,17 +63,21 @@ for (const [route, heading] of routes) {
 
 test("legacy hash links redirect to the new research URL", async ({ page }) => {
   await page.goto("#microcap");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page).toHaveURL(/\/research\/microcap\/$/);
   await expect(page.getByRole("heading", { name: "A-share micro-cap history", exact: true }).first()).toBeVisible();
 });
 
 test("low-turnover report links to its full methodology", async ({ page }) => {
   await page.goto("research/factors/low-turnover/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await expect(page.getByRole("link", { name: /Read the full methodology/ })).toHaveAttribute("href", /\/docs\/research\/factors\/low-turnover\//);
 });
 
 test("PB/ROE topic links to the reviewed evidence and discloses its scope", async ({ page }) => {
   await page.goto("research/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
+  await page.locator('[data-research-id="valuation-groups"] summary').click();
   await page.getByRole("link", { name: /Historical PB and ROE Comparison/ }).click();
   await expect(page.locator(".theme-heading p")).toContainText(/数据截至 2026-08-31|through 2026-08-31/);
   await expect(page.getByText("not a strict pure-PB portfolio", { exact: false })).toBeVisible();
@@ -80,6 +86,7 @@ test("PB/ROE topic links to the reviewed evidence and discloses its scope", asyn
 
 test("PB/ROE charts separate the shared pool from the quality audit", async ({ page }) => {
   await page.goto("research/factors/pb-roe/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const ranking = page.locator('figure[aria-labelledby="ranking-chart-title"]');
   const quality = page.locator('figure[aria-labelledby="quality-chart-title"]');
   await expect(ranking.locator(".evidence-chart-row")).toHaveCount(5);
@@ -94,6 +101,7 @@ test("PB/ROE charts separate the shared pool from the quality audit", async ({ p
 test("low-turnover charts show uncertainty and snapshot-driven execution limits", async ({ page }) => {
   await page.setViewportSize({ width: 390, height: 844 });
   await page.goto("research/factors/low-turnover/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   const controls = page.locator('figure[aria-labelledby="control-chart-title"]');
   await expect(controls.locator(".interval-row")).toHaveCount(4);
   await expect(controls).toContainText("0.57 to 1.18");
@@ -105,6 +113,7 @@ test("low-turnover charts show uncertainty and snapshot-driven execution limits"
 test("microcap research loads its public data and theme control works", async ({ page }) => {
   const summaryResponse = page.waitForResponse((response) => response.url().endsWith("/data/index/microcap/summary.json"));
   await page.goto("research/microcap/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator("astro-island[component-export='MicrocapPage']").scrollIntoViewIfNeeded();
   expect((await summaryResponse).ok()).toBeTruthy();
   await expect(page.locator(".sub-tabs")).toBeVisible();
@@ -116,6 +125,7 @@ test("microcap research loads its public data and theme control works", async ({
 
 test("recovery research loads the snapshot from the GitHub Pages base path", async ({ page }) => {
   await page.goto("research/cashflow/recovery/", { waitUntil: "domcontentloaded" });
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator("astro-island[component-export='CashflowPage']").scrollIntoViewIfNeeded();
   const recoveryResponse = await page.request.get("data/research/recovery.json");
   expect(recoveryResponse.ok()).toBeTruthy();
@@ -124,6 +134,7 @@ test("recovery research loads the snapshot from the GitHub Pages base path", asy
 
 test("replication data loads from the GitHub Pages base path", async ({ page }) => {
   await page.goto("research/microcap/", { waitUntil: "domcontentloaded" });
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.locator("astro-island[component-export='MicrocapPage']").scrollIntoViewIfNeeded();
   const replicationResponse = await page.request.get("data/research/replication.json");
   expect(replicationResponse.ok()).toBeTruthy();
@@ -134,6 +145,7 @@ for (const width of [1280, 390]) {
   test(`Barra explorer switches all 19 factors at width ${width}`, async ({ page }) => {
     await page.setViewportSize({ width, height: 900 });
     await page.goto("research/style-factors-18y/");
+  if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
     await expect(page.locator("#barra-annual canvas")).toBeVisible();
     const buttons = page.locator("button[data-factor]");
     await expect(buttons).toHaveCount(19);

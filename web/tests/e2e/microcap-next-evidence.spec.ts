@@ -2,6 +2,7 @@ import {expect,test} from '@playwright/test';
 
 test('historical event and future-input evidence stays scoped across locales',async({page})=>{
  await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  const live=page.locator('#microcap-next-evidence [data-next-live]');
  await expect(page.locator('#microcap-next-evidence h2')).toContainText('Version 1.0.5 snapshot');
  await expect(live).toContainText('91 then unreviewed events');

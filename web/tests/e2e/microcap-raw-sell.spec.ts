@@ -3,13 +3,14 @@ import { expect, test } from '@playwright/test';
 
 test('approved sell-policy replay leads the page and retains the historical rejection across locales', async ({ page }) => {
  await page.goto('research/microcap/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await expect(page.locator('main > section.theme-heading')).toContainText('21-session constructed replay now passes');
  await expect(page.locator('main > section.theme-heading')).toContainText('Full-history strategy capacity remains uncertified');
  const status=page.locator('#microcap-current-status [data-status-live] [data-claim="MC-C03"]');
  await expect(status).toContainText('79 fills pass');
  await expect(status).toContainText('full-history capacity is not established');
- const nav=page.locator('.topic-nav a[href="#microcap-raw-sell"]');
- await expect(nav).toContainText('Sell-policy review');await nav.click();
+ const nav=page.locator('.topic-nav a[href="#microcap-raw-sell"]').first();
+ await expect(nav).toContainText('Account replay');await nav.click();
  await expect(page).toHaveURL(/#microcap-raw-sell$/);
  const live=page.locator('#microcap-raw-sell [data-raw-sell-live]');
  await expect(live.locator('[data-raw-sell-block="gates"] tbody tr')).toHaveCount(4);
@@ -49,6 +50,7 @@ test('approved sell-policy replay leads the page and retains the historical reje
 
 test('online report exposes the same bounded pass before its historical evidence', async ({ page }) => {
  await page.goto('research/microcap/report/?lang=en-US');
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await expect(page.locator('main')).toContainText('21-session constructed replay now passes');
  await expect(page.locator('main')).toContainText('57 noncode inputs + 4 captured artifacts matched');
  await expect(page.locator('main')).toContainText('Version 1.0.7 snapshot');
@@ -60,6 +62,7 @@ for(const locale of ['en-US','zh-CN']) for(const theme of ['light','dark']) {
   await page.setViewportSize({width:320,height:900});
   await page.addInitScript(theme=>localStorage.setItem('market-research-theme',theme),theme);
   await page.goto(`research/microcap/?lang=${locale}`);
+ if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
   await page.waitForLoadState('networkidle');
   await expect(page.locator('#microcap-raw-sell [data-raw-sell-live]')).toHaveAttribute('lang',locale);
   await expect(page.locator('html')).toHaveAttribute('data-theme',theme);
