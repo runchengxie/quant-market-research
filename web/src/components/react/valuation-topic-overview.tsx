@@ -38,7 +38,9 @@ export function ValuationTopicOverview({ data, english }: { data: Input; english
       <ol>{['finding_one', 'finding_two', 'finding_three'].map(key => <li key={key}>{t(key as keyof typeof topicCopy)}</li>)}</ol>
       <nav className="report-links"><a href="#valuation-annual">{t('annual')}</a><a href="#valuation-definitions">{t('definitions')}</a><a href="#valuation-evidence">{t('evidence')}</a><a href="#valuation-ledger">{t('checkpoint')}</a><a href="#valuation-distributions">{t('explore')}</a></nav>
     </section>
-    <ValuationRound2Findings english={english} />
+    <div className="callout" role="note" data-testid="valuation-warning"><strong>{v('draft')}</strong><p>{v('warning')}</p>
+      <details className="valuation-detail"><summary>{t('technical_status')}</summary><p>{t('revision_status')}</p><p>{t('terms')}</p></details>
+    </div>
     <ValuationEvidenceDirectory english={english} />
     <section className="panel" id="valuation-annual" data-testid="valuation-annual">
       <h2>{t('annual')}</h2><p>{t('annual_scope')}</p>
@@ -94,6 +96,7 @@ export function ValuationTopicOverview({ data, english }: { data: Input; english
         <span>{t(r.reason as keyof typeof topicCopy)}</span><div className="valuation-gap-track"><div style={{ width: `${r.count / gapMax * 100}%` }} /></div><strong>{number(r.count)}</strong>
       </div>)}</figure><p>{t('gap_rule')}</p>
     </section>
+    <ValuationRound2Findings english={english} />
     <ValuationLedgerCheckpoint english={english} />
     <ValuationRound2 english={english} />
     <section className="panel" data-testid="valuation-interpretation"><h2>{t('interpretation')}</h2>

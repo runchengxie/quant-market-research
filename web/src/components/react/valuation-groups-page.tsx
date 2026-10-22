@@ -51,7 +51,6 @@ export function ValuationGroupsPage() {
   const x = (date: string) => 70 + dates.indexOf(date) * 530 / Math.max(dates.length - 1, 1);
   const y = (value: number) => 175 - (Math.log10(value) - lo) / Math.max(hi - lo, .1) * 145;
   return <div className="valuation-study">
-    <div className="callout" role="note" data-testid="valuation-warning"><strong>{t('draft')}</strong><p>{t('warning')}</p></div>
     <ValuationTopicOverview data={data} english={english} />
     <div className="valuation-controls">
       <label>{t('date')}<select data-testid="valuation-date" value={date} onChange={e => setDate(e.target.value)}>{[...dates].reverse().map(d => <option key={d}>{d}</option>)}</select></label>
