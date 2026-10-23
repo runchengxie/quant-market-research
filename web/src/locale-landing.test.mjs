@@ -11,7 +11,7 @@ test("research and documentation directories render English-first localized copy
   const docs = await fs.readFile(path.join(root, "pages/docs/index.astro"), "utf8");
   const copy = await fs.readFile(path.join(root, "content/locale-copy.ts"), "utf8");
 
-  assert.match(research, /<ResearchDirectory/);
+  assert.match(research, /<ResearchLanding/);
   assert.doesNotMatch(research, /\{page\.topic\}/);
   for (const label of [
     "Cash-flow index research",

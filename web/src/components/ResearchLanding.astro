@@ -1,0 +1,8 @@
+---
+import ResearchDirectory from './ResearchDirectory.astro';
+import T from './LocaleText.astro';
+import { readingCopy as c } from '../content/research-reading';
+---
+<section class="theme-heading"><div><h1><T as="span" text={c.catalog}/></h1><T text={c.intro}/></div></section>
+<aside class="reading-update"><span><T as="span" text={c.recent}/></span><T text={c.recentBody}/></aside>
+<ResearchDirectory/>

@@ -28,8 +28,9 @@ test('public shell is English-first and exposes a persistent Chinese switch', as
   assert.match(layout, /<html lang="en-US"/);
   assert.match(layout, /quant-market-research-locale/);
   assert.match(header, /data-locale-toggle/);
-  assert.match(header, /Research overview/);
-  assert.match(header, /研究总览/);
+  assert.doesNotMatch(header, /Research overview/);
+  assert.match(header, /Research topics/);
+  assert.doesNotMatch(header, /研究总览/);
   assert.match(researchPage, /titleEn\?: string/);
   assert.match(researchPage, /data-en=\{titleEn\}/);
   assert.match(researchPage, /data-zh=\{title\}/);

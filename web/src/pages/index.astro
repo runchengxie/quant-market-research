@@ -1,14 +1,9 @@
 ---
 import SiteLayout from '../layouts/SiteLayout.astro';
 import LegacyHashRedirect from '../components/LegacyHashRedirect.astro';
-import ResearchDirectory from '../components/ResearchDirectory.astro';
-import T from '../components/LocaleText.astro';
-import {readingCopy as c} from '../content/research-reading';
-import {withBase} from '../lib/routes';
+import ResearchLanding from '../components/ResearchLanding.astro';
 ---
-<SiteLayout title="研究总览" titleEn="Research overview" description="Current findings and evidence limits across public market research." activeRoute="overview">
+<SiteLayout title="研究专题" titleEn="Research topics" description="Current findings, sample dates and unresolved questions by topic." section="research">
   <LegacyHashRedirect/>
-  <section class="theme-heading"><div><h1><T as="span" text={c.catalog}/></h1><T text={c.intro}/></div></section>
-  <aside class="reading-update"><span><T as="span" text={c.recent}/></span><T text={c.recentBody}/><a href={withBase('/research/',import.meta.env.BASE_URL)} data-locale-text data-en="Browse reports and archives →" data-zh="查看报告与档案 →">Browse reports and archives →</a></aside>
-  <ResearchDirectory compact/>
+  <ResearchLanding/>
 </SiteLayout>

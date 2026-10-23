@@ -9,7 +9,7 @@ import { englishCopy } from "./content/locale-copy.ts";
 
 const routes = [
   ["research/overseas-leadlag/index.html", "Overseas signals and the A-share open"],
-  ["index.html", "Research overview"],
+  ["index.html", "Research topics"],
   ["research/style-theme-rotation/index.html", "Style and theme rotation: from signals to ETF portfolios"],
   ["research/etf-rotation/index.html", "Style and theme rotation"],
   ["research/hotsector/index.html", "Style and theme rotation"],

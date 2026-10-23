@@ -31,7 +31,7 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
   'overseas-leadlag-method': { title: 'Overseas signals and the A-share open: timing, controls and ETF costs', summary: 'Assumed historical availability, annual folds, FX controls and ETF proxy limits.' },
   rotation: { title: "Style and Theme Rotation", summary: "From style and hotspot signals to ETF portfolios: historical model diagnostics, weekly allocation experiments, and the missing validation steps." },
   "execution-costs": { title: "A-share Trading Costs and Capacity", summary: "Ten selected L2 dates: CNY 100k median static costs are 9.27/8.87 bp; CNY 1m coverage is 62.12%/67.68%. Order-flow audit and strategy sensitivity are published; actual execution remains uncalibrated." },
-  overview: { title: "Research overview", summary: "What each study found, which dates it covers, and what remains uncertain." },
+  overview: { title: "Research topics", summary: "What each study found, which dates it covers, and what remains uncertain." },
   research: { title: "Research topics", summary: "Start with a research question, then see the main finding and its limits." },
   cashflow: { title: "Cash-flow index research", summary: "Return and dividend definitions, investment drawdowns and recovery, index replication and tradability." },
   microcap: { title: "Micro-cap Research", summary: "What historical small-stock portfolios returned and lost, with their data gaps shown." },

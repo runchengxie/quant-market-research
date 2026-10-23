@@ -1,10 +1,7 @@
 ---
 import SiteLayout from '../../layouts/SiteLayout.astro';
-import ResearchDirectory from '../../components/ResearchDirectory.astro';
-import T from '../../components/LocaleText.astro';
-import {readingCopy as c} from '../../content/research-reading';
+import ResearchLanding from '../../components/ResearchLanding.astro';
 ---
 <SiteLayout title="研究专题" titleEn="Research topics" description="Current findings, sample dates and unresolved questions by topic." section="research">
-  <section class="theme-heading"><div><h1><T as="span" text={c.catalog}/></h1><T text={c.intro}/></div></section>
-  <ResearchDirectory/>
+  <ResearchLanding/>
 </SiteLayout>

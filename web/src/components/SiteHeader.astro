@@ -6,9 +6,8 @@ import { withBase } from "../lib/routes";
 interface Props { activeRoute: string; section?: "overview" | "research" | "docs" | "data" }
 
 const { activeRoute, section } = Astro.props;
-const resolvedSection = section ?? (activeRoute === "overview" ? "overview" : activeRoute === "docs" ? "docs" : activeRoute === "data" ? "data" : "research");
+const resolvedSection = section ?? (activeRoute === "overview" ? "research" : activeRoute === "docs" ? "docs" : activeRoute === "data" ? "data" : "research");
 const links = [
-  { id: "overview", section: "overview", en: "Research overview", zh: "研究总览", href: "/" },
   { id: "research", section: "research", en: "Research topics", zh: "研究专题", href: "/research/" },
   { id: "docs", section: "docs", en: "Methods & dictionary", zh: "方法与字典", href: "/docs/" },
   { id: "data", section: "data", en: "Data & versions", zh: "数据与版本", href: "/data-sources/" },

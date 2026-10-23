@@ -12,7 +12,7 @@ export const freshnessStatusCopy: Record<string, readonly [string, string]> = {
 };
 
 export const snapshotTitleCopy: Record<string, readonly [string, string]> = {
-  overview: ['Research overview', '研究总览'],
+  overview: ['Research topics', '研究专题'],
   microcap: ['Microcap reconstruction', '微盘重建'],
   microcap_repair: ['Microcap missing-price audit', '微盘缺失价格审计'],
   turnover: ['Small-cap turnover history', '小盘换手历史'],
