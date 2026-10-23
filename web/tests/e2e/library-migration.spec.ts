@@ -11,7 +11,7 @@ test('cashflow replication report retains figures, steps, boundaries and source 
   await page.goto('research/cashflow/?lang=en-US');
   await expect(page.getByRole('link', { name: 'Rule reproduction, shadow portfolios and evidence history →' })).toHaveAttribute('href', '/quant-market-research/research/cashflow/replication/');
   await page.goto('research/cashflow/replication/?lang=en-US');
-  await expect(page.locator('main h1')).toHaveText('Cash Flow Indices: Rule Reproduction and Strategy Boundaries');
+  await expect(page.locator('main h1')).toHaveText('Rebuilding cash-flow indices and testing portfolio choices');
   await expect(page.locator('[data-research-step]')).toHaveCount(4);
   await expect(page.locator('[data-research-chart]')).toHaveCount(2);
   await expect(page.locator('main')).toContainText('0.997');
@@ -22,7 +22,7 @@ test('cashflow replication report retains figures, steps, boundaries and source 
   expect(response.ok()).toBe(true);
   expect((await response.json()).charts[0].series[0].values[0]).toBe(.1699);
   await page.getByRole('button', { name: 'Switch to Chinese' }).click();
-  await expect(page.locator('main h1')).toHaveText('现金流指数：规则复现与策略边界');
+  await expect(page.locator('main h1')).toHaveText('现金流指数复现到了哪一步');
   await expect(page.locator('main')).toContainText('历史权重');
 });
 
@@ -51,4 +51,17 @@ test('jump-link headings remain below the desktop sticky header', async ({ page 
  await page.goto('research/cashflow/replication/?lang=en-US');
  await page.locator('.replication-nav a[href="#calibration"]').click();
  await expect.poll(async () => page.locator('#calibration h2').evaluate(el => el.getBoundingClientRect().top - document.querySelector('.site-header')!.getBoundingClientRect().bottom)).toBeGreaterThanOrEqual(0);
+});
+
+test('plain report labels all bars and explains evidence coverage in Chinese', async ({ page }) => {
+ await page.goto('research/cashflow/replication/?lang=zh-CN');
+ await expect(page.locator('.replication-coefficients')).toContainText('0.997');
+ await expect(page.locator('.replication-coverage')).toContainText('2024 年 8 月 15 日');
+ await expect(page.locator('.replication-coverage')).toContainText('9 个区间');
+ await expect(page.locator('.replication-coverage')).toContainText('历史权重仍缺');
+ await expect(page.locator('.replication-bar-value')).toHaveCount(15);
+ await expect(page.locator('[data-research-chart="breadth"]')).toContainText('16.99%');
+ await expect(page.locator('[data-research-chart="buffer-turnover"]')).toContainText('19.49%');
+ const prose = await page.locator('main').innerText();
+ expect(prose).not.toMatch(/不是.{0,60}而是|不在于|你以为|说白了|值得注意的是|先说结论|赋能|抓手|底层逻辑|[：；—“”]/);
 });
