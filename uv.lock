@@ -547,6 +547,9 @@ formal = [
     { name = "quant-platform", marker = "python_full_version >= '3.12'" },
     { name = "research-contracts", marker = "python_full_version >= '3.12'" },
 ]
+integration = [
+    { name = "quant-market-data-platform" },
+]
 yahoo = [
     { name = "yfinance" },
 ]
@@ -560,13 +563,14 @@ requires-dist = [
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=4fbfe973540e15fb6552068be037229d2f53d540" },
+    { name = "quant-market-data-platform", marker = "extra == 'integration'", git = "https://github.com/runchengxie/quant-market-data-platform.git?rev=71e40a0da03530fe88d70d4b212701d3af6a8cfa" },
     { name = "quant-platform", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?rev=15ec62b66e894395d694049eaaace931de4a1265" },
     { name = "requests", marker = "extra == 'dividends'", specifier = ">=2.32" },
     { name = "research-contracts", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?subdirectory=packages%2Fresearch-contracts&rev=15ec62b66e894395d694049eaaace931de4a1265" },
     { name = "ruff", marker = "extra == 'dev'", specifier = ">=0.15.20,<0.16" },
     { name = "yfinance", marker = "extra == 'yahoo'", specifier = ">=1.0" },
 ]
-provides-extras = ["dev", "duckdb", "formal", "yahoo", "dividends"]
+provides-extras = ["dev", "duckdb", "integration", "formal", "yahoo", "dividends"]
 
 [[package]]
 name = "multitasking"
@@ -1022,6 +1026,17 @@ dependencies = [
 ]
 
 [[package]]
+name = "quant-market-data-platform"
+version = "0.2.0"
+source = { git = "https://github.com/runchengxie/quant-market-data-platform.git?rev=71e40a0da03530fe88d70d4b212701d3af6a8cfa#71e40a0da03530fe88d70d4b212701d3af6a8cfa" }
+dependencies = [
+    { name = "numpy", version = "2.4.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
+    { name = "numpy", version = "2.5.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "pyyaml" },
+    { name = "research-code-quality" },
+]
+
+[[package]]
 name = "quant-platform"
 version = "0.0.1"
 source = { git = "https://github.com/runchengxie/quant-platform.git?rev=15ec62b66e894395d694049eaaace931de4a1265#15ec62b66e894395d694049eaaace931de4a1265" }
@@ -1049,6 +1064,11 @@ sdist = { url = "https://files.pythonhosted.org/packages/ac/c3/e2a2b89f2d3e2179a
 wheels = [
     { url = "https://files.pythonhosted.org/packages/a0/f4/c67b0b3f1b9245e8d266f0f112c500d50e5b4e83cb6f3b71b6528104182a/requests-2.34.2-py3-none-any.whl", hash = "sha256:2a0d60c172f83ac6ab31e4554906c0f3b3588d37b5cb939b1c061f4907e278e0", size = 73075, upload-time = "2026-05-14T19:25:26.443Z" },
 ]
+
+[[package]]
+name = "research-code-quality"
+version = "0.2.0"
+source = { git = "https://github.com/runchengxie/quant-code-quality.git?rev=6daeeca7a3d405f23c8ad49c8364bfdc8e9bb661#6daeeca7a3d405f23c8ad49c8364bfdc8e9bb661" }
 
 [[package]]
 name = "research-contracts"
