@@ -1,0 +1,162 @@
+{
+  "projection": {
+    "public_id": "cashflow-indices",
+    "source_ref": "doc:quant-research.research.cashflow-indices-map",
+    "source_status": "active",
+    "publication_status": "preliminary_aggregate",
+    "locales": [
+      "en-US",
+      "zh-CN"
+    ],
+    "allowed_fields": [
+      "title",
+      "family",
+      "status",
+      "summary",
+      "period",
+      "findings",
+      "limits",
+      "aggregate_rows",
+      "exploration_steps",
+      "aggregate_charts",
+      "source_references",
+      "next_question",
+      "evidence_summary",
+      "conclusion_changes",
+      "related_studies",
+      "source_review_status",
+      "navigation_asset",
+      "navigation_summary",
+      "trust",
+      "reproduction",
+      "next_tasks",
+      "diagnostic_intervals",
+      "scale_slices",
+      "calibration"
+    ],
+    "excluded_fields": [
+      "private_data_paths",
+      "credentials",
+      "per_security_signals",
+      "portfolio_weights",
+      "execution_details",
+      "private_code"
+    ],
+    "exploration_asset": "data/study-exploration/cashflow-indices.json",
+    "exploration_reviewed_at": "2026-10-02",
+    "navigation_asset": "data/study-navigation/cashflow-indices.json"
+  },
+  "source_review": {
+    "brief_sha256": "ede2acc0e0a8a2578a2295bbb8b34a09f8ab1c9e8312879a441f434138175946",
+    "navigation_sha256": "61c914d0a9d8bef166e984bf35478944dd0a27df8cbcd344e12375e61c0580bf",
+    "navigation_sources": [
+      {
+        "source_ref": "doc:quant-research.research.cashflow-indices-map",
+        "sha256": "3942ca7ab9f7a506b451e226f7650e5dacbefe7f6e1c48dfd7082e7dcb945da5"
+      },
+      {
+        "source_ref": "doc:quant-research.research.fundamental-evidence-navigation",
+        "sha256": "94dce6121b4a6178d6c1b3a768db4fab57500904338ebccc3e2435790b070edc"
+      }
+    ],
+    "study_id": "cashflow-indices",
+    "source_revision": "e1984591be37073d9e1b3b1dee8a7e7813652cb3",
+    "catalog_sha256": "6bfbdaafc752da1dedb39119bb40198cf3aed93c38af6a6fe91cb42474dd6930",
+    "exploration_sha256": "a052f5703fc0ff0e05c4fc95fa3586146f88a755d8a21c8ed4681255af3119c2",
+    "sources": [
+      {
+        "source_ref": "doc:quant-research.research.cashflow-indices-map",
+        "sha256": "3942ca7ab9f7a506b451e226f7650e5dacbefe7f6e1c48dfd7082e7dcb945da5"
+      },
+      {
+        "source_ref": "doc:quant-research.research.cashflow-indices.current-status",
+        "sha256": "e750c0c72b8e6b58266c10f323b4ab38a3381871d05125440c3ab4d1a17da3a2"
+      },
+      {
+        "source_ref": "doc:quant-research.decision.long-term-fundamental-v2-20260904",
+        "sha256": "2b944cd9718a00cb7db67d98e1d4f5ff4ce7b294a847ad49dc11a56ea37eaca4"
+      }
+    ]
+  },
+  "review_record": {
+    "reviewed_at": "2026-10-14",
+    "source_asset": "data/study-navigation/cashflow-indices.json",
+    "source_revision": "e83f2d10a5c45aa4b4bc4b28a288887f86500aa8"
+  },
+  "comparison_groups": [
+    {
+      "id": "cash-breadth",
+      "study_id": "cashflow-indices",
+      "chart_id": "breadth",
+      "mode": "models",
+      "baseline_id": "equal",
+      "series_ids": null,
+      "direction": "higher",
+      "reviewed_at": "2026-10-02",
+      "label": {
+        "en-US": "Cash-flow shadow weighting",
+        "zh-CN": "现金流影子权重"
+      },
+      "scope": {
+        "en-US": "Same standard shadow protocol and selected breadth; official history remains separate.",
+        "zh-CN": "同一标准影子协议与所选持仓宽度；官方历史保持独立。"
+      }
+    }
+  ],
+  "change_entries": [
+    {
+      "id": "cashflow-indices-1",
+      "kind": "boundary",
+      "period": {
+        "en-US": "Available snapshots",
+        "zh-CN": "可用快照区间"
+      },
+      "before": {
+        "en-US": "High official-return correlation might be read as complete index replication.",
+        "zh-CN": "较高官方收益相关性可能被理解为完整指数复现。"
+      },
+      "trigger": {
+        "en-US": "Available snapshots leave missing historical constituents and rule changes.",
+        "zh-CN": "可用快照仍缺历史成分，并存在规则变化。"
+      },
+      "after": {
+        "en-US": "Treat calibration and current-rule shadows as separate, bounded evidence.",
+        "zh-CN": "将校准与现行规则影子视为独立且有边界的证据。"
+      },
+      "source_ids": [
+        "status"
+      ],
+      "study_id": "cashflow-indices",
+      "source_ref": "doc:quant-research.research.cashflow-indices-map"
+    }
+  ],
+  "incoming_connections": [
+    {
+      "from_study_id": "pb-roe",
+      "study_id": "cashflow-indices",
+      "kind": "component_test",
+      "rationale": {
+        "en-US": "Valuation and quality filters also help diagnose value traps in cash-flow portfolios.",
+        "zh-CN": "估值与质量过滤也可用于诊断现金流组合的价值陷阱。"
+      }
+    },
+    {
+      "from_study_id": "fundamental-family-shadow",
+      "study_id": "cashflow-indices",
+      "kind": "shared_question",
+      "rationale": {
+        "en-US": "Family decomposition can separate value and quality exposure from the cash-flow thesis.",
+        "zh-CN": "家族拆解可区分价值、质量暴露与现金流解释。"
+      }
+    },
+    {
+      "from_study_id": "hk-fundamental-archive",
+      "study_id": "cashflow-indices",
+      "kind": "market_boundary",
+      "rationale": {
+        "en-US": "Cash-flow overlays appear in both archives, with separate sector and market-regime limits.",
+        "zh-CN": "两边均有现金流叠加，但行业与市场阶段限制各自独立。"
+      }
+    }
+  ]
+}

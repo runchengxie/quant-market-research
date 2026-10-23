@@ -2,7 +2,9 @@
 import ResearchDirectory from './ResearchDirectory.astro';
 import T from './LocaleText.astro';
 import { readingCopy as c } from '../content/research-reading';
+import { libraryCopy as l } from '../content/research-library';
+import '../styles/research-library.css';
 ---
-<section class="theme-heading"><div><h1><T as="span" text={c.catalog}/></h1><T text={c.intro}/></div></section>
-<aside class="reading-update"><span><T as="span" text={c.recent}/></span><T text={c.recentBody}/></aside>
+<section class="theme-heading library-hero"><div><T class="section-kicker" as="span" text={l.topicCount}/><h1><T as="span" text={c.catalog}/></h1><T text={l.intro}/></div></section>
 <ResearchDirectory/>
+<details class="reading-update library-update"><summary><T as="span" text={l.update}/></summary><T as="strong" text={c.recent}/><T text={c.recentBody}/></details>

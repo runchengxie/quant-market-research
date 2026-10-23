@@ -1,0 +1,36 @@
+{
+  "schema_version": "market-research.cashflow-publication-migration.v1",
+  "study_id": "cashflow-indices",
+  "published_by": "quant-market-research",
+  "route": "/research/cashflow/replication/",
+  "migrated_on": "2026-10-23",
+  "previous_publisher": {
+    "repository": "quant-factor-observatory",
+    "revision": "03c1ab3356ff6a49db81f52c7e508829d57f1db1"
+  },
+  "original_source_repository": "quant-research",
+  "evidence_reviewed_at": "2026-10-14",
+  "migration_is_new_research": false,
+  "assets": [
+    {
+      "path": "study.json",
+      "sha256": "d46a414b421bca87c23d93aaefb1e5e582e9f66dc86d312a89488c1e530b492b"
+    },
+    {
+      "path": "exploration.json",
+      "sha256": "7bad8aab1696827156debe7d7cd0d580c6d68b5329e19026eff507fd6eebf08a"
+    },
+    {
+      "path": "navigation.json",
+      "sha256": "02843520ffd7525ec2e76aaba81b8389d52e52c74211661d4932051cf9782d87"
+    },
+    {
+      "path": "publication.json",
+      "sha256": "f714542644ec5007e668d84c729539a67c2d90ba182b492e2ef77cba0fdd7a0d"
+    }
+  ],
+  "path_mapping": {
+    "data/study-exploration/cashflow-indices.json": "data/cashflow-replication/exploration.json",
+    "data/study-navigation/cashflow-indices.json": "data/cashflow-replication/navigation.json"
+  }
+}

@@ -1,0 +1,163 @@
+{
+  "id": "cashflow-indices",
+  "title": "现金流指数：规则复现与策略边界",
+  "family": "现金流与红利",
+  "status": "preliminary",
+  "status_label": "初步研究",
+  "summary": "现金流、红利和相关自建组合已有部分规则复现与聚合回放证据，但尚不能视为完整的官方成分复现或生产策略验证。",
+  "period": "可用成分快照覆盖期；完整十年官方成分回放尚未完成",
+  "source_note": "数据取自量化研究仓库的公开研究入口；官方指数、规则重建影子指数和自建组合分属不同证据类型。",
+  "columns": [
+    "对象",
+    "可用回放相关性"
+  ],
+  "rows": [
+    [
+      "红利基准",
+      "0.997"
+    ],
+    [
+      "全市场自由现金流基准",
+      "0.992"
+    ]
+  ],
+  "findings": [
+    "可用成分快照上的日收益相关性支持规则研究和本地校准，但不等于完整官方成分复现。",
+    "980092、932365 和 000922 需要区分当前研究对象、广义基准和红利基准。",
+    "后续仍需核对历史规则变化、点时财报覆盖、规模/行业/估值/质量归因和统一交易成本。"
+  ],
+  "limits": [
+    "可用成分快照不覆盖完整十年官方历史成分和规则变更。",
+    "公开投影只保留聚合结果，不代表逐股票信号、组合权重或可成交回放。",
+    "尚未据此进入生产策略或形成完整样本外结论。"
+  ],
+  "translations": {
+    "en-US": {
+      "title": "Cash Flow Indices: Rule Reproduction and Strategy Boundaries",
+      "family": "Cash flow and dividends",
+      "status_label": "Preliminary study",
+      "summary": "Cash flow, dividend, and related self-built portfolios have partial rule reproduction and aggregate replay evidence, but this is not yet a complete reproduction of official constituents or a production strategy validation.",
+      "period": "Period covered by available constituent snapshots; the complete ten-year official constituent replay is not complete",
+      "source_note": "Data comes from the public research entry in the quantitative research repository. The official index, the rule-reconstructed shadow index, and the self-built portfolio are separate evidence types.",
+      "columns": [
+        "Object",
+        "Correlation in available replay"
+      ],
+      "rows": [
+        [
+          "Dividend benchmark",
+          "0.997"
+        ],
+        [
+          "Broad-market free-cash-flow benchmark",
+          "0.992"
+        ]
+      ],
+      "findings": [
+        "Daily return correlations on available constituent snapshots support rule research and local calibration, but do not establish a complete reproduction of official constituents.",
+        "980092, 932365, and 000922 must be distinguished as the current research object, a broad benchmark, and a dividend benchmark.",
+        "Further work must check historical rule changes, point-in-time filing coverage, size/industry/valuation/quality attribution, and a unified transaction cost assumption."
+      ],
+      "limits": [
+        "Available constituent snapshots do not cover the complete ten-year history of official constituents and rule changes.",
+        "The public projection keeps aggregate results only and does not represent per-security signals, portfolio weights, or executable replay.",
+        "This has not entered a production strategy or produced a complete out-of-sample conclusion."
+      ]
+    }
+  },
+  "series": "fundamental",
+  "market": "a_share",
+  "method": [
+    "cross_sectional_ranking",
+    "portfolio_replay",
+    "attribution",
+    "robustness"
+  ],
+  "frequency": [
+    "monthly",
+    "annual"
+  ],
+  "evidence_stage": "retrospective_diagnostic",
+  "publication_id": "cashflow-indices",
+  "source_ref": "doc:quant-research.research.cashflow-indices-map",
+  "exploration_asset": "data/study-exploration/cashflow-indices.json",
+  "exploration_counts": {
+    "steps": 4,
+    "charts": 2
+  },
+  "evidence_summary": {
+    "decision": "research_only",
+    "scope": {
+      "en-US": "Official-snapshot calibration and separate rule shadows",
+      "zh-CN": "官方快照校准与独立规则影子"
+    },
+    "baseline": {
+      "en-US": "Official daily returns for calibration; common shadow arms for construction",
+      "zh-CN": "校准对照官方日收益，构造对照共同影子组合臂"
+    },
+    "input_basis": {
+      "en-US": "Partial constituents and reconstructed financial history",
+      "zh-CN": "部分成分与重建财务历史"
+    },
+    "sample": {
+      "en-US": "Available snapshots; standard shadow breadth replay has 80 monthly intervals",
+      "zh-CN": "可用快照；标准影子持仓宽度回放含 80 个区间"
+    }
+  },
+  "related_studies": [
+    {
+      "study_id": "pb-roe",
+      "kind": "component_test",
+      "rationale": {
+        "en-US": "Valuation and quality filters also help diagnose value traps in cash-flow portfolios.",
+        "zh-CN": "估值与质量过滤也可用于诊断现金流组合的价值陷阱。"
+      }
+    },
+    {
+      "study_id": "hk-fundamental-archive",
+      "kind": "market_boundary",
+      "rationale": {
+        "en-US": "Cash-flow overlays appear in both archives, with separate sector and market-regime limits.",
+        "zh-CN": "两边均有现金流叠加，但行业与市场阶段限制各自独立。"
+      }
+    },
+    {
+      "study_id": "fundamental-family-shadow",
+      "kind": "shared_question",
+      "rationale": {
+        "en-US": "Family decomposition can separate value and quality exposure from the cash-flow thesis.",
+        "zh-CN": "家族拆解可区分价值、质量暴露与现金流解释。"
+      }
+    }
+  ],
+  "source_review_status": {
+    "status": "matched",
+    "checked_at": "2026-10-14T10:05:57+00:00"
+  },
+  "navigation_asset": "data/study-navigation/cashflow-indices.json",
+  "navigation_summary": {
+    "run_id": "cashflow-shadow-standard-80-months",
+    "reproduction_status": "partial",
+    "decision": "research_only",
+    "negative_result": false,
+    "resume_when": {
+      "en-US": "Qualify historical rules and components, then compare on common dates, weights and execution costs.",
+      "zh-CN": "核实历史规则与成分，再对齐日期、权重与执行成本比较。"
+    },
+    "tasks": [
+      {
+        "id": "cashflow-indices-qualification",
+        "priority": "P1",
+        "status": "blocked",
+        "action": {
+          "en-US": "Qualify historical rules and components, then compare on common dates, weights and execution costs.",
+          "zh-CN": "核实历史规则与成分，再对齐日期、权重与执行成本比较。"
+        },
+        "acceptance": {
+          "en-US": "Retain an immutable audit with the named evidence gap resolved; preserve the previous decision if the gate fails.",
+          "zh-CN": "保留不可变审计并解决上述证据缺口；门槛未通过则保留原判断。"
+        }
+      }
+    ]
+  }
+}

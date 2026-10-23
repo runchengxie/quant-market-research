@@ -1,0 +1,33 @@
+---
+import T from './LocaleText.astro';
+import { replicationCopy as c } from '../content/cashflow-replication';
+import type { Copy } from '../content/research-reading';
+type Bilingual = {'en-US':string;'zh-CN':string};
+interface Chart {id:string; title:Bilingual; metric:Bilingual; context:Bilingual; interpretation:Bilingual; categories:Bilingual[]; series:{id:string;label:Bilingual;values:(number|null)[]}[];source_ids:string[];unit:string}
+const {chart}=Astro.props as {chart:Chart};
+const b=(v:Bilingual):Copy=>[v['en-US'],v['zh-CN']];
+const fmt=(v:number|null)=>v===null?'—':(v*100).toFixed(2)+'%';
+const max=Math.max(.05,...chart.series.flatMap(s=>s.values.filter((v):v is number=>v!==null)));
+const top=Math.ceil(max*100/5)*.05;
+const ticks=Array.from({length:5},(_,i)=>top*i/4);
+const left=54, bottom=240, plotHeight=190, groupWidth=120;
+const barWidth=chart.series.length===1?38:30;
+const colors=['var(--accent)','var(--replication-blue)'];
+---
+<figure class="replication-chart" data-research-chart={chart.id} aria-labelledby={'chart-'+chart.id}>
+  <h3 id={'chart-'+chart.id}><T as="span" text={b(chart.title)}/></h3>
+  <T class="chart-context" text={b(chart.context)}/>
+  <T class="chart-metric" text={b(chart.metric)}/>
+  <ul class="replication-legend">{chart.series.map((series,index)=><li><span style={'background:'+colors[index%colors.length]}></span><T as="span" text={b(series.label)}/></li>)}</ul>
+  <svg viewBox="0 0 720 290" role="img" aria-label={chart.title['en-US']} data-locale-aria data-aria-en={chart.title['en-US']} data-aria-zh={chart.title['zh-CN']}>
+    {ticks.map(tick=><g><line x1={left} x2="688" y1={bottom-tick/top*plotHeight} y2={bottom-tick/top*plotHeight} stroke="var(--rule)"/><text x={left-10} y={bottom-tick/top*plotHeight+4} text-anchor="end">{(tick*100).toFixed(1)}%</text></g>)}
+    {chart.categories.map((category,i)=><g>
+      <text x={left+groupWidth*i+60} y={bottom+26} text-anchor="middle">{category['en-US']}</text>
+      {chart.series.map((series,j)=>{const value=series.values[i];return value!==null&&<rect x={left+groupWidth*i+60+(j-chart.series.length/2)*(barWidth+6)} y={bottom-value/top*plotHeight} width={barWidth} height={value/top*plotHeight} fill={colors[j%colors.length]} rx="2"><title>{series.label['en-US']+': '+fmt(value)}</title></rect>})}
+    </g>)}
+  </svg>
+  <p class="chart-axis"><T as="span" text={c.breadth}/></p>
+  <T class="replication-boundary" text={b(chart.interpretation)}/>
+  <details><summary><T as="span" text={c.table}/></summary><div class="table-scroll"><table><thead><tr><th><T as="span" text={c.breadth}/></th>{chart.series.map(s=><th><T as="span" text={b(s.label)}/></th>)}</tr></thead><tbody>{chart.categories.map((category,index)=><tr><th><T as="span" text={b(category)}/></th>{chart.series.map(s=><td>{fmt(s.values[index])}</td>)}</tr>)}</tbody></table></div></details>
+  <p class="replication-source-links"><T as="span" text={c.source}/> · {chart.source_ids.map(id=><a href={'#source-'+id}>{id}</a>)}</p>
+</figure>

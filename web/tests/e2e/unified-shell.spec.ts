@@ -71,7 +71,7 @@ test('shareable English URLs keep research and methods cards in English', async 
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');
   await expect(page.locator('main h1')).toHaveText('Current findings by topic');
   await expect(page.getByRole('heading', { name: 'Cash-flow index research' })).toBeVisible();
-  await expect(page.locator('[data-research-id="cashflow"] h2 a')).toBeVisible();
+  await expect(page.locator('[data-research-id="cashflow"] h3 a')).toBeVisible();
 
   await page.goto('docs/?lang=en-US');
   await expect(page.locator('html')).toHaveAttribute('lang', 'en-US');

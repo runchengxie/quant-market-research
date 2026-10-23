@@ -2,7 +2,7 @@ import {expect,test} from '@playwright/test';
 test('current topics, evidence links and archived anchors remain accessible',async({page})=>{
  await page.goto('research/?lang=zh-CN');
  await expect(page.locator('[data-research-id]')).toHaveCount(9);
- await expect(page.locator('[data-research-id="microcap"] h2')).toHaveText('小微盘研究');
+ await expect(page.locator('[data-research-id="microcap"] h3')).toHaveText('小微盘研究');
  await page.goto('research/microcap/?lang=zh-CN');
  await expect(page.locator('#microcap-archive')).not.toHaveAttribute('open','');
  await page.goto('research/microcap/?lang=zh-CN#microcap-chain');

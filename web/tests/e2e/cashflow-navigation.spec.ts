@@ -23,13 +23,13 @@ test('static anchors and the old-route fallback work without JavaScript', async 
 
 test('directory, search and overview expose one cashflow topic with independent index and microcap entries', async ({ page, request }) => {
   await page.goto('research/');
-  await expect(page.locator('.research-card h2 a[href$="/research/cashflow/"]')).toHaveCount(1);
+  await expect(page.locator('.research-card h3 a[href$="/research/cashflow/"]')).toHaveCount(1);
   await expect(page.locator('a[href*="/cashflow/recovery/"]')).toHaveCount(0);
-  await expect(page.locator('.research-card h2 a[href$="/research/indices/"]')).toContainText('Long-run index and ETF performance');
-  await expect(page.locator('.research-card h2 a[href$="/research/microcap/"]')).toHaveCount(1);
+  await expect(page.locator('.research-card h3 a[href$="/research/indices/"]')).toContainText('Long-run index and ETF performance');
+  await expect(page.locator('.research-card h3 a[href$="/research/microcap/"]')).toHaveCount(1);
   await page.goto('./');
-  await expect(page.locator('main a[href$="/research/cashflow/"]')).toHaveCount(1);
-  await expect(page.locator('main a[href$="/research/indices/"]')).toHaveCount(1);
+  await expect(page.locator('main h3 a[href$="/research/cashflow/"]')).toHaveCount(1);
+  await expect(page.locator('main h3 a[href$="/research/indices/"]')).toHaveCount(1);
   const records = await (await request.get('search-index.json')).json();
   const list = Array.isArray(records) ? records : records.records;
   expect(list.filter((r: {id: string}) => r.id === 'cashflow')).toHaveLength(1);

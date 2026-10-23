@@ -60,7 +60,8 @@ test('English research overview uses English punctuation in generated findings',
   const conclusions = await page.locator('.reading-conclusion').allInnerTexts();
   expect(conclusions.length).toBeGreaterThan(0);
   expect(conclusions.join('\n')).not.toMatch(/[。，；：“”]/);
-  expect(conclusions[0]).toContain('percentage points');
+  await page.locator('[data-research-id="low-turnover"] details summary').click();
+  await expect(page.locator('[data-research-id="low-turnover"] details')).toContainText('percentage points');
   expect(conclusions[1]).toContain('unverified');
 });
 

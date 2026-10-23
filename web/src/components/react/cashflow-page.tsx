@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { withBase } from "../../lib/routes";
 import { cashflowIndexNames, cashflowSections, cashflowTopicCopy } from '../../content/cashflow-topic';
 import {
   displayLabels,
@@ -57,7 +58,7 @@ export function CashflowPage() {
         {index === 0 ? <CashflowPageContent /> : index === 1 ? <>
           <p data-locale-text data-en={cashflowTopicCopy.recovery[0]} data-zh={cashflowTopicCopy.recovery[1]}>{cashflowTopicCopy.recovery[localeIndex]}</p>
           <RecoverySection scope="cashflow" embedded />
-        </> : <ReplicationSection scope="cashflow" />}
+        </> : <><p><a href={withBase("/research/cashflow/replication/", import.meta.env.BASE_URL)} data-locale-text data-en="Rule reproduction, shadow portfolios and evidence history →" data-zh="规则复现、影子组合与证据记录 →">{localeIndex === 0 ? "Rule reproduction, shadow portfolios and evidence history →" : "规则复现、影子组合与证据记录 →"}</a></p><ReplicationSection scope="cashflow" /></>}
       </section>)}
     </>
   );

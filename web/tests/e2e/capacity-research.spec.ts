@@ -87,9 +87,9 @@ test('coverage panel distinguishes daily overlap, A-share minute and sampled Lev
 test('one directory entry and preserved old routes lead to the unified study', async ({page}) => {
  await page.goto('research/?lang=en-US');
   if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
- await expect(page.locator('.directory-grid h2 a[href$="/research/liquidity/"]')).toHaveCount(1);
- await expect(page.locator('.directory-grid h2 a[href$="/research/execution-costs/"]')).toHaveCount(0);
- await expect(page.locator('.directory-grid h2 a[href$="/cross-market-liquidity/"]')).toHaveCount(0);
+ await expect(page.locator('.directory-grid h3 a[href$="/research/liquidity/"]')).toHaveCount(1);
+ await expect(page.locator('.directory-grid h3 a[href$="/research/execution-costs/"]')).toHaveCount(0);
+ await expect(page.locator('.directory-grid h3 a[href$="/cross-market-liquidity/"]')).toHaveCount(0);
  await page.goto('research/microcap/cross-market-liquidity/?lang=zh-CN');
   if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
  await page.locator('#unified-entry a').click();

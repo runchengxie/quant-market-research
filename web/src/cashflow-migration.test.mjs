@@ -1,0 +1,25 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { createHash } from 'node:crypto';
+const root=new URL('../public/data/cashflow-replication/',import.meta.url);
+const read=name=>JSON.parse(readFileSync(new URL(name,root),'utf8'));
+test('migrated public assets preserve the recorded bytes, values and source revisions',()=>{
+ const canonical=v=>Array.isArray(v)?v.map(canonical):v&&typeof v==='object'?Object.fromEntries(Object.entries(v).sort(([a],[b])=>a<b?-1:a>b?1:0).map(([k,x])=>[k,canonical(x)])):v;
+ const digest=v=>createHash('sha256').update(JSON.stringify(canonical(v))).digest('hex');
+ const migration=read('migration.json');
+ for(const asset of migration.assets)assert.equal(createHash('sha256').update(readFileSync(new URL(asset.path,root))).digest('hex'),asset.sha256,asset.path);
+ const e=read('exploration.json'),n=read('navigation.json'),s=read('study.json'),p=read('publication.json');
+ assert.equal(e.steps.length,4);assert.equal(e.charts.length,2);
+ assert.equal(e.charts[0].series[0].values[0],.1699);
+ assert.equal(e.reviewed_at,'2026-10-14');
+ assert.equal(e.source_revision,'e1984591be37073d9e1b3b1dee8a7e7813652cb3');
+ assert.equal(n.source_revision,'e83f2d10a5c45aa4b4bc4b28a288887f86500aa8');
+ assert.equal(n.reproduction.artifact_sha256,null);
+ assert.deepEqual(s.rows.map(r=>r[1]),['0.997','0.992']);
+ assert.equal(digest(e),p.source_review.exploration_sha256);
+ assert.equal(digest(n),p.source_review.navigation_sha256);
+ assert.equal(digest(Object.fromEntries(Object.entries(s).filter(([k])=>k!=='source_review_status'))),p.source_review.catalog_sha256);
+ assert.equal(p.comparison_groups.length,1);assert.equal(p.change_entries.length,1);
+ assert.equal(migration.migration_is_new_research,false);
+});

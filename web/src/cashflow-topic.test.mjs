@@ -3,8 +3,11 @@ import assert from 'node:assert/strict';
 import { publicPages, pageForRoute } from './content/public-registry.ts';
 import { legacyHashTarget, PUBLIC_ROUTES, withBase } from './lib/routes.ts';
 
-test('cashflow is a single searchable topic with both evidence sets and the old route as an alias', () => {
-  const topics = publicPages.filter(page => page.section === 'research' && page.topic === 'cashflow');
+test('cashflow keeps one main topic and a related replication report with the old recovery alias', () => {
+  const topics = publicPages.filter(page => page.id === 'cashflow');
+  const replication=publicPages.find(page=>page.id==='cashflow-replication');
+  assert.equal(replication.route,'/research/cashflow/replication/');
+  assert.ok(topics[0].related.includes(replication.id));
   assert.equal(topics.length, 1);
   assert.equal(topics[0].title, '现金流指数研究');
   assert.deepEqual(topics[0].snapshotKeys, ['cashflow.performance', 'cashflow.recovery']);

@@ -1,0 +1,49 @@
+.replication-report { max-width:1040px; margin:0 auto; --replication-blue:#437b91; }
+.replication-report h1 { font-size:clamp(28px,3.4vw,42px); line-height:1.35; }
+.replication-report section { scroll-margin-top:180px; margin:36px 0; }
+.replication-report h2 { font:600 clamp(22px,2.6vw,30px)/1.4 var(--font-body); margin:0 0 18px; }
+.replication-report h3 { font:600 19px/1.5 var(--font-body); }
+.replication-report p,.replication-report li,.replication-report dd { line-height:1.85; color:var(--ink-soft); font-size:14px; }
+.replication-report dt { color:var(--muted); font-size:12px; margin-top:12px; }
+.replication-report dd { margin:4px 0 14px; }
+.replication-back,.replication-report a { color:var(--accent); font-size:13px; }
+.replication-reviewed { font-size:12px!important; color:var(--muted)!important; }
+.replication-verdict { border:1px solid var(--rule); border-top:3px solid var(--accent); padding:24px; background:var(--surface); }
+.replication-limit { padding:16px 18px; border-left:2px solid var(--accent); background:var(--accent-soft); }
+.replication-limit ul { margin-bottom:0; padding-left:20px; }
+.replication-nav { display:flex; flex-wrap:wrap; gap:10px; margin:28px 0; }
+.replication-nav a { padding:8px 12px; border:1px solid var(--rule); text-decoration:none; }
+.replication-facts { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0 24px; border-block:1px solid var(--rule); }
+.replication-report table { width:100%; border-collapse:collapse; margin:18px 0; font-size:13px; }
+.replication-report th,.replication-report td { padding:12px; border-bottom:1px solid var(--rule); text-align:left; }
+.replication-report th { color:var(--muted); font-weight:500; }
+.replication-steps { list-style:none; padding:0; }
+.replication-steps > li { display:grid; grid-template-columns:44px minmax(0,1fr); gap:16px; padding:22px 0; border-top:1px solid var(--rule); }
+.replication-step-number { color:var(--accent); font:18px var(--font-mono); }
+.replication-period,.replication-source-links { font-size:12px!important; color:var(--muted)!important; }
+.replication-source-links a { margin-right:12px; }
+.replication-chart { margin:24px 0; padding:24px; border:1px solid var(--rule); background:var(--surface); }
+.replication-chart h3 { margin-top:0; }
+.replication-chart svg { width:100%; height:auto; display:block; }
+.replication-chart svg text { fill:var(--muted); font:12px var(--font-body); }
+.replication-legend { display:flex; flex-wrap:wrap; gap:16px; padding:0; list-style:none; }
+.replication-legend li { display:flex; align-items:center; gap:8px; font-size:12px; }
+.replication-legend li > span:first-child { width:12px; height:12px; display:inline-block; }
+.chart-metric,.chart-axis { font-size:12px!important; color:var(--muted)!important; }
+.chart-axis { display:block; text-align:center; margin-top:0; }
+.replication-boundary { border-left:2px solid var(--accent); padding-left:14px; }
+.replication-trust { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
+.replication-trust article,.replication-task,.replication-change { padding:20px; border:1px solid var(--rule); background:var(--surface); }
+.replication-trust h3 { margin:0 0 12px; }
+.replication-status { display:inline-block; font-size:11px; color:var(--muted); padding:4px 8px; border:1px solid var(--rule); }
+.replication-report details { margin:20px 0; padding:14px 0; border-block:1px solid var(--rule); }
+.replication-report summary { cursor:pointer; color:var(--accent); font-size:14px; }
+.replication-report code { font-size:11px; overflow-wrap:anywhere; white-space:normal; }
+.replication-sources { padding-left:20px; }
+.replication-sources li { margin:14px 0; scroll-margin-top:180px; }
+.replication-sources code { display:block; }
+.replication-downloads { display:flex; flex-wrap:wrap; gap:10px 24px; padding-left:20px; }
+:root[data-theme="dark"] .replication-report { --replication-blue:#7ab9d0; }
+@media(max-width:650px) { .replication-facts,.replication-trust {grid-template-columns:1fr;} .replication-verdict,.replication-chart {padding:18px;} .replication-steps > li {grid-template-columns:28px minmax(0,1fr);gap:10px;} }
+
+@media(max-width:800px) { .replication-report section,.replication-sources li {scroll-margin-top:24px;} }

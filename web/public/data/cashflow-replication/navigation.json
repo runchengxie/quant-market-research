@@ -1,0 +1,118 @@
+{
+  "schema_version": "observatory.study_navigation.v1",
+  "study_id": "cashflow-indices",
+  "source_ref": "doc:quant-research.research.cashflow-indices-map",
+  "source_revision": "e83f2d10a5c45aa4b4bc4b28a288887f86500aa8",
+  "reviewed_at": "2026-10-14",
+  "authority_ref": "doc:quant-research.research.fundamental-evidence-navigation",
+  "trust": [
+    {
+      "dimension": "announcement_clock",
+      "status": "partial",
+      "detail": {
+        "en-US": "Some early fields are proxies; field-level strict PIT review remains open.",
+        "zh-CN": "部分早期字段使用代理，逐字段严格 PIT 复核仍待完成。"
+      },
+      "source_refs": [
+        "doc:quant-research.research.cashflow-indices-map"
+      ]
+    },
+    {
+      "dimension": "financial_versions",
+      "status": "unverified",
+      "detail": {
+        "en-US": "Not independently qualified in the cited record.",
+        "zh-CN": "引用记录尚未独立完成这一项核查。"
+      },
+      "source_refs": [
+        "doc:quant-research.research.cashflow-indices-map"
+      ]
+    },
+    {
+      "dimension": "historical_universe",
+      "status": "partial",
+      "detail": {
+        "en-US": "Official constituent snapshots are partial and historical rules changed.",
+        "zh-CN": "官方成分快照不完整，历史规则曾变化。"
+      },
+      "source_refs": [
+        "doc:quant-research.research.cashflow-indices-map"
+      ]
+    },
+    {
+      "dimension": "delisting_and_terminal",
+      "status": "partial",
+      "detail": {
+        "en-US": "Corporate actions, dividends and temporary replacements are not fully reproduced.",
+        "zh-CN": "公司行动、股息和临时替换尚未完整复现。"
+      },
+      "source_refs": [
+        "doc:quant-research.research.cashflow-indices-map"
+      ]
+    },
+    {
+      "dimension": "execution_timing",
+      "status": "partial",
+      "detail": {
+        "en-US": "Rule-shadow and official-index calibration are separate evidence.",
+        "zh-CN": "规则影子与官方指数校准是不同证据。"
+      },
+      "source_refs": [
+        "doc:quant-research.research.cashflow-indices-map"
+      ]
+    },
+    {
+      "dimension": "transaction_costs",
+      "status": "partial",
+      "detail": {
+        "en-US": "A common executable cost comparison remains open.",
+        "zh-CN": "共同可执行成本对照仍待完成。"
+      },
+      "source_refs": [
+        "doc:quant-research.research.cashflow-indices-map"
+      ]
+    }
+  ],
+  "reproduction": {
+    "run_id": "cashflow-shadow-standard-80-months",
+    "status": "partial",
+    "code_revision": null,
+    "runner_sha256": null,
+    "data_version": {
+      "en-US": "Standard shadow family and official constituent calibration are separate.",
+      "zh-CN": "标准影子家族与官方成分校准分开记录。"
+    },
+    "missing": {
+      "en-US": "A source entry or artifact hash does not certify a complete rerun; original availability, dependencies and historical eligibility must match.",
+      "zh-CN": "来源入口或产物哈希不等于完整复跑认证；原始可得性、依赖和历史资格必须一致。"
+    },
+    "source_refs": [
+      "doc:quant-research.research.cashflow-indices-map"
+    ],
+    "artifact_sha256": null
+  },
+  "decision": "research_only",
+  "resume_when": {
+    "en-US": "Qualify historical rules and components, then compare on common dates, weights and execution costs.",
+    "zh-CN": "核实历史规则与成分，再对齐日期、权重与执行成本比较。"
+  },
+  "next_tasks": [
+    {
+      "id": "cashflow-indices-qualification",
+      "priority": "P1",
+      "status": "blocked",
+      "action": {
+        "en-US": "Qualify historical rules and components, then compare on common dates, weights and execution costs.",
+        "zh-CN": "核实历史规则与成分，再对齐日期、权重与执行成本比较。"
+      },
+      "acceptance": {
+        "en-US": "Retain an immutable audit with the named evidence gap resolved; preserve the previous decision if the gate fails.",
+        "zh-CN": "保留不可变审计并解决上述证据缺口；门槛未通过则保留原判断。"
+      }
+    }
+  ],
+  "diagnostic_intervals": [],
+  "diagnostic_note": null,
+  "scale_slices": [],
+  "calibration": []
+}

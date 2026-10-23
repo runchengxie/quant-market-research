@@ -1,0 +1,315 @@
+{
+  "schema_version": "observatory.study_exploration.v1",
+  "study_id": "cashflow-indices",
+  "source_ref": "doc:quant-research.research.cashflow-indices-map",
+  "source_revision": "e1984591be37073d9e1b3b1dee8a7e7813652cb3",
+  "reviewed_at": "2026-10-14",
+  "evidence_stage": "retrospective_diagnostic",
+  "summary": {
+    "en-US": "Rule calibration and shadow strategy research answer different questions.",
+    "zh-CN": "规则校准与影子策略研究回答不同问题。"
+  },
+  "sources": [
+    {
+      "id": "overview",
+      "source_ref": "doc:quant-research.research.cashflow-indices-map",
+      "label": {
+        "en-US": "Authoritative study overview",
+        "zh-CN": "权威研究综述"
+      }
+    },
+    {
+      "id": "status",
+      "source_ref": "doc:quant-research.research.cashflow-indices.current-status",
+      "label": {
+        "en-US": "Cash-flow current status",
+        "zh-CN": "现金流当前研究状态"
+      }
+    },
+    {
+      "id": "decision",
+      "source_ref": "doc:quant-research.decision.long-term-fundamental-v2-20260904",
+      "label": {
+        "en-US": "Research decision receipt, 2026-09-04",
+        "zh-CN": "2026-09-04 研究决策凭证"
+      }
+    }
+  ],
+  "steps": [
+    {
+      "id": "replicate",
+      "period": {
+        "en-US": "Available snapshots",
+        "zh-CN": "可用快照区间"
+      },
+      "status": "diagnostic",
+      "title": {
+        "en-US": "Calibrate against official daily returns",
+        "zh-CN": "对照官方日收益校准"
+      },
+      "question": {
+        "en-US": "Can the available constituent snapshots reproduce daily movements?",
+        "zh-CN": "现有成分快照能否复现日收益变化？"
+      },
+      "finding": {
+        "en-US": "Available-snapshot replay correlations are 0.997 for dividends and 0.992 for broad free cash flow.",
+        "zh-CN": "现有快照回放相关性为红利 0.997、全市场自由现金流 0.992。"
+      },
+      "decision": {
+        "en-US": "Use this as local calibration; it does not reconstruct missing constituent history.",
+        "zh-CN": "用于局部校准，不代表补齐缺失的历史成分。"
+      },
+      "source_ids": [
+        "status"
+      ]
+    },
+    {
+      "id": "shadow",
+      "period": {
+        "en-US": "2026-09-04",
+        "zh-CN": "2026-09-04"
+      },
+      "status": "diagnostic",
+      "title": {
+        "en-US": "Compare portfolio breadth in the shadow history",
+        "zh-CN": "比较影子历史中的持仓宽度"
+      },
+      "question": {
+        "en-US": "Does more concentration consistently improve the result?",
+        "zh-CN": "更集中是否一致改善结果？"
+      },
+      "finding": {
+        "en-US": "The standard shadow replay varies with breadth and weighting; the return curve is not monotonic.",
+        "zh-CN": "标准影子回放随持仓宽度、权重变化，收益曲线并非单调。"
+      },
+      "decision": {
+        "en-US": "Do not select the best breadth after seeing this table.",
+        "zh-CN": "不能看完本表再选择最优持仓宽度。"
+      },
+      "source_ids": [
+        "decision"
+      ]
+    },
+    {
+      "id": "turnover",
+      "period": {
+        "en-US": "2026-09-04",
+        "zh-CN": "2026-09-04"
+      },
+      "status": "diagnostic",
+      "title": {
+        "en-US": "Study buffering and costs",
+        "zh-CN": "研究缓冲与成本"
+      },
+      "question": {
+        "en-US": "Can lower turnover be distinguished from alpha?",
+        "zh-CN": "能否区分降低换手与 Alpha？"
+      },
+      "finding": {
+        "en-US": "An incumbent buffer reduced turnover; every cost-stress arm lost return as costs increased.",
+        "zh-CN": "老持仓缓冲降低了换手；成本阶梯中各臂收益均随成本上升而降低。"
+      },
+      "decision": {
+        "en-US": "Treat this as construction/cost sensitivity, not an official index replication or capacity claim.",
+        "zh-CN": "视为组合构造与成本敏感性，不称官方指数复现或容量结论。"
+      },
+      "source_ids": [
+        "decision"
+      ]
+    },
+    {
+      "id": "official-membership-boundary",
+      "period": {
+        "en-US": "2026-10-06",
+        "zh-CN": "2026-10-06"
+      },
+      "status": "diagnostic",
+      "title": {
+        "en-US": "Separate official membership history from weights",
+        "zh-CN": "区分官方历史成分与权重"
+      },
+      "question": {
+        "en-US": "Which part of the official index history is now available?",
+        "zh-CN": "现已取得官方指数历史中的哪部分资料？"
+      },
+      "finding": {
+        "en-US": "The official 980092 adjustment export covers nine 100-constituent intervals from 2024-09-18 onward. It contains membership changes but no historical weights; the official weight export supplies only a 2026-09-30 snapshot.",
+        "zh-CN": "官方 980092 调整导出覆盖自 2024-09-18 起的 9 个区间，每个区间含 100 个成分。文件提供成分变更，但没有历史权重；官方权重导出仅提供 2026-09-30 快照。"
+      },
+      "decision": {
+        "en-US": "The current methodology took effect on 2024-08-15, but the export does not establish membership through 2024-09-17. Historical weights remain unavailable. This is not a complete ten-year official replication; keep earlier snapshot correlations and shadow portfolio comparisons separate.",
+        "zh-CN": "现行方法自 2024-08-15 生效，但导出未覆盖该日至 2024-09-17 的成分。历史权重仍缺失。这不代表完成十年官方指数复现；此前快照相关性和影子组合比较应单独呈现。"
+      },
+      "source_ids": [
+        "overview"
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "id": "breadth",
+      "title": {
+        "en-US": "Shadow return by holding breadth",
+        "zh-CN": "影子收益随持仓宽度变化"
+      },
+      "metric": {
+        "en-US": "Annualized shadow return",
+        "zh-CN": "影子年化收益"
+      },
+      "context": {
+        "en-US": "980092 standard shadow replay, 80 monthly intervals; mixed historical rules and reconstructed data. Not the official index history.",
+        "zh-CN": "980092 标准影子回放，80 个月度区间；混合历史规则与重建数据，不是官方指数历史。"
+      },
+      "interpretation": {
+        "en-US": "Weighting and breadth interact; no monotonic winner or production qualification follows.",
+        "zh-CN": "权重与持仓宽度相互影响，没有单调赢家或生产资格。"
+      },
+      "categories": [
+        {
+          "en-US": "10",
+          "zh-CN": "10"
+        },
+        {
+          "en-US": "20",
+          "zh-CN": "20"
+        },
+        {
+          "en-US": "30",
+          "zh-CN": "30"
+        },
+        {
+          "en-US": "50",
+          "zh-CN": "50"
+        },
+        {
+          "en-US": "100",
+          "zh-CN": "100"
+        }
+      ],
+      "series": [
+        {
+          "id": "equal",
+          "label": {
+            "en-US": "Equal weight",
+            "zh-CN": "等权"
+          },
+          "values": [
+            0.1699,
+            0.1574,
+            0.1422,
+            0.1302,
+            0.1307
+          ]
+        },
+        {
+          "id": "capped",
+          "label": {
+            "en-US": "FCF-capped shadow",
+            "zh-CN": "现金流封顶影子"
+          },
+          "values": [
+            0.1512,
+            0.1654,
+            0.1448,
+            0.1153,
+            0.1224
+          ]
+        }
+      ],
+      "source_ids": [
+        "decision"
+      ],
+      "unit": "percent"
+    },
+    {
+      "id": "buffer-turnover",
+      "title": {
+        "en-US": "Holding-buffer turnover diagnostic",
+        "zh-CN": "持仓缓冲换手诊断"
+      },
+      "metric": {
+        "en-US": "Average one-way turnover",
+        "zh-CN": "平均单边换手"
+      },
+      "context": {
+        "en-US": "Same equal-weight standard shadow family with incumbent buffering; no unbuffered comparator is plotted here.",
+        "zh-CN": "同一等权标准影子家族，使用老持仓缓冲；此图没有绘制无缓冲对照。"
+      },
+      "interpretation": {
+        "en-US": "Larger breadth tends to lower turnover, but this construction diagnostic does not establish alpha.",
+        "zh-CN": "较大持仓宽度通常降低换手，但这一构造诊断不能确立 Alpha。"
+      },
+      "categories": [
+        {
+          "en-US": "10",
+          "zh-CN": "10"
+        },
+        {
+          "en-US": "20",
+          "zh-CN": "20"
+        },
+        {
+          "en-US": "30",
+          "zh-CN": "30"
+        },
+        {
+          "en-US": "50",
+          "zh-CN": "50"
+        },
+        {
+          "en-US": "100",
+          "zh-CN": "100"
+        }
+      ],
+      "series": [
+        {
+          "id": "turnover",
+          "label": {
+            "en-US": "Buffered equal weight",
+            "zh-CN": "缓冲后的等权"
+          },
+          "values": [
+            0.24,
+            0.215,
+            0.1933,
+            0.169,
+            0.1949
+          ]
+        }
+      ],
+      "source_ids": [
+        "decision"
+      ],
+      "unit": "percent"
+    }
+  ],
+  "next_question": {
+    "en-US": "Can a stable cash-flow rule survive consistent historical rules, PIT and common execution assumptions?",
+    "zh-CN": "稳定现金流规则能否通过一致历史规则、PIT 与共同执行假设检验？"
+  },
+  "conclusion_changes": [
+    {
+      "id": "cashflow-indices-1",
+      "kind": "boundary",
+      "period": {
+        "en-US": "Available snapshots",
+        "zh-CN": "可用快照区间"
+      },
+      "before": {
+        "en-US": "High official-return correlation might be read as complete index replication.",
+        "zh-CN": "较高官方收益相关性可能被理解为完整指数复现。"
+      },
+      "trigger": {
+        "en-US": "Available snapshots leave missing historical constituents and rule changes.",
+        "zh-CN": "可用快照仍缺历史成分，并存在规则变化。"
+      },
+      "after": {
+        "en-US": "Treat calibration and current-rule shadows as separate, bounded evidence.",
+        "zh-CN": "将校准与现行规则影子视为独立且有边界的证据。"
+      },
+      "source_ids": [
+        "status"
+      ]
+    }
+  ]
+}
