@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import os
 import shutil
 import subprocess
 import sys
@@ -34,10 +35,15 @@ def _store_frame(root: Path, frame: pd.DataFrame, staging: Path) -> str:
         staging.unlink()
 
 
-def _runtime_command(root: Path, command: str, argument: str) -> dict[str, Any]:
+def _runtime_command(
+    root: Path, command: str, argument: str, *, isolated: bool = False
+) -> dict[str, Any]:
+    if isolated:
+        root = root.resolve()
     completed = subprocess.run(
         [
             sys.executable,
+            *(["-I"] if isolated else []),
             "-m",
             "backtest_runtime.cli",
             "--database",
@@ -53,6 +59,8 @@ def _runtime_command(root: Path, command: str, argument: str) -> dict[str, Any]:
         capture_output=True,
         text=True,
         timeout=60,
+        cwd=root if isolated else None,
+        env={"PATH": os.defpath, "LANG": "C.UTF-8", "PYTHONNOUSERSITE": "1"} if isolated else None,
     )
     return json.loads(completed.stdout)
 
@@ -66,8 +74,15 @@ def run_sequenced_job(
     ledger_config: dict[str, Any],
     *,
     transaction_cost_bps: float,
+    isolated: bool = False,
 ) -> tuple[Path, dict[str, Any]]:
-    """Return a verified runtime result directory and its receipt."""
+    """Return a verified result; opt into installed-only CLI imports for smoke checks.
+
+    Isolation uses Python -I, a minimal environment and the task runtime directory.
+    Existing research callers retain their prior launch behavior by default.
+    """
+    if isolated:
+        root = root.resolve()
     root.mkdir(parents=True, exist_ok=True)
     artifacts = root / "artifacts"
     inputs = {
@@ -101,13 +116,13 @@ def run_sequenced_job(
     request["idempotency_key"] = f"market-research-{variant}-{fingerprint}"
     manifest = root / f"{variant}-request.json"
     manifest.write_text(json.dumps(request, ensure_ascii=False, sort_keys=True) + "\n")
-    receipt = _runtime_command(root, "submit", str(manifest))
+    receipt = _runtime_command(root, "submit", str(manifest), isolated=isolated)
     job_id = str(receipt["job_id"])
     deadline = time.monotonic() + 1810
     while time.monotonic() < deadline:
-        status = _runtime_command(root, "status", job_id)
+        status = _runtime_command(root, "status", job_id, isolated=isolated)
         if status["status"] == "SUCCEEDED":
-            verified = _runtime_command(root, "result", job_id)
+            verified = _runtime_command(root, "result", job_id, isolated=isolated)
             if verified.get("backend") != "native.sequenced_execution":
                 raise ValueError("unexpected runtime backend in verified result")
             return root / "results" / job_id, {

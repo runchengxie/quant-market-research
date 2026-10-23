@@ -1,0 +1,45 @@
+name: Synthetic cross-repository integration
+
+on:
+  pull_request:
+    paths:
+      - "src/**"
+      - "tests/test_synthetic_chain.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/crossrepo-smoke.yml"
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "tests/test_synthetic_chain.py"
+      - "pyproject.toml"
+      - "uv.lock"
+      - ".github/workflows/crossrepo-smoke.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: crossrepo-smoke-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  synthetic-chain:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+        with:
+          python-version: "3.13"
+          enable-cache: true
+      - name: Install the complete pinned integration environment
+        run: uv sync --locked --extra dev --extra duckdb --extra formal --extra integration
+      - name: Verify the real synthetic chain without dependency skips
+        env:
+          REQUIRE_CROSSREPO_SMOKE: "1"
+        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q tests/test_synthetic_chain.py
+      - name: Produce a versioned synthetic acceptance receipt
+        run: uv run --locked --extra formal --extra integration market-research-synthetic-chain --output "${{ runner.temp }}/research-chain"
