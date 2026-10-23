@@ -20,7 +20,7 @@
 .reading-card dt, .research-reading-tools dt { color:var(--muted); }
 .reading-card dd, .research-reading-tools dd { margin:0 0 8px; color:var(--ink-soft); }
 .reading-card details { font-size:13px; border-top:1px solid var(--rule); padding-top:12px; }
-.research-reading-tools { margin-block:32px; max-width:960px; }
+.site-main > .research-reading-tools { width:100%; min-width:0; max-width:960px; margin:32px auto; overflow-wrap:anywhere; }
 .reading-shortcut { display:inline-block; margin-bottom:14px; color:var(--accent); font-size:13px; }
 .research-reading-tools h2 { font-size:23px; }
 .research-reading-tools > p { max-width:78ch; line-height:1.85; }
