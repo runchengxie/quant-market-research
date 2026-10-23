@@ -88,3 +88,7 @@ The integration extra also brings DATA's own pinned `research-code-quality`
 dependency, recorded in the lockfile. Changing any chain pin requires an explicit
 update and a fresh integration run. Fixture/result file hashes are captured for
 that run, not promised to match across Parquet library versions.
+
+The public `Synthetic cross-repository integration` workflow installs all pinned
+integration extras and sets `REQUIRE_CROSSREPO_SMOKE=1`. Missing integration
+packages therefore fail that dedicated CI job instead of being skipped.
