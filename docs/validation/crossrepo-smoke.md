@@ -28,10 +28,14 @@ REQUIRE_CROSSREPO_SMOKE=1 uv run --locked --extra dev --extra duckdb --extra for
 
 The CLI does not skip missing dependencies: it fails before generating data when
 a required distribution is absent or its `direct_url.json` commit differs from
-the expected pin. The normal Python test suite explicitly skips these integration
+the expected pin. Imported DATA/runtime/platform/contracts modules must also match
+their installed distribution RECORD paths and SHA-256 contents; metadata cannot
+authorize a shadow source checkout. The normal Python test suite explicitly skips these integration
 tests when DATA/runtime are absent; `REQUIRE_CROSSREPO_SMOKE=1` turns missing
 dependencies into failures. An existing output directory is refused, and outputs
-inside the source repository are refused. Run only against a disposable output
+inside the source repository or the caller’s actual Git checkout are refused,
+including when invoked from a wheel. Empty `.git` placeholders are ignored.
+Run only against a disposable output
 location: the integration intentionally retains an altered copy for diagnosis.
 
 ## Fixture and expected result
@@ -52,14 +56,20 @@ with 100,000, buys at 100, and marks the same holding at 105, giving 105,000.
 
 `run_sequenced_job` invokes `python -m backtest_runtime.cli` for submit, status
 and result, using a task-local SQLite database and content-addressed artifacts.
-It does not run an in-process substitute worker. `publish_report` rechecks the
+The smoke opts into isolated runtime launches: Python `-I`, a minimal environment
+(`PATH` set to the system default, `LANG=C.UTF-8`, `PYTHONNOUSERSITE=1`), and its new
+task runtime directory as cwd. Caller `PYTHONPATH` and cwd cannot shadow the CLI or
+worker. Existing research callers retain their default launch behavior. It does
+not run an in-process substitute worker. `publish_report` rechecks the
 runtime manifest, request identity and frame checksums through `read_job_result`
-before it copies the verified frames and writes `report/summary.json`.
+before it copies the verified frames and writes `report/summary.json`. Nonfinite
+terminal values are rejected before the arithmetic comparison.
 
 ## Evidence and pins
 
 `evidence.json` records interpreter identity, installed distribution versions and
-`direct_url.json` metadata, public research source revision and source-file hashes,
+`direct_url.json` metadata, loaded owner-module origins and hashes, the isolated
+runtime launch contract, public research source revision and source-file hashes,
 the request/result receipt hashes, hashes of fixture/normalized/report/runtime
 files, explicit assumptions, the terminal value and negative tamper result.
 The runtime request and original/corrupted result copies remain alongside it.

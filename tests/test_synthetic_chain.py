@@ -87,3 +87,106 @@ def test_report_rejects_a_directory_other_than_the_verified_job(tmp_path):
     with pytest.raises(ValueError, match="identity"):
         publish_report(wrong_job, receipt, destination)
     assert not destination.exists()
+
+
+def test_distribution_metadata_does_not_authorize_shadow_provider_source(tmp_path):
+    _require_integration()
+    import subprocess
+    import sys
+
+    shadow = tmp_path / "shadow"
+    package = shadow / "quant_market_data_platform"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text("# synthetic unpinned source shadow\n")
+    completed = subprocess.run(
+        [
+            sys.executable,
+            "-B",
+            "-c",
+            "from market_research.synthetic_chain import _environment; _environment()",
+        ],
+        cwd=tmp_path,
+        env={**os.environ, "PYTHONPATH": str(shadow)},
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+    assert completed.returncode != 0
+    assert "origin" in completed.stderr.lower()
+
+
+def test_runtime_ignores_caller_pythonpath_and_current_directory(tmp_path, monkeypatch):
+    _require_integration()
+    from market_research.synthetic_chain import run_smoke
+
+    shadow = tmp_path / "shadow"
+    package = shadow / "backtest_runtime"
+    package.mkdir(parents=True)
+    (package / "__init__.py").write_text("")
+    (package / "cli.py").write_text("raise RuntimeError('UNPINNED_SHADOW_CLI')\n")
+    monkeypatch.setenv("PYTHONPATH", str(shadow))
+    monkeypatch.chdir(shadow)
+    evidence = run_smoke(tmp_path / "chain")
+    assert evidence["checks"]["terminal_nav"] == pytest.approx(105_000.0)
+    assert evidence["environment"]["module_origins"]
+
+
+def test_wheel_layout_rejects_output_inside_callers_real_git_repository(tmp_path, monkeypatch):
+    _require_integration()
+    import subprocess
+    from market_research import synthetic_chain
+
+    repository = tmp_path / "caller"
+    repository.mkdir()
+    subprocess.run(["git", "init", "--quiet", str(repository)], check=True)
+    nested = repository / "nested"
+    nested.mkdir()
+    monkeypatch.chdir(nested)
+    wheel_file = tmp_path / "wheel" / "site-packages" / "market_research" / "synthetic_chain.py"
+    monkeypatch.setattr(synthetic_chain, "__file__", str(wheel_file))
+
+    def unexpected_environment():
+        raise AssertionError("repository output must be refused before environment validation")
+
+    monkeypatch.setattr(synthetic_chain, "_environment", unexpected_environment)
+    output = repository / "generated"
+    with pytest.raises(ValueError, match="outside.*repository"):
+        synthetic_chain.run_smoke(output)
+    assert not output.exists()
+
+
+@pytest.mark.parametrize("marker_kind", ["directory", "file"])
+def test_empty_git_markers_do_not_define_source_repositories(tmp_path, marker_kind):
+    from market_research.synthetic_chain import _git_root
+
+    marker = tmp_path / ".git"
+    if marker_kind == "directory":
+        marker.mkdir()
+    else:
+        marker.touch()
+    assert _git_root(tmp_path) is None
+
+
+def test_nonfinite_but_hash_valid_ledger_cannot_be_published(tmp_path):
+    _require_integration()
+    from market_research.synthetic_chain import publish_report, run_smoke
+
+    evidence = run_smoke(tmp_path / "chain")
+    receipt = dict(evidence["runtime_receipt"])
+    result = tmp_path / "chain" / "runtime" / "results" / receipt["job_id"]
+    path = result / "daily_ledger.parquet"
+    daily = pd.read_parquet(path)
+    daily["nav"] = float("nan")
+    daily.to_parquet(path, index=False)
+    manifest_path = result / "manifest.json"
+    manifest = json.loads(manifest_path.read_text())
+    for item in manifest["inventory"]:
+        if item["path"] == "daily_ledger.parquet":
+            item["sha256"] = hashlib.sha256(path.read_bytes()).hexdigest()
+            item["size_bytes"] = path.stat().st_size
+    manifest_path.write_text(json.dumps(manifest))
+    receipt["result_sha256"] = hashlib.sha256(manifest_path.read_bytes()).hexdigest()
+    destination = tmp_path / "unpublished"
+    with pytest.raises(ValueError, match="finite"):
+        publish_report(result, receipt, destination)
+    assert not destination.exists()

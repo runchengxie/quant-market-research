@@ -7,10 +7,13 @@ and integrity, never vendor correctness or investable strategy performance.
 from __future__ import annotations
 
 import argparse
+import base64
 from dataclasses import asdict
 import hashlib
-from importlib import metadata
+from importlib import import_module, metadata
 import json
+import math
+import os
 from pathlib import Path
 import platform
 import shutil
@@ -39,6 +42,96 @@ def _write_json(path: Path, payload: Any) -> None:
     path.write_text(json.dumps(payload, indent=2, sort_keys=True) + "\n", encoding="utf-8")
 
 
+def _git_root(start: Path) -> Path | None:
+    """Recognize real checkouts/worktrees, ignoring empty .git placeholders."""
+    start = start.resolve()
+    for candidate in (start, *start.parents):
+        marker = candidate / ".git"
+        if marker.is_dir():
+            valid = (marker / "HEAD").is_file() and (marker / "objects").is_dir()
+        elif marker.is_file():
+            text = marker.read_text(encoding="utf-8").strip()
+            directory = (candidate / text[8:]).resolve() if text.startswith("gitdir: ") else None
+            valid = directory is not None and (directory / "HEAD").is_file()
+        else:
+            valid = False
+        if not valid:
+            continue
+        result = subprocess.run(
+            ["git", "-C", str(candidate), "rev-parse", "--show-toplevel"],
+            capture_output=True,
+            text=True,
+            check=False,
+            env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
+        )
+        if result.returncode == 0 and Path(result.stdout.strip()).resolve() == candidate:
+            return candidate
+    return None
+
+
+def _module_origins() -> dict[str, Any]:
+    """Match imported owner files to their actual installed distribution RECORD."""
+    modules = {
+        "quant-market-data-platform": (
+            "quant_market_data_platform",
+            "quant_market_data_platform.research_views.a_share_research_data",
+        ),
+        "quant-backtest-runtime": (
+            "backtest_runtime",
+            "backtest_runtime.cli",
+            "backtest_runtime.worker",
+            "backtest_runtime.results",
+        ),
+        "quant-platform": ("portfolio_backtester", "portfolio_backtester.execution_sim"),
+        "research-contracts": ("research_contracts",),
+    }
+    for owner, names in modules.items():
+        top = import_module(names[0])
+        expected = Path(
+            metadata.distribution(owner).locate_file(names[0].replace(".", "/") + "/__init__.py")
+        ).resolve()
+        if top.__file__ is None or Path(top.__file__).resolve() != expected:
+            raise ValueError(f"{names[0]} origin does not match installed {owner}")
+        for name in names[1:]:
+            import_module(name)
+    prefixes = {
+        "quant-market-data-platform": ("quant_market_data_platform",),
+        "quant-backtest-runtime": ("backtest_runtime",),
+        "quant-platform": (
+            "portfolio_backtester",
+            "quant_platform",
+            "quant_execution_engine",
+            "alpha_research",
+            "strategy_pipeline",
+            "ticknet",
+        ),
+        "research-contracts": ("research_contracts",),
+    }
+    origins = {}
+    for owner, roots in prefixes.items():
+        distribution = metadata.distribution(owner)
+        records = {
+            Path(distribution.locate_file(item)).resolve(): item
+            for item in distribution.files or ()
+        }
+        loaded = [
+            (name, module)
+            for name, module in list(sys.modules.items())
+            if any(name == root or name.startswith(root + ".") for root in roots)
+        ]
+        for name, module in loaded:
+            origin = Path(module.__file__).resolve() if module.__file__ else None
+            if origin not in records:
+                raise ValueError(f"{name} origin does not match installed {owner}")
+            record = records[origin]
+            digest = _sha256(origin)
+            encoded = base64.urlsafe_b64encode(bytes.fromhex(digest)).decode().rstrip("=")
+            if record.hash is None or record.hash.mode != "sha256" or record.hash.value != encoded:
+                raise ValueError(f"{name} origin differs from installed distribution RECORD")
+            origins[name] = {"distribution": owner, "path": str(origin), "sha256": digest}
+    return origins
+
+
 def _environment() -> dict[str, Any]:
     distributions = {}
     names = [
@@ -63,19 +156,25 @@ def _environment() -> dict[str, Any]:
             "commit": commit,
             "direct_url": direct_url,
         }
-    repository = Path(__file__).resolve().parents[2]
-    revision = subprocess.run(
-        ["git", "-C", str(repository), "rev-parse", "HEAD"],
-        text=True,
-        capture_output=True,
-        check=False,
+    repository = _git_root(Path(__file__).resolve().parent)
+    revision = (
+        subprocess.run(
+            ["git", "-C", str(repository), "rev-parse", "HEAD"],
+            text=True,
+            capture_output=True,
+            check=False,
+            env={key: value for key, value in os.environ.items() if not key.startswith("GIT_")},
+        )
+        if repository is not None
+        else None
     )
     return {
         "python": {"version": platform.python_version(), "executable": sys.executable},
         "market_research_source_revision": revision.stdout.strip()
-        if revision.returncode == 0
+        if revision is not None and revision.returncode == 0
         else None,
         "distributions": distributions,
+        "module_origins": _module_origins(),
         "source_files": {
             path.name: _sha256(path)
             for path in (
@@ -157,6 +256,8 @@ def publish_report(result: Path, receipt: dict[str, Any], destination: Path) -> 
         raise FileExistsError(f"report destination already exists: {destination}")
     daily = pd.read_parquet(result / "daily_ledger.parquet")
     terminal = float(daily.nav.iloc[-1])
+    if not math.isfinite(terminal):
+        raise ValueError("synthetic terminal NAV must be finite")
     if abs(terminal - 105_000.0) > 1e-7:
         raise ValueError(f"synthetic ledger differs from hand calculation: {terminal}")
     publish_verified_frames(result, destination)
@@ -179,8 +280,11 @@ def run_smoke(output: Path) -> dict[str, Any]:
     from portfolio_backtester.execution_sim import ExecutionSimConfig
 
     output = output.resolve()
-    repository = Path(__file__).resolve().parents[2]
-    if output == repository or output.is_relative_to(repository):
+    repositories = {_git_root(Path.cwd()), _git_root(Path(__file__).resolve().parent)}
+    if any(
+        root is not None and (output == root or output.is_relative_to(root))
+        for root in repositories
+    ):
         raise ValueError("synthetic outputs must be outside the source repository")
     if output.exists():
         raise FileExistsError(f"output must be a new directory: {output}")
@@ -212,6 +316,7 @@ def run_smoke(output: Path) -> dict[str, Any]:
         clocks,
         asdict(config),
         transaction_cost_bps=0.0,
+        isolated=True,
     )
     summary = publish_report(result, receipt, output / "report")
     tampered = output / "tampered" / receipt["job_id"]
@@ -239,6 +344,12 @@ def run_smoke(output: Path) -> dict[str, Any]:
         "scope": "synthetic_public_market_research_only",
         "environment": environment,
         "runtime_receipt": receipt,
+        "runtime_launch": {
+            "isolated": True,
+            "python_flags": ["-I"],
+            "cwd": str(output / "runtime"),
+            "environment": {"PATH": os.defpath, "LANG": "C.UTF-8", "PYTHONNOUSERSITE": "1"},
+        },
         "files": files,
         "input_audit": audit,
         "checks": {
