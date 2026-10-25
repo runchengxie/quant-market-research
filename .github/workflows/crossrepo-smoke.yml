@@ -5,6 +5,7 @@ on:
     paths:
       - "src/**"
       - "tests/test_synthetic_chain.py"
+      - "tests/test_crossrepo_candidates.py"
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/crossrepo-smoke.yml"
@@ -13,10 +14,16 @@ on:
     paths:
       - "src/**"
       - "tests/test_synthetic_chain.py"
+      - "tests/test_crossrepo_candidates.py"
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/crossrepo-smoke.yml"
   workflow_dispatch:
+    inputs:
+      candidates:
+        description: 'Optional JSON mapping data/runtime/platform/quality to complete commit SHA'
+        type: string
+        default: '{}'
 
 permissions:
   contents: read
@@ -28,9 +35,11 @@ concurrency:
 jobs:
   synthetic-chain:
     runs-on: ubuntu-24.04
-    timeout-minutes: 15
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
       - uses: astral-sh/setup-uv@v6
         with:
           python-version: "3.13"
@@ -40,6 +49,19 @@ jobs:
       - name: Verify the real synthetic chain without dependency skips
         env:
           REQUIRE_CROSSREPO_SMOKE: "1"
-        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q tests/test_synthetic_chain.py
+        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q tests/test_synthetic_chain.py tests/test_crossrepo_candidates.py
       - name: Produce a versioned synthetic acceptance receipt
         run: uv run --locked --extra formal --extra integration market-research-synthetic-chain --output "${{ runner.temp }}/research-chain"
+      - name: Verify explicit candidates in a disposable environment
+        env:
+          CANDIDATES: ${{ inputs.candidates || '{}' }}
+        run: .venv/bin/python -m market_research.crossrepo_acceptance --output "$RUNNER_TEMP/crossrepo-acceptance" --candidates "$CANDIDATES"
+      - name: Retain acceptance evidence and command failures
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: crossrepo-acceptance-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/research-chain
+            ${{ runner.temp }}/crossrepo-acceptance
+          if-no-files-found: error

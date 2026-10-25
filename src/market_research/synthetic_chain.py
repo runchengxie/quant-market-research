@@ -132,7 +132,10 @@ def _module_origins() -> dict[str, Any]:
     return origins
 
 
-def _environment() -> dict[str, Any]:
+def _environment(expected_pins: dict[str, str] | None = None) -> dict[str, Any]:
+    from market_research.crossrepo_acceptance import QUALITY_PIN, REPOSITORIES
+
+    expected_pins = expected_pins or {**PINS, "research-code-quality": QUALITY_PIN}
     distributions = {}
     names = [
         *PINS,
@@ -145,10 +148,14 @@ def _environment() -> dict[str, Any]:
         "scipy",
     ]
     for name in names:
-        expected = PINS.get(name)
+        expected = expected_pins.get(name)
         distribution = metadata.distribution(name)
         direct_url = json.loads(distribution.read_text("direct_url.json") or "{}")
         commit = direct_url.get("vcs_info", {}).get("commit_id")
+        if expected is not None:
+            official = f"https://github.com/runchengxie/{REPOSITORIES[name]}.git"
+            if direct_url.get("url") != official:
+                raise ValueError(f"{name} must come from official source {official}")
         if expected is not None and commit != expected:
             raise ValueError(f"{name} must be installed at {expected}; found {commit!r}")
         distributions[name] = {
@@ -275,7 +282,7 @@ def publish_report(result: Path, receipt: dict[str, Any], destination: Path) -> 
     return summary
 
 
-def run_smoke(output: Path) -> dict[str, Any]:
+def run_smoke(output: Path, expected_pins: dict[str, str] | None = None) -> dict[str, Any]:
     """Run the pinned integration without optional skips; retain auditable outputs."""
     from portfolio_backtester.execution_sim import ExecutionSimConfig
 
@@ -288,7 +295,7 @@ def run_smoke(output: Path) -> dict[str, Any]:
         raise ValueError("synthetic outputs must be outside the source repository")
     if output.exists():
         raise FileExistsError(f"output must be a new directory: {output}")
-    environment = _environment()  # Fail before creating outputs on absent/wrong dependencies.
+    environment = _environment(expected_pins) if expected_pins else _environment()
     output.mkdir(parents=True)
     panel, limits, events = _fixture(output / "inputs")
     positions, pricing, clocks, audit = build_replay_inputs(
@@ -374,8 +381,20 @@ def main(argv: list[str] | None = None) -> int:
     parser.add_argument(
         "--output", required=True, type=Path, help="new directory outside the source repository"
     )
+    parser.add_argument("--expected-providers", type=Path, help="explicit isolated acceptance commits")
     args = parser.parse_args(argv)
-    run_smoke(args.output)
+    expected = None
+    if args.expected_providers:
+        from market_research.crossrepo_acceptance import candidate_pins, PROVIDERS
+
+        supplied = json.loads(args.expected_providers.read_text())
+        expected = candidate_pins(json.dumps({
+            key: supplied.get(distribution)
+            for key, (distribution, _) in PROVIDERS.items()
+        }))
+        if supplied != expected:
+            raise ValueError("expected providers must include exactly the coordinated official packages")
+    run_smoke(args.output, expected)
     print(f"Synthetic public chain verified: {args.output / 'evidence.json'}")
     return 0
 

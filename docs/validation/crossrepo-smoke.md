@@ -92,3 +92,37 @@ that run, not promised to match across Parquet library versions.
 The public `Synthetic cross-repository integration` workflow installs all pinned
 integration extras and sets `REQUIRE_CROSSREPO_SMOKE=1`. Missing integration
 packages therefore fail that dedicated CI job instead of being skipped.
+
+## Explicit candidate acceptance
+
+The same workflow accepts a manual `candidates` JSON object, for example
+`{"data":"<complete lowercase 40-character commit SHA>"}`. Supported keys are
+`data`, `runtime`, `platform`, and `quality`. Repositories are fixed to their
+public `runchengxie` owners; arbitrary URLs, refs, duplicate and unknown keys are
+rejected. `platform` always selects both platform and research-contracts from the
+same revision. Candidate code is executed in a public, read-only CI job without
+secrets; choose revisions you intend to execute.
+
+The current locked tests run first with missing dependencies treated as failures.
+A disposable copy of the consumer source and manifests then resolves explicit
+uv overrides and invokes the same synthetic CLI against installed candidate
+packages. Omitted providers retain their current expected commits. The normal
+consumer checkout, committed lock, production services and shared data are never
+changed. This is an acceptance result, not a pin upgrade or publication.
+
+Locally, after installing the complete environment above:
+
+```bash
+.venv/bin/python -m market_research.crossrepo_acceptance \
+  --output /tmp/new-crossrepo-acceptance \
+  --candidates '{"runtime":"<complete lowercase 40-character commit SHA>"}'
+```
+
+The CI artifact contains the baseline chain receipt plus `acceptance.json`, command
+logs with exit codes, original and resolved lock/manifests and SHA-256 hashes,
+consumer commit and source hashes, and the candidate chain's installed distribution,
+source RECORD and fixture/result provenance. Failed install or chain commands also
+retain a failed acceptance receipt. A failed input validation exits before any
+network or package execution. The candidate CLI validates every expected commit,
+official repository URL and coordinated contracts revision; it still rejects
+shadow imports and altered result artifacts.
