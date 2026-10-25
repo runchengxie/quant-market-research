@@ -52,6 +52,17 @@ def candidate_pins(payload: str) -> dict[str, str]:
     return pins
 
 
+def validate_expected_pins(supplied: dict[str, str]) -> dict[str, str]:
+    if not isinstance(supplied, dict) or set(supplied) != set(REPOSITORIES):
+        raise ValueError('expected providers must include exactly the coordinated official packages')
+    expected = candidate_pins(json.dumps({
+        key: supplied[distribution] for key, (distribution, _) in PROVIDERS.items()
+    }))
+    if supplied != expected:
+        raise ValueError('expected providers must include exactly the coordinated official packages')
+    return expected
+
+
 def requirements(pins: dict[str, str]) -> list[str]:
     return [
         f'{name} @ git+https://github.com/runchengxie/{REPOSITORIES[name]}.git@{revision}'

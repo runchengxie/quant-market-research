@@ -133,9 +133,14 @@ def _module_origins() -> dict[str, Any]:
 
 
 def _environment(expected_pins: dict[str, str] | None = None) -> dict[str, Any]:
-    from market_research.crossrepo_acceptance import QUALITY_PIN, REPOSITORIES
+    from market_research.crossrepo_acceptance import (
+        QUALITY_PIN, REPOSITORIES, validate_expected_pins,
+    )
 
-    expected_pins = expected_pins or {**PINS, "research-code-quality": QUALITY_PIN}
+    expected_pins = (
+        {**PINS, "research-code-quality": QUALITY_PIN}
+        if expected_pins is None else validate_expected_pins(expected_pins)
+    )
     distributions = {}
     names = [
         *PINS,
@@ -295,7 +300,7 @@ def run_smoke(output: Path, expected_pins: dict[str, str] | None = None) -> dict
         raise ValueError("synthetic outputs must be outside the source repository")
     if output.exists():
         raise FileExistsError(f"output must be a new directory: {output}")
-    environment = _environment(expected_pins) if expected_pins else _environment()
+    environment = _environment(expected_pins) if expected_pins is not None else _environment()
     output.mkdir(parents=True)
     panel, limits, events = _fixture(output / "inputs")
     positions, pricing, clocks, audit = build_replay_inputs(
@@ -385,15 +390,9 @@ def main(argv: list[str] | None = None) -> int:
     args = parser.parse_args(argv)
     expected = None
     if args.expected_providers:
-        from market_research.crossrepo_acceptance import candidate_pins, PROVIDERS
+        from market_research.crossrepo_acceptance import validate_expected_pins
 
-        supplied = json.loads(args.expected_providers.read_text())
-        expected = candidate_pins(json.dumps({
-            key: supplied.get(distribution)
-            for key, (distribution, _) in PROVIDERS.items()
-        }))
-        if supplied != expected:
-            raise ValueError("expected providers must include exactly the coordinated official packages")
+        expected = validate_expected_pins(json.loads(args.expected_providers.read_text()))
     run_smoke(args.output, expected)
     print(f"Synthetic public chain verified: {args.output / 'evidence.json'}")
     return 0

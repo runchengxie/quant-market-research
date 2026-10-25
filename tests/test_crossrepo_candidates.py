@@ -149,3 +149,10 @@ def test_chain_failure_keeps_independent_installed_environment(tmp_path, monkeyp
     snapshot = json.loads((output / 'installed-environment.json').read_text())
     assert snapshot['distributions']['pytest']['version']
     assert not (output / 'chain' / 'evidence.json').exists()
+
+
+@pytest.mark.parametrize('expected', [{}, {'quant-market-data-platform': PINS['quant-market-data-platform']}])
+def test_python_api_rejects_partial_expected_provider_maps(expected):
+    from market_research.synthetic_chain import _environment
+    with pytest.raises(ValueError, match='exactly'):
+        _environment(expected)
