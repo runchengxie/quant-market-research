@@ -25,3 +25,26 @@ for(const locale of ['en-US','zh-CN'])test(`summary PNG and mobile reading in ${
  await expect(page.getByTestId('research-image-preview')).toBeVisible();
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
 });
+
+test('visible summary export stays disabled until its download handler and locale are ready',async({page})=>{
+ let release!:()=>void;
+ let markRequested!:()=>void;
+ const requestSeen=new Promise<void>(resolve=>{markRequested=resolve;});
+ const hydration=new Promise<void>(resolve=>{release=resolve;});
+ await page.route('**/_astro/ResearchImageExport*.js',async route=>{
+  markRequested();await hydration;await route.continue();
+ });
+ await page.setViewportSize({width:390,height:844});
+ try{
+  await page.goto('research/overseas-leadlag/?lang=zh-CN',{waitUntil:'domcontentloaded'});
+  const button=page.getByTestId('download-research-image');
+  await button.scrollIntoViewIfNeeded();
+  await requestSeen;
+  await expect(button).toBeDisabled();
+  release();
+  await expect(button).toBeEnabled();
+  const download=page.waitForEvent('download');await button.click();
+  expect((await download).suggestedFilename()).toMatch(/overseas-leadlag.*zh-CN\.png$/);
+  await expect(page.getByTestId('research-image-preview')).toBeVisible();
+ }finally{release();}
+});
