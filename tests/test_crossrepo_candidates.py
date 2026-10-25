@@ -53,8 +53,9 @@ def test_failed_install_retains_command_exit_and_lock_provenance(tmp_path, monke
                     '-m', 'fixture'], check=True)
     (source / 'src').mkdir()
     (source / 'src' / 'fixture.py').write_text('VALUE = 1\n')
-    (source / 'uv.lock').write_text('lock fixture\n')
-    (source / 'pyproject.toml').write_text('[tool.uv]\noverride-dependencies = [\n]\n')
+    repository = Path(__file__).resolve().parents[1]
+    (source / 'uv.lock').write_bytes((repository / 'uv.lock').read_bytes())
+    (source / 'pyproject.toml').write_bytes((repository / 'pyproject.toml').read_bytes())
     tools = tmp_path / 'tools'
     tools.mkdir()
     uv = tools / 'uv'
