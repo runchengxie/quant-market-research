@@ -152,7 +152,9 @@ def test_chain_failure_keeps_independent_installed_environment(tmp_path, monkeyp
 
 
 @pytest.mark.parametrize('expected', [{}, {'quant-market-data-platform': PINS['quant-market-data-platform']}])
-def test_python_api_rejects_partial_expected_provider_maps(expected):
-    from market_research.synthetic_chain import _environment
+def test_python_api_rejects_partial_expected_provider_maps(expected, tmp_path):
+    from market_research.synthetic_chain import run_smoke
+    output = tmp_path / "output"
     with pytest.raises(ValueError, match='exactly'):
-        _environment(expected)
+        run_smoke(output, expected_pins=expected)
+    assert not output.exists()

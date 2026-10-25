@@ -289,6 +289,10 @@ def publish_report(result: Path, receipt: dict[str, Any], destination: Path) -> 
 
 def run_smoke(output: Path, expected_pins: dict[str, str] | None = None) -> dict[str, Any]:
     """Run the pinned integration without optional skips; retain auditable outputs."""
+    if expected_pins is not None:
+        from market_research.crossrepo_acceptance import validate_expected_pins
+
+        expected_pins = validate_expected_pins(expected_pins)
     from portfolio_backtester.execution_sim import ExecutionSimConfig
 
     output = output.resolve()
