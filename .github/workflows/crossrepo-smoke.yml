@@ -6,6 +6,7 @@ on:
       - "src/**"
       - "tests/test_synthetic_chain.py"
       - "tests/test_crossrepo_candidates.py"
+      - "tests/test_locked_providers.py"
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/crossrepo-smoke.yml"
@@ -15,6 +16,7 @@ on:
       - "src/**"
       - "tests/test_synthetic_chain.py"
       - "tests/test_crossrepo_candidates.py"
+      - "tests/test_locked_providers.py"
       - "pyproject.toml"
       - "uv.lock"
       - ".github/workflows/crossrepo-smoke.yml"
@@ -44,17 +46,19 @@ jobs:
         with:
           python-version: "3.13"
           enable-cache: true
+      - name: Validate the PR manifest and committed provider sources before installation
+        run: python src/market_research/locked_providers.py --output "$RUNNER_TEMP/locked-providers.json" --receipt "$RUNNER_TEMP/provider-selection.json"
       - name: Install the complete pinned integration environment
         run: uv sync --locked --extra dev --extra duckdb --extra formal --extra integration
       - name: Verify the real synthetic chain without dependency skips
         env:
           REQUIRE_CROSSREPO_SMOKE: "1"
-        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q tests/test_synthetic_chain.py tests/test_crossrepo_candidates.py
+        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q tests/test_synthetic_chain.py tests/test_crossrepo_candidates.py tests/test_locked_providers.py
       - name: Produce a versioned synthetic acceptance receipt
-        run: uv run --locked --extra formal --extra integration market-research-synthetic-chain --output "${{ runner.temp }}/research-chain"
-      - name: Verify explicit candidates in a disposable environment
+        run: uv run --locked --extra formal --extra integration market-research-synthetic-chain --output "$RUNNER_TEMP/research-chain" --expected-providers "$RUNNER_TEMP/locked-providers.json"
+      - name: Verify the exact PR lock or explicit manual candidates in a disposable environment
         env:
-          CANDIDATES: ${{ inputs.candidates || '{}' }}
+          CANDIDATES: ${{ inputs.candidates || '' }}
         run: .venv/bin/python -m market_research.crossrepo_acceptance --output "$RUNNER_TEMP/crossrepo-acceptance" --candidates "$CANDIDATES"
       - name: Retain acceptance evidence and command failures
         if: always()
@@ -62,6 +66,8 @@ jobs:
         with:
           name: crossrepo-acceptance-${{ github.sha }}
           path: |
+            ${{ runner.temp }}/provider-selection.json
+            ${{ runner.temp }}/locked-providers.json
             ${{ runner.temp }}/research-chain
             ${{ runner.temp }}/crossrepo-acceptance
           if-no-files-found: error

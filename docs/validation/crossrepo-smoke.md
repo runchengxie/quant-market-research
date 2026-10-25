@@ -20,8 +20,10 @@ a new directory under a temporary parent. Do not use a production data root.
 ```bash
 uv sync --locked --python 3.13 --extra dev --extra duckdb --extra formal --extra integration
 smoke_parent=$(mktemp -d /tmp/market-research-chain.XXXXXX)
+.venv/bin/python src/market_research/locked_providers.py --output "$smoke_parent/providers.json"
 uv run --locked --extra formal --extra integration \
-  market-research-synthetic-chain --output "$smoke_parent/run"
+  market-research-synthetic-chain --output "$smoke_parent/run" \
+  --expected-providers "$smoke_parent/providers.json"
 REQUIRE_CROSSREPO_SMOKE=1 uv run --locked --extra dev --extra duckdb --extra formal --extra integration \
   pytest -q tests/test_synthetic_chain.py
 ```
@@ -106,7 +108,7 @@ secrets; choose revisions you intend to execute.
 The current locked tests run first with missing dependencies treated as failures.
 A disposable copy of the consumer source and manifests then resolves explicit
 uv overrides and invokes the same synthetic CLI against installed candidate
-packages. Omitted providers retain their current expected commits. The normal
+packages. Omitted providers retain their revisions from that consumer’s validated lock. The normal
 consumer checkout, committed lock, production services and shared data are never
 changed. This is an acceptance result, not a pin upgrade or publication.
 
@@ -132,3 +134,37 @@ running the chain, so a later CLI failure still retains actual versions,
 `direct_url.json` and distribution RECORD hashes. A quality candidate checks
 packaging, provenance and compatibility with this DATA/runtime chain; this job
 does not run the quality provider's separate lint/review commands.
+
+
+## Dependency upgrade PRs
+
+Provider upgrades use complete Git SHAs in `pyproject.toml` (including matching
+uv overrides) and a regenerated, committed `uv.lock`. There is no separate
+Dependabot/Renovate mechanism in this repository. Any PR changing those files
+already triggers the ordinary `pull_request` integration workflow; PR titles,
+labels and body text do not select candidates.
+
+Before dependency installation, a stdlib-only step validates the checked-out
+consumer's manifest and lock: every chain provider must have exactly one official
+Git source with matching full SHA in its revision and resolved commit, and
+platform/contracts must share a revision. Explicit manifest requirements and
+overrides must agree with the lock; quality may remain a transitive locked
+provider. Unknown owners, refs, missing/duplicate selections and unexpected
+subdirectories fail the job. `uv sync --locked` then checks the complete manifest
+and lock compatibility. The synthetic tests and CLI use this same selected
+mapping, so a legitimate pin upgrade does not require editing historical static
+fallback constants or duplicating SHA assertions in tests.
+
+Automatic PR/main runs copy the exact consumer manifest/lock into the disposable
+environment and run `uv sync --locked`; they never run `uv lock` or apply candidate
+overrides. The receipt records `selection_mode: locked`, `lock_recomputed: false`,
+and verifies `lock_unchanged: true` after installation. Original/resolved lock
+hashes and installed provider provenance remain inspectable in the artifact.
+Manual dispatch with explicit candidate JSON retains the separate override and
+resolution behavior described above; it never promotes those pins.
+
+The workflow uses a read-only GitHub token, does not persist checkout credentials,
+passes no repository secrets and does not use `pull_request_target`. Provider and
+consumer code run with the same unprivileged permissions as ordinary PR tests.
+The recorded consumer revision is the actual checkout (the prospective merge
+revision on PR runs), with source hashes, not an unverified PR-body revision.

@@ -6,9 +6,20 @@ import hashlib
 import importlib.util
 import json
 import os
+from pathlib import Path
+
+from market_research.locked_providers import read_locked_pins
 
 import pandas as pd
 import pytest
+
+
+SOURCE = Path(__file__).resolve().parents[1]
+
+
+def _run_smoke(output):
+    from market_research.synthetic_chain import run_smoke
+    return run_smoke(output, expected_pins=read_locked_pins(SOURCE))
 
 
 def _require_integration():
@@ -26,9 +37,8 @@ def _require_integration():
 
 def test_data_runtime_report_chain_has_exact_ledger_and_pinned_evidence(tmp_path):
     _require_integration()
-    from market_research.synthetic_chain import run_smoke
 
-    evidence = run_smoke(tmp_path / "chain")
+    evidence = _run_smoke(tmp_path / "chain")
     assert evidence["scope"] == "synthetic_public_market_research_only"
     assert evidence["checks"]["terminal_nav"] == pytest.approx(105_000.0)
     assert evidence["checks"]["tamper_rejected"] is True
@@ -37,9 +47,7 @@ def test_data_runtime_report_chain_has_exact_ledger_and_pinned_evidence(tmp_path
     commits = {
         name: item["commit"] for name, item in evidence["environment"]["distributions"].items()
     }
-    assert commits["quant-market-data-platform"] == "71e40a0da03530fe88d70d4b212701d3af6a8cfa"
-    assert commits["quant-backtest-runtime"] == "4fbfe973540e15fb6552068be037229d2f53d540"
-    assert commits["quant-platform"] == "15ec62b66e894395d694049eaaace931de4a1265"
+    assert {name: commits[name] for name in read_locked_pins(SOURCE)} == read_locked_pins(SOURCE)
     report = tmp_path / "chain" / "report"
     daily = pd.read_parquet(report / "daily_ledger.parquet")
     assert daily.trade_date.astype(str).tolist() == ["20260105", "20260106"]
@@ -60,9 +68,9 @@ def test_data_runtime_report_chain_has_exact_ledger_and_pinned_evidence(tmp_path
 
 def test_tampered_runtime_frame_cannot_be_published(tmp_path):
     _require_integration()
-    from market_research.synthetic_chain import publish_report, run_smoke
+    from market_research.synthetic_chain import publish_report
 
-    evidence = run_smoke(tmp_path / "chain")
+    evidence = _run_smoke(tmp_path / "chain")
     receipt = evidence["runtime_receipt"]
     result = tmp_path / "chain" / "runtime" / "results" / receipt["job_id"]
     with (result / "daily_ledger.parquet").open("ab") as stream:
@@ -76,9 +84,9 @@ def test_tampered_runtime_frame_cannot_be_published(tmp_path):
 def test_report_rejects_a_directory_other_than_the_verified_job(tmp_path):
     _require_integration()
     import shutil
-    from market_research.synthetic_chain import publish_report, run_smoke
+    from market_research.synthetic_chain import publish_report
 
-    evidence = run_smoke(tmp_path / "chain")
+    evidence = _run_smoke(tmp_path / "chain")
     receipt = evidence["runtime_receipt"]
     results = tmp_path / "chain" / "runtime" / "results"
     wrong_job = results / "wrong-job"
@@ -103,7 +111,9 @@ def test_distribution_metadata_does_not_authorize_shadow_provider_source(tmp_pat
             sys.executable,
             "-B",
             "-c",
-            "from market_research.synthetic_chain import _environment; _environment()",
+            "import json, sys; from market_research.synthetic_chain import _environment; "
+            "_environment(json.loads(sys.argv[1]))",
+            json.dumps(read_locked_pins(SOURCE)),
         ],
         cwd=tmp_path,
         env={**os.environ, "PYTHONPATH": str(shadow)},
@@ -117,7 +127,6 @@ def test_distribution_metadata_does_not_authorize_shadow_provider_source(tmp_pat
 
 def test_runtime_ignores_caller_pythonpath_and_current_directory(tmp_path, monkeypatch):
     _require_integration()
-    from market_research.synthetic_chain import run_smoke
 
     shadow = tmp_path / "shadow"
     package = shadow / "backtest_runtime"
@@ -126,7 +135,7 @@ def test_runtime_ignores_caller_pythonpath_and_current_directory(tmp_path, monke
     (package / "cli.py").write_text("raise RuntimeError('UNPINNED_SHADOW_CLI')\n")
     monkeypatch.setenv("PYTHONPATH", str(shadow))
     monkeypatch.chdir(shadow)
-    evidence = run_smoke(tmp_path / "chain")
+    evidence = _run_smoke(tmp_path / "chain")
     assert evidence["checks"]["terminal_nav"] == pytest.approx(105_000.0)
     assert evidence["environment"]["module_origins"]
 
@@ -169,9 +178,9 @@ def test_empty_git_markers_do_not_define_source_repositories(tmp_path, marker_ki
 
 def test_nonfinite_but_hash_valid_ledger_cannot_be_published(tmp_path):
     _require_integration()
-    from market_research.synthetic_chain import publish_report, run_smoke
+    from market_research.synthetic_chain import publish_report
 
-    evidence = run_smoke(tmp_path / "chain")
+    evidence = _run_smoke(tmp_path / "chain")
     receipt = dict(evidence["runtime_receipt"])
     result = tmp_path / "chain" / "runtime" / "results" / receipt["job_id"]
     path = result / "daily_ledger.parquet"

@@ -16,15 +16,9 @@ import tempfile
 
 from market_research.synthetic_chain import PINS
 
-PROVIDERS = {
-    'data': ('quant-market-data-platform', 'quant-market-data-platform'),
-    'runtime': ('quant-backtest-runtime', 'quant-backtest-runtime'),
-    'platform': ('quant-platform', 'quant-platform'),
-    'quality': ('research-code-quality', 'quant-code-quality'),
-}
+from market_research.locked_providers import PROVIDERS, REPOSITORIES, read_locked_pins
+
 QUALITY_PIN = '6daeeca7a3d405f23c8ad49c8364bfdc8e9bb661'
-REPOSITORIES = {distribution: repository for distribution, repository in PROVIDERS.values()}
-REPOSITORIES['research-contracts'] = 'quant-platform'
 
 
 def _unique_pairs(pairs):
@@ -36,11 +30,11 @@ def _unique_pairs(pairs):
     return result
 
 
-def candidate_pins(payload: str) -> dict[str, str]:
+def candidate_pins(payload: str, base_pins: dict[str, str] | None = None) -> dict[str, str]:
     candidates = json.loads(payload, object_pairs_hook=_unique_pairs)
     if not isinstance(candidates, dict):
         raise ValueError('candidates must be an object')
-    pins = {**PINS, 'research-code-quality': QUALITY_PIN}
+    pins = dict(base_pins) if base_pins is not None else {**PINS, 'research-code-quality': QUALITY_PIN}
     for key, revision in candidates.items():
         if key not in PROVIDERS:
             raise ValueError(f'unknown provider: {key}')
@@ -89,9 +83,11 @@ def snapshot_environment(destination: Path) -> None:
     }, indent=2) + '\n')
 
 
-def run_acceptance(source: Path, output: Path, payload: str) -> int:
+def run_acceptance(source: Path, output: Path, payload: str | None = None) -> int:
     # Validate before creating outputs or running any command.
-    pins = candidate_pins(payload)
+    if payload is not None:
+        candidate_pins(payload)  # Reject untrusted candidate text before creating outputs.
+    pins = {}
     source = source.resolve()
     output = output.resolve()
     if output.is_relative_to(source):
@@ -101,6 +97,8 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
         'schema_version': 1, 'expected_providers': pins,
         'python': {'executable': sys.executable, 'version': platform.python_version()},
         'commands': [], 'status': 'failed',
+        'selection_mode': 'locked' if payload is None else 'explicit_candidates',
+        'lock_recomputed': payload is not None,
     }
     clean_env = {key: value for key, value in os.environ.items()
                  if not key.startswith(('PYTHON', 'UV_', 'VIRTUAL_ENV', 'GIT_'))}
@@ -124,6 +122,10 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
             str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
             for path in sorted((source / 'src').rglob('*.py'))
         }
+        pins = read_locked_pins(source)
+        if payload is not None:
+            pins = candidate_pins(payload, pins)
+        receipt['expected_providers'] = pins
         shutil.copy2(source / 'uv.lock', output / 'original-uv.lock')
         shutil.copy2(source / 'pyproject.toml', output / 'original-pyproject.toml')
         with tempfile.TemporaryDirectory(prefix='crossrepo-acceptance-') as temporary:
@@ -132,20 +134,28 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
                             ignore=shutil.ignore_patterns('__pycache__', '*.egg-info'))
             shutil.copy2(source / 'uv.lock', project / 'uv.lock')
             manifest = (source / 'pyproject.toml').read_text()
-            # Existing override remains authoritative for normal runs; replace only in this copy.
-            manifest, count = re.subn(
-                r'(?m)^override-dependencies = \[.*?^\]',
-                'override-dependencies = ' + json.dumps(requirements(pins)), manifest,
-                flags=re.DOTALL)
-            if count != 1:
-                raise ValueError('expected exactly one existing uv override block')
+            if payload is not None:
+                # Explicit manual experiments alone resolve overrides in this disposable copy.
+                manifest, count = re.subn(
+                    r'(?m)^override-dependencies = \[.*?^\]',
+                    'override-dependencies = ' + json.dumps(requirements(pins)), manifest,
+                    flags=re.DOTALL)
+                if count != 1:
+                    raise ValueError('expected exactly one existing uv override block')
             (project / 'pyproject.toml').write_text(manifest)
             shutil.copy2(project / 'pyproject.toml', output / 'resolved-pyproject.toml')
-            command(['uv', 'lock', '--python', sys.executable], project)
+            if payload is not None:
+                command(['uv', 'lock', '--python', sys.executable], project)
             shutil.copy2(project / 'uv.lock', output / 'resolved-uv.lock')
             extras = ['--extra', 'dev', '--extra', 'duckdb', '--extra', 'formal',
                       '--extra', 'integration']
             command(['uv', 'sync', '--locked', '--python', sys.executable, *extras], project)
+            shutil.copy2(project / 'uv.lock', output / 'resolved-uv.lock')
+            receipt['lock_unchanged'] = (
+                (output / 'original-uv.lock').read_bytes() == (output / 'resolved-uv.lock').read_bytes()
+            )
+            if payload is None and not receipt['lock_unchanged']:
+                raise ValueError('committed lock changed during locked acceptance')
             command(['uv', 'run', '--locked', *extras, 'python', '-c',
                      'from pathlib import Path; import sys; '
                      'from market_research.crossrepo_acceptance import snapshot_environment; '
@@ -172,9 +182,9 @@ def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, default=Path.cwd())
     parser.add_argument('--output', type=Path, required=True)
-    parser.add_argument('--candidates', default='{}', help='JSON: data/runtime/platform/quality to SHA')
+    parser.add_argument('--candidates', default='', help='JSON: data/runtime/platform/quality to SHA')
     args = parser.parse_args()
-    return run_acceptance(args.source.resolve(), args.output, args.candidates)
+    return run_acceptance(args.source.resolve(), args.output, args.candidates or None)
 
 
 if __name__ == '__main__':
