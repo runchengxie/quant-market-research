@@ -151,3 +151,26 @@ def test_preinstall_selection_failure_retains_input_hashes_without_installing(tm
     assert evidence['sha256']['pyproject.toml'] == hashlib.sha256((source / 'pyproject.toml').read_bytes()).hexdigest()
     assert evidence['sha256']['uv.lock'] == hashlib.sha256((source / 'uv.lock').read_bytes()).hexdigest()
     assert 'manifest/override' in evidence['error']
+
+
+def test_formal_upgrade_requires_matching_default_declarations_without_executing_modules(tmp_path):
+    from market_research.locked_providers import read_locked_pins, verify_default_pins
+    pins = read_locked_pins(ROOT)
+    package = tmp_path / 'src' / 'market_research'
+    package.mkdir(parents=True)
+    marker = tmp_path / 'must-not-execute'
+    defaults = {key: value for key, value in pins.items() if key != 'research-code-quality'}
+    (package / 'synthetic_chain.py').write_text(
+        f'raise RuntimeError({str(marker)!r})\nPINS = {defaults!r}\n'
+    )
+    (package / 'crossrepo_acceptance.py').write_text(
+        f'raise RuntimeError({str(marker)!r})\nQUALITY_PIN = {pins["research-code-quality"]!r}\n'
+    )
+    upgraded = dict(pins)
+    upgraded['quant-backtest-runtime'] = 'a' * 40 if pins['quant-backtest-runtime'] != 'a' * 40 else 'b' * 40
+    with pytest.raises(ValueError, match='default pin'):
+        verify_default_pins(tmp_path, upgraded)
+    defaults['quant-backtest-runtime'] = upgraded['quant-backtest-runtime']
+    (package / 'synthetic_chain.py').write_text(f'raise RuntimeError("not executed")\nPINS = {defaults!r}\n')
+    verify_default_pins(tmp_path, upgraded)
+    assert not marker.exists()

@@ -138,8 +138,10 @@ does not run the quality provider's separate lint/review commands.
 
 ## Dependency upgrade PRs
 
-Provider upgrades use complete Git SHAs in `pyproject.toml` (including matching
-uv overrides) and a regenerated, committed `uv.lock`. There is no separate
+Formal provider upgrades update complete Git SHAs in `pyproject.toml` (including
+matching uv overrides), regenerate and commit `uv.lock`, and synchronize the public
+default declarations: `PINS` in `synthetic_chain.py` and `QUALITY_PIN` in
+`crossrepo_acceptance.py`. Platform and contracts always move together. There is no separate
 Dependabot/Renovate mechanism in this repository. Any PR changing those files
 already triggers the ordinary `pull_request` integration workflow; PR titles,
 labels and body text do not select candidates.
@@ -149,11 +151,15 @@ consumer's manifest and lock: every chain provider must have exactly one officia
 Git source with matching full SHA in its revision and resolved commit, and
 platform/contracts must share a revision. Explicit manifest requirements and
 overrides must agree with the lock; quality may remain a transitive locked
-provider. Unknown owners, refs, missing/duplicate selections and unexpected
+provider. The preinstallation validator reads the default declarations with AST
+literal inspection without importing or executing those modules and rejects any
+default/lock disagreement. Unknown owners, refs, missing/duplicate selections and unexpected
 subdirectories fail the job. `uv sync --locked` then checks the complete manifest
-and lock compatibility. The synthetic tests and CLI use this same selected
-mapping, so a legitimate pin upgrade does not require editing historical static
-fallback constants or duplicating SHA assertions in tests.
+and lock compatibility. The synthetic tests preserve real default API and default CLI coverage, alongside
+explicit-map chain checks. A manifest/lock-only formal upgrade is rejected until
+its default declarations are synchronized. Default public entrypoints retain
+their exact-pin contract; temporary candidate combinations must use the explicit
+expected-provider mode rather than changing that public default.
 
 Automatic PR/main runs copy the exact consumer manifest/lock into the disposable
 environment and run `uv sync --locked`; they never run `uv lock` or apply candidate

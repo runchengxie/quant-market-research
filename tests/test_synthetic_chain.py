@@ -38,7 +38,9 @@ def _require_integration():
 def test_data_runtime_report_chain_has_exact_ledger_and_pinned_evidence(tmp_path):
     _require_integration()
 
-    evidence = _run_smoke(tmp_path / "chain")
+    from market_research.synthetic_chain import run_smoke
+
+    evidence = run_smoke(tmp_path / "chain")
     assert evidence["scope"] == "synthetic_public_market_research_only"
     assert evidence["checks"]["terminal_nav"] == pytest.approx(105_000.0)
     assert evidence["checks"]["tamper_rejected"] is True
@@ -199,3 +201,20 @@ def test_nonfinite_but_hash_valid_ledger_cannot_be_published(tmp_path):
     with pytest.raises(ValueError, match="finite"):
         publish_report(result, receipt, destination)
     assert not destination.exists()
+
+
+def test_default_cli_accepts_the_formal_locked_provider_combination(tmp_path):
+    _require_integration()
+    import subprocess
+    import sys
+
+    output = tmp_path / 'default-cli'
+    completed = subprocess.run([
+        sys.executable, '-I', '-m', 'market_research.synthetic_chain', '--output', str(output),
+    ], cwd=tmp_path, capture_output=True, text=True, check=False, timeout=120)
+    assert completed.returncode == 0, completed.stdout + completed.stderr
+    evidence = json.loads((output / 'evidence.json').read_text())
+    commits = {name: item['commit'] for name, item in evidence['environment']['distributions'].items()}
+    assert {name: commits[name] for name in read_locked_pins(SOURCE)} == read_locked_pins(SOURCE)
+    assert evidence['checks']['terminal_nav'] == pytest.approx(105_000.0)
+    assert evidence['checks']['tamper_rejected'] is True

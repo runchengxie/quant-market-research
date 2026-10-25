@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import ast
 import hashlib
 import json
 from pathlib import Path
@@ -78,6 +79,25 @@ def read_locked_pins(source: Path) -> dict[str, str]:
     return locked_pins(manifest, lock)
 
 
+def verify_default_pins(source: Path, pins: dict[str, str]) -> None:
+    """Read declarations without importing or executing a PR's optional-dependency modules."""
+    def constant(filename: str, name: str):
+        tree = ast.parse((source / 'src' / 'market_research' / filename).read_text())
+        assignments = [node.value for node in tree.body if isinstance(node, ast.Assign)
+                       and any(isinstance(target, ast.Name) and target.id == name
+                               for target in node.targets)]
+        if len(assignments) != 1:
+            raise ValueError(f'exactly one literal default pin declaration required: {name}')
+        return ast.literal_eval(assignments[0])
+
+    defaults = constant('synthetic_chain.py', 'PINS')
+    if not isinstance(defaults, dict):
+        raise ValueError('default pin declarations must form a complete provider map')
+    defaults = {**defaults, 'research-code-quality': constant('crossrepo_acceptance.py', 'QUALITY_PIN')}
+    if defaults != pins:
+        raise ValueError('default pin declarations must match the formal manifest and lock')
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--source', type=Path, default=Path.cwd())
@@ -92,9 +112,10 @@ def main(argv: list[str] | None = None) -> int:
                                   capture_output=True, text=True, check=False)
         receipt['consumer_revision'] = revision.stdout.strip() if revision.returncode == 0 else None
         pins = read_locked_pins(args.source)
+        verify_default_pins(args.source, pins)
         args.output.write_text(json.dumps(pins, indent=2) + '\n')
         receipt.update(status='passed', expected_providers=pins)
-    except (OSError, ValueError, KeyError, TypeError) as error:
+    except (OSError, ValueError, KeyError, TypeError, SyntaxError) as error:
         receipt['error'] = str(error)
         print(f'Provider selection failed: {error}', file=sys.stderr)
     finally:

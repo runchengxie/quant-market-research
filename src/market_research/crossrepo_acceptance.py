@@ -16,7 +16,7 @@ import tempfile
 
 from market_research.synthetic_chain import PINS
 
-from market_research.locked_providers import PROVIDERS, REPOSITORIES, read_locked_pins
+from market_research.locked_providers import PROVIDERS, REPOSITORIES, read_locked_pins, verify_default_pins
 
 QUALITY_PIN = '6daeeca7a3d405f23c8ad49c8364bfdc8e9bb661'
 
@@ -123,6 +123,8 @@ def run_acceptance(source: Path, output: Path, payload: str | None = None) -> in
             for path in sorted((source / 'src').rglob('*.py'))
         }
         pins = read_locked_pins(source)
+        if payload is None:
+            verify_default_pins(source, pins)
         if payload is not None:
             pins = candidate_pins(payload, pins)
         receipt['expected_providers'] = pins
@@ -166,7 +168,7 @@ def run_acceptance(source: Path, output: Path, payload: str | None = None) -> in
                      '--output', str(output / 'chain'), '--expected-providers',
                      str(output / 'expected-providers.json')], project)
         receipt['status'] = 'passed'
-    except (OSError, ValueError, subprocess.CalledProcessError) as error:
+    except (OSError, ValueError, SyntaxError, subprocess.CalledProcessError) as error:
         receipt['error'] = str(error)
     finally:
         for name in ('original-uv.lock', 'resolved-uv.lock', 'original-pyproject.toml',
