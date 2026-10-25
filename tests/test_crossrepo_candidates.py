@@ -91,3 +91,61 @@ def test_cli_rejects_uncoordinated_contracts_before_running(tmp_path):
     with pytest.raises(ValueError, match='coordinated'):
         main(['--output', str(tmp_path / 'chain'), '--expected-providers', str(expected)])
     assert not (tmp_path / 'chain').exists()
+
+
+def test_source_provenance_failure_still_retains_failed_receipt(tmp_path):
+    import json
+    from market_research.crossrepo_acceptance import run_acceptance
+    source = tmp_path / 'non-git-source'
+    source.mkdir()
+    output = tmp_path / 'evidence'
+    assert run_acceptance(source, output, '{}') == 1
+    receipt = json.loads((output / 'acceptance.json').read_text())
+    assert receipt['status'] == 'failed'
+    assert receipt['commands'] == []
+    assert 'error' in receipt
+
+
+def test_installed_snapshot_is_independent_of_chain_success(tmp_path):
+    import json
+    import sys
+    from importlib import metadata
+    from market_research.crossrepo_acceptance import snapshot_environment
+    destination = tmp_path / 'installed.json'
+    snapshot_environment(destination)
+    snapshot = json.loads(destination.read_text())
+    assert snapshot['python']['executable'] == sys.executable
+    pytest_package = snapshot['distributions']['pytest']
+    assert pytest_package['version'] == metadata.version('pytest')
+    assert len(pytest_package['record_sha256']) == 64
+
+
+def test_chain_failure_keeps_independent_installed_environment(tmp_path, monkeypatch):
+    import json
+    import os
+    from pathlib import Path
+    import sys
+    from market_research.crossrepo_acceptance import run_acceptance
+    tools = tmp_path / 'tools'
+    tools.mkdir()
+    uv = tools / 'uv'
+    # Stub only package orchestration; execute the actual installed snapshot code.
+    uv.write_text(
+        f'#!{sys.executable}\n'
+        'import os, sys\n'
+        'if sys.argv[1] == "run":\n'
+        '    if "python" in sys.argv:\n'
+        '        os.execv(sys.executable, [sys.executable] + '
+        'sys.argv[sys.argv.index("python") + 1:])\n'
+        '    sys.exit(42)\n'
+    )
+    uv.chmod(0o755)
+    monkeypatch.setenv('PATH', str(tools) + os.pathsep + os.environ['PATH'])
+    output = tmp_path / 'evidence'
+    assert run_acceptance(Path(__file__).resolve().parents[1], output, '{}') == 1
+    receipt = json.loads((output / 'acceptance.json').read_text())
+    assert receipt['commands'][-1]['exit_code'] == 42
+    assert receipt['sha256']['installed-environment.json']
+    snapshot = json.loads((output / 'installed-environment.json').read_text())
+    assert snapshot['distributions']['pytest']['version']
+    assert not (output / 'chain' / 'evidence.json').exists()

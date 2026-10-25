@@ -126,3 +126,9 @@ retain a failed acceptance receipt. A failed input validation exits before any
 network or package execution. The candidate CLI validates every expected commit,
 official repository URL and coordinated contracts revision; it still rejects
 shadow imports and altered result artifacts.
+
+`installed-environment.json` is captured immediately after installation, before
+running the chain, so a later CLI failure still retains actual versions,
+`direct_url.json` and distribution RECORD hashes. A quality candidate checks
+packaging, provenance and compatibility with this DATA/runtime chain; this job
+does not run the quality provider's separate lint/review commands.

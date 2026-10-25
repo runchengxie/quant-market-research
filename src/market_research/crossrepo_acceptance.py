@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import argparse
 import hashlib
+from importlib import metadata
 import json
 import os
 import platform
@@ -61,6 +62,22 @@ def requirements(pins: dict[str, str]) -> list[str]:
     ]
 
 
+def snapshot_environment(destination: Path) -> None:
+    """Retain actual installed provenance before running the potentially failing chain."""
+    distributions = {}
+    for distribution in metadata.distributions():
+        record = distribution.read_text('RECORD')
+        distributions[distribution.metadata['Name']] = {
+            'version': distribution.version,
+            'direct_url': json.loads(distribution.read_text('direct_url.json') or '{}'),
+            'record_sha256': hashlib.sha256(record.encode()).hexdigest() if record else None,
+        }
+    destination.write_text(json.dumps({
+        'python': {'executable': sys.executable, 'version': platform.python_version()},
+        'distributions': distributions,
+    }, indent=2) + '\n')
+
+
 def run_acceptance(source: Path, output: Path, payload: str) -> int:
     # Validate before creating outputs or running any command.
     pins = candidate_pins(payload)
@@ -72,12 +89,6 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
     receipt = {
         'schema_version': 1, 'expected_providers': pins,
         'python': {'executable': sys.executable, 'version': platform.python_version()},
-        'consumer_revision': subprocess.check_output(
-            ['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True).strip(),
-        'consumer_source_sha256': {
-            str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
-            for path in sorted((source / 'src').rglob('*.py'))
-        },
         'commands': [], 'status': 'failed',
     }
     clean_env = {key: value for key, value in os.environ.items()
@@ -95,6 +106,13 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
             raise subprocess.CalledProcessError(result.returncode, argv)
 
     try:
+        receipt['consumer_revision'] = subprocess.check_output(
+            ['git', '-C', str(source), 'rev-parse', 'HEAD'], text=True,
+            stderr=subprocess.STDOUT).strip()
+        receipt['consumer_source_sha256'] = {
+            str(path.relative_to(source)): hashlib.sha256(path.read_bytes()).hexdigest()
+            for path in sorted((source / 'src').rglob('*.py'))
+        }
         shutil.copy2(source / 'uv.lock', output / 'original-uv.lock')
         shutil.copy2(source / 'pyproject.toml', output / 'original-pyproject.toml')
         with tempfile.TemporaryDirectory(prefix='crossrepo-acceptance-') as temporary:
@@ -117,6 +135,11 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
             extras = ['--extra', 'dev', '--extra', 'duckdb', '--extra', 'formal',
                       '--extra', 'integration']
             command(['uv', 'sync', '--locked', '--python', sys.executable, *extras], project)
+            command(['uv', 'run', '--locked', *extras, 'python', '-c',
+                     'from pathlib import Path; import sys; '
+                     'from market_research.crossrepo_acceptance import snapshot_environment; '
+                     'snapshot_environment(Path(sys.argv[1]))',
+                     str(output / 'installed-environment.json')], project)
             (output / 'expected-providers.json').write_text(json.dumps(pins))
             command(['uv', 'run', '--locked', *extras, 'market-research-synthetic-chain',
                      '--output', str(output / 'chain'), '--expected-providers',
@@ -126,7 +149,7 @@ def run_acceptance(source: Path, output: Path, payload: str) -> int:
         receipt['error'] = str(error)
     finally:
         for name in ('original-uv.lock', 'resolved-uv.lock', 'original-pyproject.toml',
-                     'resolved-pyproject.toml'):
+                     'resolved-pyproject.toml', 'installed-environment.json'):
             path = output / name
             if path.exists():
                 receipt.setdefault('sha256', {})[name] = hashlib.sha256(path.read_bytes()).hexdigest()

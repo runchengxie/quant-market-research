@@ -8,7 +8,7 @@ Constraints: Official runchengxie repositories only; complete lowercase SHA; no 
 
 Review focus: unknown provider keys, malformed SHA, alternate source URLs, conflicting platform/contracts revisions, missing dependencies and failed command receipts.
 
-- [ ] Add and observe failing tests for candidate validation and expected-revision handling.
-- [ ] Implement the narrow candidate control surface and existing CLI expectation override.
-- [ ] Extend the existing workflow with optional dispatch JSON, failure receipts and artifact upload; document use.
-- [ ] Run complete Python suite with all extras, Ruff, real current/candidate chain and diff checks; request independent root diff review before merge.
+- [x] Add and observe failing tests for candidate validation and expected-revision handling.
+- [x] Implement the narrow candidate control surface and existing CLI expectation override.
+- [x] Extend the existing workflow with optional dispatch JSON, failure receipts and artifact upload; document use.
+- [x] Run complete Python suite with all extras, Ruff, real current/candidate chain and diff checks; request independent root diff review before merge.
