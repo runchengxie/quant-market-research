@@ -72,10 +72,20 @@ jobs:
         run: npm run verify:static
 
       - name: Run browser smoke tests
+        id: browser_smoke
         working-directory: web
         run: |
           npx playwright install --with-deps chromium
           npm run e2e
+
+      - name: Retain failed browser smoke diagnostics
+        if: failure() && steps.browser_smoke.outcome == 'failure'
+        uses: actions/upload-artifact@v4
+        with:
+          name: browser-smoke-${{ github.sha }}
+          retention-days: 14
+          path: web/test-results/
+          if-no-files-found: warn
 
       - name: Verify public documentation and static artifacts
         run: |
