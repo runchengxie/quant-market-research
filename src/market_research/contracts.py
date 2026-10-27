@@ -68,7 +68,7 @@ def validate_panel(frame: pd.DataFrame) -> list[str]:
         issues.append("invalid_currency")
     for column in ("close", "volume", "turnover", "market_cap"):
         values = pd.to_numeric(frame[column], errors="coerce")
-        if values.notna().any() and not values[values.notna()].map(pd.api.types.is_number).all():
+        if (frame[column].notna() & values.isna()).any():
             issues.append(f"invalid_numeric:{column}")
     return issues
 
@@ -83,6 +83,10 @@ def normalize_panel(frame: pd.DataFrame, metadata: PanelMetadata) -> tuple[pd.Da
     if "adj_close" not in result.columns:
         result["adj_close"] = pd.NA
     result["date"] = pd.to_datetime(result["date"], errors="raise").dt.date
+    # Check original values before coercion erases malformed non-null inputs.
+    issues = validate_panel(result)
+    if issues:
+        raise ValueError("invalid panel: " + ",".join(issues))
     for column in ("close", "adj_close", "volume", "turnover", "market_cap"):
         result[column] = pd.to_numeric(result[column], errors="coerce")
     issues = validate_panel(result)
