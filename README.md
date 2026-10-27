@@ -24,13 +24,13 @@ uv sync --locked --extra dev --extra duckdb
 uv run market-research --help
 ```
 
-Before running a report, follow the [local runbook](docs/runbook-local.md), configure the data directories, and check each report's data requirements. Use `configs/local.example.toml` as the configuration template. The local `configs/local.toml` file is ignored by Git.
+Before running a report, follow the [local runbook](docs/runbook-local.en.md), configure the data directories, and check each report's data requirements. Use `configs/local.example.toml` as the configuration template. The local `configs/local.toml` file is ignored by Git.
 
 ## Documentation and layout
 
 - [Documentation index](docs/index.md): research and data topics.
 - The public Markdown allowlist is rendered directly by Astro. MkDocs is no longer part of the site build or runtime dependencies.
-- [Local runbook](docs/runbook-local.md): data setup, reports, and website checks.
+- [Local runbook](docs/runbook-local.en.md): data setup, reports, and website checks.
 - [Frozen reproduction baselines](docs/validation/frozen-research-baselines.md): retained snapshots and owner retirement conditions.
 - [Synthetic DATA → research → runtime → report check](docs/validation/crossrepo-smoke.md): pinned integration command and evidence boundaries.
 - [Browser verification](docs/runbook-browser.md): isolated preview servers and layout checks.

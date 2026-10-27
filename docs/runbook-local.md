@@ -1,5 +1,7 @@
 # 本地运行手册
 
+[English](runbook-local.en.md)
+
 ## 安装
 
 ```bash
@@ -15,7 +17,7 @@ cp configs/local.example.toml configs/local.toml
 uv run market-research validate --config configs/local.toml
 ```
 
-该命令只检查配置的数据目录是否存在，不会读取全部行情数据。
+该命令仅列出 `[sources]` 中非空且路径存在的配置键，不读取行情内容。缺失路径会被省略，即使列表为空也返回成功，不能用退出码证明数据完整。
 
 ## 构建流动性报告
 
@@ -133,7 +135,9 @@ npm ci
 npm run dev
 ```
 
-网页读取仓库内经过筛选的派生快照。需刷新微盘摘要时运行 `npm run snapshot`，该命令从默认 `outputs/` 读取本地研究结果。成交额网页使用独立生成脚本：
+网页读取仓库内经过审查的派生快照。旧 `npm run snapshot` 固定读取仓库根目录的 `outputs/`，不读取当前 CLI 的 `output_root` 或环境变量。这一兼容脚本尚未接入仓库外输出约定，不应作为当前研究结果的直接发布步骤，也不要为运行它把原始数据移回仓库。
+
+成交额网页使用独立生成脚本。回到仓库根目录运行，并显式指定与 Python 报告相同的输出目录：
 
 ```bash
 MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs \
