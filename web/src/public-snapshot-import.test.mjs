@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { mkdtempSync, mkdirSync, readFileSync, rmSync, symlinkSync, writeFileSync } from "node:fs";
 import os from "node:os";
 import path from "node:path";
 import { spawnSync } from "node:child_process";
@@ -21,7 +21,8 @@ function fixture() {
     "date,nav,return,constituents\n2026-01-02,1,0,400\n2026-01-05,1.01,0.01,399\n");
   const manifest = { generated_at: "2026-01-01", sources: ["Other reviewed study"],
     markets: { hk: "published" }, included_snapshots: { index_research_files: 22 },
-    snapshots: { liquidity: { coverage_end: "2026-01-01", quality_status: "derived" } } };
+    snapshots: { liquidity: { coverage_end: "2026-01-01", quality_status: "derived" },
+      microcap: { coverage_end: "2025-12-31", quality_status: "verified" } } };
   writeFileSync(path.join(target, "manifest.json"), JSON.stringify(manifest));
   return { root, input, target, manifest };
 }
@@ -127,5 +128,21 @@ test("invalid existing manifest stops import without replacing reviewed metadata
     assert.match(result.stderr, /invalid structure/);
     assert.equal(readFileSync(path.join(f.target, "manifest.json"), "utf8"), before);
     assert.throws(() => readFileSync(path.join(f.target, "microcap_summary.json")));
+  } finally { rmSync(f.root, { recursive: true }); }
+});
+
+
+test("aliased public target cannot overwrite the external source directory", () => {
+  const f = fixture();
+  try {
+    const alias = path.join(f.root, "input-alias");
+    symlinkSync(f.input, alias, process.platform === "win32" ? "junction" : "dir");
+    const before = readFileSync(path.join(f.input, "microcap_summary.json"), "utf8");
+    const result = run(f.input, alias);
+    assert.notEqual(result.status, 0);
+    assert.match(result.stderr, /Public target must differ/);
+    assert.equal(readFileSync(path.join(f.input, "microcap_summary.json"), "utf8"), before);
+    assert.throws(() => readFileSync(path.join(f.input, "manifest.json")));
+    assert.throws(() => readFileSync(path.join(f.input, "microcap_nav.json")));
   } finally { rmSync(f.root, { recursive: true }); }
 });

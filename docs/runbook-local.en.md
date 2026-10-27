@@ -117,7 +117,7 @@ first, then `$QUANT_DATA_ROOT/quant-market-research/outputs`, with
 `~/data/quant` as the existing `QUANT_DATA_ROOT` fallback. Python's TOML `output_root`
 and `DATA_PLATFORM_ROOT` are not read by this Node script, so explicitly set
 `MARKET_RESEARCH_OUTPUT_ROOT` to that Python output when the paths differ.
-Inputs inside this checkout are rejected. No repository-local `outputs/` fallback
+Inputs inside this checkout and target aliases of the source directory are rejected. No repository-local `outputs/` fallback
 is used.
 
 The importer reads `microcap_summary.json` and `microcap_nav.csv` and writes
@@ -126,7 +126,9 @@ The importer reads `microcap_summary.json` and `microcap_nav.csv` and writes
 legacy CSV `daily_return` is also accepted, but conflicting values are rejected.
 It preserves other sources, markets, snapshot counts and topic
 records in an existing manifest. Microcap provenance and dates are refreshed,
-while its quality remains `incomplete`. Missing inputs or malformed NAV numbers
+while its quality is `incomplete`: the current Python summary contains no reviewed
+eligibility or quality receipt, so a new import cannot inherit an older snapshot's
+validation status. Missing inputs or malformed NAV numbers
 fail before public files are changed. Disk or permission failures during the
 three writes can still leave partial output; this is not a multi-file transaction.
 Review the generated diff before committing. This command does not deploy the site.

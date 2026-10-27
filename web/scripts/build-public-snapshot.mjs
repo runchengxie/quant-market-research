@@ -9,13 +9,22 @@ const here = path.dirname(fileURLToPath(import.meta.url));
 const repository = path.resolve(here, "../..");
 const sourceLabel = "market-research A-share rule reconstruction";
 
+// Resolve existing ancestors as well, so a staged directory under a symlink
+// cannot disguise an alias of the source directory.
+function realDirectory(directory) {
+  const resolved = path.resolve(directory);
+  if (fs.existsSync(resolved)) return fs.realpathSync(resolved);
+  const parent = path.dirname(resolved);
+  return parent === resolved ? resolved : path.join(realDirectory(parent), path.basename(resolved));
+}
+
 export function buildPublicSnapshot({
   outputRoot = resolveMarketResearchOutputRoot(),
   targetRoot = path.resolve(here, "../public/data"),
 } = {}) {
-  const output = path.resolve(outputRoot);
-  const target = path.resolve(targetRoot);
-  const relative = path.relative(repository, fs.realpathSync(output));
+  const output = fs.realpathSync(path.resolve(outputRoot));
+  const target = realDirectory(targetRoot);
+  const relative = path.relative(repository, output);
   if (relative === "" || (!relative.startsWith(`..${path.sep}`) && relative !== ".." && !path.isAbsolute(relative))) {
     throw new Error("Research input must be outside the code repository");
   }
@@ -62,6 +71,8 @@ export function buildPublicSnapshot({
     snapshots: {
       ...existing.snapshots,
       microcap: {
+        // The current CLI summary has no reviewed eligibility/quality receipt.
+        // Importing new results cannot inherit an older snapshot's validation.
         generated_at: generatedAt, coverage_start: nav[0].date, coverage_end: nav.at(-1).date,
         source: summary.source_label ?? sourceLabel, quality_status: "incomplete",
         caveats: summary.caveats ?? [],
