@@ -38,3 +38,8 @@
 @media(max-width:650px) { .library-nav {gap:8px; margin-bottom:28px;} .library-nav a {padding:10px;gap:7px;font-size:12px;} .library-group .directory-grid{grid-template-columns:1fr;} .library-group .reading-card{padding:20px;} .library-group-heading{gap:12px;} .library-group-heading h2{font-size:22px;} }
 
 @media(max-width:800px) { .library-group {scroll-margin-top:24px;} }
+
+@media (max-width: 600px) {
+  .library-hero { padding-block: 20px; }
+  .library-hero h1 { font-size: 30px; line-height: 1.25; }
+}

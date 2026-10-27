@@ -31,3 +31,11 @@ test('common research records are searchable in both languages',()=>{
  const r={id:'research',title:'低换手',titleEn:'Low turnover',text:'历史比较',textEn:'Historical comparison',kind:'research',href:'/',aliases:[]};
  assert.equal(searchRecords([r],'historical').length,1);assert.equal(searchRecords([r],'低换手').length,1);
 });
+test('heterogeneous index histories do not imply one missing or common sample window',()=>{
+ for (const id of ['cashflow','indices']) {
+  const summary=readingSummaries.find(row=>row.id===id);
+  assert.ok(summary.coverage[0].includes('differ'));
+  assert.ok(summary.coverage[1].includes('不同'));
+  assert.ok(summary.coverage.every(text=>!text.includes('Not provided')&&!text.includes('未提供')));
+ }
+});
