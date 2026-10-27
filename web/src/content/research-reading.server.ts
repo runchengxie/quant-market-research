@@ -48,6 +48,8 @@ export const readingSummaries: ReadingSummary[] = Object.entries(definition).map
   let coverage: Copy=range(snap?.coverage_start,snap?.coverage_end);
   let date: string|null=snap?.generated_at?.slice(0,10)??null;
   const files=[...d.files];
+  if(id==='cashflow') coverage=['Periods differ across index series and experiments; see dates in each chart and table', '各指数与实验的样本期间不同，具体日期见详情图表'];
+  if(id==='indices') coverage=['Index and ETF histories have different starts and comparison windows; see each series', '各指数与 ETF 的起点和比较期间不同，具体日期见各序列'];
   if(id==='microcap')date=read(files[0]).reviewed_on;
   if(id==='low-turnover') { coverage=range(lowTurnoverEvidence.formationStart,lowTurnoverEvidence.formationEnd); date=lowTurnoverEvidence.evidenceDate; }
   if(id==='valuation-groups') { const data=read(files[0]); const dates=data.coverage.map((r:{formation_date:string})=>r.formation_date).sort(); coverage=range(dates[0],dates.at(-1)); date=data.generated_at_utc.slice(0,10); }
