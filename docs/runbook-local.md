@@ -135,7 +135,17 @@ npm ci
 npm run dev
 ```
 
-网页读取仓库内经过审查的派生快照。旧 `npm run snapshot` 固定读取仓库根目录的 `outputs/`，不读取当前 CLI 的 `output_root` 或环境变量。这一兼容脚本尚未接入仓库外输出约定，不应作为当前研究结果的直接发布步骤，也不要为运行它把原始数据移回仓库。
+网页读取仓库内经过审查的派生快照。审核仓库外的微盘报告后，在 `web/` 中运行，并指定与 Python 报告相同的输出目录：
+
+```bash
+MARKET_RESEARCH_OUTPUT_ROOT=/path/to/research-outputs npm run snapshot
+```
+
+导入器使用网站共用的输出路径解析器，依次选择 `MARKET_RESEARCH_OUTPUT_ROOT`、`$QUANT_DATA_ROOT/quant-market-research/outputs`。现有 `QUANT_DATA_ROOT` 默认值为 `~/data/quant`。Node 脚本不读取 Python TOML 的 `output_root` 或 `DATA_PLATFORM_ROOT`，路径不同时需显式设置 `MARKET_RESEARCH_OUTPUT_ROOT`。仓库内的输入目录会被拒绝，不再回退到本仓库的 `outputs/`。
+
+导入器读取 `microcap_summary.json` 与 `microcap_nav.csv`，向 `web/public/data` 写入 `microcap_summary.json`、`microcap_nav.json` 及更新后的 `manifest.json`。CSV 的 `return` 映射到既有公开键 `daily_return`。旧 CSV 的 `daily_return` 列仍可读取，两列同时存在且数值冲突时拒绝导入。已有清单中的其他来源、市场、快照计数和专题记录会保留。微盘来源与日期更新后，质量状态仍为 `incomplete`。缺少输入或 NAV 数值格式错误时，在修改公开文件前停止。三次写入期间发生磁盘或权限错误仍可能留下部分结果，这不是跨文件事务。提交前应审核生成差异，此命令不部署网站。
+
+需要输出到临时目录时，追加 `-- --target-root /path/to/preview-data`。合成样本回归测试也通过这一参数避免修改已发布快照。
 
 成交额网页使用独立生成脚本。回到仓库根目录运行，并显式指定与 Python 报告相同的输出目录：
 
