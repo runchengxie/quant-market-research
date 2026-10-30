@@ -16,8 +16,8 @@ English and Chinese pages have separate stable URLs. Use the language link at th
 - [Microcap](research/factors/microcap.md): how reconstructed small-stock portfolios behaved, including their large losses and long recoveries.
 - [Microcap execution diagnostic](research/experiments/microcap-execution-diagnostic-20260928.md): what happened when a short historical sample was run through a simulated trading process.
 - [Small-cap turnover history](research/factors/smallcap-turnover-history.md): how much the smallest stocks traded in an earlier data period.
-- [Barra factor dictionary](research/factors/barra-factor-dictionary.md): plain definitions of the public style-factor measures and their source limits.
-- [Barra source inventory](research/factors/barra-source-inventory.md): which supporting materials can be used in public research.
+- [Market style factor dictionary](research/factors/barra-factor-dictionary.md): plain definitions of the public style-factor measures and their source limits.
+- [Market style source inventory](research/factors/barra-source-inventory.md): which supporting materials can be used in public research.
 
 Historical research results are evidence for further investigation. They are not trading recommendations or claims of future returns.
 

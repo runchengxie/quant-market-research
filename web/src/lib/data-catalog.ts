@@ -47,7 +47,7 @@ const englishSnapshotCopy: Record<string, { source: string; caveats: string[] }>
     ],
   },
   low_turnover: { source: "Reviewed exploratory turnover snapshot", caveats: ["Independent-sample, cost, and capacity validation is not complete."] },
-  barra: { source: "Barra-style historical factor result package", caveats: ["This is a historical Barra-style reconstruction; point-in-time financial data and out-of-sample validation remain incomplete."] },
+  barra: { source: "historical market style factor result package", caveats: ["This is a historical market style reconstruction; point-in-time financial data and out-of-sample validation remain incomplete."] },
   cashflow: { source: "Cash-flow index recovery snapshot", caveats: ["Official index rules still need to be checked against the local constituent reconstruction."] },
   indices: { source: "Index catalog and representative ETF snapshot", caveats: ["Index returns are price returns. ETFs also incur fees and tracking error."] },
   liquidity: {
@@ -69,7 +69,7 @@ const englishSnapshotCopy: Record<string, { source: string; caveats: string[] }>
 };
 
 export function localizeSnapshotCard(card: SnapshotCard, locale: "en-US" | "zh-CN"): SnapshotCard {
-  if (locale === "zh-CN") return card;
+  if (locale === "zh-CN") return card.id === "barra" ? { ...card, source: "历史市场风格因子结果包", caveats: ["这是历史市场风格重建；点时财务数据与样本外验证仍不完整。"] } : card;
   const copy = englishSnapshotCopy[card.id];
   if (!copy) return card;
   return {

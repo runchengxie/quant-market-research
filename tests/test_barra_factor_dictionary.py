@@ -53,6 +53,6 @@ def test_historical_snapshot_documents_all_nineteen_factors() -> None:
     factor_ids = [item["factor"] for item in summary]
     assert len(factor_ids) == 19
     assert "## Historical 19-factor snapshot" in text
-    assert "Historical Barra-style snapshot" in text and "current core dictionary" in text
+    assert "Historical market style snapshot" in text and "current core dictionary" in text
     for factor_id in factor_ids:
         assert f"| `{factor_id}` |" in text

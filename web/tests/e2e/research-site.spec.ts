@@ -7,7 +7,7 @@ const routes = [
   ["research/microcap/", "A-share micro-cap history"],
   ["research/microcap/cross-market-liquidity/", "Cross-market micro-cap liquidity"],
   ["research/indices/", "Long-run index and ETF performance"],
-  ["research/style-factors-18y/", "18-year A-share style factors"],
+  ["research/style-factors-18y/", "18-year A-share Market Style Analysis"],
   ["research/liquidity/", "Liquidity, trading costs and capacity"],
   ["research/factors/low-turnover/", "Low-turnover stocks and subsequent returns"],
   ["research/factors/pb-roe/", "PB and ROE: historical comparison and evidence boundary"],

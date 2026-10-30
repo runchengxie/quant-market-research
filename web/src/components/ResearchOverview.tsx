@@ -4,8 +4,8 @@ import { executionCostCopy as costCopy } from '../content/execution-cost-copy';
 import type { Snapshot } from './recovery-data';
 import { PUBLIC_ROUTES, withBase } from '../lib/routes';
 
-type BarraEvidence = {legacy_barra_result?: {coverage_start?: string; coverage_end?: string; factor_count?: number}};
-type OverviewProps = {recovery: Snapshot | null; barra: BarraEvidence | null};
+type StyleFactorEvidence = {legacy_barra_result?: {coverage_start?: string; coverage_end?: string; factor_count?: number}};
+type OverviewProps = {recovery: Snapshot | null; barra: StyleFactorEvidence | null};
 
 export function OverviewContent(props: OverviewProps) {
   return bilingualOverview(overviewTree(props, 'en-US'), overviewTree(props, 'zh-CN'));

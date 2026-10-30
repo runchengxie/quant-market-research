@@ -23,7 +23,7 @@ etf_basic_path = ""
 index_start_date = "20160902"
 index_end_date = "20260821"
 
-[barra]
+[style_factors]
 # 外部历史风格因子结果目录。原始数据不复制到本仓库。
 result_root = "../market-research-data/historical_style_factors"
 size_quantiles = 10

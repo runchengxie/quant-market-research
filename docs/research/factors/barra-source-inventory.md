@@ -1,4 +1,4 @@
-# Barra research source inventory
+# Market Style Research Source Inventory
 
 [Chinese version](barra-source-inventory.zh-CN.md)
 

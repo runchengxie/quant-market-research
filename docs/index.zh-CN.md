@@ -18,8 +18,8 @@
 - [微盘股：收益证据与水下时间](research/factors/microcap.zh-CN.md)：按历史规则重建的小市值组合经历过多大跌幅、多久才回到前高。
 - [微盘组合公共执行模拟诊断](research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md)：把短期样本放进模拟交易流程后，哪些订单成交、哪些限制了结果。
 - [2008–2014 年小市值成交活跃度补充](research/factors/smallcap-turnover-history.zh-CN.md)：早年小市值股票的成交额大致如何，数据能说明什么。
-- [Barra 风格因子字典](research/factors/barra-factor-dictionary.zh-CN.md)：公开研究中各类风格指标的含义，以及它们与商业模型的边界。
-- [Barra 风格研究资料清单](research/factors/barra-source-inventory.zh-CN.md)：哪些支撑材料可以公开用于研究。
+- [市场风格因子字典](research/factors/barra-factor-dictionary.zh-CN.md)：公开研究中各类风格指标的含义，以及它们与商业模型的边界。
+- [市场风格分析资料清单](research/factors/barra-source-inventory.zh-CN.md)：哪些支撑材料可以公开用于研究。
 
 网页负责展示图表和交互，说明站提供因子研究的方法、数据口径和证据限制。网站构建方式、实施计划和运行手册属于维护资料，不作为公开研究内容。
 

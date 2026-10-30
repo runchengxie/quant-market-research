@@ -9,7 +9,7 @@ from pathlib import Path
 
 import pandas as pd
 
-from .barra import analyze_size_monotonicity, load_barra_summary
+from .style_factors import analyze_size_monotonicity, load_style_factor_summary
 from .risk_adapter import (
     build_a_share_risk_inputs,
     build_next_session_returns,
@@ -69,12 +69,12 @@ def _build_parser() -> argparse.ArgumentParser:
     cashflow.add_argument("--config", required=True)
     etf_pairs = report_subparsers.add_parser("etf-pairs")
     etf_pairs.add_argument("--config", required=True)
-    barra = report_subparsers.add_parser("barra")
-    barra.add_argument("--config", required=True)
-    barra_risk_inputs = report_subparsers.add_parser("barra-risk-inputs")
-    barra_risk_inputs.add_argument("--config", required=True)
-    style = report_subparsers.add_parser("style-factors")
-    style.add_argument("--study", required=True)
+    style = report_subparsers.add_parser("style-factors", aliases=["barra"])
+    style_input = style.add_mutually_exclusive_group(required=True)
+    style_input.add_argument("--config")
+    style_input.add_argument("--study")
+    style_risk_inputs = report_subparsers.add_parser("style-risk-inputs", aliases=["barra-risk-inputs"])
+    style_risk_inputs.add_argument("--config", required=True)
     global_six = report_subparsers.add_parser("global-six-market")
     global_six.add_argument("--study", required=True)
     index_study = report_subparsers.add_parser("index-study")
@@ -106,7 +106,7 @@ def main(argv: list[str] | None = None) -> int:
         from .studies.index_study import run_study
         print(run_study(Path(args.study)))
         return 0
-    if args.command == "report" and args.report_command == "style-factors":
+    if args.command == "report" and args.report_command in {"style-factors", "barra"} and args.study:
         study = _load_yaml(Path(args.study))
         panel_path = Path(str(study.get("panel_path", "")))
         if not panel_path.is_file():
@@ -399,17 +399,17 @@ def main(argv: list[str] | None = None) -> int:
             json.dumps(summary, ensure_ascii=False, indent=2, default=str) + "\n", encoding="utf-8"
         )
         return 0
-    if args.command == "report" and args.report_command == "barra":
+    if args.command == "report" and args.report_command in {"style-factors", "barra"}:
         config = _load_config(Path(args.config))
         sources = config.get("sources", {})
-        barra_config = config.get("barra", {})
+        style_config = config.get("style_factors", config.get("barra", {}))
         if not isinstance(sources, dict) or not sources.get("a_share_root"):
-            raise RuntimeError("A-share source is required for Barra report")
+            raise RuntimeError("A-share source is required for style-factor report")
         a_share_root = Path(str(sources["a_share_root"]))
         if not a_share_root.exists():
             raise RuntimeError("configured A-share source does not exist")
-        if not isinstance(barra_config, dict):
-            barra_config = {}
+        if not isinstance(style_config, dict):
+            style_config = {}
         output_root = resolve_output_root(config)
         output_root.mkdir(parents=True, exist_ok=True)
         panel, panel_metadata = build_a_share_panel(
@@ -420,11 +420,11 @@ def main(argv: list[str] | None = None) -> int:
         )
         quantile_rows, size_summary = analyze_size_monotonicity(
             panel,
-            int(barra_config.get("size_quantiles", 10)),
-            int(barra_config.get("holding_period", 1)),
+            int(style_config.get("size_quantiles", 10)),
+            int(style_config.get("holding_period", 1)),
         )
-        result_root = barra_config.get("result_root")
-        history_summary = load_barra_summary(Path(str(result_root))) if result_root else None
+        result_root = style_config.get("result_root")
+        history_summary = load_style_factor_summary(Path(str(result_root))) if result_root else None
         (output_root / "barra_summary.json").write_text(
             json.dumps(
                 {
@@ -457,12 +457,12 @@ def main(argv: list[str] | None = None) -> int:
             encoding="utf-8",
         )
         return 0
-    if args.command == "report" and args.report_command == "barra-risk-inputs":
+    if args.command == "report" and args.report_command in {"style-risk-inputs", "barra-risk-inputs"}:
         config = _load_config(Path(args.config))
         sources = config.get("sources", {})
-        risk_config = config.get("barra_risk", {})
+        risk_config = config.get("style_risk", config.get("barra_risk", {}))
         if not isinstance(sources, dict) or not sources.get("a_share_root"):
-            raise RuntimeError("A-share source is required for Barra risk input report")
+            raise RuntimeError("A-share source is required for style risk input report")
         if not isinstance(risk_config, dict):
             risk_config = {}
         a_share_root = Path(str(sources["a_share_root"]))
@@ -477,7 +477,7 @@ def main(argv: list[str] | None = None) -> int:
         panel["date"] = pd.to_datetime(panel["date"], errors="raise")
         factor_columns = risk_config.get("factor_columns", ["market_cap"])
         if not isinstance(factor_columns, list) or not factor_columns:
-            raise ValueError("barra_risk.factor_columns must be a non-empty list")
+            raise ValueError("style_risk.factor_columns must be a non-empty list")
         forward_returns = build_next_session_returns(panel)
         risk_panel = panel.merge(
             forward_returns,

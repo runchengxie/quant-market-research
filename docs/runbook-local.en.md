@@ -40,8 +40,8 @@ uv run market-research report smallcap-turnover-audit --config configs/local.tom
 uv run market-research report indices --config configs/local.toml
 uv run market-research report etf-pairs --config configs/local.toml
 uv run market-research report cashflow --config configs/local.toml
-uv run market-research report barra --config configs/local.toml
-uv run market-research report barra-risk-inputs --config configs/local.toml
+uv run market-research report style-factors --config configs/local.toml
+uv run market-research report style-risk-inputs --config configs/local.toml
 uv run market-research report index-study --study studies/index_replication/study.example.json
 uv run market-research report style-factors --study /path/to/local-style-study.yml
 uv run market-research report global-six-market --study studies/global_six_market/study.yml
@@ -62,7 +62,7 @@ of six national equity markets.
   suspension fields are unreliable. The overlap audit compares common dates and
   group medians at 5%, 10% and 25% error tolerances; it does not validate the older
   source by itself.
-- Barra writes `barra_summary.json`, `barra_size_quantiles.csv` and
+- Style-factor reports write `barra_summary.json`, `barra_size_quantiles.csv` and
   `barra_source_manifest.json`. Q1 is the smallest-cap group.
   `monotonicity_score` measures adjacent-group ordering, not statistical
   significance. Costs, capacity, suspensions and survivorship still matter.

@@ -8,16 +8,16 @@ export const overviewCopy = {
     "个自然日"
   ],
   "featuredLabel": [
-    "Featured study: 18-year A-share style factors",
-    "重点研究：18 年 A 股风格因子"
+    "Featured study: 18-year A-share Market Style Analysis",
+    "重点研究：18 年 A 股市场风格分析"
   ],
   "featuredKicker": [
-    "Featured study · Barra-style factors",
-    "重点研究 · Barra 风格因子"
+    "Featured study · market style factors",
+    "重点研究 · 市场风格因子"
   ],
   "featuredTitle": [
-    "18-year A-share style factors: returns, stability, and market regimes",
-    "18 年 A 股风格因子动态：收益、稳定性与市场阶段"
+    "18-year A-share Market Style Analysis: returns, stability, and market regimes",
+    "18 年 A 股市场风格分析：收益、稳定性与市场阶段"
   ],
   "featuredConclusion": [
     "These historical comparisons show return differences between groups of stocks, but do not prove that the factors predict future returns. Historical financial-data availability, newer periods not used in the research, and actual trading results still need checking.",
@@ -124,8 +124,8 @@ export const overviewCopy = {
     "数据恢复后显示长期风格研究范围。"
   ],
   "styleCoveragePrefix": [
-    "Barra historical research through",
-    "Barra 历史研究截至"
+    "Market style research through",
+    "市场风格研究截至"
   ],
   "styleScope": [
     "Indices and ETFs describe market performance; style research compares returns between high- and low-scoring groups.",

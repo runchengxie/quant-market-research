@@ -76,7 +76,7 @@ test('style-factor language switch preserves the selected factor and its metrics
   const englishValues = await metrics.locator('.stat strong').allInnerTexts();
   await page.getByRole('button', { name: 'Switch to Chinese' }).click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'zh-CN');
-  await expect(page.locator('main h1')).toHaveText('18 年 A 股风格因子研究');
+  await expect(page.locator('main h1')).toHaveText('18 年 A 股市场风格分析');
   await expect(page.locator('button[data-factor="quality"]')).toHaveText('复合质量');
   await expect(metrics.locator('.stat strong')).toHaveText(englishValues);
 });

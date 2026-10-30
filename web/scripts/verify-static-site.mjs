@@ -21,7 +21,7 @@ const routes = [
   ["research/microcap/index.html", "A-share micro-cap history"],
   ["research/microcap/cross-market-liquidity/index.html", "Cross-market micro-cap liquidity"],
   ["research/indices/index.html", "Long-run index and ETF performance"],
-  ["research/style-factors-18y/index.html", "18-year A-share style factors"],
+  ["research/style-factors-18y/index.html", "18-year A-share Market Style Analysis"],
   ["research/liquidity/index.html", "Cross-market liquidity"],
   ["research/factors/low-turnover/index.html", "Low-turnover stocks and subsequent returns"],
   ["research/factors/pb-roe/index.html", "PB and ROE: historical comparison and evidence boundary"],

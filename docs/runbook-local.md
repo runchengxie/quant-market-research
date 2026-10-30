@@ -115,7 +115,7 @@ uv run market-research report indices --config configs/local.toml
 uv run market-research report etf-pairs --config configs/local.toml
 uv run market-research report cashflow --config configs/local.toml
 uv run market-research report smallcap-turnover-audit --config configs/local.toml
-uv run market-research report barra-risk-inputs --config configs/local.toml
+uv run market-research report style-risk-inputs --config configs/local.toml
 uv run market-research report index-study --study studies/index_replication/study.example.json
 uv run market-research report style-factors --study /path/to/local-style-study.yml
 uv run market-research report global-six-market --study studies/global_six_market/study.yml
@@ -182,12 +182,12 @@ python scripts/sync_public_research_data.py --source-root /path/to/reviewed-inde
 这不是跨文件事务，复制过程中发生磁盘或权限错误仍可能留下部分更新；来源内容的
 公开审查必须在执行前完成。不要将原始数据或私有策略产物作为来源。
 
-## Barra / 风格因子报告
+## 市场风格因子报告
 
 在 `configs/local.toml` 中配置 A 股数据根目录和可选的历史风格因子结果目录后运行：
 
 ```bash
-uv run market-research report barra --config configs/local.toml
+uv run market-research report style-factors --config configs/local.toml
 ```
 
 输出包括：
