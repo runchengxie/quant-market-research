@@ -49,8 +49,8 @@ const englishCopies: Record<string, { title: string; summary: string }> = {
   "microcap-method": { title: "Micro-cap Method", summary: "Research methods, coverage, and limitations." },
   "microcap-execution-diagnostic": { title: "Micro-cap Execution Simulation Diagnostic", summary: "Execution ledger, missing settlement events, and verifiable boundaries." },
   "smallcap-turnover-history": { title: "Small-cap Turnover History", summary: "Definitions and findings from the historical small-cap turnover study." },
-  "barra-factor-dictionary": { title: "Barra Factor Dictionary", summary: "Definitions checked for 19 historical factors and their core proxies." },
-  "barra-source-inventory": { title: "Barra Source Inventory", summary: "Sources, versions, and verification status for Barra factors." },
+  "barra-factor-dictionary": { title: "Market Style Factor Dictionary", summary: "Definitions checked for 19 historical factors and their core proxies." },
+  "barra-source-inventory": { title: "Market Style Source Inventory", summary: "Sources, versions, and verification status for market style factors." },
   "data-sources": { title: "Data and Versions", summary: "Public data snapshots, coverage dates, and build versions." },
   docs: { title: "Methods and dictionary", summary: "Research methods, factor definitions, data sources, and closeout status." },
 };

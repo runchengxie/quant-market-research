@@ -19,7 +19,7 @@ const [source, overview, routes, pages] = await Promise.all([
     "./pages/research/microcap/index.astro",
     "./pages/research/indices/index.astro",
     "./pages/research/style-factors-18y/index.astro",
-    "./components/research/BarraNarrative.astro",
+    "./components/research/MarketStyleNarrative.astro",
     "./components/ResearchPage.astro",
     "./pages/research/liquidity/index.astro",
     "./components/SiteHeader.astro",
@@ -62,7 +62,7 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
   assert.match(site, /逐年合成收益与阶段表现/);
   assert.match(site, /因子相关性/);
   assert.match(site, /历史多空合成收益/);
-  assert.match(site, /Barra 风格因子研究（18年）/);
+  assert.match(site, /18 年 A 股市场风格分析/);
   assert.match(site, /style-factors-18y/);
   assert.match(source, /ResearchBarChart/);
   assert.match(source, /稳定性观察：按月与按阶段/);
@@ -77,12 +77,12 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
 
 test("18年风格研究以经验研究问题呈现并明确Barra边界", () => {
   assert.match(site, /showConclusion/);
-  assert.match(site, /BarraNarrative/);
+  assert.match(site, /MarketStyleNarrative/);
   assert.match(site, /19 项 A 股风格因子的高低分组/);
   const conclusion = readFileSync(new URL("./content/../conclusion-copy.ts", import.meta.url), "utf8");
   assert.match(conclusion, /19 条历史因子序列表现各异/);
   assert.match(conclusion, /历史链路和交易可行性仍待核验/);
-  assert.match(site, /Barra 风格因子字典/);
+  assert.match(site, /市场风格因子字典/);
   assert.match(site, /IC 与十分组研究怎么读/);
 });
 
@@ -107,7 +107,7 @@ test("研究页面使用读者导向的入口和文案", () => {
 
 test("指数页的 Barra 子主题使用独立研究链接", () => {
   assert.match(source, /withBase\("\/research\/style-factors-18y\//);
-  assert.match(source, /Barra 风格因子研究（18年）/);
+  assert.match(source, /18 年 A 股市场风格分析/);
 });
 
 test("指数研究支持按目录类别筛选长期回报", () => {

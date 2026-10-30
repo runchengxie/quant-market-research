@@ -25,7 +25,7 @@ import { FACTOR_NAMES, FACTOR_DEFINITIONS, FACTOR_DETAILS } from "../../content/
 import type {
   Row,
   StyleScope,
-  BarraSummary,
+  StyleFactorSummary,
   HistoricalFactor,
   CorrelationMatrix,
 } from "./research-shared";
@@ -85,9 +85,9 @@ export function StylePage({ scope }: { scope: StyleScope }) {
   return (
     <>
       <StyleSubTabs scope={scope} />
-      {scope === "barra" ? (
+      {(scope === "style-factors" || scope === "barra") ? (
         <>
-          <BarraPage includeNarrative={false} />
+          <MarketStylePage includeNarrative={false} />
         </>
       ) : (
         <IndicesPage />
@@ -566,7 +566,7 @@ function QualityDiagnostic() {
 
 function SizeSnapshot() {
   const { data, error, retry } = useCsv("barra/barra_size_quantiles.csv");
-  const metadata = useJson<BarraSummary & { revision?: { input_vintage?: string; as_of?: string } }>("barra/barra_summary.json");
+  const metadata = useJson<StyleFactorSummary & { revision?: { input_vintage?: string; as_of?: string } }>("barra/barra_summary.json");
   if (!data || !data.length) return <DataNotice label={text("市值诊断", "Size diagnostic")} error={error} retry={retry} empty={!!data} />;
   const rows = data.map(row => ({ ...row, bucket: row.bucket_label || row.bucket, forward_return: row.mean_forward_return }));
   return <>
@@ -598,7 +598,7 @@ function CorrelationPanel({ selectedFactor, onSelect }: { selectedFactor: string
   </section>;
 }
 
-export function BarraPage({ includeNarrative = true }: { includeNarrative?: boolean }) {
+export function MarketStylePage({ includeNarrative = true }: { includeNarrative?: boolean }) {
   const factorsResource = useJson<HistoricalFactor[]>("barra/historical_factor_summary.json");
   const yearlyResource = useCsv("barra/factor_yearly.csv");
   const [selectedFactor, setSelectedFactor] = useState("size");
@@ -654,7 +654,7 @@ export function BarraPage({ includeNarrative = true }: { includeNarrative?: bool
   const overviewChartScale = Math.max(...overviewChartRows.map(row => Math.abs(row.value)), 0.0001);
   const overviewChartValue = (value: number) => overviewMetric === "sharpe" ? value.toFixed(2) : pct(value);
   return <div className="barra-explorer">
-    {includeNarrative && <ThemeHeading kicker={text("历史研究档案 · Barra 风格因子", "Historical research archive · Barra-style factors")} title={text("A 股风格因子的长期历史表现", "Long-run A-share style-factor performance")} text={text("历史多空合成收益，不代表实际账户盈亏。", "Historical long-short composite returns do not represent account P&L.")} asof={text("各因子样本区间不同", "Sample windows differ by factor")} />}
+    {includeNarrative && <ThemeHeading kicker={text("历史研究档案 · 市场风格因子", "Historical research archive · market style factors")} title={text("A 股风格因子的长期历史表现", "Long-run A-share style-factor performance")} text={text("历史多空合成收益，不代表实际账户盈亏。", "Historical long-short composite returns do not represent account P&L.")} asof={text("各因子样本区间不同", "Sample windows differ by factor")} />}
     <section className="factor-diagnostic-workspace" aria-label={text("当前因子诊断工作区", "Selected-factor diagnostic workspace")}>
       <div className="workspace-context">
         <span className="section-kicker">{text("当前因子诊断", "Selected-factor diagnostic")}</span>

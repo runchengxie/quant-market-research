@@ -99,7 +99,7 @@ test('hotspot chart stays aggregate-only and keeps mean uplift separate from eve
 test('Barra page presents a labeled current conclusion before the interactive workbench', async () => {
   const page = await readFile(new URL('./pages/research/style-factors-18y/index.astro', import.meta.url), 'utf8');
   assert.match(page, /showConclusion/);
-  assert.match(page, /BarraNarrative/);
+  assert.match(page, /MarketStyleNarrative/);
   assert.match(page, /长期风格研究|style-factor/);
   assert.match(page, /showConclusion/);
   const implementation = await readFile(new URL('./components/ResearchPage.astro', import.meta.url), 'utf8');

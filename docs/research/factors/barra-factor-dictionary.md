@@ -1,4 +1,4 @@
-# Barra factor dictionary
+# Market Style Factor Dictionary
 
 [Chinese version](barra-factor-dictionary.zh-CN.md)
 
@@ -18,28 +18,28 @@ Source identifiers such as `total_mv`, `turnover_rate`, `pct_chg`, `PE_TTM`, `ne
 
 ## Historical 19-factor snapshot
 
-The historical snapshot contains 19 factor identifiers. These are reviewed historical results, not 19 fully reconstructable commercial Barra factors. The current core dictionary and the historical source package have different provenance boundaries.
+The historical snapshot contains 19 factor identifiers. These are reviewed historical results, not 19 fully reconstructable factor definitions. The current core dictionary and the historical source package have different provenance boundaries.
 
 | Factor ID | Evidence boundary |
 | --- | --- |
-| `liquidity` | Historical Barra-style snapshot; source definition remains bounded |
-| `growth` | Historical Barra-style snapshot; source definition remains bounded |
-| `value` | Historical Barra-style snapshot; source definition remains bounded |
-| `ps_value` | Historical Barra-style snapshot; source definition remains bounded |
-| `lowvol` | Historical Barra-style snapshot; source definition remains bounded |
-| `dividend_yield` | Historical Barra-style snapshot; source definition remains bounded |
-| `institution_holding` | Historical Barra-style snapshot; source definition remains bounded |
-| `earnings_yield` | Historical Barra-style snapshot; source definition remains bounded |
-| `quality` | Historical Barra-style snapshot; source definition remains bounded |
-| `leverage` | Historical Barra-style snapshot; source definition remains bounded |
-| `chip_concentration` | Historical Barra-style snapshot; source definition remains bounded |
-| `fund_breadth_change` | Historical Barra-style snapshot; source definition remains bounded |
-| `fund_ownership_change` | Historical Barra-style snapshot; source definition remains bounded |
-| `fund_ownership` | Historical Barra-style snapshot; source definition remains bounded |
-| `beta` | Historical Barra-style snapshot; source definition remains bounded |
-| `fund_breadth` | Historical Barra-style snapshot; source definition remains bounded |
-| `momentum` | Historical Barra-style snapshot; source definition remains bounded |
-| `size` | Historical Barra-style snapshot; source definition remains bounded |
-| `liquidity_flow` | Historical Barra-style snapshot; source definition remains bounded |
+| `liquidity` | Historical market style snapshot; source definition remains bounded |
+| `growth` | Historical market style snapshot; source definition remains bounded |
+| `value` | Historical market style snapshot; source definition remains bounded |
+| `ps_value` | Historical market style snapshot; source definition remains bounded |
+| `lowvol` | Historical market style snapshot; source definition remains bounded |
+| `dividend_yield` | Historical market style snapshot; source definition remains bounded |
+| `institution_holding` | Historical market style snapshot; source definition remains bounded |
+| `earnings_yield` | Historical market style snapshot; source definition remains bounded |
+| `quality` | Historical market style snapshot; source definition remains bounded |
+| `leverage` | Historical market style snapshot; source definition remains bounded |
+| `chip_concentration` | Historical market style snapshot; source definition remains bounded |
+| `fund_breadth_change` | Historical market style snapshot; source definition remains bounded |
+| `fund_ownership_change` | Historical market style snapshot; source definition remains bounded |
+| `fund_ownership` | Historical market style snapshot; source definition remains bounded |
+| `beta` | Historical market style snapshot; source definition remains bounded |
+| `fund_breadth` | Historical market style snapshot; source definition remains bounded |
+| `momentum` | Historical market style snapshot; source definition remains bounded |
+| `size` | Historical market style snapshot; source definition remains bounded |
+| `liquidity_flow` | Historical market style snapshot; source definition remains bounded |
 
 The repository does not include the original historical factor panel or a complete descriptor and formula for every row. Do not describe this snapshot as a fully reproducible commercial Barra model.

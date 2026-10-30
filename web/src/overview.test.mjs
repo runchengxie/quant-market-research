@@ -17,7 +17,7 @@ test('overview dates and representative observations come from the corresponding
   assert.match(html, /href="\/research\/cashflow\/"/);
   assert.match(html, /href="\/research\/microcap\/"/);
   assert.match(html, /href="\/research\/indices\/"/);
-  assert.match(html, /18 年 A 股风格因子动态|18-year A-share style factors/);
+  assert.match(html, /18 年 A 股市场风格分析|18-year A-share Market Style Analysis/);
   assert.match(html, /href="\/research\/style-factors-18y\/"/);
   assert.match(html, /收益、稳定性与市场阶段|returns, stability, and market regimes/);
   assert.doesNotMatch(html, /-22\.16|独立报告|recovery\.html|<table|<select|research-chart/);
