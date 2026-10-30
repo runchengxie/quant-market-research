@@ -1,10 +1,20 @@
+---
+import { withBase } from "../../lib/routes";
+const summaryHref = withBase("/data/barra/historical_factor_summary.json", import.meta.env.BASE_URL);
+---
 <section class="research-theme">
   <div class="theme-heading">
     <span class="section-kicker" data-locale-text data-en="Historical research archive · market style factors" data-zh="历史研究档案 · 市场风格因子">Historical research archive · market style factors</span>
     <h2 data-locale-text data-en="Long-run A-share style-factor performance" data-zh="A 股风格因子的长期历史表现">Long-run A-share style-factor performance</h2>
     <p data-locale-text data-en="Review factor definitions, long-run performance, annual returns, correlations, and sample coverage, followed by a separately computed market-cap decile study." data-zh="查看因子定义、长期表现、逐年收益、相关性和样本范围，最后补充独立计算的市值十分组研究。">Review factor definitions, long-run performance, annual returns, correlations, and sample coverage, followed by a separately computed market-cap decile study.</p>
-    <p class="fine-print"><span data-locale-text data-en="Historical sample:" data-zh="历史样本：">Historical sample:</span> 2008-01-02 to 2026-09-04</p>
+    <p class="fine-print"><span data-locale-text data-en="Historical sample:" data-zh="历史样本">Historical sample:</span> 2008-01-02 to 2026-09-04</p>
   </div>
+</section>
+<section class="callout">
+  <h3 data-locale-text data-en="What the archive tells us today" data-zh="这份历史研究今天怎样用">What the archive tells us today</h3>
+<p data-locale-text data-en="In the archived 2008-01-02 to 2026-09-04 sample, the value factor has a geometric annualized composite return of 10.64% and a maximum drawdown of 20.61%. The archived size series, large minus small, has a geometric annualized return of -22.16%. This documents a historical advantage for the small-cap side under the archive rules. It leaves the return available to a small-cap account unresolved." data-zh="2008-01-02 至 2026-09-04 的历史档案中，价值因子合成序列的几何年化收益为 10.64%，最大回撤幅度为 20.61%。历史规模序列按大市值减小市值计算，几何年化收益为 −22.16%。这说明按档案规则计算时，小市值一侧在该段历史中占优。小市值账户实际能取得多少收益，仍需另外核算。">In the archived 2008-01-02 to 2026-09-04 sample, the value factor has a geometric annualized composite return of 10.64% and a maximum drawdown of 20.61%. The archived size series, large minus small, has a geometric annualized return of -22.16%. This documents a historical advantage for the small-cap side under the archive rules. It leaves the return available to a small-cap account unresolved.</p>
+<p data-locale-text data-en="Today, these results help identify historical style exposure and choose comparisons for new tests. A current portfolio needs formation-date financial versions and a matched execution ledger before the historical ranking can guide trading. Narrative and published figures were checked on 2026-10-30 without rerunning data or adding observations after 2026-09-04." data-zh="今天可以用这份结果辨认历史风格暴露，为后续检验选择对照。当前组合若要据此交易，还需核实形成日可见的财务版本，并在统一成交账本下验证。2026-10-30 核阅了本页解读与公开数值，没有重跑数据，也没有加入 2026-09-04 之后的市场观察。">Today, these results help identify historical style exposure and choose comparisons for new tests. A current portfolio needs formation-date financial versions and a matched execution ledger before the historical ranking can guide trading. Narrative and published figures were checked on 2026-10-30 without rerunning data or adding observations after 2026-09-04.</p>
+<p><a href={summaryHref} data-locale-text data-en="Archived numerical summary" data-zh="历史数值汇总">Archived numerical summary</a></p>
 </section>
 
 <section class="callout">
