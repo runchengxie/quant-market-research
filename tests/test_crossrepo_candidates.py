@@ -75,7 +75,7 @@ def test_failed_install_retains_command_exit_and_lock_provenance(tmp_path, monke
 def test_candidate_overrides_preserve_formal_python_floor():
     from market_research.crossrepo_acceptance import candidate_pins, requirements
     dependencies = requirements(candidate_pins('{}'))
-    formal = [item for item in dependencies if item.split(' @ ')[0] in
+    formal = [item for item in dependencies if item.split(' @ ')[0].split('[')[0] in
               ('quant-backtest-runtime', 'quant-platform', 'research-contracts')]
     assert len(formal) == 3
     assert all(item.endswith(" ; python_version >= '3.12'") for item in formal)

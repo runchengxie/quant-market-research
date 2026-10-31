@@ -13,8 +13,12 @@ import re
 import uuid
 
 import pandas as pd
-from portfolio_backtester.corporate_actions import CorporateAction
-from portfolio_backtester.minute_execution import MinuteExecutionConfig, ValuationEvent, simulate_minute_execution
+from quant_platform.backtest.legacy.corporate_actions import CorporateAction
+from quant_platform.backtest.legacy.minute_execution import (
+    MinuteExecutionConfig,
+    ValuationEvent,
+    simulate_minute_execution,
+)
 
 from market_research.studies.ashare_execution_costs.minute import (
     assert_unowned_events, measure_arrival_shortfall,

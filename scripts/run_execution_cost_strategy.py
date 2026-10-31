@@ -5,7 +5,7 @@ import hashlib
 import json
 from pathlib import Path
 import pandas as pd
-from portfolio_backtester.execution_sim import (
+from quant_platform.backtest.legacy.execution_sim import (
     ExecutionSimConfig,
     TradeFeeModel,
     simulate_execution_adjusted_nav,
