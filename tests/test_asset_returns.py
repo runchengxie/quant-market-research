@@ -40,6 +40,7 @@ def test_horizons_preserve_censoring_and_nominal_vs_real():
     assert row['worst_real_annualized_return'] < row['worst_annualized_return']
     assert result['recovery']['unrecovered_entry_count'] == 1  # final entry still censored
     assert result['real_recovery']['unrecovered_entry_count'] == 2
+    assert all(r['breakeven_date'] is None for r in result['real_recovery_entries'] if r['censored'])
 
 
 def test_relative_premium_uses_wealth_ratio_and_initial_capital():

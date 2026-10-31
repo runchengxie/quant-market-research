@@ -75,7 +75,7 @@ def holding_periods(frame: pd.DataFrame, horizons=(12, 36, 60, 120)) -> dict:
         'horizons': rows, 'recovery': recovery['summary'],
         'recovery_entries': recovery['entries'].astype(object).where(pd.notna(recovery['entries']), None).to_dict('records'),
         'real_recovery': real_recovery['summary'] if real_recovery else None,
-        'real_recovery_entries': real_recovery['entries'].astype(object).where(pd.notna(recovery['entries']), None).to_dict('records') if real_recovery else None,
+        'real_recovery_entries': real_recovery['entries'].astype(object).where(pd.notna(real_recovery['entries']), None).to_dict('records') if real_recovery else None,
         'sampling': 'monthly; overlapping windows are not independent observations',
     }
 
