@@ -59,7 +59,7 @@ def validate_expected_pins(supplied: dict[str, str]) -> dict[str, str]:
 
 def requirements(pins: dict[str, str]) -> list[str]:
     return [
-        f'{name} @ git+https://github.com/runchengxie/{REPOSITORIES[name]}.git@{revision}'
+        f"{name}{'[legacy]' if name == 'quant-backtest-runtime' else ''} @ git+https://github.com/runchengxie/{REPOSITORIES[name]}.git@{revision}"
         + ('#subdirectory=packages/research-contracts' if name == 'research-contracts' else '')
         + (" ; python_version >= '3.12'" if name in
            ('quant-backtest-runtime', 'quant-platform', 'research-contracts') else '')
