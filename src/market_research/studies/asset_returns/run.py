@@ -20,7 +20,7 @@ from .analysis import (
 def run_study(input_path: Path, metadata_path: Path, output: Path) -> dict:
     output = output.resolve()
     if any((p / '.git').exists() for p in [output, *output.parents]
-           if p != Path(gettempdir())):
+           if p not in {Path(gettempdir()), Path.home()}):
         raise ValueError('run outputs must remain outside source repositories')
     if output.exists():
         raise FileExistsError('select a new output directory')

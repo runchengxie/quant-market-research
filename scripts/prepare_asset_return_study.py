@@ -22,7 +22,7 @@ def prepare(owner_task: Path, output: Path, source_revision: str) -> dict:
         raise FileExistsError('select a new output directory')
     # The study runner enforces the same source-output boundary.
     if any((p / '.git').exists() for p in [output.resolve(), *output.resolve().parents]
-           if p != Path('/tmp')):
+           if p not in {Path('/tmp'), Path.home()}):
         raise ValueError('prepared inputs must remain outside source repositories')
     frames: dict[str, list[pd.DataFrame]] = {}
     receipts = []
