@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 
 
-def constituent_retention(frame: pd.DataFrame, expected_count: int) -> dict:
+def constituent_retention(frame: pd.DataFrame, expected_count: int, weight_quantum: float = 0) -> dict:
     data=frame[['date','symbol','weight']].copy()
     data['date']=pd.to_datetime(data.date,errors='raise')
     data['weight']=pd.to_numeric(data.weight,errors='raise')
@@ -13,10 +13,16 @@ def constituent_retention(frame: pd.DataFrame, expected_count: int) -> dict:
             or data.duplicated(['date','symbol']).any()
             or not np.isfinite(data.weight).all() or (data.weight<0).any()):
         raise ValueError('unique dated members and finite nonnegative fractional weights required')
+    if not np.isfinite(weight_quantum) or weight_quantum<0:
+        raise ValueError('invalid declared weight precision')
+    if weight_quantum and not np.allclose(data.weight/weight_quantum,np.round(data.weight/weight_quantum),atol=1e-7,rtol=0):
+        raise ValueError('weights do not match declared rounding quantum')
+    raw_sums=[]
     snapshots=[]
     for date,group in data.sort_values('date').groupby('date'):
-        if len(group)!=expected_count or abs(group.weight.sum()-1)>.0001:
+        if len(group)!=expected_count or abs(group.weight.sum()-1)>expected_count*weight_quantum/2+1e-10:
             raise ValueError('snapshot count or weight closure failed')
+        raw_sums.append({'date':date.date().isoformat(),'weight_sum':float(group.weight.sum())})
         snapshots.append((date,group.set_index('symbol').weight/group.weight.sum()))
     if len(snapshots)<2:
         raise ValueError('at least two annual snapshots are required')
@@ -35,7 +41,9 @@ def constituent_retention(frame: pd.DataFrame, expected_count: int) -> dict:
                             'weight_distance':float(.5*(w0.reindex(both,fill_value=0)-w1.reindex(both,fill_value=0)).abs().sum())})
     retained=set(first.index)&set(last.index)
     return {'start':first_date.date().isoformat(),'end':last_date.date().isoformat(),
-            'snapshots':len(snapshots),'initial_count':len(first),'final_count':len(last),
+            'snapshots':len(snapshots),'weight_rounding_quantum':weight_quantum,
+            'raw_weight_sums':raw_sums,'maximum_raw_weight_sum_error':max(abs(r['weight_sum']-1) for r in raw_sums),
+            'initial_count':len(first),'final_count':len(last),
             'cohort_retained_count':len(retained),'cohort_retained_fraction':len(retained)/len(first),
             'retained_initial_weight':float(first.loc[list(retained)].sum()),
             'retained_final_weight':float(last.loc[list(retained)].sum()),

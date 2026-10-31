@@ -152,7 +152,7 @@ def run(previous: Path, previous_owner: Path, owner: Path, output: Path) -> dict
             snap['symbol']=snap.con_code
             snap['weight']=pd.to_numeric(snap.weight)/100
             selected.append(snap[['date','symbol','weight']])
-        constituents[code]={'status':'snapshot_audit',**constituent_retention(pd.concat(selected),count)}
+        constituents[code]={'status':'snapshot_audit',**constituent_retention(pd.concat(selected),count,weight_quantum=.00001)}
     code_files=[Path(__file__), *sorted((Path(__file__).parents[1]/'src/market_research/studies/asset_returns').glob('*.py'))]
     report={'schema_version':1,'study_id':'asset-robustness-20261031',
             'protocol':'five predeclared follow-ups; no parameter optimization',

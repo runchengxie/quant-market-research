@@ -50,3 +50,14 @@ def test_profit_bridge_does_not_call_membership_change_company_growth():
     assert r['per_share_index_attribution'] is False
     with pytest.raises(ValueError):
         profit_bridge(f.assign(closing_profit=[10,np.nan,190]))
+
+
+def test_weight_closure_uses_declared_rounding_precision_and_records_error():
+    f=pd.DataFrame({'date':['2020-12-31']*2+['2021-12-31']*2,
+                    'symbol':['A','B','B','C'],'weight':[.5,.499,.3,.7]})
+    with pytest.raises(ValueError):
+        constituent_retention(f,expected_count=2)
+    r=constituent_retention(f,expected_count=2,weight_quantum=.001)
+    assert r['maximum_raw_weight_sum_error']==pytest.approx(.001)
+    with pytest.raises(ValueError):
+        constituent_retention(f.assign(weight=[.5,.49,.3,.7]),expected_count=2,weight_quantum=.001)
