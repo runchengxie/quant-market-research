@@ -48,3 +48,7 @@ Every additional column needs equivalent metadata; CPI/PE use dimensionless curr
 Only reviewed derived aggregates may enter the website. Complete runs, row-level provider inputs and credentials remain outside Git. Supplier access, complete history, semantic validation and publication rights are distinct checks. The SBBI China 2025 report is an external comparison, not a replacement input or a forecast.
 
 Before publishing independent earnings explanations, recover constituent/share ledgers and original financial vintages. Before publishing actual withdrawal accounts, implement or reuse an entitlement-aware platform ledger. Before extending six-market conclusions, complete ETF distributions, FX timestamp alignment and execution calibration. Preserve existing topic ownership and factor-observatory publication contracts.
+
+## Follow-up evidence
+
+The [second-round findings](followup-20261031.md) add endpoint stability, relative waiting, three ETF return layers, fixed allocation rules and annual constituent-cohort audits. The [follow-up protocol](followup-protocol.md) records exact reproduction commands, costs and unresolved earnings prerequisites. This supplements the first-round snapshot without changing it.
