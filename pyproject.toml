@@ -21,8 +21,8 @@ integration = [
 ]
 formal = [
     "quant-backtest-runtime @ git+https://github.com/runchengxie/quant-backtest-runtime.git@4fbfe973540e15fb6552068be037229d2f53d540 ; python_version >= '3.12'",
-    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@15ec62b66e894395d694049eaaace931de4a1265 ; python_version >= '3.12'",
-    "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@15ec62b66e894395d694049eaaace931de4a1265#subdirectory=packages/research-contracts ; python_version >= '3.12'",
+    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@3ac555bbfc8dba69d1a910320d5eefe947122df3 ; python_version >= '3.12'",
+    "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@3ac555bbfc8dba69d1a910320d5eefe947122df3#subdirectory=packages/research-contracts ; python_version >= '3.12'",
 ]
 yahoo = ["yfinance>=1.0"]
 dividends = ["requests>=2.32", "openpyxl>=3.1"]
@@ -50,5 +50,5 @@ addopts = "-ra"
 [tool.uv]
 # Keep the formal provider and contracts on the reviewed packaging revision.
 override-dependencies = [
-    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@15ec62b66e894395d694049eaaace931de4a1265 ; python_version >= '3.12'",
+    "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@3ac555bbfc8dba69d1a910320d5eefe947122df3 ; python_version >= '3.12'",
 ]

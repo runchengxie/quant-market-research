@@ -310,8 +310,11 @@ def build_proposal(inputs, summaries, implementation_hashes, valuation_policy=No
 
 
 def run(args):
-    from portfolio_backtester.corporate_actions import CorporateAction
-    from portfolio_backtester.minute_execution import MinuteExecutionConfig, simulate_minute_execution
+    from quant_platform.backtest.legacy.corporate_actions import CorporateAction
+    from quant_platform.backtest.legacy.minute_execution import (
+        MinuteExecutionConfig,
+        simulate_minute_execution,
+    )
 
     output = args.output
     inputs = json.loads((output / 'inputs.json').read_text())
@@ -331,12 +334,12 @@ def run(args):
     if (packet_path is None) != (mode is None):
         raise ValueError('valuation source packet and mode must be specified together')
     if comparison is not None:
-        from portfolio_backtester.minute_execution import ValuationEvent
+        from quant_platform.backtest.legacy.minute_execution import ValuationEvent
         rows, valuation_policy = build_risk_comparison_valuation(inputs, bars)
         valuation_events = [ValuationEvent(**row) for row in rows]
         packet_path = Path(comparison['source_packet_path'])
     elif packet_path is not None:
-        from portfolio_backtester.minute_execution import ValuationEvent
+        from quant_platform.backtest.legacy.minute_execution import ValuationEvent
         from market_research.studies.ashare_execution_costs.delist_valuation import build_valuation_policy
         bound_inputs = dict(
             inputs, selected_symbols=json.loads((output / 'symbols.json').read_text()),

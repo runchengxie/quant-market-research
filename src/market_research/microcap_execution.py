@@ -294,7 +294,10 @@ def run_diagnostic(
             encoding="utf-8",
         )
         raise
-    from portfolio_backtester.execution_sim import ExecutionSimConfig, audit_delisting_exits
+    from quant_platform.backtest.legacy.execution_sim import (
+        ExecutionSimConfig,
+        audit_delisting_exits,
+    )
     from market_research.runtime_jobs import publish_verified_frames, run_sequenced_job
 
     config = ExecutionSimConfig(

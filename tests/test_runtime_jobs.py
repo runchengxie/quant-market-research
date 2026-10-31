@@ -71,3 +71,18 @@ def test_sequenced_job_publishes_verified_daily_ledger(tmp_path) -> None:
     assert daily.nav.iloc[-1] > 0
     assert len(receipt["request_sha256"]) == 64
     assert len(receipt["result_sha256"]) == 64
+
+
+def test_runtime_ledger_config_omits_unset_optional_sell_lot():
+    from market_research.runtime_jobs import runtime_ledger_config
+
+    config = {"round_lot": 100, "sell_round_lot": None}
+    assert runtime_ledger_config(config) == {"round_lot": 100}
+    assert config == {"round_lot": 100, "sell_round_lot": None}
+
+
+def test_runtime_ledger_config_refuses_unsupported_explicit_sell_lot():
+    from market_research.runtime_jobs import runtime_ledger_config
+
+    with pytest.raises(ValueError, match="sell_round_lot"):
+        runtime_ledger_config({"sell_round_lot": 1})

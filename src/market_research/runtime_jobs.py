@@ -65,6 +65,13 @@ def _runtime_command(
     return json.loads(completed.stdout)
 
 
+def runtime_ledger_config(config: dict[str, Any]) -> dict[str, Any]:
+    """Serialize the pinned runtime contract without losing requested lot rules."""
+    if config.get("sell_round_lot") is not None:
+        raise ValueError("Pinned runtime does not support explicit sell_round_lot")
+    return {key: value for key, value in config.items() if key != "sell_round_lot"}
+
+
 def run_sequenced_job(
     root: Path,
     variant: str,
@@ -109,7 +116,7 @@ def run_sequenced_job(
             "transaction_cost_bps": transaction_cost_bps,
             "price_basis": "daily_clean.adjusted_close_proxy",
         },
-        "execution": {"ledger_config": ledger_config},
+        "execution": {"ledger_config": runtime_ledger_config(ledger_config)},
         "budgets": {"wall_seconds": 1800, "memory_mb": 8192},
     }
     fingerprint = hashlib.sha256(json.dumps(request, sort_keys=True).encode()).hexdigest()[:24]
