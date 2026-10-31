@@ -17,9 +17,9 @@ Corporate identity versus ticker; delisting versus economic recovery; adjusted N
 
 ## Tasks
 
-- [ ] Verify isolated baseline and retain read-only live-site status.
-- [ ] Acquire bounded missing-member master/name/income records and primary issuer reports; preserve raw provenance.
-- [ ] Add failing tests, implement yearly ETF attribution and identity audit; run and report actual evidence and unresolved cases.
-- [ ] Add failing tests, implement monthly update/release gates and extend the existing registration study; freeze prospective protocol and exercise pending/rejection paths.
-- [ ] Publish reviewed closure aggregates, bilingual findings and cost-basis explanation; verify both locales, mobile and downloads.
+- [x] Verify isolated baseline and retain read-only live-site status.
+- [x] Acquire bounded missing-member master/name/income records and primary issuer reports; preserve raw provenance.
+- [x] Add failing tests, implement yearly ETF attribution and identity audit; run and report actual evidence and unresolved cases.
+- [x] Add failing tests, implement monthly update/release gates and extend the existing registration study; freeze prospective protocol and exercise pending/rejection paths.
+- [x] Publish reviewed closure aggregates, bilingual findings and cost-basis explanation; verify both locales, mobile and downloads.
 - [ ] Run full checks and independent review, reconcile current main, PR merge, retain external time/CI/closeout evidence and clean this task only.
