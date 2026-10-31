@@ -21,24 +21,24 @@ Raw data and run outputs outside repositories; no production alias changes. No f
 
 ## Task 1: Supplier and existing-data evidence
 
-- [ ] Inspect documented TuShare/AKShare routes and configured provider contracts.
-- [ ] Run bounded read-only probes, retain raw and sanitized receipts outside source.
-- [ ] Record actual access, historical sample coverage, semantic limits and next acquisition actions.
+- [x] Inspect documented TuShare/AKShare routes and configured provider contracts.
+- [x] Run bounded read-only probes, retain raw and sanitized receipts outside source.
+- [x] Record actual access, historical sample coverage, semantic limits and next acquisition actions.
 
 ## Task 2: Study calculations
 
 Files: `src/market_research/studies/asset_returns/`, `tests/test_asset_returns.py`.
 
-- [ ] Write tests for monthly return validation, exact geometric dividend attribution, CPI/FX normalization, horizon downside, censored recovery and down-market comparisons.
-- [ ] Run tests and verify missing implementation failure.
-- [ ] Implement study-specific functions with explicit input and output contracts.
-- [ ] Add tested fixed-unit cash distribution and withdrawal scenarios; retain ex/payment timing and cash/wealth separately.
-- [ ] Run focused tests, then full Python suite and Ruff.
+- [x] Write tests for monthly return validation, exact geometric dividend attribution, CPI/FX normalization, horizon downside, censored recovery and down-market comparisons.
+- [x] Run tests and verify missing implementation failure.
+- [x] Implement study-specific functions with explicit input and output contracts.
+- [x] Add tested fixed-unit cash distribution and withdrawal scenarios; retain ex/payment timing and cash/wealth separately.
+- [x] Run focused tests, then full Python suite and Ruff.
 
 ## Task 3: Reproduction and reader evidence
 
-- [ ] Add explicit frozen-input study runner, exclusive output directory and provenance hashes.
-- [ ] Run available actual observations; do not publish unsupported estimates.
-- [ ] Add bilingual protocol/results in existing topic paths with auditable completion status.
-- [ ] Run web tests, build/static checks where touched; inspect all outgoing changes.
-- [ ] Commit, push to verified owner repository, open PR, validate current main and merge when checks pass. Clean only this task after merge.
+- [x] Add explicit frozen-input study runner, exclusive output directory and provenance hashes.
+- [x] Run available actual observations; do not publish unsupported estimates.
+- [x] Add bilingual protocol/results in existing topic paths with auditable completion status.
+- [x] Run web tests, build/static checks where touched; inspect all outgoing changes.
+- [ ] Complete PR integration after current-main checks; report merge revision and cleanup in the external closeout record.
