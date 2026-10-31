@@ -1,0 +1,328 @@
+{
+  "schema_version": 1,
+  "as_of": "2025-12-31",
+  "retrieved": "2026-10-31",
+  "frequency": "monthly",
+  "currency": "CNY",
+  "equities": [
+    {
+      "id": "all_share",
+      "start": "2004-12-31",
+      "end": "2025-12-31",
+      "months": 252,
+      "price_cagr": 0.08836391281461564,
+      "total_cagr": 0.10397821513571714,
+      "distribution_component_cagr": 0.014346582183822454,
+      "horizons": [
+        {
+          "months": 12,
+          "completed_windows": 241,
+          "worst_path_drawdown": -0.6868693428733658,
+          "worst_real_annualized_return": -0.6989913734907826,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.38589211618257263,
+          "real_loss_fraction": 0.4315352697095436,
+          "worst_annualized_return": -0.6868693428733658,
+          "median_annualized_return": 0.05116772632543998
+        },
+        {
+          "months": 36,
+          "completed_windows": 217,
+          "worst_path_drawdown": -0.6917607046179362,
+          "worst_real_annualized_return": -0.16430836272306937,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.391705069124424,
+          "real_loss_fraction": 0.42857142857142855,
+          "worst_annualized_return": -0.13822451621223353,
+          "median_annualized_return": 0.05604557587761483
+        },
+        {
+          "months": 60,
+          "completed_windows": 193,
+          "worst_path_drawdown": -0.6917607046179362,
+          "worst_real_annualized_return": -0.1507532046198906,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.11917098445595854,
+          "real_loss_fraction": 0.23316062176165803,
+          "worst_annualized_return": -0.12494161713229679,
+          "median_annualized_return": 0.05349436243096095
+        },
+        {
+          "months": 120,
+          "completed_windows": 133,
+          "worst_path_drawdown": -0.6917607046179362,
+          "worst_real_annualized_return": -0.03666716636695577,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.022556390977443608,
+          "real_loss_fraction": 0.12781954887218044,
+          "worst_annualized_return": -0.02294137577134836,
+          "median_annualized_return": 0.06313278415505108
+        }
+      ]
+    },
+    {
+      "id": "large_cap",
+      "start": "2004-12-31",
+      "end": "2025-12-31",
+      "months": 252,
+      "price_cagr": 0.07570716825745172,
+      "total_cagr": 0.09578179472486825,
+      "distribution_component_cagr": 0.018661794826500655,
+      "horizons": [
+        {
+          "months": 12,
+          "completed_windows": 241,
+          "worst_path_drawdown": -0.7047252993766974,
+          "worst_real_annualized_return": -0.7161560835558929,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4107883817427386,
+          "real_loss_fraction": 0.45228215767634855,
+          "worst_annualized_return": -0.7047252993766974,
+          "median_annualized_return": 0.0573035955340937
+        },
+        {
+          "months": 36,
+          "completed_windows": 217,
+          "worst_path_drawdown": -0.7047252993766974,
+          "worst_real_annualized_return": -0.20372220596518964,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.33640552995391704,
+          "real_loss_fraction": 0.3640552995391705,
+          "worst_annualized_return": -0.18461804225197298,
+          "median_annualized_return": 0.06525902162729835
+        },
+        {
+          "months": 60,
+          "completed_windows": 193,
+          "worst_path_drawdown": -0.7047252993766974,
+          "worst_real_annualized_return": -0.18251142018989408,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.16580310880829016,
+          "real_loss_fraction": 0.27461139896373055,
+          "worst_annualized_return": -0.15833800291679423,
+          "median_annualized_return": 0.05308934966940937
+        },
+        {
+          "months": 120,
+          "completed_windows": 133,
+          "worst_path_drawdown": -0.7047252993766974,
+          "worst_real_annualized_return": -0.044020235776016214,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.05263157894736842,
+          "real_loss_fraction": 0.12781954887218044,
+          "worst_annualized_return": -0.019922452665043666,
+          "median_annualized_return": 0.06766172218644395
+        }
+      ]
+    },
+    {
+      "id": "small_cap",
+      "start": "2004-12-31",
+      "end": "2025-12-31",
+      "months": 252,
+      "price_cagr": 0.10136347290702963,
+      "total_cagr": 0.10872273937734778,
+      "distribution_component_cagr": 0.006681959817401051,
+      "horizons": [
+        {
+          "months": 12,
+          "completed_windows": 241,
+          "worst_path_drawdown": -0.6967888077899183,
+          "worst_real_annualized_return": -0.6622376341383664,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4107883817427386,
+          "real_loss_fraction": 0.42738589211618255,
+          "worst_annualized_return": -0.6486354799812979,
+          "median_annualized_return": 0.09930247511032753
+        },
+        {
+          "months": 36,
+          "completed_windows": 217,
+          "worst_path_drawdown": -0.6967888077899183,
+          "worst_real_annualized_return": -0.26175556695784474,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.37327188940092165,
+          "real_loss_fraction": 0.43317972350230416,
+          "worst_annualized_return": -0.24796886152994246,
+          "median_annualized_return": 0.056330778808579174
+        },
+        {
+          "months": 60,
+          "completed_windows": 193,
+          "worst_path_drawdown": -0.6967888077899183,
+          "worst_real_annualized_return": -0.16059638140022525,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.2849740932642487,
+          "real_loss_fraction": 0.36787564766839376,
+          "worst_annualized_return": -0.1431240642166134,
+          "median_annualized_return": 0.049702365792378966
+        },
+        {
+          "months": 120,
+          "completed_windows": 133,
+          "worst_path_drawdown": -0.6967888077899183,
+          "worst_real_annualized_return": -0.07905371335225364,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.08270676691729323,
+          "real_loss_fraction": 0.16541353383458646,
+          "worst_annualized_return": -0.06593185615087827,
+          "median_annualized_return": 0.061693819838401165
+        }
+      ]
+    }
+  ],
+  "evidence_stage": "descriptive_history",
+  "provenance": {
+    "all_share": {
+      "input_sha256": "5bbfc7cf9bef3a804fef9c35493d4aa5824095d68e9e453a5d297bd6078c7eb9",
+      "metadata_sha256": "b722d3077469c1d98f0ab7aaa895fd114bb47c185862e08ee79029cc096d0243",
+      "analysis_sha256": "5247cdecee8fd495eafb2d92446d6cbbcd50fbc79c316951ceb52f7a76207f5d",
+      "runner_sha256": "84d0c833390ec7a0191dabfc80fadd6ed39bdf8776b1483b434c3a5d0b55969d",
+      "result_sha256": "74909332500f60240a5fe3403dfe8b15a01faad2a7cf66a96a24e01d9c58301a"
+    },
+    "large_cap": {
+      "input_sha256": "93a0b071fc566c4070e7b29a3ea5bd0d50fd48d3f5572cbde643d487ed323721",
+      "metadata_sha256": "4d0745b6a2fc3ae42605d870e5a67efd068ccedd2c7eb005a3a9f44fd1f78117",
+      "analysis_sha256": "5247cdecee8fd495eafb2d92446d6cbbcd50fbc79c316951ceb52f7a76207f5d",
+      "runner_sha256": "84d0c833390ec7a0191dabfc80fadd6ed39bdf8776b1483b434c3a5d0b55969d",
+      "result_sha256": "8120a27cf877cf7be7202a58711d6c91912d7bd053449833f5522de5e8e4bf8b"
+    },
+    "small_cap": {
+      "input_sha256": "d80e5a02d4a8299847b79e3a49b82bba5a6b9fc8f0aa5ccfa71ddaa2a647ab6d",
+      "metadata_sha256": "762a4f5a91e163f4e006eabfd02c08fd9cf1678f5decdc1a2b9fbc123f0d5528",
+      "analysis_sha256": "5247cdecee8fd495eafb2d92446d6cbbcd50fbc79c316951ceb52f7a76207f5d",
+      "runner_sha256": "84d0c833390ec7a0191dabfc80fadd6ed39bdf8776b1483b434c3a5d0b55969d",
+      "result_sha256": "132ba69d818c77b9483d29a02748291b8262dbd71fe46115b8c61d5f957db114"
+    },
+    "multi_asset": {
+      "input_sha256": "9538f45e186ca87c65194df51864c98d6f3a13ebeb07027d545106c01bc5c0c3",
+      "metadata_sha256": "7025998f941fbdfd94863e3ccf609c0cbdbddfc18b82b3c214f342406fef1d35",
+      "analysis_sha256": "5247cdecee8fd495eafb2d92446d6cbbcd50fbc79c316951ceb52f7a76207f5d",
+      "runner_sha256": "84d0c833390ec7a0191dabfc80fadd6ed39bdf8776b1483b434c3a5d0b55969d",
+      "result_sha256": "86b529f8738b9269be4abc2fb423499eae02d0783fb82f163c41697edd11cc82"
+    }
+  },
+  "diversification": {
+    "start": "2007-01-31",
+    "end": "2025-12-31",
+    "months": 227,
+    "correlation": {
+      "total": {
+        "total": 1.0,
+        "gold": 0.12545850815963153,
+        "bond": -0.23988399115530293
+      },
+      "gold": {
+        "total": 0.12545850815963153,
+        "gold": 1.0,
+        "bond": -0.017468666889426762
+      },
+      "bond": {
+        "total": -0.23988399115530293,
+        "gold": -0.017468666889426762,
+        "bond": 1.0
+      }
+    },
+    "down_market": {
+      "total": {
+        "months": 101,
+        "mean_return": -0.054934712387605826,
+        "positive_fraction": 0.0,
+        "worst_return": -0.25896146668130426
+      },
+      "gold": {
+        "months": 101,
+        "mean_return": 0.005428372655754612,
+        "positive_fraction": 0.5841584158415841,
+        "worst_return": -0.14915693904020755
+      },
+      "bond": {
+        "months": 101,
+        "mean_return": 0.004771891489720377,
+        "positive_fraction": 0.7326732673267327,
+        "worst_return": -0.022140958985677583
+      }
+    },
+    "mix_sensitivities": [
+      {
+        "weights": {
+          "total": 0.3333333333333333,
+          "gold": 0.3333333333333333,
+          "bond": 0.3333333333333333
+        },
+        "months": 227,
+        "gross_cagr": 0.08031778480095153,
+        "net_cagr": 0.08031778480095153,
+        "gross_terminal_wealth": 4.312042461525547,
+        "net_terminal_wealth": 4.312042461525547,
+        "gross_max_drawdown": -0.3219305515075954,
+        "net_max_drawdown": -0.3219305515075954,
+        "annual_cost_drag": 0,
+        "cost_status": "assumed annual wealth drag; not observed execution costs",
+        "rebalance": "idealized simultaneous month end; not an executable backtest"
+      },
+      {
+        "weights": {
+          "total": 0.3333333333333333,
+          "gold": 0.3333333333333333,
+          "bond": 0.3333333333333333
+        },
+        "months": 227,
+        "gross_cagr": 0.08031778480095153,
+        "net_cagr": 0.07491619587694598,
+        "gross_terminal_wealth": 4.312042461525547,
+        "net_terminal_wealth": 3.921958310333836,
+        "gross_max_drawdown": -0.3219305515075954,
+        "net_max_drawdown": -0.32419267072667934,
+        "annual_cost_drag": 0.005,
+        "cost_status": "assumed annual wealth drag; not observed execution costs",
+        "rebalance": "idealized simultaneous month end; not an executable backtest"
+      },
+      {
+        "weights": {
+          "total": 0.3333333333333333,
+          "gold": 0.3333333333333333,
+          "bond": 0.3333333333333333
+        },
+        "months": 227,
+        "gross_cagr": 0.08031778480095153,
+        "net_cagr": 0.06951460695294154,
+        "gross_terminal_wealth": 4.312042461525547,
+        "net_terminal_wealth": 3.5654591079992377,
+        "gross_max_drawdown": -0.3219305515075954,
+        "net_max_drawdown": -0.32645858228407976,
+        "annual_cost_drag": 0.01,
+        "cost_status": "assumed annual wealth drag; not observed execution costs",
+        "rebalance": "idealized simultaneous month end; not an executable backtest"
+      }
+    ]
+  },
+  "small_vs_large": {
+    "start": "2004-12-31",
+    "end": "2025-12-31",
+    "relative_cagr": 0.011809782490252774,
+    "relative_max_drawdown": -0.6140149711468132,
+    "cost_sensitivities": [
+      {
+        "annual_wealth_drag": 0,
+        "relative_cagr": 0.011809782490252774,
+        "calibrated_execution_cost": false
+      },
+      {
+        "annual_wealth_drag": 0.005,
+        "relative_cagr": 0.006750733577801427,
+        "calibrated_execution_cost": false
+      },
+      {
+        "annual_wealth_drag": 0.01,
+        "relative_cagr": 0.0016916846653503015,
+        "calibrated_execution_cost": false
+      },
+      {
+        "annual_wealth_drag": 0.02,
+        "relative_cagr": -0.008426413159552393,
+        "calibrated_execution_cost": false
+      }
+    ]
+  }
+}
