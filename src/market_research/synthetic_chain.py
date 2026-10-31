@@ -28,7 +28,7 @@ from market_research.runtime_jobs import publish_verified_frames, run_sequenced_
 
 PINS = {
     "quant-market-data-platform": "71e40a0da03530fe88d70d4b212701d3af6a8cfa",
-    "quant-backtest-runtime": "4fbfe973540e15fb6552068be037229d2f53d540",
+    "quant-backtest-runtime": "bb1f20eeab1105b9001663ec6e39ab523b57d8ea",
     "quant-platform": "3ac555bbfc8dba69d1a910320d5eefe947122df3",
     "research-contracts": "3ac555bbfc8dba69d1a910320d5eefe947122df3",
 }

@@ -543,7 +543,7 @@ duckdb = [
     { name = "duckdb" },
 ]
 formal = [
-    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12'" },
+    { name = "quant-backtest-runtime", extra = ["legacy"], marker = "python_full_version >= '3.12'" },
     { name = "quant-platform", marker = "python_full_version >= '3.12'" },
     { name = "research-contracts", marker = "python_full_version >= '3.12'" },
 ]
@@ -562,7 +562,7 @@ requires-dist = [
     { name = "pyarrow", specifier = ">=17" },
     { name = "pytest", marker = "extra == 'dev'", specifier = ">=8" },
     { name = "pyyaml", specifier = ">=6.0" },
-    { name = "quant-backtest-runtime", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=4fbfe973540e15fb6552068be037229d2f53d540" },
+    { name = "quant-backtest-runtime", extras = ["legacy"], marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=bb1f20eeab1105b9001663ec6e39ab523b57d8ea" },
     { name = "quant-market-data-platform", marker = "extra == 'integration'", git = "https://github.com/runchengxie/quant-market-data-platform.git?rev=71e40a0da03530fe88d70d4b212701d3af6a8cfa" },
     { name = "quant-platform", marker = "python_full_version >= '3.12' and extra == 'formal'", git = "https://github.com/runchengxie/quant-platform.git?rev=3ac555bbfc8dba69d1a910320d5eefe947122df3" },
     { name = "requests", marker = "extra == 'dividends'", specifier = ">=2.32" },
@@ -1020,8 +1020,10 @@ wheels = [
 [[package]]
 name = "quant-backtest-runtime"
 version = "0.1.0"
-source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=4fbfe973540e15fb6552068be037229d2f53d540#4fbfe973540e15fb6552068be037229d2f53d540" }
-dependencies = [
+source = { git = "https://github.com/runchengxie/quant-backtest-runtime.git?rev=bb1f20eeab1105b9001663ec6e39ab523b57d8ea#bb1f20eeab1105b9001663ec6e39ab523b57d8ea" }
+
+[package.optional-dependencies]
+legacy = [
     { name = "quant-platform" },
 ]
 

@@ -59,7 +59,8 @@ def locked_pins(manifest: dict, lock: dict) -> dict[str, str]:
         if name not in REPOSITORIES:
             continue
         reference = requirement.partition(';')[0].strip()
-        expected = f'{name} @ git+https://github.com/runchengxie/{REPOSITORIES[name]}.git@{pins[name]}'
+        distribution = name + ('[legacy]' if name == 'quant-backtest-runtime' else '')
+        expected = f'{distribution} @ git+https://github.com/runchengxie/{REPOSITORIES[name]}.git@{pins[name]}'
         if name == 'research-contracts':
             expected += '#subdirectory=packages/research-contracts'
         if reference != expected:

@@ -174,3 +174,25 @@ def test_formal_upgrade_requires_matching_default_declarations_without_executing
     (package / 'synthetic_chain.py').write_text(f'raise RuntimeError("not executed")\nPINS = {defaults!r}\n')
     verify_default_pins(tmp_path, upgraded)
     assert not marker.exists()
+
+
+@pytest.mark.parametrize('replacement', ['', '[engine]', '[legacy,engine]'])
+def test_runtime_requires_exact_legacy_extra(replacement):
+    from market_research.locked_providers import locked_pins
+
+    manifest, lock = documents()
+    manifest['project']['optional-dependencies']['formal'] = [
+        requirement.replace('quant-backtest-runtime[legacy]', 'quant-backtest-runtime' + replacement)
+        for requirement in manifest['project']['optional-dependencies']['formal']
+    ]
+    with pytest.raises(ValueError, match='quant-backtest-runtime'):
+        locked_pins(manifest, lock)
+
+
+def test_manual_candidate_requirements_keep_legacy_runtime_capability():
+    from market_research.crossrepo_acceptance import requirements
+
+    runtime = next(requirement for requirement in requirements(
+        {'quant-backtest-runtime': 'a' * 40}
+    ) if requirement.startswith('quant-backtest-runtime'))
+    assert runtime.startswith('quant-backtest-runtime[legacy] @ ')

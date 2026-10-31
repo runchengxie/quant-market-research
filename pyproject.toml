@@ -20,7 +20,7 @@ integration = [
     "quant-market-data-platform @ git+https://github.com/runchengxie/quant-market-data-platform.git@71e40a0da03530fe88d70d4b212701d3af6a8cfa",
 ]
 formal = [
-    "quant-backtest-runtime @ git+https://github.com/runchengxie/quant-backtest-runtime.git@4fbfe973540e15fb6552068be037229d2f53d540 ; python_version >= '3.12'",
+    "quant-backtest-runtime[legacy] @ git+https://github.com/runchengxie/quant-backtest-runtime.git@bb1f20eeab1105b9001663ec6e39ab523b57d8ea ; python_version >= '3.12'",
     "quant-platform @ git+https://github.com/runchengxie/quant-platform.git@3ac555bbfc8dba69d1a910320d5eefe947122df3 ; python_version >= '3.12'",
     "research-contracts @ git+https://github.com/runchengxie/quant-platform.git@3ac555bbfc8dba69d1a910320d5eefe947122df3#subdirectory=packages/research-contracts ; python_version >= '3.12'",
 ]
