@@ -1,0 +1,33 @@
+---
+import LocaleText from './LocaleText.astro';
+import { assetReturnCopy as c, assetNames } from '../content/asset-return-copy';
+import data from '../../public/data/asset_returns_reviewed.json';
+const percent=(v:number)=>new Intl.NumberFormat('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2}).format(v);
+const stress=data.diversification;
+const sourceBase='https://github.com/runchengxie/quant-market-research/blob/main/studies/asset_returns/';
+---
+<section id="cashflow-long-run" aria-labelledby="cashflow-long-run-title" class="panel asset-return-evidence">
+<h2 id="cashflow-long-run-title" data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
+<LocaleText text={c.lead}/><LocaleText text={c.scope}/>
+<div class="asset-return-table"><table>
+<thead><tr>{[c.index,c.price,c.total,c.residual].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
+<tbody>{data.equities.map(row=><tr><th><LocaleText text={assetNames[row.id]} as="span"/></th><td>{percent(row.price_cagr)}</td><td>{percent(row.total_cagr)}</td><td>{percent(row.distribution_component_cagr)}</td></tr>)}</tbody>
+</table></div><LocaleText text={c.dividendNote}/>
+<LocaleText text={c.holding} as="h3"/>
+<div class="asset-return-table"><table>
+<thead><tr>{[c.index,c.nominal,c.real,c.worst].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
+<tbody>{data.equities.map(row=>{const h=row.horizons.find(h=>h.months===120)!;return <tr><th><LocaleText text={assetNames[row.id]} as="span"/></th><td>{percent(h.nominal_loss_fraction!)}</td><td>{percent(h.real_loss_fraction!)}</td><td>{percent(h.worst_annualized_return!)}</td></tr>;})}</tbody>
+</table></div><LocaleText text={c.holdingNote}/>
+<LocaleText text={c.stress} as="h3"/><LocaleText text={c.stressScope}/>
+<div class="asset-return-table"><table>
+<thead><tr>{[c.asset,c.correlation,c.positive,c.stressWorst].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
+<tbody>{(['gold','bond'] as const).map(id=><tr><th><LocaleText text={c[id]} as="span"/></th><td>{stress.correlation.total[id].toFixed(3)}</td><td>{percent(stress.down_market[id].positive_fraction)}</td><td>{percent(stress.down_market[id].worst_return)}</td></tr>)}</tbody>
+</table></div><LocaleText text={c.mix}/>
+<LocaleText text={c.costs} as="h3"/>
+<div class="asset-return-table"><table><thead><tr><th><LocaleText text={c.drag} as="span"/></th><th><LocaleText text={c.relative} as="span"/></th></tr></thead><tbody>{data.small_vs_large.cost_sensitivities.map(row=><tr><td>{percent(row.annual_wealth_drag)}</td><td>{percent(row.relative_cagr)}</td></tr>)}</tbody></table></div>
+<LocaleText text={c.costNote}/><LocaleText text={c.pending} as="h3"/><LocaleText text={c.pendingNote}/>
+<details><LocaleText text={c.methods} as="summary"/><p><a href={sourceBase+'findings-20261031.md'}><LocaleText text={c.sourceEn} as="span"/></a> · <a href={sourceBase+'findings-20261031.zh-CN.md'}><LocaleText text={c.sourceZh} as="span"/></a></p><a href="https://youzhiyouxing.cn/sbbi2025/">SBBI China 2025</a></details>
+</section>
+<style>
+.asset-return-evidence{margin-block:1.5rem}.asset-return-table{overflow-x:auto;margin-block:1rem}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;text-align:left;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}td{white-space:nowrap}
+</style>

@@ -34,3 +34,7 @@
 - [中证 1000 事实表](https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/932369factsheet.pdf)
 - [国证指数编制方案](https://www.cnindex.com.cn/docs/gz_980092.pdf)
 - [TuShare 同花顺行情接口](https://tushare.pro/document/2?doc_id=260)
+
+## 长期市场参照
+
+[长期资产回报研究](../asset_returns/README.zh-CN.md)补充宽基价格／全收益、购买力持有风险、股票黄金国债分散及小盘成本敏感性。它是现金流风格指数的市场参照，不能替代本专题的规则复刻或把指数分红差异当作真实到账现金。[首轮结果](../asset_returns/findings-20261031.zh-CN.md)保留接口覆盖、历史修正差异和未完成项。

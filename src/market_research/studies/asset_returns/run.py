@@ -46,6 +46,8 @@ def run_study(input_path: Path, metadata_path: Path, output: Path) -> dict:
     if series['price']['return_basis'] != 'price' or series['total']['return_basis'] != 'total_return':
         raise ValueError('price and total must have their stated return bases')
     validate_levels(data, ['price', 'total'])
+    data['date'] = pd.to_datetime(data.date, errors='raise')
+    data = data.sort_values('date').reset_index(drop=True)
     result = {
         'schema_version': 1, 'evidence_stage': 'descriptive_history',
         'provenance': {'input_sha256': hashlib.sha256(input_bytes).hexdigest(),
