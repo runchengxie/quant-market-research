@@ -17,10 +17,10 @@ Chronological cost application; initial capital in drawdowns; censored recovery;
 
 ## Tasks
 
-- [ ] Record design and source baseline; run baseline tests in isolated worktree.
-- [ ] Acquire bounded ETF and annual constituent snapshots through configured API; retain receipts and probe failures.
-- [ ] Write failing tests for sensitivity and relative waiting; implement and run actual frozen histories.
-- [ ] Write failing tests for fixed-rule allocation accounting; implement finite predeclared study scenarios and validate self-financing and costs.
-- [ ] Write failing tests for ETF three-layer reconciliation and constituent retention; implement, audit actual data, retain unsupported results as blocked.
-- [ ] Publish reviewed bilingual aggregates and findings through the existing topic; verify projection and privacy.
-- [ ] Run complete checks, independent review, current-main reconciliation and PR integration; retain external closeout and clean only this task.
+- [x] Record design and source baseline; run baseline tests in isolated worktree.
+- [x] Acquire bounded ETF and annual constituent snapshots through configured API; retain receipts and probe failures.
+- [x] Write failing tests for sensitivity and relative waiting; implement and run actual frozen histories.
+- [x] Write failing tests for fixed-rule allocation accounting; implement finite predeclared study scenarios and validate self-financing and costs.
+- [x] Write failing tests for ETF three-layer reconciliation and constituent retention; implement, audit actual data, retain unsupported results as blocked.
+- [x] Publish reviewed bilingual aggregates and findings through the existing topic; verify projection and privacy.
+- [ ] Finish PR integration after current-main validation; retain external merge/CI closeout and clean only this task.

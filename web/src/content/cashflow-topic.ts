@@ -5,6 +5,7 @@ export const cashflowSections: readonly TopicSection[] = [
   { id: 'cashflow-recovery', label: '回撤与回本', labelEn: 'Drawdowns and recovery', available: true },
   { id: 'cashflow-replication', label: '指数复刻与可交易性', labelEn: 'Index replication and tradability', available: true },
   { id: 'cashflow-long-run', label: '长期回报与分散', labelEn: 'Long-run returns and diversification', available: true },
+  { id: 'cashflow-robustness', label: '结论稳定性与ETF', labelEn: 'Robustness and ETF evidence', available: true },
   { id: 'research-method', label: '数据与方法', labelEn: 'Sources and methods', available: true },
 ];
 

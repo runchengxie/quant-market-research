@@ -1,4 +1,5 @@
 ---
+import AssetRobustnessEvidence from "../../../components/AssetRobustnessEvidence.astro";
 import AssetReturnEvidence from "../../../components/AssetReturnEvidence.astro";
 import RelatedTopics from "../../../components/RelatedTopics.astro";
 import { cashflowSections } from "../../../content/cashflow-topic";
@@ -9,4 +10,5 @@ import { CashflowPage } from "../../../components/react/cashflow-page";
   <RelatedTopics ids={["indices", "microcap"]} />
   <CashflowPage client:load />
   <AssetReturnEvidence />
+  <AssetRobustnessEvidence />
 </ResearchPage>
