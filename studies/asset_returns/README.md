@@ -52,3 +52,5 @@ Before publishing independent earnings explanations, recover constituent/share l
 ## Follow-up evidence
 
 The [second-round findings](followup-20261031.md) add endpoint stability, relative waiting, three ETF return layers, fixed allocation rules and annual constituent-cohort audits. The [follow-up protocol](followup-protocol.md) records exact reproduction commands, costs and unresolved earnings prerequisites. This supplements the first-round snapshot without changing it.
+
+- Evidence closure / 证据核查：[English](closure-20261031.md) · [中文](closure-20261031.zh-CN.md)

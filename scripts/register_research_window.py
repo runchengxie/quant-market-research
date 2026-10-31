@@ -17,7 +17,7 @@ def timestamp(value: str) -> datetime:
 
 def register(study: str, protocol: Path, inputs: Path, calendar: Path,
              formation_at: str, entry_at: str, now: datetime) -> dict:
-    if study not in {"low-turnover", "valuation"}:
+    if study not in {"low-turnover", "valuation", "asset-allocation"}:
         raise ValueError("unknown research study")
     if now.tzinfo is None:
         raise ValueError("recording time requires a timezone")
@@ -27,7 +27,8 @@ def register(study: str, protocol: Path, inputs: Path, calendar: Path,
         raise ValueError("registration must be before entry")
     if now < formation:
         raise ValueError("registration must be after formation inputs are available")
-    minimum = datetime(2026, 11 if study == "valuation" else 10, 1, tzinfo=timezone.utc)
+    minimum = (datetime(2026, 11, 30, 7, tzinfo=timezone.utc) if study == "asset-allocation"
+               else datetime(2026, 11 if study == "valuation" else 10, 1, tzinfo=timezone.utc))
     if formation < minimum:
         raise ValueError("formation predates the new cohort")
     def digest(path: Path) -> str:
@@ -51,7 +52,7 @@ def write_receipt(output: Path, receipt: dict) -> None:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--study", required=True, choices=["low-turnover", "valuation"])
+    parser.add_argument("--study", required=True, choices=["low-turnover", "valuation", "asset-allocation"])
     for name in ("protocol", "inputs", "calendar", "output"):
         parser.add_argument(f"--{name}", required=True, type=Path)
     parser.add_argument("--formation-at", required=True)

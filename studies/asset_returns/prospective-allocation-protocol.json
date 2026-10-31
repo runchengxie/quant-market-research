@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "study": "asset-allocation",
+  "status": "protocol_frozen_waiting_for_baseline_and_entry_receipt",
+  "admitted": false,
+  "completed_windows": 0,
+  "first_candidate_outcome_month": "2026-12",
+  "earliest_formation_at_utc": "2026-11-30T07:00:00Z",
+  "baseline_month": "2026-11",
+  "universe": [
+    "all_share_total_return",
+    "long_treasury_total_return",
+    "CNY_gold"
+  ],
+  "portfolios": {
+    "equity_only": [
+      1,
+      0,
+      0
+    ],
+    "stock_bond_60_40": [
+      0.6,
+      0.4,
+      0
+    ],
+    "stock_bond_gold_equal": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ]
+  },
+  "policies": [
+    "buy_hold",
+    "annual",
+    "threshold_5pp"
+  ],
+  "cost_bps_per_traded_notional": [
+    0,
+    10,
+    50
+  ],
+  "equity_only_deduplicated": true,
+  "scenario_count": 19,
+  "annual_policy": "every twelve elapsed monthly returns; no rebalance before twelve returns",
+  "threshold_policy": "rebalance when absolute post-return weight deviation reaches five percentage points",
+  "trade_timing": "monthly returns precede simulated trades; not an executable closing-quote strategy",
+  "initial_and_final_costs": "excluded; separate execution study needed",
+  "metrics": [
+    "net_cagr",
+    "net_max_drawdown",
+    "annualized_two_sided_turnover",
+    "ten_year_real_loss_fraction"
+  ],
+  "missing_outcome_policy": "unavailable, never zero; ten-year loss unavailable until sufficient observations",
+  "selection_policy": "no optimization or removal of underperforming scenarios",
+  "admission_requirements": [
+    "real baseline and source availability timestamps",
+    "official trading calendar",
+    "entry receipt before outcome observation period",
+    "independent timestamp evidence binding protocol and receipt hashes",
+    "manual admission review"
+  ],
+  "history_policy": "preserve released history; revisions require a separate labeled run",
+  "scope": "prospective monthly reference portfolios; no ETF execution or historical-vintage certification",
+  "frozen_reference_code_sha256": {
+    "src/market_research/studies/asset_returns/allocation.py": "e27438421ec0915558ced022723ed3cab2f235938f7af4f1f317c1a812067106"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "schema_version": 1,
+  "files": {
+    "web/public/data/asset_returns_reviewed.json": "3231c651bddd8b13942ca8f34253bb6b271824af297521eb2f4cebe3ae7b4004",
+    "web/public/data/asset_robustness_reviewed.json": "3d81222e82df12216597a4101493c451381295e72bc7ed8f0bb2bf084a36d926",
+    "web/public/data/asset_closure_reviewed.json": "eb46b401ee37f1c0fe28339721e38a5f9d16a007be11c0ad8a4ce6ecf4fd66f9",
+    "studies/asset_returns/prospective-allocation-protocol.json": "0c79bdf23a7bd2dc6848c3d0c60c38efbba8080b465bc3a692a6f40c3af30377"
+  }
+}

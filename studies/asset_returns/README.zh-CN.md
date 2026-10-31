@@ -44,3 +44,5 @@ CPI 使用价格水平；`chain_cpi` 从环比百分数连乘，并把首月设�
 ## 第二轮进展
 
 [第二轮结果](followup-20261031.zh-CN.md)补充起止日期敏感性、跑输等待、三只ETF的指数／净值／市场价格对账、固定配置规则和年度成分留存审计。[复现协议](followup-protocol.md)记录命令、费用假设和仍未闭合的盈利归因条件；首轮冻结结果保持独立。
+
+- Evidence closure / 证据核查：[English](closure-20261031.md) · [中文](closure-20261031.zh-CN.md)
