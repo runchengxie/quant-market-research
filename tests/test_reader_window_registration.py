@@ -40,3 +40,17 @@ def test_existing_receipt_is_never_overwritten(tmp_path):
     with pytest.raises(FileExistsError):
         module.write_receipt(output, {"status": "pending"})
     assert output.read_text() == "original"
+
+
+def test_asset_allocation_cannot_use_retrospective_formation(tmp_path):
+    source = tmp_path / 'input.json'
+    source.write_text('{}')
+    with pytest.raises(ValueError, match='formation predates'):
+        module.register('asset-allocation', source, source, source,
+                        '2026-10-31T07:00:00Z', '2026-12-01T01:30:00Z',
+                        datetime(2026, 11, 1, tzinfo=timezone.utc))
+    receipt = module.register('asset-allocation', source, source, source,
+                              '2026-11-30T07:00:00Z', '2026-12-01T01:30:00Z',
+                              datetime(2026, 11, 30, 9, tzinfo=timezone.utc))
+    assert receipt['admitted'] is False
+    assert receipt['completed_windows'] == 0

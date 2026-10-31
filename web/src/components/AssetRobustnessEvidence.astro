@@ -20,13 +20,15 @@ const source='https://github.com/runchengxie/quant-market-research/blob/main/stu
 <label for="allocation-cost"><LocaleText text={c.costLabel} as="span"/></label>
 <select id="allocation-cost">{[c.zero,c.ten,c.fifty].map((text,i)=><option value={[0,10,50][i]} data-locale-text data-en={text[0]} data-zh={text[1]}>{text[0]}</option>)}</select>
 <div class="robustness-table"><table id="allocation-rules"><thead><tr>{[c.portfolio,c.rule,c.cagr,c.drawdown,c.turnover,c.realLoss].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.allocations.map(r=><tr data-cost={r.id==='equity_only'?'all':r.cost_bps_per_traded_notional} hidden={r.cost_bps_per_traded_notional!==0}><th><LocaleText text={portfolioNames[r.id]} as="span"/></th><td><LocaleText text={ruleNames[r.policy]} as="span"/></td><td>{percent(r.summary.net_cagr)}</td><td>{percent(r.summary.net_max_drawdown)}</td><td>{percent(r.summary.annualized_two_sided_turnover)}</td><td>{percent(r.summary.ten_year_real_loss_fraction)}</td></tr>)}</tbody></table></div>
-<LocaleText text={c.allocationBoundary}/>
+<LocaleText text={c.allocationBoundary}/><LocaleText text={c.costBasis}/>
 <LocaleText text={c.etf} as="h3"/><LocaleText text={c.etfNote}/>
 <div class="robustness-table"><table><thead><tr>{[c.code,c.reference,c.nav,c.market,c.gap].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{Object.entries(data.etfs).map(([code,r])=><tr><th>{code}</th><td>{percent(r.index_total_cagr)}</td><td>{percent(r.nav_cagr)}</td><td>{percent(r.market_total_proxy_cagr)}</td><td>{(r.nav_minus_index_cagr_pp*100).toFixed(2)}</td></tr>)}</tbody></table></div>
 <LocaleText text={c.etfBoundary}/>
 <LocaleText text={c.constituents} as="h3"/>
 <div class="robustness-table"><table><thead><tr>{[c.asset,c.retained,c.initialWeight,c.profitCoverage].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{Object.entries(data.constituents).map(([code,r])=>{const coverage=data.financial_coverage[code==='000300.SH'?'000300_SH':'000852_SH'];return <tr><th><LocaleText text={assetNames[code==='000300.SH'?'large_cap':'small_cap']} as="span"/></th><td>{r.cohort_retained_count}/{r.initial_count} ({percent(r.cohort_retained_fraction)})</td><td>{percent(r.retained_initial_weight)}</td><td>{coverage.initial.fy2025_profit_available}/{coverage.initial.members}</td></tr>;})}</tbody></table></div>
 <LocaleText text={c.constituentNote}/>
+<LocaleText text={c.closure} as="h3"/><LocaleText text={c.closureNote}/><LocaleText text={c.forward}/>
+<p><a href={source+'closure-20261031.md'} lang="en"><LocaleText text={c.closureLink} as="span"/> (EN)</a> · <a href={source+'closure-20261031.zh-CN.md'} lang="zh-CN"><LocaleText text={c.chinese} as="span"/></a> · <a href={withBase('/data/asset_closure_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.closureDownload} as="span"/></a></p>
 <details><LocaleText text={c.methods} as="summary"/><p><a href={source+'followup-20261031.md'}><LocaleText text={c.english} as="span"/></a> · <a href={source+'followup-20261031.zh-CN.md'}><LocaleText text={c.chinese} as="span"/></a> · <a href={withBase('/data/asset_robustness_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.download} as="span"/></a></p></details>
 </section>
 <script>

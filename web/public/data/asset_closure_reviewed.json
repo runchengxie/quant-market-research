@@ -1,0 +1,346 @@
+{
+  "schema_version": 1,
+  "source_result_sha256": "e757a71c9c72520be5ab4fa1c783657da279adc001d32f95793616ba808fbd9c",
+  "cohorts": {
+    "000300_SH": {
+      "initial_members": 300,
+      "missing_original_profit": 8,
+      "classifications": {
+        "delisted_by_fiscal_end": 8
+      }
+    },
+    "000852_SH": {
+      "initial_members": 1000,
+      "missing_original_profit": 36,
+      "classifications": {
+        "delisted_after_fiscal_end": 1,
+        "delisted_by_fiscal_end": 34,
+        "listed_missing_profit": 1
+      }
+    }
+  },
+  "etf_years": [
+    {
+      "year": 2018,
+      "nav_return": -0.3547367140946127,
+      "index_total_return": -0.36281002913979243,
+      "relative_wealth_change": 0.012670185367608333,
+      "log_relative_growth": 0.01259059018765879,
+      "disclosed_nav_return": -0.3549,
+      "disclosed_return_matches": false
+    },
+    {
+      "year": 2019,
+      "nav_return": 0.34545797210704876,
+      "index_total_return": 0.26982144173659783,
+      "relative_wealth_change": 0.05956469774759121,
+      "log_relative_growth": 0.0578581612767656,
+      "disclosed_nav_return": 0.346,
+      "disclosed_return_matches": false
+    },
+    {
+      "year": 2020,
+      "nav_return": 0.3136293598543214,
+      "index_total_return": 0.20453671621755887,
+      "relative_wealth_change": 0.09056813475917203,
+      "log_relative_growth": 0.0866987850004187,
+      "disclosed_nav_return": 0.3136,
+      "disclosed_return_matches": true
+    },
+    {
+      "year": 2021,
+      "nav_return": 0.24173597782043088,
+      "index_total_return": 0.21610606642755648,
+      "relative_wealth_change": 0.02107539144851489,
+      "log_relative_growth": 0.02085637724831671,
+      "disclosed_nav_return": null,
+      "disclosed_return_matches": null
+    },
+    {
+      "year": 2022,
+      "nav_return": -0.21198783168741953,
+      "index_total_return": -0.20771207863646857,
+      "relative_wealth_change": -0.005396716188216466,
+      "log_relative_growth": -0.005411331066306285,
+      "disclosed_nav_return": null,
+      "disclosed_return_matches": null
+    },
+    {
+      "year": 2023,
+      "nav_return": -0.05541170892725844,
+      "index_total_return": -0.05284175986527928,
+      "relative_wealth_change": -0.0027133259819538402,
+      "log_relative_growth": -0.002717013723102374,
+      "disclosed_nav_return": null,
+      "disclosed_return_matches": null
+    },
+    {
+      "year": 2024,
+      "nav_return": 0.020959857320352215,
+      "index_total_return": 0.027919611093508934,
+      "relative_wealth_change": -0.00677071796086548,
+      "log_relative_growth": -0.006793743262454133,
+      "disclosed_nav_return": null,
+      "disclosed_return_matches": null
+    },
+    {
+      "year": 2025,
+      "nav_return": 0.2923407272645091,
+      "index_total_return": 0.2901589315656754,
+      "relative_wealth_change": 0.0016911061462683286,
+      "log_relative_growth": 0.0016896778363251208,
+      "disclosed_nav_return": 0.2923,
+      "disclosed_return_matches": true
+    }
+  ],
+  "sources": [
+    {
+      "id": "master-explicit/master_L",
+      "sha256": "a500c2f99ead7ec45668a47a349c17240ec391457b3b81122769b4fbe4f07682",
+      "observed_at": "2026-10-31T16:03:11.859585+00:00"
+    },
+    {
+      "id": "master-retry/master_D",
+      "sha256": "e7fc504714d83b6a77c96b146b7335f0e8c5811f4033806c3ee8961110f9b7d6",
+      "observed_at": "2026-10-31T16:04:24.887604+00:00"
+    },
+    {
+      "id": "000300_SH_weights_2015",
+      "sha256": "e0b75c9556614c60ba30027ebf7def120dc817fa90e964877c19b7d9df7a4708"
+    },
+    {
+      "id": "raw/000413_SZ_fy2025",
+      "sha256": "1c7daed8e365669a933fe6e1b6de79c84e6d62c5a3ff20452adc1880e238107e",
+      "observed_at": "2026-10-31T15:59:22.017584+00:00"
+    },
+    {
+      "id": "raw/600005_SH_fy2025",
+      "sha256": "0c297cc93cd7a0d8f2de013c7d696ce103026fbd86d705b4c2eb549ba6917ab1",
+      "observed_at": "2026-10-31T16:01:04.760053+00:00"
+    },
+    {
+      "id": "raw/600317_SH_fy2025",
+      "sha256": "471856e9c2fb5d0eb727cd57ddae3a5851e7f8d3676836414463be8e7b8a876d",
+      "observed_at": "2026-10-31T16:01:16.984201+00:00"
+    },
+    {
+      "id": "raw/600485_SH_fy2025",
+      "sha256": "9f353b268e436d7fc2deacfd14cfcba9daf732b138a22175b9eed4c402ae7446",
+      "observed_at": "2026-10-31T16:01:19.949353+00:00"
+    },
+    {
+      "id": "retry-02/600705_SH_fy2025",
+      "sha256": "495c9f4a2c7e51f3d0b08bf9b94486c59f2440878b361d70e753585539cd1216",
+      "observed_at": "2026-10-31T16:04:38.622982+00:00"
+    },
+    {
+      "id": "raw/600837_SH_fy2025",
+      "sha256": "aec36eca62351b8c20e0c0a691cd124e32aae1befacca737a2ede675d9d5bd34",
+      "observed_at": "2026-10-31T16:01:40.268240+00:00"
+    },
+    {
+      "id": "raw/601258_SH_fy2025",
+      "sha256": "f2087dba32875b3d46c2c5322d0fb15ae2e08aa0392f6850ac8e66a86aaeb487",
+      "observed_at": "2026-10-31T16:01:54.521374+00:00"
+    },
+    {
+      "id": "raw/601989_SH_fy2025",
+      "sha256": "0c723a381f62544c22b9e045b8a25b7c8a7ddd63d50b7269cb6354a046a92943",
+      "observed_at": "2026-10-31T16:01:57.147473+00:00"
+    },
+    {
+      "id": "000852_SH_weights_2015",
+      "sha256": "beb9040b26c3e62260e65c35eb98d2b3b281d3e4fdca765155208f3464491b66"
+    },
+    {
+      "id": "raw/000584_SZ_fy2025",
+      "sha256": "75a8d872b43932c1116db18a4da340b06fd24c734efd6c121fe33db24db80a29",
+      "observed_at": "2026-10-31T15:59:24.638911+00:00"
+    },
+    {
+      "id": "raw/000627_SZ_fy2025",
+      "sha256": "24993160f8aa1ffe8511592cb55d5fe8584ee5b509e5b021573e60bc06053c2b",
+      "observed_at": "2026-10-31T15:59:27.553370+00:00"
+    },
+    {
+      "id": "raw/000666_SZ_fy2025",
+      "sha256": "392d053e02c1d98460415a6c14fe2164efeda346458e9dc5c18add8cc2a67eb1",
+      "observed_at": "2026-10-31T15:59:30.143407+00:00"
+    },
+    {
+      "id": "raw/000687_SZ_fy2025",
+      "sha256": "d8c1c842cd2c36123cce0c8328e17c162fba18a62179523690092c743517baaa",
+      "observed_at": "2026-10-31T15:59:33.503950+00:00"
+    },
+    {
+      "id": "raw/000760_SZ_fy2025",
+      "sha256": "45226e916a65e21be76fe979842947612c0697112c2308bdf69ba5d719e847f5",
+      "observed_at": "2026-10-31T15:59:37.096665+00:00"
+    },
+    {
+      "id": "raw/000916_SZ_fy2025",
+      "sha256": "eb0414dc182807113651592d48ca597d23ac8df213a639877da05f842cb2744d",
+      "observed_at": "2026-10-31T15:59:40.699887+00:00"
+    },
+    {
+      "id": "raw/002002_SZ_fy2025",
+      "sha256": "fe179a7b1de0da5a56758f903fa648a56130126cfbd225523f219f832d3b4c39",
+      "observed_at": "2026-10-31T15:59:44.999985+00:00"
+    },
+    {
+      "id": "raw/002071_SZ_fy2025",
+      "sha256": "0fe7073edc17326600b955ced1aadf98356415a3ed8a15dd65c2493d8ad547f7",
+      "observed_at": "2026-10-31T15:59:48.897751+00:00"
+    },
+    {
+      "id": "raw/002288_SZ_fy2025",
+      "sha256": "086f73bb36673eb5add3f2aacb58c89addfc97632a4ec256cd77269545ec07f9",
+      "observed_at": "2026-10-31T15:59:53.477883+00:00"
+    },
+    {
+      "id": "raw/002411_SZ_fy2025",
+      "sha256": "b63edfb6c5220594e6ad71759fac72affcc005d44e6c988a26d2c0f61e8bdc19",
+      "observed_at": "2026-10-31T15:59:56.063529+00:00"
+    },
+    {
+      "id": "raw/002447_SZ_fy2025",
+      "sha256": "9b4f9c77c6da2a8f19ae89214cbff4818c4fc6d9599e8bfdd7d0ca02acc28509",
+      "observed_at": "2026-10-31T15:59:58.897364+00:00"
+    },
+    {
+      "id": "raw/002499_SZ_fy2025",
+      "sha256": "da5d64c55396c81f7729475a1a447727a7c3082b6ba4f93e87842fa495f4b307",
+      "observed_at": "2026-10-31T16:00:02.171303+00:00"
+    },
+    {
+      "id": "raw/002509_SZ_fy2025",
+      "sha256": "7ccbcf05964dbe76573e8468adbe5fdde4c62538da5926b11a42a424d3953893",
+      "observed_at": "2026-10-31T16:00:05.763734+00:00"
+    },
+    {
+      "id": "raw/002610_SZ_fy2025",
+      "sha256": "a281d2e21301d0fc46f08cedefb191c4d09a396fd5484ea7b3db000034fc2be6",
+      "observed_at": "2026-10-31T16:00:09.520697+00:00"
+    },
+    {
+      "id": "raw/002699_SZ_fy2025",
+      "sha256": "b75fb940899bd82691d8c12e80967f504017d1a4857b3a3800bd29d6fe789ea1",
+      "observed_at": "2026-10-31T16:00:13.271801+00:00"
+    },
+    {
+      "id": "raw/002711_SZ_fy2025",
+      "sha256": "bd2254146816bd956a8f1397a1a475a45d122a8205c7c9ce899013358b8bf041",
+      "observed_at": "2026-10-31T16:00:17.146194+00:00"
+    },
+    {
+      "id": "raw/002731_SZ_fy2025",
+      "sha256": "f7387094c72b54724dc0b84105ccfd291fe2fce031ed8ba0c9a3824251635db3",
+      "observed_at": "2026-10-31T16:00:21.546131+00:00"
+    },
+    {
+      "id": "raw/002751_SZ_fy2025",
+      "sha256": "38b24fe673536906c8aca1a946463d779a02b388a06a610547e0b1d2010fed02",
+      "observed_at": "2026-10-31T16:00:24.863863+00:00"
+    },
+    {
+      "id": "raw/300028_SZ_fy2025",
+      "sha256": "a41ba521aea09ca61044d79d194dd91e4e02539a527fd161a8fc35659a0e008b",
+      "observed_at": "2026-10-31T16:00:28.903401+00:00"
+    },
+    {
+      "id": "raw/300038_SZ_fy2025",
+      "sha256": "1944855c463961bc90fb61676af9396df815d3b48097a1efecd6fbeaeee91c0b",
+      "observed_at": "2026-10-31T16:00:32.529937+00:00"
+    },
+    {
+      "id": "raw/300156_SZ_fy2025",
+      "sha256": "ed95c2a5bc4438445abb752472b473b543895ca0ee61c72cd89b044ae7799d33",
+      "observed_at": "2026-10-31T16:00:37.212670+00:00"
+    },
+    {
+      "id": "raw/300178_SZ_fy2025",
+      "sha256": "4ef94bffd5282e06dc4c0dfd58e94290429c7c897257dbe5bb83b18e5542134b",
+      "observed_at": "2026-10-31T16:00:41.306506+00:00"
+    },
+    {
+      "id": "raw/300297_SZ_fy2025",
+      "sha256": "7e7112111da14db349e21bac9b68463a06ef951bd9eab0c1bbb6772deb79a7e2",
+      "observed_at": "2026-10-31T16:00:44.512307+00:00"
+    },
+    {
+      "id": "raw/300312_SZ_fy2025",
+      "sha256": "93904c323851d26ef912c6195f71e598e0d3ff31c06ac2944b6566be09c4e7b9",
+      "observed_at": "2026-10-31T16:00:47.827480+00:00"
+    },
+    {
+      "id": "raw/300336_SZ_fy2025",
+      "sha256": "94d97c28b3559d095c547a00b7ccb31aa1d7fe0cc70abac32fd5b78682d5147c",
+      "observed_at": "2026-10-31T16:00:51.802492+00:00"
+    },
+    {
+      "id": "raw/300356_SZ_fy2025",
+      "sha256": "6168bacd2924cc4de614291b87bd6ce1182850867b2f829636c2e553866ba653",
+      "observed_at": "2026-10-31T16:00:55.337163+00:00"
+    },
+    {
+      "id": "raw/300379_SZ_fy2025",
+      "sha256": "a1f68d1999ba32d22698b30efa16c932dc07d19cdd80ceb2167afd95e79ba6e2",
+      "observed_at": "2026-10-31T16:00:58.768438+00:00"
+    },
+    {
+      "id": "raw/300392_SZ_fy2025",
+      "sha256": "cdd40536d1739da223917dfce6c5fe484f2940d23de46bfc646533434d7bcd45",
+      "observed_at": "2026-10-31T16:01:01.534417+00:00"
+    },
+    {
+      "id": "raw/600139_SH_fy2025",
+      "sha256": "f64e9e3ba45db16311388c4c9b51430a7390c73017ba8033d54612e05e78ebee",
+      "observed_at": "2026-10-31T16:01:08.213269+00:00"
+    },
+    {
+      "id": "raw/600290_SH_fy2025",
+      "sha256": "e8522504090a6804b65da90d515aa978c39d743cd24dbc5751e4f8b919e709c2",
+      "observed_at": "2026-10-31T16:01:10.777742+00:00"
+    },
+    {
+      "id": "raw/600297_SH_fy2025",
+      "sha256": "52ec40d8f8bcf0dd4fb5b707e4e2b39f1a8941dce7b97e74567cc600ca1dce63",
+      "observed_at": "2026-10-31T16:01:14.352490+00:00"
+    },
+    {
+      "id": "raw/600634_SH_fy2025",
+      "sha256": "0d3eb17263622e1e83b2fb6d1d3a4711acd93e2b86b175fcb29d84f8c473b30b",
+      "observed_at": "2026-10-31T16:01:22.522083+00:00"
+    },
+    {
+      "id": "raw/600723_SH_fy2025",
+      "sha256": "612c317c0b9b427ff7c8129a0028cc0554b5e5db99cf6f082fcba4050f1d2fd7",
+      "observed_at": "2026-10-31T16:01:32.073369+00:00"
+    },
+    {
+      "id": "raw/600836_SH_fy2025",
+      "sha256": "822922be6615201735879089010e418220245cbf5ad8d1203e2f197175aa41c5",
+      "observed_at": "2026-10-31T16:01:35.617840+00:00"
+    },
+    {
+      "id": "retry-01/600856_SH_fy2025",
+      "sha256": "ea5fabdb45b8eaf03db89acda987e0a2b636cf4991c891d8645e96fbda32c0d0",
+      "observed_at": "2026-10-31T16:02:13.796399+00:00"
+    },
+    {
+      "id": "raw/601028_SH_fy2025",
+      "sha256": "73094f37123da61bc6bba52da0d994fa89202f7b8c0b480f64eca138e45c1f8f",
+      "observed_at": "2026-10-31T16:01:50.525491+00:00"
+    },
+    {
+      "id": "512100_monthly",
+      "sha256": "6d0f130747c8fda82868bb99c6f5c31c70e2321bfdce411f5455abaa2b1bc39f"
+    }
+  ],
+  "code_sha256": {
+    "scripts/audit_asset_evidence_closure.py": "225ac4fa42c4b25baafc1669c6ebd238dfb859034b92c17228c3f8ed3cc7c285",
+    "src/market_research/studies/asset_returns/closure.py": "645cb52c1a248d0ee866737e334c5a07462e6991ce15a6768a957928e50f4ea5"
+  },
+  "income_sha256": "5b406189495f08ea5db6f35eaf6dcdeefc39738db7a3706c760167e1f58e9d10",
+  "scope": "Descriptive reconciliation; original financial vintages, corporate-action continuity and complete ETF attribution remain unresolved."
+}
