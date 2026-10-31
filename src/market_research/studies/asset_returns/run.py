@@ -50,6 +50,8 @@ def run_study(input_path: Path, metadata_path: Path, output: Path) -> dict:
         'schema_version': 1, 'evidence_stage': 'descriptive_history',
         'provenance': {'input_sha256': hashlib.sha256(input_bytes).hexdigest(),
                        'metadata_sha256': hashlib.sha256(metadata_bytes).hexdigest(),
+                       'analysis_sha256': hashlib.sha256(Path(__file__).with_name('analysis.py').read_bytes()).hexdigest(),
+                       'runner_sha256': hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
                        'generated_at': datetime.now(timezone.utc).isoformat(),
                        'source_revision': metadata.get('source_revision'),
                        'series': series},
@@ -65,6 +67,13 @@ def run_study(input_path: Path, metadata_path: Path, output: Path) -> dict:
         if series['benchmark']['return_basis'] != 'total_return':
             raise ValueError('relative total-return comparison requires a total-return benchmark')
         result['relative_premium'] = relative_premium(data, 'total', 'benchmark')
+        result['relative_cost_sensitivities'] = []
+        for drag in [0, .005, .01, .02]:
+            adjusted = data.copy()
+            adjusted['cost_adjusted'] = data.total * (1 - drag) ** (np.arange(len(data)) / 12)
+            result['relative_cost_sensitivities'].append({
+                'annual_wealth_drag': drag, 'calibrated_execution_cost': False,
+                **relative_premium(adjusted, 'cost_adjusted', 'benchmark')})
     assets = [c for c in ['total', 'gold', 'bond'] if c in data]
     if len(assets) > 1:
         if 'bond' in assets and series['bond']['return_basis'] != 'total_return':
