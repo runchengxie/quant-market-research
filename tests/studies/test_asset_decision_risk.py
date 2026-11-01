@@ -84,3 +84,38 @@ def test_stress_small_samples_and_recovery_censoring():
     assert recovery[0]["equity"]["censored"] is True
     assert recovery[0]["equity"]["recovered_at"] is None
     assert recovery[0]["equity"]["underwater_observed_months"] == 13
+
+
+def test_investability_excludes_partial_launch_month_and_charges_each_side_once():
+    from market_research.studies.asset_returns.investability import launch_split, round_trip_cagr
+
+    frame = pd.DataFrame(
+        {
+            "date": pd.date_range("2014-08-31", periods=6, freq="ME"),
+            "total": [1.0, 1.1, 1.2, 1.3, 1.4, 1.5],
+        }
+    )
+    result = launch_split(frame, "2014-10-17")
+    assert result["post_launch"]["start"] == "2014-10-31"
+    assert result["post_launch"]["first_return_end"] == "2014-11-30"
+    assert result["pre_launch"]["months"] == 1
+    assert result["excluded_launch_month_returns"] == 1
+    assert round_trip_cagr(1.1, 12, 50) == pytest.approx(1.1 * (1 - 0.005) / (1 + 0.005) - 1)
+
+
+def test_conclusion_register_refuses_unsupported_upgrade():
+    from market_research.studies.asset_returns.investability import validate_register
+
+    claim = {
+        "id": "small_cap_premium",
+        "stage": "historical_descriptive",
+        "scope": "2005-2025",
+        "evidence": ["asset_decision_reviewed.json"],
+        "review_trigger": "paired range spans zero",
+        "open_question": "future persistence",
+    }
+    assert validate_register([claim]) is None
+    with pytest.raises(ValueError, match="stage"):
+        validate_register([{**claim, "stage": "prospectively_validated"}])
+    with pytest.raises(ValueError, match="unique"):
+        validate_register([claim, claim])
