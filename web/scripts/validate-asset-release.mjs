@@ -2,8 +2,16 @@ import { createHash } from 'node:crypto';
 import { readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
+export const requiredAssetPaths = [
+ 'web/public/data/asset_returns_reviewed.json',
+ 'web/public/data/asset_robustness_reviewed.json',
+ 'web/public/data/asset_closure_reviewed.json',
+ 'web/public/data/asset_decision_reviewed.json',
+ 'studies/asset_returns/prospective-allocation-protocol.json',
+ 'studies/asset_returns/conclusion-register.json',
+];
 export function validateAssetRelease(read, manifest) {
-  if (manifest.schema_version !== 1 || Object.keys(manifest.files).length !== 4) throw new Error('Invalid asset release manifest');
+  if (manifest.schema_version !== 1 || JSON.stringify(Object.keys(manifest.files).sort()) !== JSON.stringify([...requiredAssetPaths].sort())) throw new Error('Invalid asset release manifest');
   for (const [path, expected] of Object.entries(manifest.files)) {
     const blob = read(path);
     if (createHash('sha256').update(blob).digest('hex') !== expected) throw new Error(`Unreviewed asset release: ${path}`);

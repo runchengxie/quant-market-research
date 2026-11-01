@@ -1,5 +1,6 @@
 ---
 import LocaleText from './LocaleText.astro';
+import AssetDecisionEvidence from './AssetDecisionEvidence.astro';
 import { assetNames, assetReturnCopy } from '../content/asset-return-copy';
 import { robustnessCopy as c, comparisonNames, portfolioNames, ruleNames } from '../content/asset-robustness-copy';
 import data from '../../public/data/asset_robustness_reviewed.json';
@@ -29,6 +30,7 @@ const source='https://github.com/runchengxie/quant-market-research/blob/main/stu
 <LocaleText text={c.constituentNote}/>
 <LocaleText text={c.closure} as="h3"/><LocaleText text={c.closureNote}/><LocaleText text={c.forward}/>
 <p><a href={source+'closure-20261031.md'} lang="en"><LocaleText text={c.closureLink} as="span"/> (EN)</a> · <a href={source+'closure-20261031.zh-CN.md'} lang="zh-CN"><LocaleText text={c.chinese} as="span"/></a> · <a href={withBase('/data/asset_closure_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.closureDownload} as="span"/></a></p>
+<AssetDecisionEvidence/>
 <details><LocaleText text={c.methods} as="summary"/><p><a href={source+'followup-20261031.md'}><LocaleText text={c.english} as="span"/></a> · <a href={source+'followup-20261031.zh-CN.md'}><LocaleText text={c.chinese} as="span"/></a> · <a href={withBase('/data/asset_robustness_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.download} as="span"/></a></p></details>
 </section>
 <script>

@@ -1,0 +1,2853 @@
+{
+  "schema_version": 1,
+  "sample": {
+    "multi_start": "2007-01-31",
+    "end": "2025-12-31",
+    "multi_return_months": 227,
+    "paired_return_months": 252
+  },
+  "uncertainty": [
+    {
+      "block_months": 6,
+      "draws": 1000,
+      "small_large_relative_cagr": {
+        "lower": -0.06373347898434624,
+        "median": 0.01142239383540701,
+        "upper": 0.09522105470285502,
+        "positive_fraction": 0.612,
+        "valid_draws": 1000
+      },
+      "annual_minus_hold_cagr": {
+        "lower": -0.04580656738628382,
+        "median": 0.004486021347268276,
+        "upper": 0.02040725175105948,
+        "positive_fraction": 0.624,
+        "valid_draws": 1000
+      },
+      "annual_minus_hold_drawdown": {
+        "lower": -0.22967406174340332,
+        "median": 0.054307515804192186,
+        "upper": 0.23348945983783548,
+        "positive_fraction": 0.675,
+        "valid_draws": 1000
+      },
+      "correlations": {
+        "equity_bond": {
+          "lower": -0.3755533957390083,
+          "median": -0.2355426573048885,
+          "upper": -0.0880261311019984,
+          "positive_fraction": 0.001,
+          "valid_draws": 1000
+        },
+        "equity_gold": {
+          "lower": -0.037676464733661624,
+          "median": 0.1199559431714654,
+          "upper": 0.2810178182974123,
+          "positive_fraction": 0.925,
+          "valid_draws": 1000
+        },
+        "bond_gold": {
+          "lower": -0.16411118848884323,
+          "median": -0.009570703552489158,
+          "upper": 0.15969722221476124,
+          "positive_fraction": 0.45,
+          "valid_draws": 1000
+        }
+      }
+    },
+    {
+      "block_months": 12,
+      "draws": 1000,
+      "small_large_relative_cagr": {
+        "lower": -0.06452600120104612,
+        "median": 0.011848446478985988,
+        "upper": 0.0902772500788242,
+        "positive_fraction": 0.618,
+        "valid_draws": 1000
+      },
+      "annual_minus_hold_cagr": {
+        "lower": -0.04494745974367893,
+        "median": 0.004630093602480234,
+        "upper": 0.025685561702915943,
+        "positive_fraction": 0.651,
+        "valid_draws": 1000
+      },
+      "annual_minus_hold_drawdown": {
+        "lower": -0.23247921676697206,
+        "median": 0.06213024178385018,
+        "upper": 0.25025096728656593,
+        "positive_fraction": 0.691,
+        "valid_draws": 1000
+      },
+      "correlations": {
+        "equity_bond": {
+          "lower": -0.3661289957293261,
+          "median": -0.22968814882177,
+          "upper": -0.100802485678684,
+          "positive_fraction": 0.001,
+          "valid_draws": 1000
+        },
+        "equity_gold": {
+          "lower": -0.025632727352203413,
+          "median": 0.12268890257182608,
+          "upper": 0.2689601090317492,
+          "positive_fraction": 0.95,
+          "valid_draws": 1000
+        },
+        "bond_gold": {
+          "lower": -0.16388663015290358,
+          "median": -0.009759142604377425,
+          "upper": 0.15762018459303753,
+          "positive_fraction": 0.453,
+          "valid_draws": 1000
+        }
+      }
+    },
+    {
+      "block_months": 24,
+      "draws": 1000,
+      "small_large_relative_cagr": {
+        "lower": -0.06660858990749567,
+        "median": 0.01598261582283111,
+        "upper": 0.09537848555579699,
+        "positive_fraction": 0.637,
+        "valid_draws": 1000
+      },
+      "annual_minus_hold_cagr": {
+        "lower": -0.02463759298294309,
+        "median": 0.006515172893242216,
+        "upper": 0.02972636199198466,
+        "positive_fraction": 0.763,
+        "valid_draws": 1000
+      },
+      "annual_minus_hold_drawdown": {
+        "lower": -0.15520713205858047,
+        "median": 0.06793655285834355,
+        "upper": 0.23089867870946676,
+        "positive_fraction": 0.729,
+        "valid_draws": 1000
+      },
+      "correlations": {
+        "equity_bond": {
+          "lower": -0.36082727870511194,
+          "median": -0.2368354413552915,
+          "upper": -0.10892529848673625,
+          "positive_fraction": 0.0,
+          "valid_draws": 1000
+        },
+        "equity_gold": {
+          "lower": -0.025142573684261253,
+          "median": 0.12078961696111554,
+          "upper": 0.24611677918149408,
+          "positive_fraction": 0.946,
+          "valid_draws": 1000
+        },
+        "bond_gold": {
+          "lower": -0.1440079717112843,
+          "median": -0.013089461706717126,
+          "upper": 0.14198840211147157,
+          "positive_fraction": 0.419,
+          "valid_draws": 1000
+        }
+      }
+    }
+  ],
+  "eras": [
+    {
+      "id": "2005-2009",
+      "small_large_months": 60,
+      "small_large_relative_cagr": 0.03621403365995506,
+      "allocation_months": 35,
+      "allocation_first_return_end": "2007-02-28",
+      "annual_minus_hold_cagr": 0.07338165187985002
+    },
+    {
+      "id": "2010-2014",
+      "small_large_months": 60,
+      "small_large_relative_cagr": 0.05266709314261695,
+      "allocation_months": 60,
+      "allocation_first_return_end": "2010-01-31",
+      "annual_minus_hold_cagr": 0.006139747620712788
+    },
+    {
+      "id": "2015-2019",
+      "small_large_months": 60,
+      "small_large_relative_cagr": -0.05786433279640231,
+      "allocation_months": 60,
+      "allocation_first_return_end": "2015-01-31",
+      "annual_minus_hold_cagr": 0.007658558293881068
+    },
+    {
+      "id": "2020-2025",
+      "small_large_months": 72,
+      "small_large_relative_cagr": 0.018515768660170847,
+      "allocation_months": 72,
+      "allocation_first_return_end": "2020-01-31",
+      "annual_minus_hold_cagr": 0.003173742631158216
+    }
+  ],
+  "spending": [
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 140.91405972495542,
+        "minimum_terminal_real_capital": 68.8277587209722,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 114.87720034740909,
+        "minimum_terminal_real_capital": 28.826854754007353,
+        "drawdown_sale_window_fraction": 0.8240740740740741,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.7953926201192,
+        "minimum_terminal_real_capital": 45.63880564570401,
+        "drawdown_sale_window_fraction": 0.9074074074074074,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 140.91405972495542,
+        "minimum_terminal_real_capital": 68.8277587209722,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 114.87720034740909,
+        "minimum_terminal_real_capital": 28.826854754007353,
+        "drawdown_sale_window_fraction": 0.8240740740740741,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.7953926201192,
+        "minimum_terminal_real_capital": 45.63880564570401,
+        "drawdown_sale_window_fraction": 0.9074074074074074,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 140.91405972495542,
+        "minimum_terminal_real_capital": 68.8277587209722,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 114.87720034740909,
+        "minimum_terminal_real_capital": 28.826854754007353,
+        "drawdown_sale_window_fraction": 0.8240740740740741,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.7953926201192,
+        "minimum_terminal_real_capital": 45.63880564570401,
+        "drawdown_sale_window_fraction": 0.9074074074074074,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 116.86980260677251,
+        "minimum_terminal_real_capital": 47.8108111909333,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 18.333333333333325,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.02926988430686,
+        "minimum_terminal_real_capital": 0.0033888403577621165,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 38.249999999999986,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 92.4614821060068,
+        "minimum_terminal_real_capital": 17.150737806113135,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 37.99999999999995,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 116.29875847205176,
+        "minimum_terminal_real_capital": 48.42918814047403,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 16.772590336984976,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.61577166287515,
+        "minimum_terminal_real_capital": 1.0600730101270934,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.669303152628544,
+        "maximum_real_unmet": 3.4829741678765812e-15
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.7252187611495,
+        "minimum_terminal_real_capital": 17.9549522288114,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.67035146956515,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.75510760555616,
+        "minimum_terminal_real_capital": 49.03821536685028,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 15.012627880925566,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.06863628356022,
+        "minimum_terminal_real_capital": 4.828813862971226,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 34.71597161928158,
+        "maximum_real_unmet": 3.486319445214704e-15
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.48987035446663,
+        "minimum_terminal_real_capital": 19.990300564432523,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 35.00388171110899,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.70059138100854,
+        "minimum_terminal_real_capital": 26.420804364912275,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.66666666666665,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.05555555555555555,
+        "earliest_shortfall_month": 57,
+        "median_terminal_real_capital": 65.64918001886203,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 56.33333333333347,
+        "maximum_real_unmet": 21.271534848893218
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.037037037037037035,
+        "earliest_shortfall_month": 87,
+        "median_terminal_real_capital": 68.465917206274,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 56.00000000000015,
+        "maximum_real_unmet": 11.094283602533267
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 92.10269773202495,
+        "minimum_terminal_real_capital": 28.029233210308877,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 33.54518067396995,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.046296296296296294,
+        "earliest_shortfall_month": 60,
+        "median_terminal_real_capital": 64.99233217950844,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 53.07945469093002,
+        "maximum_real_unmet": 20.17194451732817
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.037037037037037035,
+        "earliest_shortfall_month": 92,
+        "median_terminal_real_capital": 67.40257166890473,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 53.311283895609385,
+        "maximum_real_unmet": 9.420328868753483
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 92.07389507707039,
+        "minimum_terminal_real_capital": 29.2486720127284,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 30.02525576185113,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.037037037037037035,
+        "earliest_shortfall_month": 73,
+        "median_terminal_real_capital": 65.24059255272553,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 49.21558995262147,
+        "maximum_real_unmet": 15.987331360205783
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.027777777777777776,
+        "earliest_shortfall_month": 104,
+        "median_terminal_real_capital": 67.73463637736413,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 49.98775574076238,
+        "maximum_real_unmet": 5.43926404933619
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.018518518518518517,
+        "earliest_shortfall_month": 116,
+        "median_terminal_real_capital": 67.58270673992419,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 55.0,
+        "maximum_real_unmet": 2.0246222203942223
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.1111111111111111,
+        "earliest_shortfall_month": 38,
+        "median_terminal_real_capital": 40.153786080559904,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 74.0,
+        "maximum_real_unmet": 41.09189161849178
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.1388888888888889,
+        "earliest_shortfall_month": 60,
+        "median_terminal_real_capital": 44.21318006184155,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 73.5,
+        "maximum_real_unmet": 30.122658537846196
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 68.45506640432302,
+        "minimum_terminal_real_capital": 0.3453797934163022,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 50.317771010954985,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.12037037037037036,
+        "earliest_shortfall_month": 43,
+        "median_terminal_real_capital": 37.85740965441897,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 69.48130537573418,
+        "maximum_real_unmet": 38.713033421574096
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.12962962962962962,
+        "earliest_shortfall_month": 63,
+        "median_terminal_real_capital": 44.62688148802616,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 69.57571274375657,
+        "maximum_real_unmet": 28.892651188411584
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.44861859473306,
+        "minimum_terminal_real_capital": 6.451424800279468,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 45.037883642776755,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.1111111111111111,
+        "earliest_shortfall_month": 57,
+        "median_terminal_real_capital": 37.574562112737844,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 63.69171554760017,
+        "maximum_real_unmet": 31.874058666308382
+      }
+    },
+    {
+      "portfolio": "equity_only",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.1111111111111111,
+        "earliest_shortfall_month": 70,
+        "median_terminal_real_capital": 45.15133012048415,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 64.68612272991876,
+        "maximum_real_unmet": 25.412200997235665
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 142.1029377566593,
+        "minimum_terminal_real_capital": 94.71901941290805,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 116.62942827671489,
+        "minimum_terminal_real_capital": 71.14157419387442,
+        "drawdown_sale_window_fraction": 0.8333333333333334,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 117.88193268404319,
+        "minimum_terminal_real_capital": 71.24065272858839,
+        "drawdown_sale_window_fraction": 0.8888888888888888,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 142.1029377566593,
+        "minimum_terminal_real_capital": 94.71901941290805,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 116.62942827671489,
+        "minimum_terminal_real_capital": 71.14157419387442,
+        "drawdown_sale_window_fraction": 0.8333333333333334,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 117.88193268404319,
+        "minimum_terminal_real_capital": 71.24065272858839,
+        "drawdown_sale_window_fraction": 0.8888888888888888,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 142.1029377566593,
+        "minimum_terminal_real_capital": 94.71901941290805,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 116.62942827671489,
+        "minimum_terminal_real_capital": 71.14157419387442,
+        "drawdown_sale_window_fraction": 0.8333333333333334,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 117.88193268404319,
+        "minimum_terminal_real_capital": 71.24065272858839,
+        "drawdown_sale_window_fraction": 0.8888888888888888,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 118.41199475884017,
+        "minimum_terminal_real_capital": 72.27739730866048,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 17.666666666666654,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.16756255442816,
+        "minimum_terminal_real_capital": 48.6999520896269,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 37.58333333333333,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.98389742144599,
+        "minimum_terminal_real_capital": 48.799030624340844,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 37.33333333333328,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 118.12331281070493,
+        "minimum_terminal_real_capital": 72.64132469667213,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 16.322840209404887,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 92.70461002987162,
+        "minimum_terminal_real_capital": 49.0638794776385,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.07053573685178,
+        "maximum_real_unmet": 3.4829741678765812e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.94066758467696,
+        "minimum_terminal_real_capital": 49.16295801235244,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.05190567251163,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 117.619866103004,
+        "minimum_terminal_real_capital": 72.95752350046344,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 14.619629615259672,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 92.24878662762349,
+        "minimum_terminal_real_capital": 49.47870001006262,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 34.11914979922888,
+        "maximum_real_unmet": 3.486319445214704e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.7753507939305,
+        "minimum_terminal_real_capital": 49.4791568161439,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 34.50001694671084,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 94.32268380847216,
+        "minimum_terminal_real_capital": 49.83577520441307,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 35.33333333333331,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 68.67356756399158,
+        "minimum_terminal_real_capital": 25.14214444038576,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 55.1666666666668,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 69.66366238399017,
+        "minimum_terminal_real_capital": 26.357408520093504,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 54.66666666666679,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.69368174246627,
+        "minimum_terminal_real_capital": 50.56362998043629,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 32.645680418809775,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 68.11009454645239,
+        "minimum_terminal_real_capital": 25.73749959037571,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 52.14107147370362,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 69.79760233902351,
+        "minimum_terminal_real_capital": 27.0852632961167,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 52.10381134502343,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 93.47648772994486,
+        "minimum_terminal_real_capital": 51.19602758801894,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 29.239259230519345,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 67.81951849276174,
+        "minimum_terminal_real_capital": 27.64547296728576,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 48.23829959845766,
+        "maximum_real_unmet": 3.50850574261253e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 68.75735142427942,
+        "minimum_terminal_real_capital": 27.717660903699297,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 49.00003389342177,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 71.20315218281922,
+        "minimum_terminal_real_capital": 27.394153100165646,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 53.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.018518518518518517,
+        "earliest_shortfall_month": 120,
+        "median_terminal_real_capital": 44.14559061950209,
+        "minimum_terminal_real_capital": 0.0,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 72.75,
+        "maximum_real_unmet": 0.4977127672882734
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 45.04437326003455,
+        "minimum_terminal_real_capital": 1.7621146793922555,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 72.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 70.15539481544944,
+        "minimum_terminal_real_capital": 28.48593526420048,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 48.96852062821473,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 42.96750481407385,
+        "minimum_terminal_real_capital": 0.39531995769655975,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 68.21160721055527,
+        "maximum_real_unmet": 3.5037307053004544e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 44.99154277428459,
+        "minimum_terminal_real_capital": 2.6551474043771637,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 68.15571701753495,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 68.76815440301081,
+        "minimum_terminal_real_capital": 29.434531675574306,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 43.85888884577907,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 42.27058021250909,
+        "minimum_terminal_real_capital": 3.257280023061671,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 62.35744939768641,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_60_40",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 44.82167434830684,
+        "minimum_terminal_real_capital": 5.088140480676799,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 63.50005084013248,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 138.17841166953733,
+        "minimum_terminal_real_capital": 111.65673444719148,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 112.88942019192869,
+        "minimum_terminal_real_capital": 89.23845921927865,
+        "drawdown_sale_window_fraction": 0.7592592592592593,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.34983563840258,
+        "minimum_terminal_real_capital": 88.46714049397777,
+        "drawdown_sale_window_fraction": 0.8611111111111112,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 138.17841166953733,
+        "minimum_terminal_real_capital": 111.65673444719148,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 112.88942019192869,
+        "minimum_terminal_real_capital": 89.23845921927865,
+        "drawdown_sale_window_fraction": 0.7592592592592593,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.34983563840258,
+        "minimum_terminal_real_capital": 88.46714049397777,
+        "drawdown_sale_window_fraction": 0.8611111111111112,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 138.17841166953733,
+        "minimum_terminal_real_capital": 111.65673444719148,
+        "drawdown_sale_window_fraction": 0.0,
+        "median_drawdown_real_sales": 0.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 112.88942019192869,
+        "minimum_terminal_real_capital": 89.23845921927865,
+        "drawdown_sale_window_fraction": 0.7592592592592593,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 0,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 115.34983563840258,
+        "minimum_terminal_real_capital": 88.46714049397777,
+        "drawdown_sale_window_fraction": 0.8611111111111112,
+        "median_drawdown_real_sales": 20.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 114.94548371694643,
+        "minimum_terminal_real_capital": 89.4416771040361,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 16.666666666666647,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 88.14728785178394,
+        "minimum_terminal_real_capital": 67.02340187612333,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.500000000000014,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.42924637526902,
+        "minimum_terminal_real_capital": 66.25208315082244,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 36.49999999999997,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 114.83634666113787,
+        "minimum_terminal_real_capital": 89.46080526786842,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 15.344284746394148,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 87.96024065361362,
+        "minimum_terminal_real_capital": 67.04253003995558,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 35.10438174868642,
+        "maximum_real_unmet": 3.4829741678765812e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.33609102606638,
+        "minimum_terminal_real_capital": 66.27121131465465,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 35.20551421567711,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 114.6428994144592,
+        "minimum_terminal_real_capital": 89.32324591342098,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 13.676611964506602,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 87.94208425148577,
+        "minimum_terminal_real_capital": 66.94255414869039,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 33.152473235201526,
+        "maximum_real_unmet": 3.486319445214704e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 2,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 91.04742152029254,
+        "minimum_terminal_real_capital": 66.13365196020733,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 33.50000000000003,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 90.97352439024138,
+        "minimum_terminal_real_capital": 67.22661976088074,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 33.33333333333329,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 63.04388351704332,
+        "minimum_terminal_real_capital": 44.80834453296792,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 53.00000000000011,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.6579107969545,
+        "minimum_terminal_real_capital": 44.03702580766707,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 53.000000000000135,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 90.61150599995872,
+        "minimum_terminal_real_capital": 67.26487608854534,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 30.688569492788297,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 62.51106918678382,
+        "minimum_terminal_real_capital": 44.846600860632506,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 50.208763497372836,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.7481516862488,
+        "minimum_terminal_real_capital": 44.07528213533165,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 50.41102843135435,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 90.62627277609238,
+        "minimum_terminal_real_capital": 66.98975737965044,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 27.353223929013204,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 62.30383986756679,
+        "minimum_terminal_real_capital": 44.646649078101895,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 46.304946470402925,
+        "maximum_real_unmet": 3.50850574261253e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 4,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.57732216358971,
+        "minimum_terminal_real_capital": 43.80016342643676,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 47.00000000000011,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.05650093351687,
+        "minimum_terminal_real_capital": 45.01156241772528,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 50.0,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 37.97132796790821,
+        "minimum_terminal_real_capital": 22.593287189812447,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 69.5,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 0,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 42.583160509878354,
+        "minimum_terminal_real_capital": 21.821968464511567,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 69.5,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.36039463891055,
+        "minimum_terminal_real_capital": 45.06894690922212,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 46.03285423918251,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 37.72226980002357,
+        "minimum_terminal_real_capital": 22.650671681309298,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 65.31314524605912,
+        "maximum_real_unmet": 3.5037307053004544e-15
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 12,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 42.2236488842471,
+        "minimum_terminal_real_capital": 21.879352956008386,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 65.61654264703135,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": null,
+      "shock_real_per_initial_100": 0,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 66.5826411140842,
+        "minimum_terminal_real_capital": 44.65626884587992,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 41.029835893519845,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": 12,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 37.79273932292095,
+        "minimum_terminal_real_capital": 22.35074400751344,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 59.45741970560432,
+        "maximum_real_unmet": 0.0
+      }
+    },
+    {
+      "portfolio": "stock_bond_gold_equal",
+      "annual_real_demand_per_initial_100": 6,
+      "cash_buffer_months": 24,
+      "shock_month": 60,
+      "shock_real_per_initial_100": 20,
+      "summary": {
+        "completed_windows": 108,
+        "shortfall_fraction": 0.0,
+        "earliest_shortfall_month": null,
+        "median_terminal_real_capital": 42.02680095785643,
+        "minimum_terminal_real_capital": 21.466674892666227,
+        "drawdown_sale_window_fraction": 1.0,
+        "median_drawdown_real_sales": 60.5,
+        "maximum_real_unmet": 0.0
+      }
+    }
+  ],
+  "stress": [
+    {
+      "id": "all",
+      "months": 227,
+      "correlations": {
+        "equity_bond": -0.23988399115530276,
+        "equity_gold": 0.12545850815963164,
+        "bond_gold": -0.017468666889426682
+      },
+      "joint_negative_fraction": {
+        "equity_bond": 0.11894273127753303,
+        "equity_gold": 0.18502202643171806,
+        "bond_gold": 0.15418502202643172
+      },
+      "mean_monthly_returns": {
+        "total": 0.008641279013436516,
+        "bond": 0.0032806418026573255,
+        "gold": 0.008935413132299142
+      },
+      "minimum_monthly_returns": {
+        "total": -0.25896146668130426,
+        "bond": -0.029411344258947314,
+        "gold": -0.14915693904020755
+      },
+      "inflation_eligible_months": 216
+    },
+    {
+      "id": "equity_down_5pct",
+      "months": 42,
+      "correlations": {
+        "equity_bond": -0.15487760278572799,
+        "equity_gold": 0.1924070216119657,
+        "bond_gold": -0.21746860971407442
+      },
+      "joint_negative_fraction": {
+        "equity_bond": 0.21428571428571427,
+        "equity_gold": 0.47619047619047616,
+        "bond_gold": 0.14285714285714285
+      },
+      "mean_monthly_returns": {
+        "total": -0.10397328740844414,
+        "bond": 0.0071519193739028545,
+        "gold": -0.006852452431726936
+      },
+      "minimum_monthly_returns": {
+        "total": -0.25896146668130426,
+        "bond": -0.022140958985677583,
+        "gold": -0.14915693904020755
+      },
+      "inflation_eligible_months": 216
+    },
+    {
+      "id": "bond_down_1pct",
+      "months": 20,
+      "correlations": {
+        "equity_bond": 0.08550709079326851,
+        "equity_gold": -0.21239128824298406,
+        "bond_gold": 0.20562489114088944
+      },
+      "joint_negative_fraction": {
+        "equity_bond": 0.3,
+        "equity_gold": 0.1,
+        "bond_gold": 0.5
+      },
+      "mean_monthly_returns": {
+        "total": 0.05015023578205287,
+        "bond": -0.01713079861584759,
+        "gold": 0.004838080664532429
+      },
+      "minimum_monthly_returns": {
+        "total": -0.23020718861400735,
+        "bond": -0.029411344258947314,
+        "gold": -0.066882745471878
+      },
+      "inflation_eligible_months": 216
+    },
+    {
+      "id": "inflation_3pct",
+      "months": 45,
+      "correlations": {
+        "equity_bond": -0.39181865773374175,
+        "equity_gold": 0.2886284207061781,
+        "bond_gold": -0.2313407778504247
+      },
+      "joint_negative_fraction": {
+        "equity_bond": 0.15555555555555556,
+        "equity_gold": 0.24444444444444444,
+        "bond_gold": 0.15555555555555556
+      },
+      "mean_monthly_returns": {
+        "total": -0.01722165815869359,
+        "bond": 0.005517414061982564,
+        "gold": -0.00048786193684779
+      },
+      "minimum_monthly_returns": {
+        "total": -0.25896146668130426,
+        "bond": -0.02488464775118482,
+        "gold": -0.14915693904020755
+      },
+      "inflation_eligible_months": 216
+    }
+  ],
+  "events": [
+    {
+      "id": "2008",
+      "start": "2007-12-31",
+      "end": "2009-12-31",
+      "equity": {
+        "maximum_drawdown": -0.682427397136534,
+        "peak_date": "2007-12-31",
+        "trough_date": "2008-10-31",
+        "recovered_at": "2015-03-31",
+        "censored": false,
+        "underwater_observed_months": 87
+      },
+      "bond": {
+        "maximum_drawdown": -0.048056096913275836,
+        "peak_date": "2008-12-31",
+        "trough_date": "2009-10-31",
+        "recovered_at": "2010-05-31",
+        "censored": false,
+        "underwater_observed_months": 17
+      },
+      "gold": {
+        "maximum_drawdown": -0.2590919358482042,
+        "peak_date": "2008-02-29",
+        "trough_date": "2008-10-31",
+        "recovered_at": "2009-10-31",
+        "censored": false,
+        "underwater_observed_months": 20
+      }
+    },
+    {
+      "id": "2015",
+      "start": "2015-05-31",
+      "end": "2016-12-31",
+      "equity": {
+        "maximum_drawdown": -0.4201153677492617,
+        "peak_date": "2015-05-31",
+        "trough_date": "2016-02-29",
+        "recovered_at": null,
+        "censored": true,
+        "underwater_observed_months": 127
+      },
+      "bond": {
+        "maximum_drawdown": -0.015261321834781683,
+        "peak_date": "2016-10-31",
+        "trough_date": "2016-12-31",
+        "recovered_at": "2018-06-30",
+        "censored": false,
+        "underwater_observed_months": 20
+      },
+      "gold": {
+        "maximum_drawdown": -0.0872090576202702,
+        "peak_date": "2015-05-31",
+        "trough_date": "2015-07-31",
+        "recovered_at": "2016-02-29",
+        "censored": false,
+        "underwater_observed_months": 9
+      }
+    },
+    {
+      "id": "2020",
+      "start": "2019-12-31",
+      "end": "2020-12-31",
+      "equity": {
+        "maximum_drawdown": -0.06613487029491671,
+        "peak_date": "2019-12-31",
+        "trough_date": "2020-03-31",
+        "recovered_at": "2020-06-30",
+        "censored": false,
+        "underwater_observed_months": 6
+      },
+      "bond": {
+        "maximum_drawdown": -0.03490594015332815,
+        "peak_date": "2020-04-30",
+        "trough_date": "2020-09-30",
+        "recovered_at": "2021-07-31",
+        "censored": false,
+        "underwater_observed_months": 15
+      },
+      "gold": {
+        "maximum_drawdown": -0.136116744760706,
+        "peak_date": "2020-07-31",
+        "trough_date": "2020-11-30",
+        "recovered_at": "2023-03-31",
+        "censored": false,
+        "underwater_observed_months": 32
+      }
+    },
+    {
+      "id": "2022",
+      "start": "2021-12-31",
+      "end": "2022-12-31",
+      "equity": {
+        "maximum_drawdown": -0.2336401561408754,
+        "peak_date": "2021-12-31",
+        "trough_date": "2022-10-31",
+        "recovered_at": "2025-08-31",
+        "censored": false,
+        "underwater_observed_months": 44
+      },
+      "bond": {
+        "maximum_drawdown": -0.011240627280971305,
+        "peak_date": "2022-10-31",
+        "trough_date": "2022-11-30",
+        "recovered_at": "2023-03-31",
+        "censored": false,
+        "underwater_observed_months": 5
+      },
+      "gold": {
+        "maximum_drawdown": -0.052418558736426535,
+        "peak_date": "2022-04-30",
+        "trough_date": "2022-07-31",
+        "recovered_at": "2022-11-30",
+        "censored": false,
+        "underwater_observed_months": 7
+      }
+    }
+  ],
+  "launches": {
+    "all_share": {
+      "launch_date": "2011-08-02",
+      "pre_launch": {
+        "months": 79,
+        "cagr": 0.2211542766391883,
+        "start": "2004-12-31",
+        "first_return_end": "2005-01-31",
+        "end": "2011-07-31"
+      },
+      "post_launch": {
+        "months": 172,
+        "cagr": 0.057576590775732184,
+        "start": "2011-08-31",
+        "first_return_end": "2011-09-30",
+        "end": "2025-12-31"
+      },
+      "excluded_launch_month_returns": 1,
+      "total_return_series_original_publication_verified": false,
+      "official_source_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000985factsheet.pdf",
+      "post_launch_relative_benchmark_cagr": -0.0003073606141351659
+    },
+    "large_cap": {
+      "launch_date": "2005-04-08",
+      "pre_launch": {
+        "months": 3,
+        "cagr": -0.21190616379512284,
+        "start": "2004-12-31",
+        "first_return_end": "2005-01-31",
+        "end": "2005-03-31"
+      },
+      "post_launch": {
+        "months": 248,
+        "cagr": 0.10112281860524375,
+        "start": "2005-04-30",
+        "first_return_end": "2005-05-31",
+        "end": "2025-12-31"
+      },
+      "excluded_launch_month_returns": 1,
+      "total_return_series_original_publication_verified": false,
+      "official_source_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+      "post_launch_relative_benchmark_cagr": 0.0
+    },
+    "small_cap": {
+      "launch_date": "2014-10-17",
+      "pre_launch": {
+        "months": 117,
+        "cagr": 0.20945807366847302,
+        "start": "2004-12-31",
+        "first_return_end": "2005-01-31",
+        "end": "2014-09-30"
+      },
+      "post_launch": {
+        "months": 134,
+        "cagr": 0.027226293110215627,
+        "start": "2014-10-31",
+        "first_return_end": "2014-11-30",
+        "end": "2025-12-31"
+      },
+      "excluded_launch_month_returns": 1,
+      "total_return_series_original_publication_verified": false,
+      "official_source_url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000852factsheet.pdf",
+      "post_launch_relative_benchmark_cagr": -0.048945096525217946
+    }
+  },
+  "products": {
+    "510300.SH": {
+      "status": "mature_proxy_only",
+      "early_history_blocked_reason": "missing or invalid last-session quote",
+      "early_month_end_gaps": [
+        {
+          "field": "unit_nav",
+          "last_session_dates": [
+            "2012-11-30"
+          ]
+        },
+        {
+          "field": "adj_nav",
+          "last_session_dates": [
+            "2012-11-30"
+          ]
+        }
+      ],
+      "first_observed_month_end": "2017-01-31",
+      "first_complete_return_month_end": "2017-02-28",
+      "gap": {
+        "start": "2017-01-31",
+        "end": "2025-12-31",
+        "months": 107,
+        "index_total_cagr": 0.060254043544663016,
+        "nav_cagr": 0.054293100261259886,
+        "market_total_proxy_cagr": 0.054296929464632715,
+        "nav_minus_index_cagr_pp": -0.005960943283403131,
+        "market_minus_index_cagr_pp": -0.005957114080030301,
+        "nav_relative_wealth_ratio": 0.9509701603633474,
+        "premium_wealth_ratio": 1.0000213845044963,
+        "distribution_basis_wealth_ratio": 1.0000110011507999,
+        "market_relative_wealth_ratio": 0.9510009583788774,
+        "geometric_reconciliation_error": 0.0,
+        "monthly_tracking_error_annualized": 0.001791103499162462,
+        "premium_at_start": -0.00014760147601478035,
+        "premium_at_end": -0.0001262201279029762,
+        "premium_minimum": -0.003583061889250727,
+        "premium_maximum": 0.03201111734159001,
+        "manager_fees_subtracted_again": false,
+        "interpretation": "Adjusted NAV and market factors are provider return proxies. Closing NAV is a retrospective valuation, not an executable quote. Costs/taxes/slippage excluded."
+      },
+      "round_trip_sensitivities": [
+        {
+          "cost_bps_per_side": 0,
+          "market_proxy_cagr_after_entry_exit": 0.054296929464632715
+        },
+        {
+          "cost_bps_per_side": 10,
+          "market_proxy_cagr_after_entry_exit": 0.054060478088763686
+        },
+        {
+          "cost_bps_per_side": 50,
+          "market_proxy_cagr_after_entry_exit": 0.053115193316638276
+        }
+      ]
+    },
+    "159919.SZ": {
+      "status": "mature_proxy_only",
+      "early_history_blocked_reason": "missing or invalid last-session quote",
+      "early_month_end_gaps": [
+        {
+          "field": "close",
+          "last_session_dates": [
+            "2012-11-30"
+          ]
+        }
+      ],
+      "first_observed_month_end": "2017-01-31",
+      "first_complete_return_month_end": "2017-02-28",
+      "gap": {
+        "start": "2017-01-31",
+        "end": "2025-12-31",
+        "months": 107,
+        "index_total_cagr": 0.060254043544663016,
+        "nav_cagr": 0.05477626541394831,
+        "market_total_proxy_cagr": 0.05510294385296377,
+        "nav_minus_index_cagr_pp": -0.0054777781307147055,
+        "market_minus_index_cagr_pp": -0.005151099691699246,
+        "nav_relative_wealth_ratio": 0.9548632249259533,
+        "premium_wealth_ratio": 1.002564209718172,
+        "distribution_basis_wealth_ratio": 1.0002002767033455,
+        "market_relative_wealth_ratio": 0.9575034217170795,
+        "geometric_reconciliation_error": 0.0,
+        "monthly_tracking_error_annualized": 0.0016520560621457142,
+        "premium_at_start": -0.003012048192771122,
+        "premium_at_end": -0.00045556199784646534,
+        "premium_minimum": -0.0088878760255241,
+        "premium_maximum": 0.02957257642751876,
+        "manager_fees_subtracted_again": false,
+        "interpretation": "Adjusted NAV and market factors are provider return proxies. Closing NAV is a retrospective valuation, not an executable quote. Costs/taxes/slippage excluded."
+      },
+      "round_trip_sensitivities": [
+        {
+          "cost_bps_per_side": 0,
+          "market_proxy_cagr_after_entry_exit": 0.05510294385296377
+        },
+        {
+          "cost_bps_per_side": 10,
+          "market_proxy_cagr_after_entry_exit": 0.054866311709034
+        },
+        {
+          "cost_bps_per_side": 50,
+          "market_proxy_cagr_after_entry_exit": 0.05392030426276828
+        }
+      ]
+    },
+    "512100.SH": {
+      "status": "observed_proxy",
+      "list_date": "2016-11-04",
+      "first_observed_month_end": "2016-11-30",
+      "first_complete_return_month_end": "2016-12-31",
+      "gap": {
+        "start": "2016-11-30",
+        "end": "2025-12-31",
+        "months": 109,
+        "index_total_cagr": -0.008740550576120332,
+        "nav_cagr": 0.014387176093294984,
+        "market_total_proxy_cagr": 0.013514768909675734,
+        "nav_minus_index_cagr_pp": 0.023127726669415316,
+        "market_minus_index_cagr_pp": 0.022255319485796066,
+        "nav_relative_wealth_ratio": 1.233054832086452,
+        "premium_wealth_ratio": 1.0013003915905228,
+        "distribution_basis_wealth_ratio": 0.9909265335621115,
+        "market_relative_wealth_ratio": 1.2234556556984657,
+        "geometric_reconciliation_error": 0.0,
+        "monthly_tracking_error_annualized": 0.01462437090706458,
+        "premium_at_start": -0.0014932802389249211,
+        "premium_at_end": -0.00019483049746715775,
+        "premium_minimum": -0.008351834231948407,
+        "premium_maximum": 0.028677230451257252,
+        "manager_fees_subtracted_again": false,
+        "interpretation": "Adjusted NAV and market factors are provider return proxies. Closing NAV is a retrospective valuation, not an executable quote. Costs/taxes/slippage excluded."
+      },
+      "round_trip_sensitivities": [
+        {
+          "cost_bps_per_side": 0,
+          "market_proxy_cagr_after_entry_exit": 0.013514768909675734
+        },
+        {
+          "cost_bps_per_side": 10,
+          "market_proxy_cagr_after_entry_exit": 0.013291634186316736
+        },
+        {
+          "cost_bps_per_side": 50,
+          "market_proxy_cagr_after_entry_exit": 0.01239957751994547
+        }
+      ]
+    }
+  },
+  "conclusion_register": {
+    "schema_version": 1,
+    "claims": [
+      {
+        "id": "small_cap_premium",
+        "stage": "historical_descriptive",
+        "scope": "CSI1000 / CSI300 total-return references, 2005-2025; overlapping endpoint and block sensitivity",
+        "evidence": [
+          "asset_returns_reviewed.json",
+          "asset_decision_reviewed.json#uncertainty"
+        ],
+        "review_trigger": "Relative-CAGR resampling range spans zero, era signs differ, or post-launch comparison reverses the full-history sign",
+        "open_question": "Persistence after publication and actual implementation costs"
+      },
+      {
+        "id": "rebalance_improves_experience",
+        "stage": "sensitivity_only",
+        "scope": "Fixed annual 60/40 versus buy-and-hold, January2007-December2025, no calibrated fees",
+        "evidence": [
+          "asset_robustness_reviewed.json#allocations",
+          "asset_decision_reviewed.json#uncertainty"
+        ],
+        "review_trigger": "Paired CAGR/drawdown differences change sign across block lengths or eras; cash-demand shortfalls rise",
+        "open_question": "Which benefit survives execution and spending constraints?"
+      },
+      {
+        "id": "bond_gold_diversification",
+        "stage": "historical_descriptive",
+        "scope": "CNY monthly equity, treasury and spot-gold proxies; minimum 12 observations for conditional correlation",
+        "evidence": [
+          "asset_decision_reviewed.json#stress",
+          "asset_decision_reviewed.json#events"
+        ],
+        "review_trigger": "Joint losses or weak companion returns during equity stress; changing correlation signs; insufficient stress sample",
+        "open_question": "Future inflation/rate shocks and portfolio liquidity"
+      },
+      {
+        "id": "cash_buffer_spending",
+        "stage": "sensitivity_only",
+        "scope": "Ten-year rolling windows; normalized capital100, withdrawals0/2/4/6 real units yearly, funded 0/12/24-month cash buffers",
+        "evidence": [
+          "asset_decision_reviewed.json#spending"
+        ],
+        "review_trigger": "Cash reduces drawdown-time sales but increases shortfalls or reduces terminal purchasing power",
+        "open_question": "Cash yields, taxes, spending flexibility and personal liabilities"
+      },
+      {
+        "id": "index_return_is_investable",
+        "stage": "blocked",
+        "scope": "Official price-index publication dates, observed ETF coverage and hypothetical entry/exit costs",
+        "evidence": [
+          "asset_decision_reviewed.json#launches",
+          "asset_decision_reviewed.json#products",
+          "asset_closure_reviewed.json"
+        ],
+        "review_trigger": "Early-series NAV inconsistency, missing product months, unverified total-return original publication or uncalibrated trading costs",
+        "open_question": "Point-in-time total-return vintages and executable account return"
+      },
+      {
+        "id": "fixed_cohort_earnings",
+        "stage": "blocked",
+        "scope": "December2015 CSI300/CSI1000 original constituents followed through FY2025",
+        "evidence": [
+          "asset_closure_reviewed.json#cohorts"
+        ],
+        "review_trigger": "Any missing exiting-member profit, unaudited successor/share mapping or reconstructed financial vintage",
+        "open_question": "Corporate continuity and original financial/share ledgers"
+      },
+      {
+        "id": "prospective_allocation",
+        "stage": "protocol_frozen",
+        "scope": "Earliest candidate December2026, real November2026 baseline and pre-entry receipt required",
+        "evidence": [
+          "prospective-allocation-protocol.json"
+        ],
+        "review_trigger": "Formation data unavailable, entry passed before receipt, independent timestamp missing, or parameter changes",
+        "open_question": "Not admitted; zero completed windows and no prospective return"
+      }
+    ]
+  },
+  "availability": {
+    "ten_year_sovereign_yield": {
+      "status": "not_admitted",
+      "reason": "configured service denied yc_cb probes (40203); bond-return stress is not a yield-rise mask",
+      "probes": [
+        {
+          "id": "yield10_2007_2012",
+          "code": 40203,
+          "sha256": "a534974753a50ac3010dc3641b376972363e1a5e8b14c02092fcaa403dcaa32d"
+        },
+        {
+          "id": "yield10_2013_2018",
+          "code": 40203,
+          "sha256": "45b01f18f10c172ac5965de587ee7891eb8efb8fe4347cab54981ee2d31481c5"
+        },
+        {
+          "id": "yield10_2019_2025",
+          "code": 40203,
+          "sha256": "911e0ff72c13a37d9c7b82c8ef6c05dbcf30ce1b60522e01cbc8b2644f8db2d3"
+        }
+      ]
+    }
+  },
+  "provenance": {
+    "sources": [
+      {
+        "id": "reviewed_followup",
+        "sha256": "6f39aae0751c6e5c2458447a8ab0592e2179db2d408ede10d8e8b3eb1d40c69d"
+      },
+      {
+        "id": "all_share",
+        "sha256": "5bbfc7cf9bef3a804fef9c35493d4aa5824095d68e9e453a5d297bd6078c7eb9"
+      },
+      {
+        "id": "large_cap",
+        "sha256": "93a0b071fc566c4070e7b29a3ea5bd0d50fd48d3f5572cbde643d487ed323721"
+      },
+      {
+        "id": "small_cap",
+        "sha256": "d80e5a02d4a8299847b79e3a49b82bba5a6b9fc8f0aa5ccfa71ddaa2a647ab6d"
+      },
+      {
+        "id": "multi_asset",
+        "sha256": "9538f45e186ca87c65194df51864c98d6f3a13ebeb07027d545106c01bc5c0c3"
+      },
+      {
+        "id": "000985",
+        "url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000985factsheet.pdf",
+        "observed_at": "2026-11-01T00:42:56.566713+00:00",
+        "sha256": "2545aaedc19d0133fab4e639fce81b46df19c95c50bd25040702a304547e038c",
+        "status": "retained"
+      },
+      {
+        "id": "000300",
+        "url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000300factsheet.pdf",
+        "observed_at": "2026-11-01T00:42:55.728957+00:00",
+        "sha256": "38e1d50e5cf0018afc0cfe7b46bf25faa21de839d4d0e269ce4084575cb00bbc",
+        "status": "retained"
+      },
+      {
+        "id": "000852",
+        "url": "https://oss-ch.csindex.com.cn/static/html/csindex/public/uploads/indices/detail/files/zh_CN/000852factsheet.pdf",
+        "observed_at": "2026-11-01T00:42:56.079561+00:00",
+        "sha256": "6d8885c93597a609260cc11385a9b8aaec33593d164d492120018d2b2e914551",
+        "status": "retained"
+      },
+      {
+        "id": "raw/calendar",
+        "sha256": "8088faf6bcc5be9d168746cee6d9fb8b354d372d4e4dcf2211dbe9a1af45a8ef",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_basic",
+        "sha256": "8e9d17496ed0137077c065f6db054affc7bff0ba5ee4d4025ec0036c573651d8",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/510300_SH_fund_daily",
+        "sha256": "3463c297c4b84e8768c8327542809262dcc1f8f392e0c22f148dfcfd2d9c997d",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_daily_20170101",
+        "sha256": "32dd763e2d0b687a231b8fc2e168d6d2aa5eed066fb59839c3f61f293ddbc2e5",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_daily_20200101",
+        "sha256": "a9d378b141db27fe5518c11ce6c119e40e2780ca269240e8ee0da4fe0481838c",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_daily_20230101",
+        "sha256": "e8e71601f647e946245da31f743efb7f26c26902d89db1ea08ecc6944ea35dc1",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/510300_SH_fund_adj",
+        "sha256": "026e888615e26c0a155c80d9c14c94e3b0e2957b67ecca3cf538061ece575b63",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_adj_20170101",
+        "sha256": "2f5ab357fd74470359fc7ae41896d7d7c94ab35e68614893605502dff84aef57",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_adj_20200101",
+        "sha256": "91c156e911a143586dc57c1d651fd0082a8ea541d9fb2ef57753f6c5a7db1010",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_adj_20230101",
+        "sha256": "d8befcfed317b3a944cb7c5d666b125b51a92d4059781951b9c528da23b1860a",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/510300_SH_fund_nav",
+        "sha256": "5ff64f081806cb99ecef969c883c491649dd198cecfa209063df450626bb7a29",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_nav_20170101",
+        "sha256": "fe29618b0eb6fd85bbe467ecb9abd9f861221aca57121f694920d81f4bcd153c",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_nav_20200101",
+        "sha256": "f432237734e29e25a2e7e8ba2a6629c118d82a5ef2afecfeef7bd229443f37ec",
+        "status": "returned"
+      },
+      {
+        "id": "raw/510300_SH_fund_nav_20230101",
+        "sha256": "4b6db12a0be945116fabd502bf2e2f17c8bc6b53138e151b0f7a274351022a70",
+        "status": "returned"
+      },
+      {
+        "id": "mature_510300_SH",
+        "sha256": "49963c8461437020564019390188460b804da3f606865c2b8eac4e7de4f50ed0"
+      },
+      {
+        "id": "raw/159919_SZ_basic",
+        "sha256": "c7dad6229388377ac489f1cc283a6a9322938720ac7ed4f510f842b086895797",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/159919_SZ_fund_daily",
+        "sha256": "f8143b0731404a821626f27f80ddfd873f8c4097a84b68ec8db5f6f0eb5feeb9",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_daily_20170101",
+        "sha256": "36fdb597001a2cb1d26a065e1af891169cd08b8512671c6d8c20c50712dee738",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_daily_20200101",
+        "sha256": "e99f9522be7f9bb598adc12b6915f05022148855741c7742f269d6040885f8ba",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_daily_20230101",
+        "sha256": "bf5c6962be3ff534a2fb4f6ac81a82af3371d42b19d6d1118c457895752d09ab",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/159919_SZ_fund_adj",
+        "sha256": "b25a3c3f3352dc6a294fbedc20cdf4617e4d4416b4711196e37050c89ac6d06d",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_adj_20170101",
+        "sha256": "eeb0645710740616db54f04ab4cdc43c99512d4038fb57cae6936fffc9b4298e",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_adj_20200101",
+        "sha256": "1924018d27105670f3dd13963806088a29855a6eb25c4f56820be3a98bea0ae7",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_adj_20230101",
+        "sha256": "1268dfb0e0867a905ac61b1f46ce1067edd37eb1bc45c9bc8f8997e66c537ef6",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/159919_SZ_fund_nav",
+        "sha256": "7197ec57373cce71edb03a952483cfa6d7bc1a26034edb37c712abdc5abb99a8",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_nav_20170101",
+        "sha256": "8e34c33d061176a1ab067f68b2a21e4d3461a2d470cfa14236dd1df82be1d741",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_nav_20200101",
+        "sha256": "eb138c8bd3a46cad10579979a37590084bc870a29c81625863477a2cc98b5592",
+        "status": "returned"
+      },
+      {
+        "id": "raw/159919_SZ_fund_nav_20230101",
+        "sha256": "4850ce726c04d14fb8411abe72bd896bc94498f51d095c0073c5a5c913aff60a",
+        "status": "returned"
+      },
+      {
+        "id": "mature_159919_SZ",
+        "sha256": "f6922caec58019c17a544c5578d15d7e678493c84e80ca6efe6e7f34a40d68f3"
+      },
+      {
+        "id": "raw/512100_SH_basic",
+        "sha256": "77dc83161ad4d4ac48d4e2f21acdc92867ede87421811c04e6f6c751882d4a2f",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/512100_SH_fund_daily",
+        "sha256": "dd4e933fac2986dab92a781fdca5d93ad7b007ab2f444522151e9f6972f6670a",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_daily_20170101",
+        "sha256": "6923bfb65c334f03ea495d6144814ff99b78b6755321d804fa60d6070785e5f1",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_daily_20200101",
+        "sha256": "d32685ff29ca542d7c3b08f656d9a4a6cb4f499716cfb37082e24af5fe5c1355",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_daily_20230101",
+        "sha256": "bc21757b2d19cc5362346eea7c08dc2d248a85da18e0f650dd272c4787a23744",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/512100_SH_fund_adj",
+        "sha256": "31edaaaea2ac8e5fb2eff5d6f8e2932f5a3ead3cc4397798b0dd2c0997ca8cbc",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_adj_20170101",
+        "sha256": "63faca7734c56deddead62add8b55eb1473b0c794aaa8ef62aa5b494d87e2d74",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_adj_20200101",
+        "sha256": "feeaca85fabb11fa2fe3fc22c19ae5aefc84c02209d0864d1c685c28022de7bb",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_adj_20230101",
+        "sha256": "99c098f62230c9aa2308114739026068008877be77ba1e36f51d530c2994c870",
+        "status": "returned"
+      },
+      {
+        "id": "early-etf/512100_SH_fund_nav",
+        "sha256": "adb020e72eb6c815c9a5cada27aaae8c046f0bb0e60d16efa0f6bebcd464c3dd",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_nav_20170101",
+        "sha256": "49f9f92ebdc98f403d648e6898c59cd70f6682078a926f6b841d3c3348e48a02",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_nav_20200101",
+        "sha256": "68a5ab1f0ac9ade59f5dfb656e38a29899e1914368fe68ebb04280af25f3a594",
+        "status": "returned"
+      },
+      {
+        "id": "raw/512100_SH_fund_nav_20230101",
+        "sha256": "9ffe81ba3d48664b19d39592f10937b87577edbfa0a663295bbf65c180e601a2",
+        "status": "returned"
+      },
+      {
+        "id": "yield10/yield10_2007_2012",
+        "sha256": "a534974753a50ac3010dc3641b376972363e1a5e8b14c02092fcaa403dcaa32d",
+        "code": 40203
+      },
+      {
+        "id": "yield10/yield10_2013_2018",
+        "sha256": "45b01f18f10c172ac5965de587ee7891eb8efb8fe4347cab54981ee2d31481c5",
+        "code": 40203
+      },
+      {
+        "id": "yield10/yield10_2019_2025",
+        "sha256": "911e0ff72c13a37d9c7b82c8ef6c05dbcf30ce1b60522e01cbc8b2644f8db2d3",
+        "code": 40203
+      }
+    ],
+    "code_sha256": {
+      "scripts/run_asset_decision_study.py": "836b7ad643b2050e1813cc6a3d1efd05e0394a76f5a7255a82e543e2508ebf8e",
+      "src/market_research/studies/asset_returns/__init__.py": "79f057cc8f796d3d75b0e7231a81ee208c22edcc79c61d0399f50b4e56e2158f",
+      "src/market_research/studies/asset_returns/allocation.py": "e27438421ec0915558ced022723ed3cab2f235938f7af4f1f317c1a812067106",
+      "src/market_research/studies/asset_returns/analysis.py": "5247cdecee8fd495eafb2d92446d6cbbcd50fbc79c316951ceb52f7a76207f5d",
+      "src/market_research/studies/asset_returns/closure.py": "645cb52c1a248d0ee866737e334c5a07462e6991ce15a6768a957928e50f4ea5",
+      "src/market_research/studies/asset_returns/constituents.py": "8f8b17cdb2d6a722d33ec333e4fae11887eb39fcf6314eec37a2631455f80aa4",
+      "src/market_research/studies/asset_returns/etf.py": "2fd0408b375fc2ea5c79ae6572bae30dde21ff9a8f99be24f646c46673f9a046",
+      "src/market_research/studies/asset_returns/inputs.py": "bc2bca0096d768f5d1c1914188b72e16cbce9f67bce80b1811e01348f84787b2",
+      "src/market_research/studies/asset_returns/investability.py": "900c62ad92d4f1e3ff0eaf7d83f86decadc8e07510ae03c193a1e5f3151b4cc9",
+      "src/market_research/studies/asset_returns/release.py": "c680834bfa5cebcc449c61ec47c81dd323c89e124f816b9f29cf065deb817534",
+      "src/market_research/studies/asset_returns/robustness.py": "ebafd1aa73df1f0ebf0e30870ba552fd0eb74a92c8f5ff9c96e59089a32ec6e5",
+      "src/market_research/studies/asset_returns/run.py": "fc0be9d0ff016579f4a071c49c77c18e7b82d0a4bfdf2980dc63d15538d4c302",
+      "src/market_research/studies/asset_returns/spending.py": "60af8920f343ad1297520fbe5f1a0e78e9cc7539233f5a6603c38810dcbca9b6",
+      "src/market_research/studies/asset_returns/stress.py": "27a789b17d160812664ab9a62f5a717c5540044943237522d05d7c4a42fb9839",
+      "src/market_research/studies/asset_returns/uncertainty.py": "77ac20cea3caf54a86694aa890a4b46c76cf72d23c6d510d79ad42eca78c7c65"
+    },
+    "register_sha256": "67ec98bc4dfa48cc743c2c75d2ef8c4ca6bc20d2c63dea53490b79487429b7af"
+  },
+  "scope": "Conditional historical sensitivity; no prospective admission or future failure/return probability.",
+  "source_result_sha256": "84affaaffcbc48957cc4d054168e4ac2ad5ede1eb9eba0b541e340223fa23d3d"
+}

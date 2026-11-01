@@ -54,3 +54,5 @@ Before publishing independent earnings explanations, recover constituent/share l
 The [second-round findings](followup-20261031.md) add endpoint stability, relative waiting, three ETF return layers, fixed allocation rules and annual constituent-cohort audits. The [follow-up protocol](followup-protocol.md) records exact reproduction commands, costs and unresolved earnings prerequisites. This supplements the first-round snapshot without changing it.
 
 - Evidence closure / 证据核查：[English](closure-20261031.md) · [中文](closure-20261031.zh-CN.md)
+
+- Decision risk / 决策风险：[English](decision-risk-20261101.md) · [中文](decision-risk-20261101.zh-CN.md) · [conclusion register](conclusion-register.json)

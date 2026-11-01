@@ -5,7 +5,7 @@ for (const width of [320,1280]) for (const locale of ['en-US','zh-CN']) {
   await page.goto(`research/cashflow/?lang=${locale}#cashflow-robustness`);
   const section=page.locator('#cashflow-robustness');
   await expect(section).toBeVisible();
-  await expect(section.locator('table')).toHaveCount(5);
+  await expect(section.locator(':scope > .robustness-table > table')).toHaveCount(5);
   await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(7);
   const before=await page.locator('#allocation-rules tbody tr:visible').allTextContents();
   await page.locator('#allocation-cost').selectOption('50');
