@@ -119,3 +119,34 @@ def test_conclusion_register_refuses_unsupported_upgrade():
         validate_register([{**claim, "stage": "prospectively_validated"}])
     with pytest.raises(ValueError, match="unique"):
         validate_register([claim, claim])
+
+
+def test_event_recovery_uses_latest_equal_peak_before_drawdown():
+    from market_research.studies.asset_returns.stress import event_recovery
+
+    dates = pd.date_range("2019-12-31", periods=5, freq="ME")
+    frame = pd.DataFrame(
+        {"date": dates, "total": [1.0, 1.0, 0.8, 0.9, 1.0], "bond": np.ones(5), "gold": np.ones(5)}
+    )
+    r = event_recovery(frame, [("tie", "2019-12-31", "2020-03-31")])[0]["equity"]
+    assert r["peak_date"] == "2020-01-31"
+    assert r["underwater_observed_months"] == 3
+
+
+def test_public_decision_projection_excludes_per_window_details(tmp_path):
+    import importlib.util
+    import json
+    from pathlib import Path
+
+    path = Path(__file__).parents[2] / "scripts/project_asset_decision_summary.py"
+    spec = importlib.util.spec_from_file_location("project_decision", path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    data = {key: {} for key in module.KEYS}
+    data["spending_details"] = [{"private_window": "not-public"}]
+    source, output = tmp_path / "full.json", tmp_path / "public.json"
+    source.write_text(json.dumps(data))
+    result = module.project(source, output)
+    assert "spending_details" not in result
+    assert "not-public" not in output.read_text()
+    assert len(result["source_result_sha256"]) == 64

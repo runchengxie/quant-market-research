@@ -1,0 +1,37 @@
+type Copy=readonly [string,string];
+export const decisionCopy={
+ title:['Uncertainty, spending and stress','不确定性、取款与压力情景'],
+ lead:['Fixed historical experiments, not future loss probabilities: paired returns cover 252 months; multi-asset returns cover 227 months through December 2025. Cash-demand outcomes use 108 overlapping ten-year windows.','以下是固定规则的历史实验，不是未来亏损概率。配对收益共252个月，多资产收益共227个月，均截至2025年12月；取款结果来自108个相互重叠的十年窗口。'],
+ uncertainty:['How stable are the conclusions?','结论有多稳定？'],
+ uncertaintyNote:['Each block length uses 1,000 paired circular-block draws. Ranges are the 2.5th–97.5th percentiles, conditional on the observed sample and block assumption. Both the small-cap relative CAGR and annual-rebalance benefit can change sign. They are not independently validated forecasts or multiple-test-adjusted confidence statements.','每种区块长度抽样1000次，保留资产配对关系。范围为第2.5至97.5百分位，依赖现有样本和区块假设。小盘相对年化及年度再平衡收益差均可能变号，不代表经独立验证的预测，也未作多重检验校正。'],
+ block:['Block (months)','区块（月）'],relative:['Small / large relative CAGR','小盘／大盘相对年化'],rebalance:['Annual minus hold CAGR (pp)','年度再平衡减持有年化（百分点）'],drawdown:['Annual minus hold drawdown (pp)','年度再平衡减持有回撤（百分点）'],
+ spending:['When the portfolio must fund spending','组合需要支付开支时'],
+ spendingNote:['Initial real capital is 100. Withdraw the selected real annual amount monthly, indexed by CPI. A one-off real demand of 20 can occur after month 12 or 60. Cash earns zero nominal interest, is funded from initial capital, is spent first and is never automatically replenished. Remaining demands sell the risky sleeve pro rata; each window resets annual rebalancing. Taxes and trading costs are excluded.','初始实际本金为100，所选年度实际提款按月支付并随CPI调整；可在第12或60个月增加一次实际金额20的支出。现金名义收益为零，从初始本金划出，优先支用且不自动补充。剩余需求按比例卖出投资组合；每个窗口重新计算年度再平衡。未计税费和交易成本。'],
+ annualDemand:['Annual real demand per initial 100','每初始本金100的年度实际提款'],shock:['One-off real demand of 20','一次性实际支出20'],none:['None','无'],month12:['After 12 months','第12个月后'],month60:['After 60 months','第60个月后'],
+ portfolio:['Portfolio','组合'],buffer:['Funded cash buffer (months)','已出资现金缓冲（月）'],shortfall:['Historical shortfall share','历史支付不足窗口占比'],minimum:['Lowest terminal real capital','最低期末实际本金'],sales:['Median real sales during sleeve drawdown','组合低于前高时实际卖出额中位数'],
+ spendingBoundary:['Every complete window stays in the denominator, including failed accounts. Exact final exhaustion after meeting all demands is not a shortfall. Ten years and these overlapping histories cannot establish a safe lifetime withdrawal rate. A cash buffer changes exposure as well as sale timing.','统计保留所有完整窗口，包括支付不足的账户。满足全部开支后恰好用完资金不算支付不足。十年重叠样本无法确定终身安全提款率；现金缓冲同时改变市场敞口和卖出时点。'],
+ stress:['Does diversification hold in stressful months?','压力月份还能分散吗？'],
+ stressNote:['Masks describe the same month after observation; they are not trading signals or causal regimes. Correlations require at least 12 months and nonzero variance. Joint-loss shares use all months in the selected mask as denominator.','分组描述的是事后观察到的同一个月，不是交易信号或因果识别。相关性至少需要12个月且收益有波动；共同下跌占比以所选分组内全部月份为分母。'],
+ mask:['Condition','条件'],months:['Months','月数'],correlation:['Equity/bond correlation','股债相关系数'],bondReturn:['Mean bond monthly return','债券月收益均值'],goldReturn:['Mean gold monthly return','黄金月收益均值'],joint:['Equity and gold both down','股票与黄金同时下跌占比'],
+ rateGap:['The configured service denied the ten-year sovereign-yield API probes. Negative bond returns are shown as a separate condition; they do not certify rising interest rates.','现有服务未授权十年期国债收益率接口。本页将债券负收益单独列示，不将其等同于利率上行。'],
+ recovery:['Fixed stress intervals and observed recovery','固定压力区间与观察到的恢复'],event:['Interval','区间'],asset:['Asset','资产'],underwater:['Observed recovery months','已观察恢复月数'],censored:['Unrecovered at sample end','样本末尚未恢复'],recovered:['Recovered','已恢复'],
+ launch:['Published index history versus back-calculated history','指数发布后与回溯历史'],
+ launchNote:['Official launch dates refer to the price-index families. Compare monthly total-return references starting with the first complete month after launch; original total-return publication vintages remain unverified. Different historical eras cannot prove that back-calculation caused the return difference.','正式发布日期指价格指数系列。全收益参考从发布后的首个完整月开始比较，其原始发布时间和历史版本仍未验证。历史时期不同，不能据此证明收益差由回溯计算造成。'],
+ publication:['Official launch','正式发布'],pre:['Pre-launch CAGR','发布前年化'],post:['Post-launch CAGR','发布后年化'],start:['First observed mark','首个观察基点'],market:['Market proxy CAGR','市场代理年化'],fee50:['After 50bp each side','每侧50基点后年化'],
+ productNote:['510300 and 159919 retain their verified 2017–2025 coverage: exact November 2012 month-end gaps block the extended series. 512100 extends to November 2016. Different intervals are not product rankings. NAV includes internal fees; hypothetical 0/10/50bp entry/exit costs do not estimate full execution costs.','510300、159919继续采用已核查的2017—2025年样本，2012年11月末缺口阻断了延长样本；512100已延至2016年11月。区间不同，不作产品排名。净值已含内部费用，入场和退出每侧0／10／50基点仅是假设，不能代表完整执行成本。'],
+ register:['Conclusion register and review triggers','结论台账与复核条件'],registerNote:['Stable records keep scope, evidence stage, review triggers and unresolved questions together. Blocked claims remain blocked; the prospective protocol still has zero admitted/completed observation windows.','每条记录保留稳定标识、适用范围、证据等级、复核条件和未解问题。证据不足的结论继续阻断，前瞻协议仍无已准入或已完成的观察窗口。'],trigger:['Review condition','复核条件'],claim:['Claim','结论'],stage:['Evidence stage','证据等级'],
+ chinese:['Chinese findings','中文结果'],
+ download:['Reviewed experiment summaries and conclusion register','已核查实验汇总与结论台账'],findings:['Full findings and reproducible protocol','完整结果与复现方法'],
+} as const satisfies Record<string,Copy>;
+export const masks:Record<string,Copy>={all:['All observed months','全部观察月份'],equity_down_5pct:['Equity return ≤ −5%','股票月收益≤−5%'],bond_down_1pct:['Bond return ≤ −1%','债券月收益≤−1%'],inflation_3pct:['Trailing 12-month CPI ≥ 3%','过去12个月CPI涨幅≥3%']};
+export const claimNames:Record<string,Copy>={small_cap_premium:['Small-cap premium','小盘溢价'],rebalance_improves_experience:['Rebalancing benefit','再平衡效果'],bond_gold_diversification:['Bond/gold diversification','债券与黄金分散'],cash_buffer_spending:['Cash buffer and spending','现金缓冲与开支'],index_return_is_investable:['Investable index return','可实现的指数收益'],fixed_cohort_earnings:['Fixed-cohort earnings','固定成分盈利'],prospective_allocation:['Prospective allocation','前瞻配置观察']};
+export const stages:Record<string,Copy>={historical_descriptive:['Historical description','历史描述'],sensitivity_only:['Assumption sensitivity','假设敏感性'],blocked:['Evidence incomplete','证据不足'],protocol_frozen:['Protocol frozen; not admitted','协议已冻结，尚未准入']};
+export const claimTriggers:Record<string,Copy>={
+ small_cap_premium:['Review when ranges span zero or era/post-launch signs reverse.','区间跨零，或分时期、发布后表现变号时复核。'],
+ rebalance_improves_experience:['Review sign changes in paired return/drawdown differences and spending shortfalls.','配对收益／回撤差变号，或支付不足增加时复核。'],
+ bond_gold_diversification:['Review joint losses, weak companion returns and small conditional samples.','共同下跌、其他资产保护减弱或压力样本不足时复核。'],
+ cash_buffer_spending:['Review whether fewer drawdown sales come with more shortfalls or less real capital.','减少低位卖出却增加支付不足或损失实际本金时复核。'],
+ index_return_is_investable:['Keep blocked while historical NAV, coverage or executable costs are unresolved.','净值历史、覆盖或可执行成本未核清时保留证据缺口。'],
+ fixed_cohort_earnings:['Keep blocked with missing profits, successor/share mappings or original vintages.','利润、继承公司／股份关系或财报原始版本缺失时继续阻断。'],
+ prospective_allocation:['No admission without real formation inputs and independent pre-entry evidence.','缺真实形成输入及入场前独立时间证据，不进入正式观察。'],
+};

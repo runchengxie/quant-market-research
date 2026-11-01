@@ -69,7 +69,8 @@ def event_recovery(frame, events) -> list[dict]:
             # Recover from this event's maximum-drawdown peak, not a cherry-picked low.
             dd = event[col] / event[col].cummax() - 1
             trough = int(dd.idxmin())
-            peak = int(data.loc[event.index[0] : trough, col].idxmax())
+            before = data.loc[event.index[0] : trough, col]
+            peak = int(before.index[before == before.max()][-1])
             if float(dd.min()) >= -1e-12:
                 peak = trough = int(event.index[0])
             later = data.loc[trough:]
