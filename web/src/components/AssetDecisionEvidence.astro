@@ -1,5 +1,6 @@
 ---
 import LocaleText from './LocaleText.astro';
+import {assetChartCopy} from '../content/asset-chart-copy';
 import AssetInteractiveChart from './AssetInteractiveChart.astro';
 import {decisionCopy as c,masks,claimNames,stages,claimTriggers} from '../content/asset-decision-copy';
 import {assetNames} from '../content/asset-return-copy';
@@ -15,7 +16,7 @@ const assetLabels:Record<string,readonly [string,string]>={equity:assetNames.all
 <div id="asset-decision-evidence">
 <LocaleText text={c.title} as="h3"/><LocaleText text={c.lead}/>
 <LocaleText text={c.uncertainty} as="h4"/><LocaleText text={c.uncertaintyNote}/>
-<AssetInteractiveChart kind="uncertainty"/><LocaleText text={['Parentheses show the median.','括号内显示中位数。']}/>
+<AssetInteractiveChart kind="uncertainty"/><LocaleText text={assetChartCopy.medianNote}/>
 <details open data-asset-table="uncertainty"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table><thead><tr>{[c.block,c.relative,c.rebalance,c.drawdown].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.uncertainty.map(r=><tr><th>{r.block_months}</th><td>{range(r.small_large_relative_cagr)}</td><td>{range(r.annual_minus_hold_cagr,true)}</td><td>{range(r.annual_minus_hold_drawdown,true)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.spending} as="h4"/><LocaleText text={c.spendingNote}/>
 <div class="decision-controls"><label for="decision-demand"><LocaleText text={c.annualDemand} as="span"/></label><select id="decision-demand">{[0,2,4,6].map(value=><option value={value} selected={value===4}>{value}</option>)}</select>

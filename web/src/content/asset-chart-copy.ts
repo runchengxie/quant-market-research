@@ -1,5 +1,9 @@
 type Copy=readonly [string,string];
 export const assetChartCopy={
+ selectedValues:['Inspect the plotted values','查看图中数值'],
+ end:['End','结束日期'],
+ perSideCost:['Cost per side (bp)','单边费用（基点）'],
+ medianNote:['Parentheses show the median.','括号内显示中位数。'],
  returns:['Price changes and reinvested dividends','股价上涨和分红再投入带来多少收益'],
  returnsHelp:['Compare the two bars for each index. The difference reflects compounding as well as distributions. Equities cover December 2004 to December 2025.','同一指数的两根柱子分别显示股价收益和分红再投入后的收益。两者按复利关系衔接，样本为2004年12月至2025年12月。'],
  holding:['How often did ten-year holdings lose value?','持有十年后，有多少窗口亏损'],
