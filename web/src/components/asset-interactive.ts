@@ -33,9 +33,10 @@ export function mountAssetCharts(){
    const sample=view.sample_windows?`${t('windows')} ${view.sample_windows}`:view.sample_months?`${t('sample')} ${view.sample_months}`:view.start?`${t('start')} ${view.start}`:view.draws?`${view.draws}${locale()?'次抽样':' draws'}`:'';
    let summary=sample;
    if(view.start&&view.sample_months)summary+=` · ${t('start')} ${view.start}`;
-   if(view.type==='interval')summary+=' · '+view.intervals.map((r:any)=>`${r.id}${t('months')} ${number(r.lower,view.unit)}${locale()?'至':' to '}${number(r.upper,view.unit)}`).join(' · ');
+   if(view.type==='interval')summary+=' · '+view.intervals.map((r:any)=>`${r.id}${t('months')} ${number(r.lower,view.unit)}${locale()?'至':' to '}${number(r.upper,view.unit)} · ${t('median')} ${number(r.median,view.unit)}`).join(' · ');
    else if(view.type==='scatter')summary+=' · '+view.points.map((r:any)=>`${t(r.portfolio)} ${t(r.policy)} ${number(r.y,'percent')}`).join(' · ');
    else summary+=' · '+view.series.map((s:any)=>`${t(s.id)} ${view.categories.map((label:string,i:number)=>`${t(label)} ${number(s.values[i],view.unit)}`).join(' / ')}`).join(' · ');
+   root.querySelectorAll<HTMLTableRowElement>('.asset-selected-table tbody tr').forEach(row=>{row.hidden=kind==='endpoints'?(row.dataset.assetRow!==selected.asset||row.dataset.startRow!==selected.start):(row.dataset.productRow!==selected.product||row.dataset.costRow!==selected.cost);});
    const output=root.querySelector<HTMLElement>('[data-asset-chart-summary]')!;let shown=view.type==='interval'?summary:[sample,view.start&&view.sample_months?`${t('start')} ${view.start}`:'',selected.metric?t(selected.metric):'',t(view.unit)].filter(Boolean).join(' · ');
    if(kind==='uncertainty'&&selected.metric==='annual_minus_hold_drawdown')shown+=` ${t('drawdownMeaning')}`;
    if(kind==='spending'&&selected.metric==='shortfall_fraction'&&view.series.filter((s:any)=>s.values.every((v:number)=>v===0)).length>1)shown+=` ${t('overlappingZero')}`;
@@ -55,7 +56,7 @@ export function mountAssetCharts(){
      return `${escape(row.id+t('months'))}<br/>${escape(t('range'))} ${escape(number(row.lower,view.unit))} ${escape(number(row.upper,view.unit))}<br/>${escape(t('median'))} ${escape(number(row.median,view.unit))}`;
     }};
     option.yAxis.data=view.intervals.map((r:any)=>r.id+t('months'));
-    option.series=view.intervals.map((r:any,i:number)=>({name:r.id+t('months'),type:'line',symbol:'circle',symbolSize:7,data:[[r.lower*scale,r.id+t('months')],[r.upper*scale,r.id+t('months')]],lineStyle:{width:4,color:colors[0]},itemStyle:{color:colors[0]},markLine:i===0?{silent:true,symbol:'none',lineStyle:{type:'dashed',color:theme.label},data:[{xAxis:0}]}:undefined}));
+    option.series=view.intervals.map((r:any,i:number)=>({name:r.id+t('months'),type:'line',symbol:'circle',symbolSize:7,data:[[r.lower*scale,r.id+t('months')],[r.upper*scale,r.id+t('months')]],lineStyle:{width:4,color:colors[0]},itemStyle:{color:colors[0]},markLine:i===0?{silent:true,symbol:'none',label:{show:false},lineStyle:{type:'dashed',color:theme.label},data:[{xAxis:0}]}:undefined}));
     option.series.push({type:'scatter',symbol:'diamond',symbolSize:10,itemStyle:{color:colors[1]},data:view.intervals.map((r:any)=>[r.median*scale,r.id+t('months')]),tooltip:{formatter:(p:any)=>{const row=view.intervals[p.dataIndex];return `${escape(row.id+t('months'))}<br/>${escape(t('median'))} ${escape(number(row.median,view.unit))}`;}}});
    }else if(view.type==='scatter'){
     option.grid.right=20;
