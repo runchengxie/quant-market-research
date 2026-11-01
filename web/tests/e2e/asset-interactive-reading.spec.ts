@@ -17,7 +17,7 @@ for(const width of [320,1280])for(const locale of ['en-US','zh-CN']){
   await expect.poll(()=>spending.getAttribute('data-chart-selection')).toContain('"shock":"12"');
   let view=JSON.parse((await spending.getAttribute('data-chart-values'))!);expect(view.series[0].values[0]).toBeCloseTo(6/108,12);expect(view.sample_windows).toBe(108);
   await spending.locator('select').selectOption('minimum_terminal_real_capital');view=JSON.parse((await spending.getAttribute('data-chart-values'))!);expect(view.unit).toBe('capital');
-  const uncertainty=page.locator('[data-asset-chart="uncertainty"]');await uncertainty.locator('select').focus();await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');await expect(uncertainty).toHaveAttribute('data-chart-selection',/annual_minus_hold_cagr/);await expect(uncertainty.locator('[data-asset-chart-summary]')).toContainText(locale==='zh-CN'?'中位数':'Median');
+  const uncertainty=page.locator('[data-asset-chart="uncertainty"]');await uncertainty.locator('select').focus();await page.keyboard.press('ArrowDown');await page.keyboard.press('Enter');await expect(uncertainty).toHaveAttribute('data-chart-selection',/annual_minus_hold_cagr/);await expect(uncertainty.locator('[data-asset-chart-summary]')).toContainText(locale==='zh-CN'?'中位数':'median');
   await page.getByRole('button',{name:/Theme:|切换主题/}).click();await expect(spending).toHaveAttribute('data-chart-ready','true');
   await expect(page.locator('body')).toHaveJSProperty('scrollWidth',width);
   const glossary=page.locator('#reader-glossary');await glossary.locator('summary').click();await expect(glossary).toContainText(locale==='zh-CN'?'两个百分比直接相减':'Subtract two percentages directly');
