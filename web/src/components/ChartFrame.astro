@@ -5,6 +5,6 @@ const { id, title, unit, sample, boundary, explanation, methodHref } = Astro.pro
 <section class="chart-frame" id={id} aria-labelledby={`${id}-title`}>
   <header class="chart-frame-header"><div><h2 id={`${id}-title`}>{title}</h2><p>{explanation}</p></div><span class="chart-unit">{unit}</span></header>
   <div class="chart-frame-plot"><slot /></div>
-  <div class="chart-frame-meta"><span>样本：{sample}</span><span>边界：{boundary}</span>{methodHref && <a href={methodHref}>查看方法</a>}</div>
+  <div class="chart-frame-meta"><span>样本 {sample}</span><span>边界 {boundary}</span>{methodHref && <a href={methodHref}>查看方法</a>}</div>
   <details class="chart-frame-values"><summary>查看数值</summary><slot name="data" /></details>
 </section>

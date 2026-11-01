@@ -23,7 +23,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "boundary": [
       "The claim that 2026 was the first positive large-cap year conflicts with positive years listed in the same record. Early fundamentals are reconstructed; 2026 is incomplete.",
-      "“2026 是首次大盘占优年份”与同一记录列出的其他正收益年份冲突。早期基本面为重建值，2026 年尚不完整。"
+      "2026 是首次大盘占优年份与同一记录列出的其他正收益年份冲突。早期基本面为重建值，2026 年尚不完整。"
     ]
   },
   {
@@ -80,7 +80,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "2008–2026; separate post-2015 universe",
-      "2008—2026；另有 2015 年后股票池"
+      "2008—2026。另有 2015 年后股票池"
     ],
     "status": [
       "Historical simulation",
@@ -88,7 +88,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Long-short findings did not transfer mechanically to long-only portfolios. Results changed materially with the universe and starting date.",
-      "多空发现无法直接搬到纯多头组合；股票池和起始时间改变后，结果明显不同。"
+      "多空发现无法直接搬到纯多头组合。股票池和起始时间改变后，结果明显不同。"
     ],
     "boundary": [
       "Early unadjusted returns and incomplete eligibility require repair. A broad-universe result cannot certify a more restricted investable universe.",
@@ -157,7 +157,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Capital assumptions and a 1,000-fold traded-amount unit error changed earlier liquidity interpretations. A high simulated fill ratio followed the correction.",
-      "资金假设和成交额单位的千倍错误改变了早期流动性解释；修正后模拟成交率较高。"
+      "资金假设和成交额单位的千倍错误改变了早期流动性解释。修正后模拟成交率较高。"
     ],
     "boundary": [
       "A high fill ratio under an assumed model does not establish unconstrained liquidity or calibrated market impact.",
@@ -172,7 +172,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "2025–2026 attribution; 2016–2026 benchmark",
-      "2025—2026 年归因；2016—2026 年基准"
+      "2025—2026 年归因。2016—2026 年基准"
     ],
     "status": [
       "Diagnostic, incomplete evidence",
@@ -180,7 +180,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Style covariance explained part of a model return series. A separate equal-weight benchmark diagnosis exposed universe, new-listing and return-clipping defects.",
-      "风格协方差解释了模型收益的一部分；另一项等权基准诊断发现股票池、新股和收益截断问题。"
+      "风格协方差解释了模型收益的一部分。另一项等权基准诊断发现股票池、新股和收益截断问题。"
     ],
     "boundary": [
       "Covariance is not causal skill attribution. Revised benchmarks still zero-filled missing stock-days and omitted costs; they cannot establish model promotion.",
@@ -195,7 +195,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "2015–July 2026; development through 2023",
-      "2015 年至 2026 年 7 月；开发段截至 2023 年"
+      "2015 年至 2026 年 7 月。开发段截至 2023 年"
     ],
     "status": [
       "Historical exploration",
@@ -203,7 +203,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Raw, residualized and combined screens gave different results and large drawdowns. Public candidate and cadence tables are retained below.",
-      "原始、残差化与复合筛选结果不同，回撤普遍较大；公开候选与调仓表保留在后文。"
+      "原始、残差化与复合筛选结果不同，回撤普遍较大。公开候选与调仓表保留在后文。"
     ],
     "boundary": [
       "The repeatedly inspected 2024+ segment is descriptive. Narrative and snapshot versions differ; do not splice them into a single final backtest.",
@@ -218,7 +218,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "2008–July 2026; 223 formations",
-      "2008 年至 2026 年 7 月；223 次形成"
+      "2008 年至 2026 年 7 月。223 次形成"
     ],
     "status": [
       "Historical cross-section",
@@ -226,22 +226,22 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Point-in-time turnover and prior-window means or medians answer different questions. Quintile diagnostics are separate from later decile controls.",
-      "时点换手率与过去窗口的均值、中位数回答不同问题；五分组诊断也不同于后来的十分组控制。"
+      "时点换手率与过去窗口的均值、中位数回答不同问题。五分组诊断也不同于后来的十分组控制。"
     ],
     "boundary": [
       "Alternative definitions require their own executable comparison. Definition sensitivity alone does not identify a unique premium.",
-      "替代定义仍需各自的可执行对照；定义敏感性不能确立唯一溢价。"
+      "替代定义仍需各自的可执行对照。定义敏感性不能确立唯一溢价。"
     ]
   },
   {
     "id": "H11",
     "title": [
       "Deconfounding: early and corrected controls",
-      "去混杂：早期与修正后的控制"
+      "去混杂 早期与修正后的控制"
     ],
     "scope": [
       "Early 133 formations; later 86 common-support months",
-      "早期 133 次形成；后续 86 个共同样本月份"
+      "早期 133 次形成。后续 86 个共同样本月份"
     ],
     "status": [
       "Conditional association",
@@ -264,7 +264,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "One completed month: August 2026",
-      "仅一个已完成月份：2026 年 8 月"
+      "仅一个已完成月份 2026 年 8 月"
     ],
     "status": [
       "One-month observation",
@@ -272,11 +272,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "The frozen July-end signal produced opposite raw and controlled spreads in August. Only one completed month is reported by the reviewed source.",
-      "7 月末冻结信号在 8 月产生方向相反的原始与控制后收益差；已审查来源只报告了一个已完成月份。"
+      "7 月末冻结信号在 8 月产生方向相反的原始与控制后收益差。已审查来源只报告了一个已完成月份。"
     ],
     "boundary": [
       "Do not mark later pending months complete merely because time has passed. Require actual receipts and multiple new observations.",
-      "不能因为日历已翻页就把后续待完成月份改为完成；需要实际记录和更多新增观察。"
+      "不能因为日历已翻页就把后续待完成月份改为完成。需要实际记录和更多新增观察。"
     ]
   },
   {
@@ -291,7 +291,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "status": [
       "Simulation; partial coverage",
-      "模拟；覆盖不完整"
+      "模拟。覆盖不完整"
     ],
     "finding": [
       "An explicit suspension correction lowered the daily simulation’s annual return from 7.04% to 5.33%. Minute coverage was about 80.8%; quote-level coverage was lower.",
@@ -310,7 +310,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "Public snapshot: 3 windows and 16 grid cells",
-      "公开快照：3 个窗口、16 个矩阵单元"
+      "公开快照 3 个窗口、16 个矩阵单元"
     ],
     "status": [
       "Historical sensitivity",
@@ -356,7 +356,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "Seven public capital scenarios; separate lot checks",
-      "七档公开资金情景；另有整手检查"
+      "七档公开资金情景。另有整手检查"
     ],
     "status": [
       "Path-dependent simulation",
@@ -364,11 +364,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Cash, lot rounding and delayed orders changed outcomes. The published capital sweep has rising returns at larger capital.",
-      "现金、整手取整和延迟订单会改变结果；公开资金扫描中，较大资金对应较高模拟收益。"
+      "现金、整手取整和延迟订单会改变结果。公开资金扫描中，较大资金对应较高模拟收益。"
     ],
     "boundary": [
       "This is not an economic capacity curve: deferred orders can skip later losers, and impact is uncalibrated. Opportunity-cost figures are diagnostic.",
-      "这不是经济意义上的容量曲线：延迟订单可能避开后续下跌标的，冲击也未校准。机会成本数字只能作为诊断。"
+      "这不是经济意义上的容量曲线 延迟订单可能避开后续下跌标的，冲击也未校准。机会成本数字只能作为诊断。"
     ]
   },
   {
@@ -379,7 +379,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "2015–July 2026; selected monthly 40-name results",
-      "2015 年至 2026 年 7 月；选定的月频 40 只结果"
+      "2015 年至 2026 年 7 月。选定的月频 40 只结果"
     ],
     "status": [
       "Source-reported historical results",
@@ -406,7 +406,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "status": [
       "Historical bundles recovered; partial provenance",
-      "历史结果包已找回；来源链不完整"
+      "历史结果包已找回。来源链不完整"
     ],
     "finding": [
       "The dated monthly 100-name bundle was recovered through a documented storage migration; its stored full-sample summary agrees with the rounded source-note figures. The weekly 200-name proxy remains a separate comparison.",
@@ -425,15 +425,15 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "Bottom 0/10/20/30%; weighting and buffer controls",
-      "排除底部 0/10/20/30%；权重与缓冲对照"
+      "排除底部 0/10/20/30%。权重与缓冲对照"
     ],
     "status": [
       "Outputs recovered; structural checks passed",
-      "输出已找回；结构检查通过"
+      "输出已找回。结构检查通过"
     ],
     "finding": [
       "The migrated bundle contains 112 factor rows, 56 weighting comparisons, 80 buffer rows and 24 capacity rows. The factor, buffer and capacity grids have unique keys, no blank cells and complete declared axes; four checkpoint files match final outputs byte-for-byte.",
-      "迁移后的结果包含 112 行因子、56 行权重对照、80 行缓冲和 24 行容量记录。因子、缓冲与容量矩阵的组合键唯一，无空白单元，声明的维度完整；四个检查点文件与最终输出逐字节相同。"
+      "迁移后的结果包含 112 行因子、56 行权重对照、80 行缓冲和 24 行容量记录。因子、缓冲与容量矩阵的组合键唯一，无空白单元，声明的维度完整。四个检查点文件与最终输出逐字节相同。"
     ],
     "boundary": [
       "The recorded owner-code commit fields are unknown. This artifact audit does not rerun performance, authenticate every historical input, establish an untouched holdout or promote a strategy. The separate characteristic-decomposition protocol still has no located result bundle.",
@@ -479,11 +479,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Earlier targets used future quote availability and current membership. Removing these filters changes the sample and invalidates direct reuse of old results.",
-      "旧目标曾使用未来报价可得性与当前成分筛选；移除后样本改变，旧结果不能直接复用。"
+      "旧目标曾使用未来报价可得性与当前成分筛选。移除后样本改变，旧结果不能直接复用。"
     ],
     "boundary": [
       "A current membership snapshot cannot reconstruct historical membership. Missing held-security marks block a complete validated NAV.",
-      "当前成分快照不能重建历史成分；持仓证券缺失计价会阻断完整、经验证的净值。"
+      "当前成分快照不能重建历史成分。持仓证券缺失计价会阻断完整、经验证的净值。"
     ]
   },
   {
@@ -502,7 +502,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Historical names replace current-name ST inference. Strict date parsing exposed nullable export strings and previously admitted delisted securities.",
-      "历史名称用于替代按当前名称推断 ST；严格日期解析发现空值导出字符串和此前误纳入的退市证券。"
+      "历史名称用于替代按当前名称推断 ST。严格日期解析发现空值导出字符串和此前误纳入的退市证券。"
     ],
     "boundary": [
       "A documented nullable adapter repairs representation only. Suspension-event matches do not prove a tradable price or settlement value.",
@@ -521,15 +521,15 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "status": [
       "Targets rebuilt; NAV unverified",
-      "目标已重建；净值未核实"
+      "目标已重建。净值未核实"
     ],
     "finding": [
       "Historical eligibility is reconstructed without future-price filters; unknown status stays unknown. Old-target audits and new targets remain separate.",
-      "重建历史资格时不再使用未来价格筛选，未知状态仍保留为未知；旧目标审计与新目标分开。"
+      "重建历史资格时不再使用未来价格筛选，未知状态仍保留为未知。旧目标审计与新目标分开。"
     ],
     "boundary": [
       "Targets are not a validated account. Do not drop missing-price names and renormalize; engine installation and run verification need separate receipts.",
-      "目标集合不等于已验证账户。不能删除缺价标的再归一化；引擎安装与运行验证需要各自记录。"
+      "目标集合不等于已验证账户。不能删除缺价标的再归一化。引擎安装与运行验证需要各自记录。"
     ]
   },
   {
@@ -548,7 +548,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Public audits found 189 missing marks on 117 dates in one window; an older broader replay found 3,708 marks on 1,407 dates.",
-      "一个窗口的公开审计发现 117 个日期、189 条缺价；另一段更宽旧重放发现 1,407 个日期、3,708 条缺价。"
+      "一个窗口的公开审计发现 117 个日期、189 条缺价。另一段更宽旧重放发现 1,407 个日期、3,708 条缺价。"
     ],
     "boundary": [
       "Counts are neither distinct delistings nor comparable rates without denominators. Remaining-name averaging silently renormalizes exposure; the return bias is not quantified.",
@@ -563,7 +563,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "2008–2014 extension; later overlapping sources",
-      "2008—2014 年扩展；后续重叠来源"
+      "2008—2014 年扩展。后续重叠来源"
     ],
     "status": [
       "Historical return and risk",
@@ -571,7 +571,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "The longer history adds earlier drawdowns and prolonged underwater intervals. Cleaned and earlier source series are shown separately.",
-      "延长历史补充了早期回撤和较长水下期；清洗来源与早期序列分开展示。"
+      "延长历史补充了早期回撤和较长水下期。清洗来源与早期序列分开展示。"
     ],
     "boundary": [
       "Do not stitch sources without an overlap audit. An unfinished recovery is censored at the sample endpoint rather than assigned a completed waiting time.",
@@ -598,7 +598,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "boundary": [
       "Dividend conventions, pool differences and incomplete daily data prevent a certified index replication. A proxy index is a separate benchmark.",
-      "分红口径、股票池差异和日频数据缺口使指数复制尚不能认证；代理指数属于另一基准。"
+      "分红口径、股票池差异和日频数据缺口使指数复制尚不能认证。代理指数属于另一基准。"
     ]
   },
   {
@@ -617,11 +617,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Continuous holdings and cash expose effects of participation, T+1, price limits and assumed fees. The public bilingual source is included in the appendices.",
-      "持续持仓与现金揭示参与率、T+1、涨跌停和假设费用的影响；附录保留公开双语来源。"
+      "持续持仓与现金揭示参与率、T+1、涨跌停和假设费用的影响。附录保留公开双语来源。"
     ],
     "boundary": [
       "This diagnostic does not certify full-history performance or actual capacity. A later method does not retroactively validate earlier ledgers.",
-      "该诊断不能认证全历史业绩或真实容量；后来的方法也不能倒推证明早期账本有效。"
+      "该诊断不能认证全历史业绩或真实容量。后来的方法也不能倒推证明早期账本有效。"
     ]
   },
   {
@@ -632,7 +632,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "A-share, Hong Kong, Japan and US; unmatched dates",
-      "A 股、香港、日本和美国；日期未对齐"
+      "A 股、香港、日本和美国。日期未对齐"
     ],
     "status": [
       "Descriptive, quality-gated",
@@ -663,7 +663,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Published valid and excluded order-book counts reconcile, but missing minutes cluster on one date; a trades-only sample has no orders.",
-      "公开盘口有效与剔除计数能够核齐，但缺失分钟集中在一天；另一段仅成交样本没有委托。"
+      "公开盘口有效与剔除计数能够核齐，但缺失分钟集中在一天。另一段仅成交样本没有委托。"
     ],
     "boundary": [
       "Book counts are not actual-order capacity calibration. Require aligned orders, trades, timestamps and observed fills before estimating implementation cost.",
@@ -686,11 +686,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Data checks passed, but only half of the core factor gates passed. Constraints and costs reduced apparent factor returns.",
-      "数据检查通过，但核心因子门槛只通过一半；约束和成本削弱了表面收益。"
+      "数据检查通过，但核心因子门槛只通过一半。约束和成本削弱了表面收益。"
     ],
     "boundary": [
       "Theoretical shorts, terminal proxies and reconstructed point-in-time fundamentals remain limits. This does not rerun or validate every earlier long-only strategy.",
-      "理论做空、终值代理与重建时点基本面仍是限制；这项研究没有重跑或证明所有早期纯多头策略。"
+      "理论做空、终值代理与重建时点基本面仍是限制。这项研究没有重跑或证明所有早期纯多头策略。"
     ]
   },
   {
@@ -732,7 +732,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "finding": [
       "Provider and point-in-time fundamental portfolios differed substantially. The provider result accompanied small-cap and short-horizon price exposures; size-neutral and softer controls changed that exposure.",
-      "供应商与时点基本面组合差异很大。供应商结果伴随小盘和短期价格敞口；规模中性与较温和控制改变了这些敞口。"
+      "供应商与时点基本面组合差异很大。供应商结果伴随小盘和短期价格敞口。规模中性与较温和控制改变了这些敞口。"
     ],
     "boundary": [
       "Style correlation does not establish causality. Better-controlled size exposure did not establish stronger structural alpha, and this Hong Kong sample cannot validate A-share micro-caps.",
@@ -747,15 +747,15 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "September 2023–July 2026; 150 weekly formations",
-      "2023 年 9 月至 2026 年 7 月；150 次周度形成"
+      "2023 年 9 月至 2026 年 7 月。150 次周度形成"
     ],
     "status": [
       "Reconstructed proxy; substantial limits",
-      "重建代理；限制明显"
+      "重建代理。限制明显"
     ],
     "finding": [
       "The strict historical-status window produced four selections at every formation. The standalone concentrated sleeve was highly sensitive to trading costs and experienced severe drawdowns; common-week index comparisons showed only partial agreement.",
-      "严格历史状态窗口内每次形成均选出四只股票。这个高度集中子组合对交易成本十分敏感，回撤严重；共同周样本与指数只部分一致。"
+      "严格历史状态窗口内每次形成均选出四只股票。这个高度集中子组合对交易成本十分敏感，回撤严重。共同周样本与指数只部分一致。"
     ],
     "boundary": [
       "This is a reconstructed proxy, with revision safety false, current master-data inputs and incomplete limit-price execution modeling. Historical ST coverage ends in July; do not extend the strict sample through August or call it index replication.",
@@ -770,11 +770,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "Three-year studies; broad proxy and separate four-stock sleeve",
-      "三年研究；宽微盘代理与独立四只子组合"
+      "三年研究。宽微盘代理与独立四只子组合"
     ],
     "status": [
       "Source-reported; share with caveats",
-      "来源报告；附条件分享"
+      "来源报告。附条件分享"
     ],
     "finding": [
       "The broad proxy comparison and later unified four-stock sleeve replay are distinct studies. A shared weekly calendar, next-session open execution and portfolio-level costs permitted a combined-account comparison.",
@@ -782,7 +782,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "boundary": [
       "The combined outcome does not isolate a micro-cap premium. Reconstructed fundamentals may contain later revisions; large drawdowns, concentration and incomplete execution constraints prevent live-capacity or formal point-in-time claims.",
-      "混合结果不能单独识别微盘溢价。重建基本面可能包含后续修订；大回撤、集中度和不完整执行约束使其不能证明实盘容量或正式时点有效性。"
+      "混合结果不能单独识别微盘溢价。重建基本面可能包含后续修订。大回撤、集中度和不完整执行约束使其不能证明实盘容量或正式时点有效性。"
     ]
   },
   {
@@ -793,11 +793,11 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "scope": [
       "Cached notebook comparisons: 2025 and partial 2026",
-      "笔记本缓存对照：2025 年及部分 2026 年"
+      "笔记本缓存对照 2025 年及部分 2026 年"
     ],
     "status": [
       "Cached exploratory evidence; not rerun",
-      "缓存探索证据；未重跑"
+      "缓存探索证据。未重跑"
     ],
     "finding": [
       "A concentrated candidate pool could not consistently satisfy portfolio size and beta constraints. Widening the candidate pool improved feasibility, while hard exposure controls reduced historical selected-sample excess returns.",
@@ -805,7 +805,7 @@ export const microcapHistory: HistoryRecord[] = [
     ],
     "boundary": [
       "The notebook reads existing comparison files and retains cached outputs; execution counters do not authenticate a fresh run. Samples were reused, lineage was incomplete and missing-outcome weights were flagged. Neither independent micro-cap alpha nor untouched out-of-sample performance is established.",
-      "笔记本读取已有对照文件并保留缓存输出，执行计数不能认证新运行。样本已复用，来源链不完整，且标记了缺失收益权重问题；不能据此确立独立微盘超额收益或未查看的样本外业绩。"
+      "笔记本读取已有对照文件并保留缓存输出，执行计数不能认证新运行。样本已复用，来源链不完整，且标记了缺失收益权重问题。不能据此确立独立微盘超额收益或未查看的样本外业绩。"
     ]
   }
 ];
@@ -821,7 +821,7 @@ export const historyCopy = {
   ],
   "scope": [
     "The report and Markdown share all entries and seven numerical table families (56 source rows). Restricted research appears only as reviewed high-level findings. Untracked notebooks and unavailable external runs are not certified complete.",
-    "报告与 Markdown 共用全部条目及七组数值表（56 条来源记录）。受限研究仅展示经审查的概括性发现；未跟踪笔记本与不可得外部运行记录尚不能认定已全部覆盖。"
+    "报告与 Markdown 共用全部条目及七组数值表（56 条来源记录）。受限研究仅展示经审查的概括性发现。未跟踪笔记本与不可得外部运行记录尚不能认定已全部覆盖。"
   ],
   "action": [
     "Read all evidence and numerical tables →",

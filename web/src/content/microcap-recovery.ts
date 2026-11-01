@@ -11,7 +11,7 @@ export const recoveryCopy = {
   ],
   "scope": [
     "The private ledger retains exact source identities, hashes, search roots and exclusions. The public build reads only this reviewed summary. The recovery inventory itself did not rerun backtests or notebooks. Subsequent window checks are identified separately; no shared input or latest pointer was changed.",
-    "精确来源身份、哈希、检索根目录和排除项保留在私有账册。公开构建仅读取这份经审查摘要。找回盘点本身未重跑回测或笔记本；后续窗口检查单独标识，未修改共享输入或最新版本指针。"
+    "精确来源身份、哈希、检索根目录和排除项保留在私有账册。公开构建仅读取这份经审查摘要。找回盘点本身未重跑回测或笔记本。后续窗口检查单独标识，未修改共享输入或最新版本指针。"
   ]
 } as const;
 export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;finding:LocalText;boundary:LocalText}> = [
@@ -23,11 +23,11 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "status": [
       "Inspected; one family added",
-      "已检查；新增一组主题"
+      "已检查。新增一组主题"
     ],
     "finding": [
       "Seven source notebooks were found, all tracked in the two research repositories. Eight retained notebook files were also inspected: three are byte-identical copies, five are separate executed reviews. No additional untracked notebook was found in these two repositories.",
-      "两研究仓库找到七份来源笔记本，均已跟踪；另检查八份保留笔记本，其中三份是逐字节相同副本，五份是独立执行审阅稿。这两个仓库未发现额外未跟踪笔记本。"
+      "两研究仓库找到七份来源笔记本，均已跟踪。另检查八份保留笔记本，其中三份是逐字节相同副本，五份是独立执行审阅稿。这两个仓库未发现额外未跟踪笔记本。"
     ],
     "boundary": [
       "Cached size/beta feasibility evidence is now H35. Empty launcher notebooks, duplicate copies and synthetic calibration outputs do not count as independent empirical confirmations. No notebook was executed by this audit.",
@@ -42,15 +42,15 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "status": [
       "53 rows matched; 60-session metrics replayed",
-      "53 行已匹配；60 日窗口指标已回放"
+      "53 行已匹配。60 日窗口指标已回放"
     ],
     "finding": [
       "All 53 published rows in six table families match retained CSV fields at numerical tolerance 1e-10. This covers candidates, anatomy, capital, cadence, ledgers and the joint grid. Separately, 2,778 retained suspension-corrected daily observations reproduce all four published 60-session-window metrics after rounding: 5.334535% annual return, 0.330517 Sharpe, −52.389378% drawdown and 6.785942 annual turnover.",
-      "六组表中已公开的全部 53 行，均以 1e-10 数值容差匹配保留 CSV 字段，覆盖候选、分解、资金、频率、账本与联合矩阵。另找到 2,778 日的停牌修正后保留数据，回放后四项指标均与公开 60 日窗口的舍入值一致：年化 5.334535%、夏普 0.330517、回撤 −52.389378%、年换手 6.785942 倍。"
+      "六组表中已公开的全部 53 行，均以 1e-10 数值容差匹配保留 CSV 字段，覆盖候选、分解、资金、频率、账本与联合矩阵。另找到 2,778 日的停牌修正后保留数据，回放后四项指标均与公开 60 日窗口的舍入值一致。年化 5.334535%、夏普 0.330517、回撤 −52.389378%、年换手 6.785942 倍。"
     ],
     "boundary": [
       "The 20- and 120-session historical daily artifacts and a jointly bound three-window runtime remain missing. The 60-session metric replay establishes a retained daily source, not the original historical code, inputs or execution identity. A new current-inputs run matches the 20/60 rounded metrics but disagrees for 120 (4.22% versus 7.60% annual). It is a separate observation, not the missing historical binding; see the window recheck above.",
-      "20 日与 120 日窗口的历史逐日制品，以及统一绑定三个窗口的原始运行仍未找齐。60 日指标回放确立了保留的日度来源，不能确立历史代码、输入或执行身份。当前输入新运行匹配 20／60 日舍入指标，但 120 日不一致（年化 4.22% 对 7.60%）；它属于另一项观察，不能替代历史绑定，详见前面的窗口核对。"
+      "20 日与 120 日窗口的历史逐日制品，以及统一绑定三个窗口的原始运行仍未找齐。60 日指标回放确立了保留的日度来源，不能确立历史代码、输入或执行身份。当前输入新运行匹配 20／60 日舍入指标，但 120 日不一致（年化 4.22% 对 7.60%）。它属于另一项观察，不能替代历史绑定，详见前面的窗口核对。"
     ]
   },
   {
@@ -65,7 +65,7 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "finding": [
       "The dated bundle and its self-referencing metadata were located after following a documented directory rename. All full-sample summary figures agree with the rounded source note; this closes the earlier blanket “bundle unavailable” gap.",
-      "沿有记录的目录更名找到对应日期结果包及其自指元数据。全样本摘要指标均与来源笔记的四舍五入数值一致，因此此前笼统的“结果包不可得”已不再成立。"
+      "沿有记录的目录更名找到对应日期结果包及其自指元数据。全样本摘要指标均与来源笔记的四舍五入数值一致，因此此前笼统的结果包不可得已不再成立。"
     ],
     "boundary": [
       "The recent-window comparison receipt and immutable execution binding remain missing. Recovery of stored results does not reproduce performance, verify index membership or certify implementation.",
@@ -80,7 +80,7 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "status": [
       "Bundle recovered; provenance incomplete",
-      "结果包已找回；来源链不完整"
+      "结果包已找回。来源链不完整"
     ],
     "finding": [
       "The full named artifact set and declared factor, weighting, buffer and capacity grids were recovered. Unique-key and completeness checks pass for 112 factor, 80 buffer and 24 capacity rows. Four checkpoint CSVs match final files.",
@@ -99,11 +99,11 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "status": [
       "Hashes agree; valuation remains blocked",
-      "哈希一致；计价仍受阻"
+      "哈希一致。计价仍受阻"
     ],
     "finding": [
       "The stored readiness receipt and both target files match the hashes in the final verification receipt. Missing-mark table counts also agree with the stored audit.",
-      "存储的就绪收据及两份目标文件，与最终校验收据中的哈希一致；缺价表行数也与存储审计一致。"
+      "存储的就绪收据及两份目标文件，与最终校验收据中的哈希一致。缺价表行数也与存储审计一致。"
     ],
     "boundary": [
       "The receipts explicitly say no NAV was published. Suspension matches do not supply settlement prices or prove fills, and this audit did not verify a new engine installation or replay.",
@@ -126,7 +126,7 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "boundary": [
       "Similarly named later matrices cannot substitute. These are bounded negative findings, not proof of deletion. Resolution needs an exact artifact or a documented historical run/code/input binding; a new run must be labeled separately.",
-      "后来的同名矩阵不能代替。这是有范围的未发现记录，不是删除证明。解决需要精确制品或有记录的历史运行、代码、输入绑定；新运行必须另行标识。"
+      "后来的同名矩阵不能代替。这是有范围的未发现记录，不是删除证明。解决需要精确制品或有记录的历史运行、代码、输入绑定。新运行必须另行标识。"
     ]
   },
   {
@@ -141,11 +141,11 @@ export const recoveryRecords: Array<{id:string;title:LocalText;status:LocalText;
     ],
     "finding": [
       "Later executed notebooks preserve descriptive liquidity alignment and conditional execution-cost reviews. Synthetic calibration notebooks are separately identified as infrastructure evidence. The inspected cold-storage volume was available.",
-      "后续执行笔记本保留了描述性流动性对齐与条件执行成本审阅；合成校准笔记本单独标记为基础设施证据。已检查的冷存储卷可用。"
+      "后续执行笔记本保留了描述性流动性对齐与条件执行成本审阅。合成校准笔记本单独标记为基础设施证据。已检查的冷存储卷可用。"
     ],
     "boundary": [
       "Later aligned samples do not erase older source discrepancies. Numeric notebook outputs with unresolved redistribution permission remain local; cached execution and synthetic tests do not establish actual-order capacity.",
-      "后续对齐样本不能抹去旧来源差异。再分发许可未解决的笔记本数值继续留在本地；缓存执行和合成测试不能证明真实订单容量。"
+      "后续对齐样本不能抹去旧来源差异。再分发许可未解决的笔记本数值继续留在本地。缓存执行和合成测试不能证明真实订单容量。"
     ]
   }
 ];

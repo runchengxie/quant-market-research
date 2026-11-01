@@ -9,8 +9,8 @@ for (const width of [1280, 390]) {
     await expect(section).toContainText('Not admitted; zero completed windows');
     await expect(section).toContainText('Strict report-rounding checks still fail for 2018 and 2019');
     await page.goto('research/cashflow/?lang=zh-CN');
-    await expect(section).toContainText('两种参数不能互换');
-    await expect(section).toContainText('尚未准入，完成窗口为0');
+    await expect(section).toContainText('0.5%的费用会随计费基数变化');
+    await expect(section).toContainText('正式观察尚未开始，完成窗口为0');
     await expect(page.locator('body')).toHaveJSProperty('scrollWidth', width);
     const link = section.getByRole('link', { name: '已核查的派生汇总' });
     const response = await request.get((await link.getAttribute('href'))!);

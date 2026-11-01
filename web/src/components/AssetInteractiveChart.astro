@@ -1,0 +1,46 @@
+---
+import LocaleText from './LocaleText.astro';
+import {assetChartJSON} from '../lib/asset-interactive';
+import {assetChartCopy as c} from '../content/asset-chart-copy';
+import {assetNames} from '../content/asset-return-copy';
+import {masks} from '../content/asset-decision-copy';
+import returns from '../../public/data/asset_returns_reviewed.json';
+import robustness from '../../public/data/asset_robustness_reviewed.json';
+import decision from '../../public/data/asset_decision_reviewed.json';
+type Kind='returns'|'holding'|'endpoints'|'allocation'|'waiting'|'uncertainty'|'spending'|'stress'|'launch'|'etf';
+const {kind}=Astro.props as {kind:Kind};
+type Control={name:string;label:readonly [string,string];options:{value:string;label:readonly [string,string]}[];initial:string};
+const option=(value:string,label:readonly [string,string])=>({value,label});
+const controls:Control[]=[];
+if(kind==='holding')controls.push({name:'metric',label:c.metric,initial:'nominal',options:[option('nominal',c.nominal),option('real',c.real)]});
+if(kind==='endpoints'){
+ controls.push({name:'asset',label:c.asset,initial:'all_share',options:[...Object.entries(assetNames).map(([value,label])=>option(value,label)),option('gold',['Gold','黄金'])]});
+ const starts=[...new Set(robustness.sensitivity.all_share.grid.cells.map(x=>x.start))];
+ controls.push({name:'start',label:c.start,initial:starts[0],options:starts.map(value=>option(value,[value,value]))});
+}
+if(kind==='uncertainty')controls.push({name:'metric',label:c.metric,initial:'small_large_relative_cagr',options:['small_large_relative_cagr','annual_minus_hold_cagr','annual_minus_hold_drawdown'].map(value=>option(value,c[value as keyof typeof c]))});
+if(kind==='spending')controls.push({name:'metric',label:c.metric,initial:'shortfall_fraction',options:['shortfall_fraction','minimum_terminal_real_capital','median_terminal_real_capital','median_drawdown_real_sales'].map(value=>option(value,c[value as keyof typeof c]))});
+if(kind==='stress')controls.push({name:'mask',label:c.mask,initial:'equity_down_5pct',options:Object.entries(masks).map(([value,label])=>option(value,label))});
+if(kind==='launch')controls.push({name:'include_pre',label:c.include_pre,initial:'no',options:[option('no',c.no),option('yes',c.yes)]});
+if(kind==='etf')controls.push({name:'product',label:c.product,initial:'510300.SH',options:Object.keys(decision.products).map(value=>option(value,[value,value]))},{name:'cost',label:c.cost,initial:'50',options:[option('0',c.fee0),option('10',c.fee10),option('50',c.fee50)]});
+const pct=(x:number)=>`${(x*100).toFixed(2)}%`;
+const tableRows=kind==='endpoints'?Object.entries(robustness.sensitivity).flatMap(([asset,r])=>r.grid.cells.map(x=>({asset,start:x.start,product:'',cost:'',cells:[asset,x.start,x.end,String(x.months),pct(x.cagr)]}))):kind==='etf'?Object.entries(decision.products).flatMap(([product,r])=>r.round_trip_sensitivities.map(x=>({asset:'',start:'',product,cost:String(x.cost_bps_per_side),cells:[product,r.first_observed_month_end,String(r.gap.months),String(x.cost_bps_per_side),pct(r.gap.index_total_cagr),pct(r.gap.nav_cagr),pct(r.gap.market_total_proxy_cagr),pct(x.market_proxy_cagr_after_entry_exit)]}))):[];
+const headers:readonly (readonly [string,string])[]=kind==='endpoints'?[c.asset,c.start,c.end,c.months,c.annualReturn]:[c.product,c.start,c.months,c.perSideCost,c.reference,c.nav,c.market,c.afterCost];
+const payload={returns:kind==='returns'||kind==='holding'?{equities:returns.equities}:{},robustness:kind==='endpoints'?{sensitivity:robustness.sensitivity}:kind==='allocation'?{allocations:robustness.allocations}:kind==='waiting'?{waiting:Object.fromEntries(Object.entries(robustness.waiting).map(([id,r])=>[id,{current_underperformance_months:r.current_underperformance_months,longest_completed_underperformance_months:r.longest_completed_underperformance_months}]))}:{},decision:kind==='uncertainty'?{uncertainty:decision.uncertainty}:kind==='spending'?{spending:decision.spending}:kind==='stress'?{stress:decision.stress}:kind==='launch'?{launches:decision.launches}:kind==='etf'?{products:decision.products}:{}};
+---
+<figure class="asset-interactive" data-asset-chart={kind} aria-labelledby={`asset-chart-${kind}-title`}>
+<figcaption><h4 id={`asset-chart-${kind}-title`}><LocaleText text={c[kind]} as="span"/></h4><LocaleText text={c[`${kind}Help` as keyof typeof c]}/></figcaption>
+{controls.length>0&&<div class="asset-chart-controls">{controls.map(control=><label><LocaleText text={control.label} as="span"/><select data-asset-control={control.name} aria-label={control.label[0]} data-locale-aria data-aria-en={control.label[0]} data-aria-zh={control.label[1]}>{control.options.map(o=><option value={o.value} selected={o.value===control.initial} data-locale-text data-en={o.label[0]} data-zh={o.label[1]}>{o.label[0]}</option>)}</select></label>)}</div>}
+<div class="asset-chart-canvas" role="img" aria-label={c[kind][0]}></div>
+<p class="asset-chart-summary" data-asset-chart-summary aria-live="polite"><LocaleText text={c.loading} as="span"/></p>
+{tableRows.length>0&&<details class="asset-selected-table"><summary><LocaleText text={c.selectedValues} as="span"/></summary><div style="overflow-x:auto"><table><thead><tr>{headers.map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{tableRows.map(row=><tr data-asset-row={row.asset} data-start-row={row.start} data-product-row={row.product} data-cost-row={row.cost}>{row.cells.map((cell,i)=><td>{kind==='endpoints'&&i===0?<LocaleText text={cell==='gold'?['Gold','黄金']:assetNames[cell as keyof typeof assetNames]} as="span"/>:cell}</td>)}</tr>)}</tbody></table></div></details>}
+<script is:inline type="application/json" class="asset-chart-data" set:html={assetChartJSON(payload)}/>
+<noscript><p>{c.fallback[0]}</p><style>.asset-chart-canvas,.asset-chart-controls,.asset-chart-summary{display:none}</style></noscript>
+</figure>
+<script>
+import {mountAssetCharts} from './asset-interactive';
+mountAssetCharts();
+</script>
+<style>
+.asset-interactive{margin:1.25rem 0 1rem;min-width:0}.asset-interactive h4{font-size:1.05rem;margin:.5rem 0}.asset-chart-canvas{height:340px;width:100%;min-width:0}.asset-chart-controls{display:flex;flex-wrap:wrap;gap:.75rem 1.2rem;margin-block:.75rem}.asset-chart-controls label{display:flex;align-items:center;flex-wrap:wrap;gap:.45rem;max-width:100%}.asset-chart-controls select{max-width:100%;padding:.35rem}.asset-chart-summary{font-size:.9rem;color:var(--muted);overflow-wrap:anywhere}@media(max-width:480px){.asset-chart-canvas{height:380px}.asset-chart-controls{display:block}.asset-chart-controls label{margin:.65rem 0}}
+</style>

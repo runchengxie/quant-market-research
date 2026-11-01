@@ -1,7 +1,9 @@
 ---
 import { withBase } from "../lib/routes";
+import ReadingGuide from "./ReadingGuide.astro";
 ---
 
+<ReadingGuide/>
 <footer class="site-footer">
   <span data-locale-text data-en="Quant Market Research Archive · historical evidence first" data-zh="市场研究档案 · 历史证据优先">Quant Market Research Archive · historical evidence first</span>
   <a href={withBase("/docs/", import.meta.env.BASE_URL)} data-locale-text data-en="Research notes ↗" data-zh="研究说明 ↗">Research notes ↗</a>

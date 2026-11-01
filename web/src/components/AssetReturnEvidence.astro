@@ -1,5 +1,6 @@
 ---
 import LocaleText from './LocaleText.astro';
+import AssetInteractiveChart from './AssetInteractiveChart.astro';
 import { assetReturnCopy as c, assetNames } from '../content/asset-return-copy';
 import data from '../../public/data/asset_returns_reviewed.json';
 const percent=(v:number)=>new Intl.NumberFormat('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2}).format(v);
@@ -9,15 +10,17 @@ const sourceBase='https://github.com/runchengxie/quant-market-research/blob/main
 <section id="cashflow-long-run" aria-labelledby="cashflow-long-run-title" class="panel asset-return-evidence">
 <h2 id="cashflow-long-run-title" data-locale-text data-en={c.title[0]} data-zh={c.title[1]}>{c.title[0]}</h2>
 <LocaleText text={c.lead}/><LocaleText text={c.scope}/>
-<div class="asset-return-table"><table>
+<AssetInteractiveChart kind="returns"/>
+<details open data-asset-table="returns"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="asset-return-table"><table>
 <thead><tr>{[c.index,c.price,c.total,c.residual].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
 <tbody>{data.equities.map(row=><tr><th><LocaleText text={assetNames[row.id]} as="span"/></th><td>{percent(row.price_cagr)}</td><td>{percent(row.total_cagr)}</td><td>{percent(row.distribution_component_cagr)}</td></tr>)}</tbody>
-</table></div><LocaleText text={c.dividendNote}/>
+</table></div></details><LocaleText text={c.dividendNote}/>
 <LocaleText text={c.holding} as="h3"/>
-<div class="asset-return-table"><table>
+<AssetInteractiveChart kind="holding"/>
+<details open data-asset-table="holding"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="asset-return-table"><table>
 <thead><tr>{[c.index,c.nominal,c.real,c.worst].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
 <tbody>{data.equities.map(row=>{const h=row.horizons.find(h=>h.months===120)!;return <tr><th><LocaleText text={assetNames[row.id]} as="span"/></th><td>{percent(h.nominal_loss_fraction!)}</td><td>{percent(h.real_loss_fraction!)}</td><td>{percent(h.worst_annualized_return!)}</td></tr>;})}</tbody>
-</table></div><LocaleText text={c.holdingNote}/>
+</table></div></details><LocaleText text={c.holdingNote}/>
 <LocaleText text={c.stress} as="h3"/><LocaleText text={c.stressScope}/>
 <div class="asset-return-table"><table>
 <thead><tr>{[c.asset,c.correlation,c.positive,c.stressWorst].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>

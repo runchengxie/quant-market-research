@@ -69,7 +69,7 @@ const englishSnapshotCopy: Record<string, { source: string; caveats: string[] }>
 };
 
 export function localizeSnapshotCard(card: SnapshotCard, locale: "en-US" | "zh-CN"): SnapshotCard {
-  if (locale === "zh-CN") return card.id === "barra" ? { ...card, source: "历史市场风格因子结果包", caveats: ["这是历史市场风格重建；点时财务数据与样本外验证仍不完整。"] } : card;
+  if (locale === "zh-CN") return card.id === "barra" ? { ...card, source: "历史市场风格因子结果包", caveats: ["这是历史市场风格重建。点时财务数据与样本外验证仍不完整。"] } : card;
   const copy = englishSnapshotCopy[card.id];
   if (!copy) return card;
   return {

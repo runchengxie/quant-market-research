@@ -16,7 +16,7 @@ test("theme is applied before the page paints and can be changed from the shell"
   assert.match(themeToggle, /persistThemeChoice/);
   assert.match(themeToggle, /Theme: \$\{label\}/);
   assert.match(themeToggle, /document\.documentElement\.lang === "zh-CN"/);
-  assert.match(themeToggle, /主题：\$\{label\}/);
+  assert.match(themeToggle, /主题 \$\{label\}/);
 });
 
 test("dark mode defines semantic palette tokens", () => {

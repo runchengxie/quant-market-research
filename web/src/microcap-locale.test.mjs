@@ -29,12 +29,18 @@ test('English micro-cap caveat presentation translates every published source no
   }
 });
 
-test('Chinese micro-cap caveat presentation preserves source text', () => {
+test('Chinese micro-cap caveat presentation preserves source records and pricing boundaries', () => {
   const previousDocument = globalThis.document;
   globalThis.document = {documentElement: {lang: 'zh-CN'}};
   try {
     const notes = data('../public/data/microcap_repair_summary.json').caveats;
-    assert.equal(sourceNotes(notes), notes.join(' '));
+    const original=JSON.stringify(notes);
+    const rendered=sourceNotes(notes);
+    assert.match(rendered,/strict严格计价/);
+    assert.match(rendered,/敏感性比较/);
+    assert.match(rendered,/suspend_d/);
+    assert.doesNotMatch(rendered,/；/);
+    assert.equal(JSON.stringify(notes),original);
   } finally {
     if (previousDocument === undefined) delete globalThis.document;
     else globalThis.document = previousDocument;

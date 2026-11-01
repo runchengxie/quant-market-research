@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import {valuationCaseCopy} from '../../content/valuation-case-copy';
 import { ResourceState, useJson } from './research-shared';
 import type { Round2Evidence } from '../../lib/valuation-round2';
 import { round2Copy as c } from '../../content/valuation-round2-copy';
@@ -89,12 +90,12 @@ export function ValuationRound2({ english }: { english: boolean }) {
   <section className="panel" id="valuation-case-progress" data-testid="round2-case-progress"><span className={'valuation-stage valuation-stage-'+(data.case_progress?'checked':'pending')}>{t(data.case_progress?'checked':'pending')}</span><h2>{t('cases')}</h2><p>{t('cases_note')}</p>
    {data.case_progress ? <><p>{t('case_amount_note')}</p><div className="callout valuation-coverage-warning" role="note" data-testid="case-revision-warning">{t('case_revision_warning')}</div>
     <div className="valuation-evidence-grid">{data.case_progress.cases.map(row=><article key={row.case_key} data-testid={'case-'+row.case_key}>
-     <h3>{row.company_label[lang]}</h3><p>{row.facts[0][lang]}</p>
-     {row.case_key==='pe_unresolved_reference' && <p className="callout valuation-coverage-warning">{row.facts[2][lang]}</p>}
+     <h3>{row.company_label[lang]}</h3><p>{(valuationCaseCopy[row.case_key as keyof typeof valuationCaseCopy]?.facts??row.facts)[0][lang]}</p>
+     {row.case_key==='pe_unresolved_reference' && <p className="callout valuation-coverage-warning">{(valuationCaseCopy[row.case_key as keyof typeof valuationCaseCopy]?.facts??row.facts)[2][lang]}</p>}
      <dl className="valuation-formulas"><div><dt>{t('case_gap')}</dt><dd>{num(row.gap_contribution_initial,true)}</dd></div><div><dt>{t('case_reference')}</dt><dd>{num(row.unresolved_reference_initial,true)}</dd></div><div><dt>{t('focal_dates')}</dt><dd>{row.formation_date} / {row.entry_date} / {row.exit_date??t('no_exit')}</dd></div></dl>
-     <details className="valuation-detail"><summary>{t('case_detail')}</summary>{row.facts.slice(1).map((fact,i)=><p key={i}>{fact[lang]}</p>)}
+     <details className="valuation-detail"><summary>{t('case_detail')}</summary>{(valuationCaseCopy[row.case_key as keyof typeof valuationCaseCopy]?.facts??row.facts).slice(1).map((fact,i)=><p key={i}>{fact[lang]}</p>)}
       <p>{t('report_dates')} · {row.financial_report_period} / {row.official_publication_date}</p><p>{t('historical_ticker')} · {row.historical_ticker}</p>
-      <h4>{t('open_gaps')}</h4>{row.gaps.map((gap,i)=><p key={i}>{gap[lang]}</p>)}<h4>{t('primary_sources')}</h4><ul>{row.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{english?t(source.evidence_role as keyof typeof c):source.title_zh}</a> · {source.publication_date}</li>)}</ul>
+      <h4>{t('open_gaps')}</h4>{(valuationCaseCopy[row.case_key as keyof typeof valuationCaseCopy]?.gaps??row.gaps).map((gap,i)=><p key={i}>{gap[lang]}</p>)}<h4>{t('primary_sources')}</h4><ul>{row.sources.map(source=><li key={source.url}><a href={source.url} target="_blank" rel="noreferrer">{english?t(source.evidence_role as keyof typeof c):source.title_zh}</a> · {source.publication_date}</li>)}</ul>
      </details>
     </article>)}</div></> : <p>{t('waiting')}</p>}
   </section>

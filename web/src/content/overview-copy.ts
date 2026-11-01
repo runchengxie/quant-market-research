@@ -9,7 +9,7 @@ export const overviewCopy = {
   ],
   "featuredLabel": [
     "Featured study: 18-year A-share Market Style Analysis",
-    "重点研究：18 年 A 股市场风格分析"
+    "重点研究 18 年 A 股市场风格分析"
   ],
   "featuredKicker": [
     "Featured study · market style factors",
@@ -17,7 +17,7 @@ export const overviewCopy = {
   ],
   "featuredTitle": [
     "18-year A-share Market Style Analysis: returns, stability, and market regimes",
-    "18 年 A 股市场风格分析：收益、稳定性与市场阶段"
+    "18 年 A 股市场风格分析 收益、稳定性与市场阶段"
   ],
   "featuredConclusion": [
     "These historical comparisons show return differences between groups of stocks, but do not prove that the factors predict future returns. Historical financial-data availability, newer periods not used in the research, and actual trading results still need checking.",
@@ -65,7 +65,7 @@ export const overviewCopy = {
   ],
   "libraryDescription": [
     "Start with each study’s finding and sample, then open the topic to check the numbers. Full calculation rules, sources, and audit notes remain in the documentation.",
-    "先浏览每项研究的结论和证据范围，再看结论对应的时间段与股票范围。打开专题后可以核对图表和数字；详细方法与数据口径收录在文档区。"
+    "先浏览每项研究的结论和证据范围，再看结论对应的时间段与股票范围。打开专题后可以核对图表和数字。详细方法与数据口径收录在文档区。"
   ],
   "progressLabel": [
     "Research progress by topic",

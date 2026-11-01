@@ -57,6 +57,7 @@ const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
     <div class="workbench-meta"><span data-locale-text data-en="Historical sample" data-zh="历史样本">Historical sample</span><strong>{snapshot.coverage_start ?? "Date pending"} — {snapshot.coverage_end ?? "Date pending"}</strong><span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span></div>
     <p class="workbench-boundary" data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</p>
   </>}
+  {!compact && <p class="reading-guide-link"><a href="#reader-glossary" data-locale-text data-en="Explain the research terms" data-zh="查看常用词解释">Explain the research terms</a></p>}
   <div id="topic-content"><slot /></div>
   {<details id="research-method" class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
 </SiteLayout>

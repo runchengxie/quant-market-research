@@ -123,7 +123,7 @@ export const executionCostCopy = {
   ],
   "auditCounts": [
     "100,236 sampled snapshots across 427 selected security-days; 98,072 valid two-sided books across 426 security-days. The 2,164 exclusions are one-sided books. Date and clock checks cover all source rows; detailed book checks cover only sampled snapshots.",
-    "427个选中证券日共选出100,236条分钟快照；其中426个证券日的98,072条为有效双边盘口，另有2,164条单边盘口被排除。日期与时钟检查覆盖全部源记录，详细盘口检查仅覆盖抽样快照。"
+    "427个选中证券日共选出100,236条分钟快照。其中426个证券日的98,072条为有效双边盘口，另有2,164条单边盘口被排除。日期与时钟检查覆盖全部源记录，详细盘口检查仅覆盖抽样快照。"
   ],
   "auditClock": [
     "Some lake copies encode time_ms as milliseconds relative to 09:30. A renamed TickTime is not automatically an HHMMSSmmm clock. This run used sources with explicit native SecuCode and TickTime columns and rejected mere aliases.",
@@ -131,7 +131,7 @@ export const executionCostCopy = {
   ],
   "auditFiltering": [
     "The earlier 2026-04-24 canonical pilot has 403,373 fewer snapshot rows than its source. Empty-level filtering can alter the sampled population; this study therefore retained the source rows and logged exclusions explicitly. Original files and published aliases were unchanged.",
-    "已有2026-04-24标准层pilot比源文件少403,373条快照。空档位过滤可能改变样本分布，因此本次保留源记录并明确记录剔除原因；原始文件和发布别名保持不变。"
+    "已有2026-04-24标准层pilot比源文件少403,373条快照。空档位过滤可能改变样本分布，因此本次保留源记录并明确记录剔除原因。原始文件和发布别名保持不变。"
   ],
   "auditNext": [
     "Aggregate publication permission was confirmed by the owner on 2026-10-12. Next: add point-in-time eligibility and lagged liquidity groups, and expand preselected dates before calibration.",
@@ -275,7 +275,7 @@ export const executionCostCopy = {
   ],
   "pilotConclusion": [
     "At CNY 100k, median static buy/sell costs are about 8.5 bp in this sample. At CNY 1m, full ten-level coverage falls to about 64%/67%.",
-    "本样本中，10万元订单的静态买卖成本中位数约8.5bp；到100万元，十档完整覆盖率降至约64%/67%。"
+    "本样本中，10万元订单的静态买卖成本中位数约8.5bp。到100万元，十档完整覆盖率降至约64%/67%。"
   ],
   "pilotScope": [
     "Sample: 2026-04-16, 2026-04-24 and 2026-07-20; 98,072 valid two-sided security-minute books from a deterministic Shanghai/Shenzhen subset. These are descriptive static measurements; actual-order and dynamic-impact calibration remain incomplete.",
