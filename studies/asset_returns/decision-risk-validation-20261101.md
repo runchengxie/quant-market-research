@@ -1,6 +1,6 @@
 # Decision-risk evidence validation
 
-Base revision `7b8ab68b78e1c495604d19b3788fedb82a9619c3`; calculation/reader implementation revision `f15880ab29be279039149623a200345ff1b3513e`. Subsequent validation prose does not alter calculation bytes. This extends the existing asset-return topic; earlier artifacts and the prospective protocol remain unchanged.
+Base revision `7b8ab68b78e1c495604d19b3788fedb82a9619c3`; calculation/reader implementation revision `f15880ab29be279039149623a200345ff1b3513e`. Subsequent validation prose and the legacy browser-selector correction do not alter calculation bytes. This extends the existing asset-return topic; earlier artifacts and the prospective protocol remain unchanged.
 
 ## Retained evidence and exact scopes
 
@@ -15,6 +15,7 @@ Base revision `7b8ab68b78e1c495604d19b3788fedb82a9619c3`; calculation/reader imp
 - Focused study regressions: **9 passed**, covering paired block reproducibility, policy parity with the existing allocation engine, funded cash, CPI-indexed demand, shortfall accounting, sequence effects with withdrawals, small stress samples, censored/tied-peak recovery, publication boundary, per-side fees, evidence-stage guard and projection boundary. Several assertions share one test case.
 - Ruff and `git diff --check`: passed.
 - Web unit suite: **318 passed**. Production Astro build, reviewed-file hash lock and public static verification passed; built bytes match all four public datasets.
+- Initial complete Chromium run: 282 passed and 4 legacy table-count assertions failed after the new child tables were added. The selector was scoped to the original module’s five tables; all 9 affected old/new evidence cases then passed, including 320px and no-JavaScript coverage. Full suite reruns/CI remain required release gates.
 - The two new Chromium cases passed at1280px and390px, including both locales, scenario controls, nine visible rows per selection, public download schema and viewport width. Complete browser/required remote checks are executed as release gates; final results live in the PR and external closeout rather than being inferred from this record.
 - Independent review matched the public projection, full-result digest, every calculation hash and register. A separate asset-level simulator reproduced **all11,664 spending windows**, including terminal real capital, paid/unmet demand and first-shortfall month. It found one important prose correction: relative geometric CAGR depends on sampled composition/era, not on reordering identical paired observations. Both opening paragraphs were corrected; the implementation already used the correct compounding. No other material issue was found.
 
