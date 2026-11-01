@@ -1,6 +1,6 @@
 # Uncertainty, spending and investability
 
-The historical small-cap advantage and rebalancing benefits are sensitive to return order. Gold can fall during equity stress, funded cash changes exposure as well as sale timing, and published index history should be distinguished from back-calculated history. These are historical experiments through December 2025, not future loss probabilities or prospective observations.
+The small-cap conclusion depends on the sampled history and era; rebalancing and spending outcomes also depend on return order. Gold can fall during equity stress, funded cash changes exposure as well as sale timing, and published index history should be distinguished from back-calculated history. These are historical experiments through December 2025, not future loss probabilities or prospective observations.
 
 ## Fixed experiments and findings
 
