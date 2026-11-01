@@ -10,7 +10,7 @@ export const cashflowSections: readonly TopicSection[] = [
 ];
 
 export const cashflowTopicCopy = {
-  recovery: ['Recovery means returning to a prior investment high. Completed and ongoing declines are reported separately; an ongoing interval is a lower bound (right-censored).', '回本指投资回到此前高点。已经回本和截至样本末仍未回本的区间分开记录；尚未回本的观察时长只是下界（右删失）。'],
+  recovery: ['Recovery means returning to a prior investment high. Completed and ongoing declines are reported separately; an ongoing interval is a lower bound (right-censored).', '回本指投资回到此前高点。已经回本和截至样本末仍未回本的区间分开记录。尚未回本的观察时长只是下界（右删失）。'],
 } as const;
 
 export const cashflowIndexNames: Record<string, string> = {

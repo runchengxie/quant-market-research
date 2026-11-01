@@ -12,7 +12,7 @@ const base=import.meta.env.BASE_URL.replace(/\/$/,'');
  <p>{t('intro')}</p>
  <section aria-labelledby={`agenda-forward-${locale}`}><h3 id={`agenda-forward-${locale}`}>{t('forwardTitle')}</h3>
  <p>{t('forward')}</p><p>{t('forwardRules')}</p><p>{t('forwardTiming')}</p>
- <p class="finding">{en?'New eligible completed months: ':'新样本已完成合格月份：'}<strong>{agenda.prospective.new_cohort_completed_windows}</strong>{en?'. Legacy receipt: one complete and one pending window, source as-of September 15, 2026.': '。旧收据：一个已完成、一个待定区间，来源截至 2026-09-15。'}</p></section>
+ <p class="finding">{en?'New eligible completed months: ':'新样本已完成合格月份 '}<strong>{agenda.prospective.new_cohort_completed_windows}</strong>{en?'. Legacy receipt: one complete and one pending window, source as-of September 15, 2026.': '。旧收据 一个已完成、一个待定区间，来源截至 2026-09-15。'}</p></section>
  <section aria-labelledby={`agenda-failure-${locale}`}><h3 id={`agenda-failure-${locale}`}>{t('failureTitle')}</h3><p>{t('failure')}</p><p>{t('failureBoundary')}</p>
  <div class="agenda-chart" set:html={buildFailureSvg(locale)}/>
  <p><a href={`${base}/downloads/microcap-failure-atlas.${locale}.svg`} download>{en?'Download failure chart':'下载失败案例图'}</a></p>
@@ -22,7 +22,7 @@ const base=import.meta.env.BASE_URL.replace(/\/$/,'');
  <div class="agenda-chart" set:html={buildSizeSvg(locale)}/><p><a href={`${base}/downloads/microcap-size-liquidity.${locale}.svg`} download>{en?'Download conditional-spread chart':'下载条件收益差图'}</a></p>
  <details><summary>{en?'All universes, support comparisons and intervals':'完整股票池、样本对照和区间'}</summary><div class="agenda-table" tabindex="0" role="region" aria-label={t('sizeTitle')}><table><caption>{t('sizeTitle')}</caption><thead><tr>{sizeTable(locale).headers.map(h=><th scope="col">{h}</th>)}</tr></thead><tbody>{sizeTable(locale).rows.map(row=><tr>{row.map((value,j)=>j===0?<th scope="row">{value}</th>:<td>{value}</td>)}</tr>)}</tbody></table></div></details></section>
  <section aria-labelledby={`agenda-claims-${locale}`}><h3 id={`agenda-claims-${locale}`}>{t('claimsTitle')}</h3><p>{t('claimsIntro')}</p>
- {agenda.claims.map(row=>{const copy=claimTranslations[row.id];return <details class="claim"><summary>{row.id} · {tAgenda(copy.title,locale)}</summary><p>{en?'Current stage: ':'当前证据：'}{tAgenda(claimStages[row.stage],locale)}</p><dl><dt>{en?'Stronger evidence':'升级条件'}</dt><dd>{tAgenda(copy.upgrade,locale)}</dd><dt>{en?'Invalidating evidence':'失效证据'}</dt><dd>{tAgenda(copy.invalidating,locale)}</dd><dt>{en?'Reopen when':'复查触发'}</dt><dd>{tAgenda(copy.trigger,locale)}</dd></dl></details>;})}</section>
+ {agenda.claims.map(row=>{const copy=claimTranslations[row.id];return <details class="claim"><summary>{row.id} · {tAgenda(copy.title,locale)}</summary><p>{en?'Current stage: ':'当前证据 '}{tAgenda(claimStages[row.stage],locale)}</p><dl><dt>{en?'Stronger evidence':'升级条件'}</dt><dd>{tAgenda(copy.upgrade,locale)}</dd><dt>{en?'Invalidating evidence':'失效证据'}</dt><dd>{tAgenda(copy.invalidating,locale)}</dd><dt>{en?'Reopen when':'复查触发'}</dt><dd>{tAgenda(copy.trigger,locale)}</dd></dl></details>;})}</section>
  <p>{t('sourceBoundary')}</p><p><a href={`${base}/data/microcap_evidence_agenda.json`} download>{t('downloads')}</a> · <a href={`${base}/data/microcap_size_liquidity_review.json`} download>{en?'Common-support aggregates':'共同样本汇总'}</a></p>
  </Container>;
 })}

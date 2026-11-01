@@ -1,0 +1,6 @@
+---
+import LocaleText from './LocaleText.astro';
+import {readingGuideCopy as c,readingTerms} from '../content/reading-guide-copy';
+---
+<details id="reader-glossary" class="reader-glossary"><summary><LocaleText text={c.title} as="span"/></summary><LocaleText text={c.intro}/><dl>{readingTerms.map(term=><div><dt><LocaleText text={term.name} as="span"/></dt><dd><LocaleText text={term.meaning} as="span"/></dd></div>)}</dl></details>
+<style>.reader-glossary{margin-block:1.2rem;text-align:left;max-width:76ch}.reader-glossary dl{display:grid;gap:.8rem}.reader-glossary dt{font-weight:600}.reader-glossary dd{margin:.25rem 0;color:var(--muted)}.reader-glossary summary{cursor:pointer}</style>

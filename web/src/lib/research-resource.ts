@@ -68,7 +68,7 @@ export function createResource<T>(url: string | null, parse: (text: string) => T
     timer = setTimeout(() => {
       if (request !== generation) return;
       cancel();
-      publish({ data: snapshot.data, error: `${url}：请求超时（15 秒），请重试`, loading: false });
+      publish({ data: snapshot.data, error: `${url} 请求超时（15 秒），请重试`, loading: false });
     }, 15_000);
     void (async () => {
       try {

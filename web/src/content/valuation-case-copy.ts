@@ -3,7 +3,7 @@ export const valuationCaseCopy = {
   company:['Jiamei Packaging','嘉美包装'],
   facts:[
    ['A positive contributor to PB Q1 minus Q2, concentrated in the batch formed on 28 November 2025 and held from 1 December to 5 January 2026.','它给 PB Q1 减 Q2 提供正贡献，主要集中在 2025 年 11 月 28 日形成、12 月 1 日买入、2026 年 1 月 5 日退出的批次。'],
-   ['The Q3 report was published before formation. Checked earnings agree with the retained snapshot; nonrecurring items account for about 10% of reported-period parent profit. This single check does not certify all historical vintages.','三季报在形成前公布，核对的利润数与留存快照一致；非经常性损益约占当期归母利润 10%。这次核对不能认证全部历史版本。'],
+   ['The Q3 report was published before formation. Checked earnings agree with the retained snapshot; nonrecurring items account for about 10% of reported-period parent profit. This single check does not certify all historical vintages.','三季报在形成前公布，核对的利润数与留存快照一致。非经常性损益约占当期归母利润 10%。这次核对不能认证全部历史版本。'],
    ['A 17 December issuer notice discusses a proposed control change after formation and entry. It is subsequent case context, with no causal or formation-time knowledge claim.','12 月 17 日发行人公告涉及拟发生的控制权变更，晚于形成和买入。它只作后续案例背景，不能据此认定因果或倒填选股信息。'],
   ],
   gaps:[['All announcement versions across the 36 formations remain unchecked; daily bars do not prove fills.','36 个形成期的全部公告版本尚未逐一核对，日线也不能证明实际成交。']],
@@ -11,7 +11,7 @@ export const valuationCaseCopy = {
  pb_negative_gap: {
   company:['Kaihua Materials','凯华材料'],
   facts:[
-   ['The negative gap comes from the comparator Q2 making more profit, rather than a loss in this stock. It is concentrated in the October 2023 formation batch.','负差来自对照 Q2 赚得更多，该股票本身并未亏损；差额集中在 2023 年 10 月形成的批次。'],
+   ['The negative gap comes from the comparator Q2 making more profit, rather than a loss in this stock. It is concentrated in the October 2023 formation batch.','负差来自对照 Q2 赚得更多，该股票本身并未亏损。差额集中在 2023 年 10 月形成的批次。'],
    ['The original quarterly report confirms deducted profit slightly above ordinary parent profit. One-off profit is therefore not an established explanation for this gap.','原始季报显示扣非利润略高于归母利润，不能把这项差额归因于一次性利润。'],
    ['The 30 November resumption notice reports extreme recent price moves and a small external float, while stating no major change in the main business. Historical filings use ticker 831526; the research uses a later unified identifier.','11 月 30 日复牌公告披露短期极端涨幅、外部流通盘较小，并称主营业务没有重大变化。当期公告代码为 831526，研究采用后来的统一标识。'],
   ],

@@ -66,7 +66,7 @@ export function HotspotSensitivityChart({ rows }: { rows: HotspotRow[] }) {
       </select>
     </label>
     <ResearchBarChart rows={chartRows.map(row => ({ cost: row.cost, value: String(row.value) }))} labelKey="cost" valueKey="value" color="#317c72" formatter={value => measure === 'uplift' ? `${value.toFixed(3)} ${ui('个百分点', 'pp')}` : `${value.toFixed(0)} / 4`} />
-    <p className="panel-note">{ui('均值是四个独立五日事件的等权平均增量；正向事件数表示叠加组收益高于未叠加组的事件个数。两项指标单位不同，因此用上方菜单切换。', 'The mean is the equal-weight average paired uplift across four isolated five-session events. Positive-event count records how often the overlay arm outperformed its paired no-overlay arm. The measures use different units, so choose one above.')}</p>
+    <p className="panel-note">{ui('均值是四个独立五日事件的等权平均增量。正向事件数表示叠加组收益高于未叠加组的事件个数。两项指标单位不同，因此用上方菜单切换。', 'The mean is the equal-weight average paired uplift across four isolated five-session events. Positive-event count records how often the overlay arm outperformed its paired no-overlay arm. The measures use different units, so choose one above.')}</p>
     <SimpleTable rows={tableRows} columns={[["cost", ui('单边成本', 'One-way cost')], ["uplift", ui('平均增量', 'Mean uplift')], ["positive", ui('正向事件', 'Positive events')]]} />
   </section>;
 }

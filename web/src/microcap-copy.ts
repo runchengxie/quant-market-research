@@ -24,6 +24,6 @@ export const sourceNoteTranslationsForAudit = sourceNoteTranslations;
 
 export function sourceNotes(notes: string[], locale = typeof document === "undefined" || document.documentElement.lang !== "zh-CN" ? "en-US" : "zh-CN") {
   return locale === "zh-CN"
-    ? notes.join(" ")
+    ? notes.map(note => note === "strict 是唯一主口径；其余均为敏感性，不用于替换网页主曲线。" ? "主图采用strict严格计价口径。其他假设分别保留为敏感性比较结果。" : note).join(" ")
     : notes.map((note) => sourceNoteTranslations[note] ?? "An untranslated research note is available in the Chinese source.").join(" ");
 }

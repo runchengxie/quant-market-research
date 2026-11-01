@@ -97,7 +97,7 @@ function HistoricalMicrocapSection() {
     return (
       <div className="callout compact">
         <span className="section-kicker">{t("2008–2014 历史补充", "2008–2014 historical supplement")}</span>
-        <p>{t("历史补充汇总暂时无法加载：", "Historical supplement failed to load: ")}{error}</p>
+        <p>{t("历史补充汇总暂时无法加载 ", "Historical supplement failed to load: ")}{error}</p>
       </div>
     );
   if (!data) return <Loading />;
@@ -148,7 +148,7 @@ export function SmallcapTurnoverSection() {
     return (
       <div className="callout compact">
         <span className="section-kicker">{t("小微盘成交额研究", "Small-cap turnover research")}</span>
-        <p>{t("网页汇总暂时无法加载：", "Web summary failed to load: ")}{error}</p>
+        <p>{t("网页汇总暂时无法加载 ", "Web summary failed to load: ")}{error}</p>
       </div>
     );
   if (!data) return <Loading />;
@@ -339,19 +339,19 @@ function MicrocapMethodSection() {
       />
       <div className="research-grid">
         <ResearchCard
-          title={t("第一步：准备数据", "Step 1: Prepare the data")}
+          title={t("第一步 准备数据", "Step 1: Prepare the data")}
           text={t("使用 Tushare（行情数据接口）的 A 股日线、估值和复权价格。另取停牌记录与 ST（特别处理股票）记录，用来核对没有报价的日期。行情数据目前覆盖到 2026 年 9 月 17 日。", "Use Tushare A-share daily prices, valuation data, and adjusted prices. Suspension and special-treatment records are also used to investigate dates without quotes. Market data currently runs through 2026-09-17.")}
         />
         <ResearchCard
-          title={t("第二步：选出股票", "Step 2: Select stocks")}
+          title={t("第二步 选出股票", "Step 2: Select stocks")}
           text={t("在每个交易日收盘后，按总市值从小到大排序，选出最小的 400 只股票。剔除当日处于 ST、停牌状态，或价格、市值无效的股票。", "After each market close, rank stocks by total market value and select the 400 smallest. Exclude stocks marked special-treatment or suspended that day, as well as invalid prices or market values.")}
         />
         <ResearchCard
-          title={t("第三步：计算收益", "Step 3: Calculate returns")}
+          title={t("第三步 计算收益", "Step 3: Calculate returns")}
           text={t("组合在下一交易日收盘时成交，再持有到下一个交易日收盘。400 只股票等权计算组合收益。最后一个有行情的交易日没有下一交易日，因此不计算它的收益。", "The portfolio trades at the next trading-day close and is held until the following close. Returns are equal-weighted across 400 stocks. No return is calculated for the final observed trading day because there is no next session.")}
         />
         <ResearchCard
-          title={t("第四步：核对缺口", "Step 4: Audit missing prices")}
+          title={t("第四步 核对缺口", "Step 4: Audit missing prices")}
           text={t("如果选中的股票在下一交易日没有报价，就查看它之后何时恢复报价，以及这段时间是否有停牌或 ST 记录。查不到直接证据的缺口继续保留，避免把数据问题当成投资结果。", "When a selected stock has no quote on the next trading day, check when quotes resume and whether suspension or special-treatment records exist in the gap. Leave gaps without direct evidence unresolved rather than treating data problems as investment outcomes.")}
         />
       </div>
@@ -526,7 +526,7 @@ export function MicrocapPageContent({ includeMethod = true }: { includeMethod?: 
       </div>
       <div className="panel">
         <div className="panel-title">
-          <h3>{t("规则重建净值（数据来源：Tushare）", "Rule-reconstructed NAV (source: Tushare)")}</h3>
+          <h3>{t("规则重建净值（数据来源 Tushare）", "Rule-reconstructed NAV (source: Tushare)")}</h3>
           <span className="tag warm">{t("2015年以来 · 可悬停、缩放", "Since 2015 · hover and zoom")}</span>
         </div>
         <p className="panel-note">

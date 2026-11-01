@@ -7,6 +7,6 @@ export const conclusionCopy = {
     microcap: { en: 'Rebuilt portfolios of the smallest stocks show large losses and long waits to recover old highs. Some prices and delisting outcomes are missing, so these historical results do not yet show what a real account could have earned.', zh: '按规则重建的小市值组合曾大幅下跌，也有多年没有回到前高。部分价格和退市结果缺失，因此这些历史结果还不能说明真实账户能赚多少。' },
     barra: { en: 'Nineteen archived factor series differ widely and overlap. Their history and tradability still need verification.', zh: '19 条历史因子序列表现各异，也有部分重合。历史链路和交易可行性仍待核验。' },
     indices: { en: 'The index and ETF charts show different historical market paths. Their dates, fees, and treatment of dividends differ, so the numbers are not directly comparable investment results.', zh: '指数和 ETF 图表展示了不同的历史走势。日期范围、费用和分红处理方式可能不同，因此这些数字不能直接当成同一口径的投资结果比较。' },
-    liquidity: { en: 'Trading-value comparisons show how much the sampled stocks traded and how complete the data is. They do not yet tell us how large an order could be filled or what trading would cost.', zh: '成交额对照说明样本股票交易有多活跃、数据覆盖有多完整；它还不能回答大额订单能否成交或实际交易要花多少钱。' },
+    liquidity: { en: 'Trading-value comparisons show how much the sampled stocks traded and how complete the data is. They do not yet tell us how large an order could be filled or what trading would cost.', zh: '成交额对照说明样本股票交易有多活跃、数据覆盖有多完整。它还不能回答大额订单能否成交或实际交易要花多少钱。' },
   },
 } as const;

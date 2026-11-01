@@ -13,6 +13,13 @@ test('English liquidity caveats have complete translations and do not mutate sou
   assert.deepEqual(summary.caveats, original);
 });
 
-test('Chinese liquidity caveats preserve the source wording', () => {
-  assert.equal(liquidityCaveats(summary.caveats, 'zh-CN'), summary.caveats.join(' '));
+test('Chinese liquidity explanations preserve the source data and its limits', () => {
+  const original = [...summary.caveats];
+  const rendered = liquidityCaveats(summary.caveats, 'zh-CN');
+  assert.deepEqual(summary.caveats, original);
+  assert.match(rendered, /Yahoo历史股数/);
+  assert.match(rendered, /覆盖仍不完整/);
+  assert.match(rendered, /2015年/);
+  assert.match(rendered, /2020年/);
+  assert.doesNotMatch(rendered, /；|不是.*而是/);
 });

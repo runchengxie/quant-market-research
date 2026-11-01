@@ -65,7 +65,7 @@ test("研究总览使用三个研究域和小微盘子主题", () => {
   assert.match(site, /18 年 A 股市场风格分析/);
   assert.match(site, /style-factors-18y/);
   assert.match(source, /ResearchBarChart/);
-  assert.match(source, /稳定性观察：按月与按阶段/);
+  assert.match(source, /稳定性观察 按月与按阶段/);
   assert.match(source, /区块自助法/);
   assert.match(source, /2015–2019/);
   assert.match(source, /搜索表格内容/);

@@ -13,7 +13,7 @@ test('canonical documentation switches the full body and contents between langua
   await expect(page.locator('.article-content h1')).toContainText('Microcap portfolio execution diagnostic');
   await page.goto('docs/research/factors/microcap/?lang=zh-CN');
   if(await page.locator('#microcap-archive').count() && await page.locator('#microcap-archive').getAttribute('open')===null) await page.locator('#microcap-archive > summary').click();
-  await expect(page.locator('.article-toc')).toContainText('先看结论');
+  await expect(page.locator('.article-toc')).toContainText('微盘组合的下跌与恢复');
   await expect(page.locator('.article-content h1')).toContainText('微盘股');
 });
 

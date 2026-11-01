@@ -34,7 +34,7 @@ export default function ThemeToggle() {
   }
 
   const label = labels[locale][choice];
-  const text = locale === "en-US" ? `Theme: ${label}` : `主题：${label}`;
+  const text = locale === "en-US" ? `Theme: ${label}` : `主题 ${label}`;
   const ariaLabel = locale === "en-US" ? `Theme: ${label}` : `切换主题，当前为${label}`;
   return <button className="theme-toggle" type="button" onClick={cycleTheme} aria-label={ariaLabel}>{text}</button>;
 }

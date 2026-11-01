@@ -10,16 +10,16 @@ export const evidenceCopy = {
   ],
   title: [
     "Reproduced weekly rotation evidence",
-    "周频轮动：重新运行的历史证据",
+    "周频轮动 重新运行的历史证据",
   ],
-  previousSnapshot: ["This section preserves the earlier reviewed snapshot with three missing price columns. The follow-up above recovers those inputs and uses a separate calendar aligned across execution delays; do not treat these sections as the same release.", "本节保留较早的已审查快照，其中三个配置缺少价格列。上方后续检验已恢复输入，并使用跨执行延迟对齐的独立窗口；两部分属于不同版本。"],
+  previousSnapshot: ["This section preserves the earlier reviewed snapshot with three missing price columns. The follow-up above recovers those inputs and uses a separate calendar aligned across execution delays; do not treat these sections as the same release.", "本节保留较早的已审查快照，其中三个配置缺少价格列。上方后续检验已恢复输入，并使用跨执行延迟对齐的独立窗口。两部分属于不同版本。"],
   intro: [
     "Compare compatible windows, replay historical eligibility and inspect reconciled return contributions. These are historical diagnostics; independently captured availability and forward validation remain missing.",
     "在一致窗口内比较配置，回看历史资格与执行状态，并核对收益贡献。当前结果属于历史诊断，尚缺独立历史可得性证据和前瞻验证。",
   ],
   coverage: [
     "{registered} registered configurations; {reproduced} reproduced, {missing} unavailable because required price columns are missing. The original rounded observations remain in the archive below.",
-    "已登记 {registered} 个配置：{reproduced} 个完成回放，{missing} 个因缺少必要价格列而不可运行。原始笔记中的四舍五入结果保留在下方档案。",
+    "已登记 {registered} 个配置。{reproduced} 个完成回放，{missing} 个因缺少必要价格列而不可运行。原始笔记中的四舍五入结果保留在下方档案。",
   ],
   group: ["Evidence group", "证据分组"],
   window: ["Evaluation window", "评价窗口"],
@@ -70,7 +70,7 @@ export const evidenceCopy = {
   retry: ["Retry", "重试"],
   replayScope: [
     "Public replay covers two representative baselines: fixed-slot core and defensive core with a 75% risk cap. All variants retain private traces. This is a historical explanation, not a current position or trading signal.",
-    "公开回放覆盖两个代表基线：核心池固定槽位、风险上限为 75% 的核心池防御配置。各变体保留完整私有轨迹。这里解释历史决策，不代表当前持仓或交易信号。",
+    "公开回放覆盖两个代表基线 核心池固定槽位、风险上限为 75% 的核心池防御配置。各变体保留完整私有轨迹。这里解释历史决策，不代表当前持仓或交易信号。",
   ],
   replayVariant: ["Replay baseline", "回放基线"],
   date: ["Signal date", "信号日期"],
@@ -99,15 +99,15 @@ export const evidenceCopy = {
   bondWeight: ["Bond allocation", "债券权重"],
   listingNote: [
     "First observation is not a verified listing date. Eligibility uses only history through the signal date. Allocation describes the resulting historical aggregate after the execution decision; a skipped or blocked target is not presented as a trade.",
-    "首次观测日不等于已核实的上市日期。资格只使用信号日及此前的历史；权重展示执行决策后的历史汇总配置，跳过或受阻的目标不会被展示为成交。",
+    "首次观测日不等于已核实的上市日期。资格只使用信号日及此前的历史。权重展示执行决策后的历史汇总配置，跳过或受阻的目标不会被展示为成交。",
   ],
   theme: [
     "Theme-to-ETF incremental test: blocked",
-    "主题映射到 ETF 的增量检验：尚未准入",
+    "主题映射到 ETF 的增量检验 尚未准入",
   ],
   themeBody: [
     "The paired runner and its temporal/content/risk-budget checks are implemented and tested. No real theme return is published: historical ETF mappings, independently captured content and availability, and a frozen forward registration are still required.",
-    "配对运行器及时间、内容指纹、风险预算检查已实现并通过测试。目前不发布真实主题增量收益：仍需要历史主题—ETF 映射、独立捕获的内容及可得性证据，以及冻结的前瞻检验登记。",
+    "配对运行器及时间、内容指纹、风险预算检查已实现并通过测试。目前不发布真实主题增量收益。仍需要历史主题—ETF 映射、独立捕获的内容及可得性证据，以及冻结的前瞻检验登记。",
   ],
   methods: ["Methods and evidence boundaries", "方法与证据边界"],
   methodBody: [
@@ -121,7 +121,7 @@ export const evidenceCopy = {
   sourceId: ["Evidence version", "证据版本"],
   archive: [
     "Original weekly observations — source archive",
-    "原始周频观测：来源档案",
+    "原始周频观测 来源档案",
   ],
   archiveNote: [
     "Rounded figures transcribed from the original notes. Use the reproduced evidence above for comparable windows and daily-average allocations; these archived rows use their original definitions and scopes.",
@@ -135,7 +135,7 @@ export const evidenceCopy = {
 export const stateCopy: Record<string, Copy> = {
   BLOCKED_EXECUTION_MARK: [
     "Blocked: missing execution price",
-    "执行受阻：缺少执行价格",
+    "执行受阻 缺少执行价格",
   ],
   NO_TRADE_THRESHOLD: ["Within no-trade threshold", "未达到交易阈值"],
   defensive_equity: ["Defensive equity", "防御型股票"],
@@ -147,7 +147,7 @@ export const stateCopy: Record<string, Copy> = {
   SKIPPED_BAND: ["Within no-trade band", "未超出免交易区间"],
   BLOCKED_MISSING_EXECUTION_PRICE: [
     "Blocked: missing execution price",
-    "执行受阻：缺少执行价格",
+    "执行受阻 缺少执行价格",
   ],
   fallback_not_ranked: [
     "Bond fallback; not ranked",

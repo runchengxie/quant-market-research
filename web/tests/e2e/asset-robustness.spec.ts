@@ -5,7 +5,9 @@ for (const width of [320,1280]) for (const locale of ['en-US','zh-CN']) {
   await page.goto(`research/cashflow/?lang=${locale}#cashflow-robustness`);
   const section=page.locator('#cashflow-robustness');
   await expect(section).toBeVisible();
-  await expect(section.locator(':scope > .robustness-table > table')).toHaveCount(5);
+  await expect(section.locator('.robustness-table > table')).toHaveCount(5);
+  const graph=page.locator('[data-asset-chart=allocation]');await graph.scrollIntoViewIfNeeded();await expect(graph).toHaveAttribute('data-chart-ready','true');
+  const table=page.locator('details[data-asset-table=allocation]');if((await table.getAttribute('open'))===null)await table.locator('summary').click();
   await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(7);
   const before=await page.locator('#allocation-rules tbody tr:visible').allTextContents();
   await page.locator('#allocation-cost').selectOption('50');
@@ -13,8 +15,8 @@ for (const width of [320,1280]) for (const locale of ['en-US','zh-CN']) {
   await expect(page.locator('#allocation-rules tbody tr[data-cost="50"]:visible')).toHaveCount(6);
   const after=await page.locator('#allocation-rules tbody tr:visible').allTextContents();
   expect(after).not.toEqual(before);
-  await expect(section).toContainText(locale==='en-US'?'not optimized rules':'不是优化后的策略');
-  await expect(section).toContainText(locale==='en-US'?'fixed-cohort earnings attribution is blocked':'固定成分盈利归因仍阻断');
+  await expect(section).toContainText(locale==='en-US'?'not optimized rules':'所有结果均来自历史样本');
+  await expect(section).toContainText(locale==='en-US'?'fixed-cohort earnings attribution is blocked':'还需补齐股份账本和财报原始版本');
   await expect(section).toContainText('292/300');
   expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  });

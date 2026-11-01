@@ -10,16 +10,16 @@
 
 ## 因子研究
 
-- [小微盘 ST 口径审计](research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md)：逐版本核对历史资格、退市退出、权重及成本，不能把市值尾部剔除当作 ST 对照。
-- [低估值口径与当前样本](research/experiments/valuation-denominators-20261018.zh-CN.md)：五种分母、六家公司当前快照计算及尚未完成的历史检验。
-- [公开研究收口状态](research-closeout-status.zh-CN.md)：查看已完成的核对、仍待补充的数据或人工验证，以及各状态的含义。
-- [PB 与 ROE：怎样比较估值和盈利能力](research/factors/pb-roe.zh-CN.md)：在同一批候选股票中，加入盈利能力指标后，历史对照发生了什么变化。
-- [低换手：它可能反映哪些特征](research/factors/low-turnover.zh-CN.md)：低换手可能和什么特征同时出现，控制这些特征后收益差还剩多少。
-- [微盘股：收益证据与水下时间](research/factors/microcap.zh-CN.md)：按历史规则重建的小市值组合经历过多大跌幅、多久才回到前高。
-- [微盘组合公共执行模拟诊断](research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md)：把短期样本放进模拟交易流程后，哪些订单成交、哪些限制了结果。
-- [2008–2014 年小市值成交活跃度补充](research/factors/smallcap-turnover-history.zh-CN.md)：早年小市值股票的成交额大致如何，数据能说明什么。
-- [市场风格因子字典](research/factors/barra-factor-dictionary.zh-CN.md)：公开研究中各类风格指标的含义，以及它们与商业模型的边界。
-- [市场风格分析资料清单](research/factors/barra-source-inventory.zh-CN.md)：哪些支撑材料可以公开用于研究。
+- [小微盘 ST 口径审计](research/experiments/microcap-st-comparability-audit-20261018.zh-CN.md)。逐版本核对历史资格、退市退出、权重及成本，不能把市值尾部剔除当作 ST 对照。
+- [低估值口径与当前样本](research/experiments/valuation-denominators-20261018.zh-CN.md)。五种分母、六家公司当前快照计算及尚未完成的历史检验。
+- [公开研究收口状态](research-closeout-status.zh-CN.md)。查看已完成的核对、仍待补充的数据或人工验证，以及各状态的含义。
+- [PB 与 ROE。怎样比较估值和盈利能力](research/factors/pb-roe.zh-CN.md)。在同一批候选股票中，加入盈利能力指标后，历史对照发生了什么变化。
+- [低换手。它可能反映哪些特征](research/factors/low-turnover.zh-CN.md)。低换手可能和什么特征同时出现，控制这些特征后收益差还剩多少。
+- [微盘股。收益证据与水下时间](research/factors/microcap.zh-CN.md)。按历史规则重建的小市值组合经历过多大跌幅、多久才回到前高。
+- [微盘组合公共执行模拟诊断](research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md)。把短期样本放进模拟交易流程后，哪些订单成交、哪些限制了结果。
+- [2008–2014 年小市值成交活跃度补充](research/factors/smallcap-turnover-history.zh-CN.md)。早年小市值股票的成交额大致如何，数据能说明什么。
+- [市场风格因子字典](research/factors/barra-factor-dictionary.zh-CN.md)。公开研究中各类风格指标的含义，以及它们与商业模型的边界。
+- [市场风格分析资料清单](research/factors/barra-source-inventory.zh-CN.md)。哪些支撑材料可以公开用于研究。
 
 网页负责展示图表和交互，说明站提供因子研究的方法、数据口径和证据限制。网站构建方式、实施计划和运行手册属于维护资料，不作为公开研究内容。
 
@@ -27,11 +27,11 @@
 
 历史研究结果用于支持进一步调查，不构成投资建议，也不代表未来收益。
 
-独立市场研究项目及其可复现方法、样本定义、结果和限制放在本站。[Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) 负责因子目录组织、标准化因子专题、发布状态和符合其发布契约的审核投影。同一主题同时出现在两站时，以专题页或发布 manifest 中的来源身份为准，链接到权威材料，不复制整份内容。私有策略研究仍由 `quant-research` 维护；公开发布需要单独审核并生成脱敏投影。
+独立市场研究项目及其可复现方法、样本定义、结果和限制放在本站。[Quant Factor Observatory](https://runchengxie.github.io/quant-factor-observatory/) 负责因子目录组织、标准化因子专题、发布状态和符合其发布契约的审核投影。同一主题同时出现在两站时，以专题页或发布 manifest 中的来源身份为准，链接到权威材料，不复制整份内容。私有策略研究仍由 `quant-research` 维护。公开发布需要单独审核并生成脱敏投影。
 
-- [低估值历史覆盖与排名](research/experiments/valuation-panel-20261018.zh-CN.md)：130 个月份，先核对缺失与共同样本，再比较排名。
-- [小微盘含 ST / 剔除 ST 成对探索](research/experiments/microcap-st-paired-short-window-20261018.zh-CN.md)：短窗口结果与覆盖选择限制。
-- [海外信号真实时点归档协议](research/experiments/overseas-forward-v1.zh-CN.md)：10月19日首次定时归档保留1个合格观察，效果评估仍待至少60个合格目标日。
+- [低估值历史覆盖与排名](research/experiments/valuation-panel-20261018.zh-CN.md)。130 个月份，先核对缺失与共同样本，再比较排名。
+- [小微盘含 ST / 剔除 ST 成对探索](research/experiments/microcap-st-paired-short-window-20261018.zh-CN.md)。短窗口结果与覆盖选择限制。
+- [海外信号真实时点归档协议](research/experiments/overseas-forward-v1.zh-CN.md)。10月19日首次定时归档保留1个合格观察，效果评估仍待至少60个合格目标日。
 
-- [ST成对退出证据](research/experiments/microcap-st-exit-evidence-20261019.zh-CN.md)：107个事件、停牌身份匹配和仍未解决的退市终值。
-- [金融模板报表覆盖诊断](research/experiments/financial-template-coverage-20261019.zh-CN.md)：87家金融模板公司与歧义报表隔离。
+- [ST成对退出证据](research/experiments/microcap-st-exit-evidence-20261019.zh-CN.md)。107个事件、停牌身份匹配和仍未解决的退市终值。
+- [金融模板报表覆盖诊断](research/experiments/financial-template-coverage-20261019.zh-CN.md)。87家金融模板公司与歧义报表隔离。

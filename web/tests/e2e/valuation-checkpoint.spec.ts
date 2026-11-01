@@ -18,7 +18,7 @@ for (const locale of ['en-US', 'zh-CN']) {
     await page.getByTestId('ledger-scenario').selectOption('close10');
     await expect(page.getByTestId('ledger-sensitivity-table').locator('tbody tr').last()).toContainText('36.36%');
     await expect(page.getByTestId('persistence-table').locator('tbody tr')).toHaveCount(4);
-    await expect(page.getByTestId('condition-limit')).toContainText(locale === 'en-US' ? 'not returns from the new ledger' : '并非新账本收益');
+    await expect(page.getByTestId('condition-limit')).toContainText(locale === 'en-US' ? 'not returns from the new ledger' : '新账本收益需单独核对');
     await expect(page.getByTestId('checkpoint-coverage-table').locator('tbody tr')).toHaveCount(5);
     await expect(page.getByTestId('checkpoint-coverage-table')).toContainText('1,743');
     await expect(page.getByTestId('valuation-cases').locator('li')).toHaveCount(3);

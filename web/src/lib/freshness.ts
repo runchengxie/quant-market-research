@@ -44,6 +44,6 @@ export function formatFreshness(value: SnapshotFreshness) {
   const coverage = value.coverageStart && value.coverageEnd
     ? `数据截至 ${value.coverageEnd}（${value.coverageStart} 至 ${value.coverageEnd}）`
     : `数据截至 ${dateOnly(value.asOf)}`;
-  const generated = value.generatedAt ? `；快照生成于 ${dateOnly(value.generatedAt)}` : "；快照生成时间待补";
+  const generated = value.generatedAt ? `。快照生成于 ${dateOnly(value.generatedAt)}` : "。快照生成时间待补";
   return `${coverage}${generated}`;
 }

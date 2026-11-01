@@ -7,8 +7,8 @@ for (const width of [320, 1280]) for (const locale of ['en-US', 'zh-CN']) {
     await expect(section).toBeVisible();
     await expect(section.locator('table')).toHaveCount(4);
     await expect(section.getByText('10.40%', { exact: true })).toHaveCount(1);
-    await expect(section).toContainText(locale === 'en-US' ? 'not future probabilities' : '不是未来概率');
-    await expect(section).toContainText(locale === 'en-US' ? 'not measured execution costs' : '未校准实测执行费用');
+    await expect(section).toContainText(locale === 'en-US' ? 'not future probabilities' : '各窗口共用部分行情');
+    await expect(section).toContainText(locale === 'en-US' ? 'not measured execution costs' : '实际交易费和大盘参照成本仍待校准');
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);
   });
 }

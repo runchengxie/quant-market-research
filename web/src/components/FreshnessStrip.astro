@@ -26,6 +26,6 @@ const marketDatesZh = Object.entries(snapshot.markets ?? {}).map(([market, value
   <span class="section-kicker" data-locale-text data-en="Data freshness" data-zh={label}>Data freshness</span>
   <strong data-locale-text data-en={rangeEn} data-zh={rangeZh}>{rangeEn}</strong>
   <span class="freshness-status" data-locale-text data-en={statusCopy[0]} data-zh={statusCopy[1]}>{statusCopy[0]}</span>
-  <span class="freshness-source" data-locale-text data-en={`Source: ${sourceCopy[0]}; snapshot generated ${dateEn(snapshot.generated_at)}`} data-zh={`来源：${sourceCopy[1]}；快照生成于 ${dateZh(snapshot.generated_at)}`}>Source: {sourceCopy[0]}; snapshot generated {dateEn(snapshot.generated_at)}</span>
-  {marketDatesEn && <span class="freshness-markets" data-locale-text data-en={`Markets: ${marketDatesEn}`} data-zh={`各市场：${marketDatesZh}`}>Markets: {marketDatesEn}</span>}
+  <span class="freshness-source" data-locale-text data-en={`Source: ${sourceCopy[0]}; snapshot generated ${dateEn(snapshot.generated_at)}`} data-zh={`来源 ${sourceCopy[1]}。快照生成于 ${dateZh(snapshot.generated_at)}`}>Source: {sourceCopy[0]}; snapshot generated {dateEn(snapshot.generated_at)}</span>
+  {marketDatesEn && <span class="freshness-markets" data-locale-text data-en={`Markets: ${marketDatesEn}`} data-zh={`各市场 ${marketDatesZh}`}>Markets: {marketDatesEn}</span>}
 </aside>

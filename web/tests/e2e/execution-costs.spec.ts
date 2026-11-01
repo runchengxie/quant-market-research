@@ -85,7 +85,7 @@ test('English charts have no visible Han text and no-JS tables retain evidence',
 test('execution workflow separates blocked replay and synthetic entry from actual calibration',async({page})=>{
  await page.goto('research/execution-costs/?lang=zh-CN');
  const workflow=page.locator('#calibration-workflow');
- await expect(workflow).toContainText('真实订单入口已实现；实盘校准仍待完成');
+ await expect(workflow).toContainText('真实订单入口已实现。实盘校准仍待完成');
  await workflow.locator('summary').click();
  await expect(workflow).toContainText('还不能按成交量比例限制下单');
  await expect(workflow.locator('tbody tr')).toHaveCount(3);

@@ -60,19 +60,19 @@ export const factorDetails: Record<string, FactorDetail> = Object.fromEntries(fa
   };
   return [factor, {
     family: familyByFactor[factor] ?? '其他',
-    feature: `历史 ${name} 收益序列与当前可重算代理分别记录；历史底层特征未必完整保留。`,
+    feature: `历史 ${name} 收益序列与当前可重算代理分别记录。历史底层特征未必完整保留。`,
     calculation: definition?.method ?? '历史计算公式未确认。',
     current: `当前核心字典中的 ${factor} 代理版本需结合来源、版本与适用边界阅读。`,
-    verification: '历史收益摘要可验证；历史原始特征与完整公式未全部确认。',
+    verification: '历史收益摘要可验证。历史原始特征与完整公式未全部确认。',
   }];
 }));
 
 factorDetails.quality = {
   family: '质量',
   feature: '复合质量由盈利能力、低杠杆、盈利质量和盈利稳定性四个子因子构成。',
-  calculation: '当前实现使用按公告排序的 8 个财务观测（至少 4 个），不保证为连续季度；各组件统一方向、缩尾、标准化后等权合成，组件缺失填 0，列整体缺失不参与平均。',
-  current: 'profitability + leverage + earnings_quality + earnings_variability；ROA 仅作敏感性检查。',
-  verification: '当前四子因子版本可验证；18 年历史收益尚未用该版本重跑。',
+  calculation: '当前实现使用按公告排序的 8 个财务观测（至少 4 个），不保证为连续季度。各组件统一方向、缩尾、标准化后等权合成，组件缺失填 0，列整体缺失不参与平均。',
+  current: 'profitability + leverage + earnings_quality + earnings_variability。ROA 仅作敏感性检查。',
+  verification: '当前四子因子版本可验证。18 年历史收益尚未用该版本重跑。',
 };
 
 export function normalizeFactor(value: string | null): string {

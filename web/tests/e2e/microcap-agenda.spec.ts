@@ -16,7 +16,7 @@ test('four followups retain scopes, current evidence and downloadable charts acr
  const svg=live.locator('svg').first();
  expect(await svg.locator('rect').first().evaluate(el=>getComputedStyle(el).fill)).not.toBe('rgb(255, 255, 255)');
  await page.getByRole('button',{name:'Switch to Chinese'}).click();
- await expect(live).toContainText('新样本已完成合格月份：0');
+ await expect(live).toContainText('新样本已完成合格月份 0');
  await expect(live).toContainText('前高至恢复');
  await expect(live.locator('.claim').first()).toContainText('历史描述');
  await live.locator('.claim').first().locator('summary').click();
@@ -31,7 +31,7 @@ test('four followups retain scopes, current evidence and downloadable charts acr
   expect(response.status()).toBe(200);expect(await response.text()).toContain('<svg');
  }
  const md=await(await page.request.get('downloads/microcap-research.zh-CN.md')).text();
- expect(md).toContain('版本 1.0.9');expect(md).toContain('MC-C06');expect(md).toContain('1.47');
+ expect(md).toContain('版本1.0.10');expect(md).toContain('MC-C06');expect(md).toContain('1.47');
  await page.setViewportSize({width:390,height:844});
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
  await live.locator('.agenda-chart').first().screenshot({path:'/tmp/microcap-agenda-dark-chart.png'});
