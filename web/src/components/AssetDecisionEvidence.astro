@@ -33,7 +33,7 @@ const assetLabels:Record<string,readonly [string,string]>={equity:assetNames.all
 <AssetInteractiveChart kind="stress"/>
 <details open data-asset-table="stress"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table><thead><tr>{[c.mask,c.months,c.correlation,c.bondReturn,c.goldReturn,c.joint].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.stress.map(r=><tr><th><LocaleText text={masks[r.id]} as="span"/></th><td>{r.months}</td><td>{number(r.correlations.equity_bond)}</td><td>{pct(r.mean_monthly_returns.bond)}</td><td>{pct(r.mean_monthly_returns.gold)}</td><td>{pct(r.joint_negative_fraction.equity_gold)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.rateGap}/>
-<details open><LocaleText text={c.recovery} as="summary"/><div class="decision-table"><table><thead><tr>{[c.event,c.asset,c.underwater,c.stage].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.events.flatMap(event=>Object.entries(assetLabels).map(([asset,label])=>{const r=event[asset as 'equity'|'bond'|'gold'];return <tr><th>{event.start} → {event.end}</th><td><LocaleText text={label} as="span"/></td><td>{r.underwater_observed_months}</td><td><LocaleText text={r.censored?c.censored:c.recovered} as="span"/></td></tr>;}))}</tbody></table></div></details>
+<details open id="asset-stress-recovery"><LocaleText text={c.recovery} as="summary"/><div class="decision-table"><table><thead><tr>{[c.event,c.asset,c.underwater,c.stage].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.events.flatMap(event=>Object.entries(assetLabels).map(([asset,label])=>{const r=event[asset as 'equity'|'bond'|'gold'];return <tr><th>{event.start} → {event.end}</th><td><LocaleText text={label} as="span"/></td><td>{r.underwater_observed_months}</td><td><LocaleText text={r.censored?c.censored:c.recovered} as="span"/></td></tr>;}))}</tbody></table></div></details>
 </>}
 {topic==='implementation'&&<>
 <LocaleText text={c.launch} as="h4"/><LocaleText text={c.launchNote}/>
@@ -42,10 +42,10 @@ const assetLabels:Record<string,readonly [string,string]>={equity:assetNames.all
 <AssetInteractiveChart kind="etf"/>
 <details open data-asset-table="etf"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table><thead><tr><th>ETF</th>{[c.start,c.months,c.market,c.fee50].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{Object.entries(data.products).map(([id,r])=><tr><th>{id}</th><td>{r.first_observed_month_end}</td><td>{r.gap.months}</td><td>{pct(r.gap.market_total_proxy_cagr)}</td><td>{pct(r.round_trip_sensitivities.find(x=>x.cost_bps_per_side===50)?.market_proxy_cagr_after_entry_exit??null)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.productNote}/>
-<LocaleText text={c.register} as="h4"/><LocaleText text={c.registerNote}/>
+<LocaleText id="asset-conclusion-register" text={c.register} as="h4"/><LocaleText text={c.registerNote}/>
 <div class="decision-table"><table><thead><tr>{[c.claim,c.stage,c.trigger].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.conclusion_register.claims.map(r=><tr><th><LocaleText text={claimNames[r.id]} as="span"/></th><td><LocaleText text={stages[r.stage]} as="span"/></td><td class="claim-trigger"><LocaleText text={claimTriggers[r.id]} as="span"/></td></tr>)}</tbody></table></div>
 </>}
-<p><a href={withBase('/data/asset_decision_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.download} as="span"/></a> · <a href={source+'decision-risk-20261101.md'}><LocaleText text={c.findings} as="span"/> (EN)</a> · <a href={source+'decision-risk-20261101.zh-CN.md'} lang="zh-CN"><LocaleText text={c.chinese} as="span"/></a></p>
+<p id="asset-decision-records"><a href={withBase('/data/asset_decision_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.download} as="span"/></a> · <a href={source+'decision-risk-20261101.md'}><LocaleText text={c.findings} as="span"/> (EN)</a> · <a href={source+'decision-risk-20261101.zh-CN.md'} lang="zh-CN"><LocaleText text={c.chinese} as="span"/></a></p>
 </div>
 <script>
 const root=document.querySelector('#asset-decision-evidence');
