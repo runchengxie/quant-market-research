@@ -1,3 +1,7 @@
+import {assetChartCopy} from './asset-chart-copy';
+import {assetReturnCopy} from './asset-return-copy';
+import {robustnessCopy} from './asset-robustness-copy';
+import {decisionCopy} from './asset-decision-copy';
 import type {Copy} from './research-reading';
 export type AssetTopicId='returns'|'allocation'|'implementation';
 export type AssetTopic={id:AssetTopicId;route:string;title:Copy;intro:Copy;finding:Copy;limit:Copy;sample:Copy;charts:string[]};
@@ -7,6 +11,12 @@ export const assetTopics:AssetTopic[]=[
  {id:'implementation',route:'/research/asset-implementation/',title:['Index returns and ETF checks','指数收益与ETF核验'],intro:['Compare reference indices, fund NAV and exchange prices. Read each product with its actual dates and the unresolved financial-data checks.','把指数收益与基金净值、市场价格放在一起核对。每只产品列明实际覆盖日期，盈利归因仍缺的资料也完整保留。'],finding:['Different series and coverage dates produce different return figures. Holdings, disclosures and execution assumptions still need separate checks.','指数、基金净值和市场价格对应不同收益，覆盖日期也有差别。实际持仓、财报和成交假设仍需分别核对。'],limit:['Missing observations, original statement vintages and executable costs still limit investability and earnings attribution.','部分历史记录、财报原始版本和实际交易成本仍未补齐，可实现收益与盈利归因还需继续核验。'],sample:['Verified ETF histories mainly cover 2017 to 2025; each product states its first observation. Research records retrieved October 31 to November 1, 2026.','已核查的ETF历史主要覆盖2017年至2025年，每只产品列出首个观察日期。研究记录取得于2026年10月31日至11月1日。'],charts:['launch','etf']},
 ];
 export const assetReadingCopy={
+ versionHeading:['Evidence version and acquisition records','资料版本与取数记录'],
+ versionDate:['Evidence version date','资料版本日期'],
+ versionBasis:['This date records when the current evidence bundle merged into the main branch, using Beijing time. The linked records identify its exact files. Editorial page changes are recorded separately.','这个日期记录当前研究资料合入主分支的北京时间。旁边的版本记录列明对应文件，页面文字和排版调整另行记录。'],
+ acquisitionBasis:['The returns and robustness summaries explicitly record acquisition on 31 October 2026. Other sources retain their own acquisition records; that date does not cover every input.','收益和稳健性两份汇总明确记录了2026年10月31日取数。其他来源按各自记录查看，这个日期只适用于已明确标注的资料。'],
+ versionRecord:['Publication record','公开版本记录'],versionFiles:['Files in this version','本版本的文件清单'],acquisitionLabel:['Acquisition records','取数记录'],
+ decisionRecords:['Full experiment records','完整实验记录'],
  holdingSection:['Buying dates and waiting times','买入时间和等待时间'],
  allocationSection:['Preset portfolio rules','预先设定的配置规则'],
  implementationSection:['Funds and company records','基金与公司资料核验'],
@@ -26,3 +36,12 @@ export function assetLegacyTarget(hash:string,query=''):string|null{
  const owner=explicit[hash]?assetTopics.find(t=>t.id===explicit[hash]):chart?assetTopics.find(x=>x.charts.includes(chart)):hash==='#cashflow-long-run'?assetTopics[0]:['#cashflow-robustness','#asset-decision-evidence'].includes(hash)?assetTopics[2]:null;
  return owner?`${owner.route}${query}${hash}`:null;
 }
+
+export type AssetContentsEntry={id:string;label:Copy};
+const graph=(kind:keyof typeof assetChartCopy):AssetContentsEntry=>({id:`asset-chart-${kind}-title`,label:assetChartCopy[kind]});
+const section=(id:string,label:Copy):AssetContentsEntry=>({id,label});
+export const assetTopicContents:Record<AssetTopicId,AssetContentsEntry[]>={
+ returns:[graph('holding'),graph('returns'),section('asset-diversification',assetReturnCopy.stress),section('asset-smallcap-costs',assetReturnCopy.costs),section('asset-return-gaps',assetReturnCopy.pending),section('asset-return-records',assetReturnCopy.methods),graph('endpoints'),graph('waiting'),graph('uncertainty'),section('asset-decision-records',assetReadingCopy.decisionRecords),section('asset-method-records',robustnessCopy.methods),section('asset-evidence-version',assetReadingCopy.versionHeading)],
+ allocation:[graph('allocation'),section('asset-cost-basis',['How the cost amount is calculated','费用按什么金额计算']),graph('spending'),graph('stress'),section('asset-stress-recovery',decisionCopy.recovery),section('asset-decision-records',assetReadingCopy.decisionRecords),section('asset-method-records',robustnessCopy.methods),section('asset-evidence-version',assetReadingCopy.versionHeading)],
+ implementation:[section('asset-etf-reconciliation',robustnessCopy.etf),section('asset-constituent-coverage',robustnessCopy.constituents),section('asset-evidence-checks',robustnessCopy.closure),graph('launch'),graph('etf'),section('asset-conclusion-register',decisionCopy.register),section('asset-decision-records',assetReadingCopy.decisionRecords),section('asset-method-records',robustnessCopy.methods),section('asset-evidence-version',assetReadingCopy.versionHeading)],
+};

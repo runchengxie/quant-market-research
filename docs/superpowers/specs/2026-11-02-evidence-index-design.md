@@ -1,0 +1,9 @@
+# Complete evidence navigation and version dates
+
+The user explicitly requested completion of the two deferred topic-reading items. Keep all content expanded and unchanged statistically. Add directory entries and stable anchors for every substantive non-chart evidence block, in actual reading order, while retaining all chart entries and old identifiers.
+
+Use the historical merge of PR249 (2026-11-01T01:06:13Z, revision dc85d825d4e3eadd587020ffced36e038c0df27f) as the publication event for the current sealed asset-evidence bundle. Its manifest exactly matches the current one. The evidence-version date is 2026-11-01 in Asia/Shanghai, explicitly defined as the bundle's merge date. File acquisition dates retain their own source meaning. Only the first two summaries explicitly declare retrieved=2026-10-31; remaining sources retain their individual acquisition records. No unknown timestamp is inferred.
+
+Record the publication event, timezone and exact manifest hash outside the sealed datasets. Validate the record against the current manifest during the website build, and fail if evidence changes without a corresponding reviewed publication record. Display version context with immutable links in each asset topic and its data catalog entry. Populate the existing summary/image date with this documented version date. Do not alter other topics' date meanings, research numbers, historical archives or evidence stages.
+
+Acceptance includes every directory destination existing on the owning page, visible expanded non-chart content after keyboard/click navigation, both languages and mobile/desktop, no-JS access, accurate timezone/date and manifest mismatch rejection. Preserve all original evidence rows and download bytes. Required checks and one independent whole-branch review precede the authorized PR/merge/Pages workflow.

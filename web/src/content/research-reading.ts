@@ -1,7 +1,8 @@
 export type Copy = readonly [string, string];
+export type EvidenceVersion={date:string;revision:string;publishedAt:string;publicationUrl:string;manifestUrl:string;explanation:Copy;acquisition:Copy};
 export type ReadingSummary = {
   id: string; route: string; title: Copy; conclusion: Copy; scope: Copy; limit: Copy;
-  stage: 'description' | 'exploration'; coverage: Copy; date: string | null;
+  stage: 'description' | 'exploration'; coverage: Copy; date: string | null; evidenceVersion?:EvidenceVersion;
   sources: { path: string; sha256: string }[]; related: string[];
 };
 export const readingCopy = {
