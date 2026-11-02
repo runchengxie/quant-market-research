@@ -1,0 +1,11 @@
+---
+import T from './LocaleText.astro';
+import {assetTopics,assetReadingCopy as c,type AssetTopicId} from '../content/asset-topics';
+import {withBase} from '../lib/routes';
+const {current}=Astro.props as {current?:AssetTopicId};
+---
+<nav class="asset-topic-links" aria-label={c.directory[0]} data-locale-aria data-aria-en={c.directory[0]} data-aria-zh={c.directory[1]}>
+{assetTopics.map(topic=><a href={withBase(topic.route,import.meta.env.BASE_URL)} data-locale-link data-href-en={withBase(topic.route,import.meta.env.BASE_URL)+'?lang=en-US'} data-href-zh={withBase(topic.route,import.meta.env.BASE_URL)+'?lang=zh-CN'} aria-current={topic.id===current?'page':undefined}><T as="span" text={topic.title}/></a>)}
+<a href={withBase('/research/cashflow/',import.meta.env.BASE_URL)} data-locale-link data-href-en={withBase('/research/cashflow/',import.meta.env.BASE_URL)+'?lang=en-US'} data-href-zh={withBase('/research/cashflow/',import.meta.env.BASE_URL)+'?lang=zh-CN'}><T as="span" text={c.cashflow}/></a>
+</nav>
+<style>.asset-topic-links{display:flex;flex-wrap:wrap;gap:.6rem 1.2rem;padding:1rem 0;border-block:1px solid var(--rule);margin-block:1.5rem}.asset-topic-links a{padding:.35rem 0;color:var(--accent-strong)}.asset-topic-links [aria-current=page]{color:var(--ink);text-decoration-thickness:2px;text-underline-offset:.3em}@media(max-width:480px){.asset-topic-links{display:grid;gap:.5rem}}</style>

@@ -26,12 +26,13 @@ interface Props {
   questionEn?: string;
   nextStep?: string;
   nextStepEn?: string;
+  expanded?: boolean;
   compact?: boolean;
   showConclusion?: boolean;
   sections?: readonly TopicSection[];
 }
 
-const { title, titleEn = title, description, snapshotKey, activeRoute, kicker, kickerEn = kicker, introduction, introductionEn = introduction, boundary, boundaryEn = boundary, evidence = "描述性研究", evidenceEn = evidence, question = "这项研究正在回答什么问题？", questionEn = question, nextStep = "补充数据核验和可执行性测试。", nextStepEn = nextStep, compact = false, showConclusion = false, sections } = Astro.props;
+const { title, titleEn = title, description, snapshotKey, activeRoute, kicker, kickerEn = kicker, introduction, introductionEn = introduction, boundary, boundaryEn = boundary, evidence = "描述性研究", evidenceEn = evidence, question = "这项研究正在回答什么问题？", questionEn = question, nextStep = "补充数据核验和可执行性测试。", nextStepEn = nextStep, expanded = false, compact = false, showConclusion = false, sections } = Astro.props;
 const topicSections = sections ?? [{ id: "topic-content", label: "研究内容", available: true }, { id: "research-method", label: "数据与方法", available: true }];
 const manifest = JSON.parse(await readFile(resolve(process.cwd(), "public/data/manifest.json"), "utf8"));
 const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
@@ -50,7 +51,7 @@ const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
     <span class="evidence-status" data-locale-text data-en={evidenceEn} data-zh={evidence}>{evidenceEn}</span>
     <p data-locale-text data-en={conclusionCopy.byTopic[snapshotKey].en} data-zh={conclusionCopy.byTopic[snapshotKey].zh}>{conclusionCopy.byTopic[snapshotKey].en}</p>
     <p><strong data-locale-text data-en={conclusionCopy.boundary.en} data-zh={conclusionCopy.boundary.zh}>{conclusionCopy.boundary.en}</strong> · <span data-locale-text data-en={boundaryEn} data-zh={boundary}>{boundaryEn}</span></p>
-    <small>{snapshot.coverage_start ?? '—'} — {snapshot.coverage_end ?? '—'}</small>
+    {snapshot.coverage_start&&snapshot.coverage_end&&<small data-locale-text data-en={`${snapshot.coverage_start} to ${snapshot.coverage_end}`} data-zh={`${snapshot.coverage_start}至${snapshot.coverage_end}`}>{snapshot.coverage_start} to {snapshot.coverage_end}</small>}
   </section>}
   {(!compact || !showConclusion) && <TopicNav sections={topicSections} />}
   {compact && !showConclusion && <>
@@ -59,5 +60,5 @@ const snapshot = manifest.snapshots?.[snapshotKey] ?? {};
   </>}
   {!compact && <p class="reading-guide-link"><a href="#reader-glossary" data-locale-text data-en="Explain the research terms" data-zh="查看常用词解释">Explain the research terms</a></p>}
   <div id="topic-content"><slot /></div>
-  {<details id="research-method" class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
+  {<details id="research-method" open={expanded} class="panel research-source"><summary data-locale-text data-en="Sources, dates, and research progress" data-zh="数据来源、更新日期与研究进展">Sources, dates, and research progress</summary><FreshnessStrip snapshot={snapshot} snapshotKey={snapshotKey} /><ResearchContext question={question} questionEn={questionEn} evidence={evidence} evidenceEn={evidenceEn} nextStep={nextStep} nextStepEn={nextStepEn} /></details>}
 </SiteLayout>

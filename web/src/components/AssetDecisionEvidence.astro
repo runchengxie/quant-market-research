@@ -1,12 +1,14 @@
 ---
 import LocaleText from './LocaleText.astro';
 import {assetChartCopy} from '../content/asset-chart-copy';
+import {assetReadingCopy,type AssetTopicId} from '../content/asset-topics';
 import AssetInteractiveChart from './AssetInteractiveChart.astro';
 import {decisionCopy as c,masks,claimNames,stages,claimTriggers} from '../content/asset-decision-copy';
 import {assetNames} from '../content/asset-return-copy';
 import {portfolioNames} from '../content/asset-robustness-copy';
 import {withBase} from '../lib/routes';
 import data from '../../public/data/asset_decision_reviewed.json';
+const {topic='implementation'}=Astro.props as {topic:AssetTopicId};
 const pct=(n:number|null)=>n===null?'—':new Intl.NumberFormat('en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);
 const number=(n:number|null)=>n===null?'—':n.toFixed(2);
 const range=(r:{lower:number,median:number,upper:number}|null,pp=false)=>r?`${pp?number(r.lower*100):pct(r.lower)} … ${pp?number(r.upper*100):pct(r.upper)}（${pp?number(r.median*100):pct(r.median)}）`:'—';
@@ -14,21 +16,26 @@ const source='https://github.com/runchengxie/quant-market-research/blob/main/stu
 const assetLabels:Record<string,readonly [string,string]>={equity:assetNames.all_share,bond:['Treasuries','国债'],gold:['Gold','黄金']};
 ---
 <div id="asset-decision-evidence">
-<LocaleText text={c.title} as="h3"/><LocaleText text={c.lead}/>
+<LocaleText text={topic==='returns'?assetReadingCopy.returnDecision:topic==='allocation'?assetReadingCopy.allocationDecision:assetReadingCopy.implementationDecision} as="h3"/><LocaleText text={c.lead}/>
+{topic==='returns'&&<>
 <LocaleText text={c.uncertainty} as="h4"/><LocaleText text={c.uncertaintyNote}/>
 <AssetInteractiveChart kind="uncertainty"/><LocaleText text={assetChartCopy.medianNote}/>
 <details open data-asset-table="uncertainty"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table><thead><tr>{[c.block,c.relative,c.rebalance,c.drawdown].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.uncertainty.map(r=><tr><th>{r.block_months}</th><td>{range(r.small_large_relative_cagr)}</td><td>{range(r.annual_minus_hold_cagr,true)}</td><td>{range(r.annual_minus_hold_drawdown,true)}</td></tr>)}</tbody></table></div></details>
+</>}
+{topic==='allocation'&&<>
 <LocaleText text={c.spending} as="h4"/><LocaleText text={c.spendingNote}/>
 <div class="decision-controls"><label for="decision-demand"><LocaleText text={c.annualDemand} as="span"/></label><select id="decision-demand">{[0,2,4,6].map(value=><option value={value} selected={value===4}>{value}</option>)}</select>
 <label for="decision-shock"><LocaleText text={c.shock} as="span"/></label><select id="decision-shock">{[c.none,c.month12,c.month60].map((text,i)=><option value={['none','12','60'][i]} data-locale-text data-en={text[0]} data-zh={text[1]}>{text[0]}</option>)}</select></div>
 <AssetInteractiveChart kind="spending"/>
-<details open data-asset-table="spending"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table id="decision-spending"><thead><tr>{[c.portfolio,c.buffer,c.shortfall,c.minimum,c.sales].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.spending.map(r=><tr data-demand={r.annual_real_demand_per_initial_100} data-shock={r.shock_month??'none'} hidden={r.annual_real_demand_per_initial_100!==4||r.shock_month!==null}><th><LocaleText text={portfolioNames[r.portfolio]} as="span"/></th><td>{r.cash_buffer_months}</td><td>{pct(r.summary.shortfall_fraction)}</td><td>{number(r.summary.minimum_terminal_real_capital)}</td><td>{number(r.summary.median_drawdown_real_sales)}</td></tr>)}</tbody></table></div></details>
+<details open data-asset-table="spending"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table id="decision-spending"><thead><tr>{[c.portfolio,c.buffer,c.annualDemand,c.shock,c.shortfall,c.minimum,c.sales].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.spending.map(r=><tr data-demand={r.annual_real_demand_per_initial_100} data-shock={r.shock_month??'none'}><th><LocaleText text={portfolioNames[r.portfolio]} as="span"/></th><td>{r.cash_buffer_months}</td><td data-scenario-cell>{r.annual_real_demand_per_initial_100}</td><td data-scenario-cell><LocaleText text={r.shock_month===null?c.none:r.shock_month===12?c.month12:c.month60} as="span"/></td><td>{pct(r.summary.shortfall_fraction)}</td><td>{number(r.summary.minimum_terminal_real_capital)}</td><td>{number(r.summary.median_drawdown_real_sales)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.spendingBoundary}/>
 <LocaleText text={c.stress} as="h4"/><LocaleText text={c.stressNote}/>
 <AssetInteractiveChart kind="stress"/>
 <details open data-asset-table="stress"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table><thead><tr>{[c.mask,c.months,c.correlation,c.bondReturn,c.goldReturn,c.joint].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.stress.map(r=><tr><th><LocaleText text={masks[r.id]} as="span"/></th><td>{r.months}</td><td>{number(r.correlations.equity_bond)}</td><td>{pct(r.mean_monthly_returns.bond)}</td><td>{pct(r.mean_monthly_returns.gold)}</td><td>{pct(r.joint_negative_fraction.equity_gold)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.rateGap}/>
-<details><LocaleText text={c.recovery} as="summary"/><div class="decision-table"><table><thead><tr>{[c.event,c.asset,c.underwater,c.stage].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.events.flatMap(event=>Object.entries(assetLabels).map(([asset,label])=>{const r=event[asset as 'equity'|'bond'|'gold'];return <tr><th>{event.start} → {event.end}</th><td><LocaleText text={label} as="span"/></td><td>{r.underwater_observed_months}</td><td><LocaleText text={r.censored?c.censored:c.recovered} as="span"/></td></tr>;}))}</tbody></table></div></details>
+<details open><LocaleText text={c.recovery} as="summary"/><div class="decision-table"><table><thead><tr>{[c.event,c.asset,c.underwater,c.stage].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.events.flatMap(event=>Object.entries(assetLabels).map(([asset,label])=>{const r=event[asset as 'equity'|'bond'|'gold'];return <tr><th>{event.start} → {event.end}</th><td><LocaleText text={label} as="span"/></td><td>{r.underwater_observed_months}</td><td><LocaleText text={r.censored?c.censored:c.recovered} as="span"/></td></tr>;}))}</tbody></table></div></details>
+</>}
+{topic==='implementation'&&<>
 <LocaleText text={c.launch} as="h4"/><LocaleText text={c.launchNote}/>
 <AssetInteractiveChart kind="launch"/>
 <details open data-asset-table="launch"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table><thead><tr>{[c.asset,c.publication,c.pre,c.post].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{Object.entries(data.launches).map(([id,r])=><tr><th><LocaleText text={assetNames[id]} as="span"/></th><td>{r.launch_date}</td><td>{pct(r.pre_launch.cagr)}</td><td>{pct(r.post_launch.cagr)}</td></tr>)}</tbody></table></div></details>
@@ -37,6 +44,7 @@ const assetLabels:Record<string,readonly [string,string]>={equity:assetNames.all
 <LocaleText text={c.productNote}/>
 <LocaleText text={c.register} as="h4"/><LocaleText text={c.registerNote}/>
 <div class="decision-table"><table><thead><tr>{[c.claim,c.stage,c.trigger].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.conclusion_register.claims.map(r=><tr><th><LocaleText text={claimNames[r.id]} as="span"/></th><td><LocaleText text={stages[r.stage]} as="span"/></td><td class="claim-trigger"><LocaleText text={claimTriggers[r.id]} as="span"/></td></tr>)}</tbody></table></div>
+</>}
 <p><a href={withBase('/data/asset_decision_reviewed.json',import.meta.env.BASE_URL)}><LocaleText text={c.download} as="span"/></a> · <a href={source+'decision-risk-20261101.md'}><LocaleText text={c.findings} as="span"/> (EN)</a> · <a href={source+'decision-risk-20261101.zh-CN.md'} lang="zh-CN"><LocaleText text={c.chinese} as="span"/></a></p>
 </div>
 <script>
@@ -44,6 +52,7 @@ const root=document.querySelector('#asset-decision-evidence');
 const demand=root?.querySelector<HTMLSelectElement>('#decision-demand');
 const shock=root?.querySelector<HTMLSelectElement>('#decision-shock');
 function refresh(){for(const row of root?.querySelectorAll<HTMLTableRowElement>('#decision-spending tbody tr')??[]){row.hidden=row.dataset.demand!==demand?.value||row.dataset.shock!==shock?.value;}}
+refresh();
 demand?.addEventListener('change',refresh);shock?.addEventListener('change',refresh);
 </script>
 <style>

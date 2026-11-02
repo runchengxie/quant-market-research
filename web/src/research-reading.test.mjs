@@ -8,7 +8,7 @@ import {methodSections} from './content/search-sections.server.ts';
 import {searchRecords} from './lib/search.ts';
 
 test('each main topic has resolvable evidence files, versions and subordinate links',()=>{
- assert.equal(readingSummaries.length,9);
+ assert.equal(readingSummaries.length,12);
  for(const r of readingSummaries){
   assert.equal(summaryForRoute('/quant-market-research'+r.route)?.id,r.id);
   assert.ok(r.limit.every(Boolean));assert.ok(r.coverage.every(Boolean));

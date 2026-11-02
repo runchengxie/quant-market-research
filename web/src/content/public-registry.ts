@@ -1,5 +1,6 @@
+import {assetTopics} from './asset-topics';
 export type SectionId = 'overview' | 'research' | 'docs' | 'data';
-export type TopicId = 'cashflow' | 'microcap' | 'style' | 'low-turnover' | 'indices' | 'liquidity' | 'execution-costs' | 'rotation' | 'overseas';
+export type TopicId = 'cashflow' | 'microcap' | 'style' | 'low-turnover' | 'indices' | 'liquidity' | 'execution-costs' | 'rotation' | 'overseas' | 'assets';
 
 export type PublicPage = {
   id: string;
@@ -66,6 +67,7 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
+  ...assetTopics.map(t=>page({id:`asset-${t.id}`,route:t.route,title:t.title[1],summary:t.finding[1],section:'research',topic:'assets',aliases:[],related:assetTopics.filter(x=>x.id!==t.id).map(x=>`asset-${x.id}`),snapshotKeys:[]})),
   page({ id: 'reader-forward-registration', route: '/docs/research/experiments/reader-forward-registration-20261022/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
   page({ id: 'reader-forward-registration-zh-CN', route: '/docs/research/experiments/reader-forward-registration-20261022.zh-CN/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
   page({ id: 'valuation-groups', route: '/research/valuation-groups/', title: '低估值研究', summary: '年度最低值、五口径、分组因子与交易账本，统一查看已核对的观察、探索结果和待补证问题。', section: 'research', topic: 'style', aliases: [], related: ['valuation-groups-method', 'valuation-panel', 'valuation-denominators', 'financial-template-coverage', 'pb-roe', 'style', 'microcap', 'cashflow'], snapshotKeys: ['valuation.grouped'] }),

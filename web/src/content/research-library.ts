@@ -1,5 +1,7 @@
+import {assetTopics} from './asset-topics';
 import type { Copy } from './research-reading';
 export const libraryGroups = [
+ {id:'assets',title:['Asset returns and portfolios','资产收益与配置'] as Copy,description:['Holding risk, diversified spending and ETF implementation.','从长期持有出发，查看分散配置与ETF核验。'] as Copy,topics:assetTopics.map(t=>`asset-${t.id}`)},
   { id:'characteristics', title:['Stock characteristics','股票特征'] as Copy, description:['Valuation and turnover: how stock groups differ.','从估值和换手率出发，比较不同股票分组。'] as Copy, topics:['low-turnover','valuation-groups'] },
   { id:'portfolios', title:['Portfolios and indices','组合与指数'] as Copy, description:['Micro-caps, cash flow and index histories, with their reconstruction limits.','查看小微盘、现金流和指数历史，以及组合重建的限制。'] as Copy, topics:['microcap','cashflow','indices'] },
   { id:'styles', title:['Market styles and timing','市场风格与择时'] as Copy, description:['Long-run styles, overseas information and theme rotation.','研究长期风格、海外盘面信息和主题轮动。'] as Copy, topics:['style','overseas-leadlag','rotation'] },
@@ -7,13 +9,14 @@ export const libraryGroups = [
 ];
 export const libraryCopy = {
   areas:['Research areas','研究方向'],
-  topicCount:['9 topics across 4 research areas','9 个专题 · 4 个研究方向'],
+  topicCount:['12 topics across 5 research areas','12 个专题 · 5 个研究方向'],
   intro:['Choose a question, read the finding and its limits, then explore the evidence. Each topic keeps its own sample dates.','从感兴趣的问题出发，先看发现与限制，再进入证据。各专题分别标注样本日期。'],
   open:['Read the study →','进入专题 →'],
   detail:['Full finding','完整结论'],
   update:['About the latest editorial update','最近一次阅读更新'],
 } satisfies Record<string, Copy>;
 export const librarySummaries: Record<string, Copy> = {
+ ...Object.fromEntries(assetTopics.map(t=>[`asset-${t.id}`,t.finding])),
   'low-turnover':['Low-turnover stocks performed better in this historical comparison. The gap became smaller after accounting for other stock characteristics.','这段历史里低换手组表现较好。考虑其他股票特征后，组间差距缩小。'],
   'valuation-groups':['Different accounting definitions change valuation comparisons. Full-market coverage and achievable returns remain unverified.','财务口径会改变估值比较。全市场覆盖和实际可实现收益仍待验证。'],
   microcap:['Reconstructed small-cap portfolios suffered deep drawdowns. Missing exit prices complicate the return calculation.','重建的小市值组合经历过较深回撤，退出价格缺失也影响收益判断。'],

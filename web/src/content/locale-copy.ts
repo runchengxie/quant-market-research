@@ -1,6 +1,8 @@
+import {assetTopics} from './asset-topics';
 import type { PublicPage, TopicId } from "./public-registry";
 
 const topicLabels: Record<TopicId, { en: string; zh: string }> = {
+ assets:{en:'Asset research',zh:'大类资产研究'},
   overseas: { en: 'Overseas lead-lag research', zh: '海外领先指标研究' },
   rotation: { en: "Style and theme rotation", zh: "风格与主题轮动" },
   cashflow: { en: "Cash-flow index research", zh: "现金流指数研究" },
@@ -17,6 +19,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+ ...Object.fromEntries(assetTopics.map(t=>[`asset-${t.id}`,{title:t.title[0],summary:t.finding[0]}])),
   'reader-forward-registration': { title: 'Future-observation registration', summary: 'Pre-entry receipts, independent time proof and pending evidence.' },
   'valuation-groups': { title: 'Low-valuation research', summary: 'Annual minima and percentiles, five accounting definitions, ST groups and the limits of valuation-factor evidence.' },
   'valuation-groups-method': { title: 'Low-valuation research: evidence and methods', summary: 'Annual sample support, accounting definitions, historical portfolio versions and conditional return limits.' },

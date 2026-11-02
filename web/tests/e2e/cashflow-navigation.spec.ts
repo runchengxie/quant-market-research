@@ -58,7 +58,8 @@ test('legacy query and existing anchors survive replacement without a history tr
   await page.goto('research/cashflow/recovery/?lang=zh-CN');
   await expect(page).toHaveURL(`${canonical}?lang=zh-CN#cashflow-recovery`);
   await expect(page.locator('main h1')).toHaveText('现金流指数研究');
-  await expect(page.locator('.topic-nav a')).toHaveText(['收益与分红口径', '回撤与回本', '指数复刻与可交易性', '长期回报与分散', '结论稳定性与ETF', '数据与方法']);
+  await expect(page.locator('.topic-nav a')).toHaveText(['收益与分红口径', '回撤与回本', '指数复刻与可交易性', '数据与方法']);
+  await expect(page.locator('.asset-topic-links').getByRole('link',{name:'长期回报与持有风险',exact:true})).toBeVisible();
 });
 
 test('topic anchors and cross references work with back/forward on a narrow screen', async ({ page }) => {
