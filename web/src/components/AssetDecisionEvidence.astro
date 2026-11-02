@@ -27,7 +27,7 @@ const assetLabels:Record<string,readonly [string,string]>={equity:assetNames.all
 <div class="decision-controls"><label for="decision-demand"><LocaleText text={c.annualDemand} as="span"/></label><select id="decision-demand">{[0,2,4,6].map(value=><option value={value} selected={value===4}>{value}</option>)}</select>
 <label for="decision-shock"><LocaleText text={c.shock} as="span"/></label><select id="decision-shock">{[c.none,c.month12,c.month60].map((text,i)=><option value={['none','12','60'][i]} data-locale-text data-en={text[0]} data-zh={text[1]}>{text[0]}</option>)}</select></div>
 <AssetInteractiveChart kind="spending"/>
-<details open data-asset-table="spending"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table id="decision-spending"><thead><tr>{[c.portfolio,c.buffer,c.shortfall,c.minimum,c.sales].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.spending.map(r=><tr data-demand={r.annual_real_demand_per_initial_100} data-shock={r.shock_month??'none'} hidden={r.annual_real_demand_per_initial_100!==4||r.shock_month!==null}><th><LocaleText text={portfolioNames[r.portfolio]} as="span"/></th><td>{r.cash_buffer_months}</td><td>{pct(r.summary.shortfall_fraction)}</td><td>{number(r.summary.minimum_terminal_real_capital)}</td><td>{number(r.summary.median_drawdown_real_sales)}</td></tr>)}</tbody></table></div></details>
+<details open data-asset-table="spending"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="decision-table"><table id="decision-spending"><thead><tr>{[c.portfolio,c.buffer,c.annualDemand,c.shock,c.shortfall,c.minimum,c.sales].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.spending.map(r=><tr data-demand={r.annual_real_demand_per_initial_100} data-shock={r.shock_month??'none'}><th><LocaleText text={portfolioNames[r.portfolio]} as="span"/></th><td>{r.cash_buffer_months}</td><td data-scenario-cell>{r.annual_real_demand_per_initial_100}</td><td data-scenario-cell><LocaleText text={r.shock_month===null?c.none:r.shock_month===12?c.month12:c.month60} as="span"/></td><td>{pct(r.summary.shortfall_fraction)}</td><td>{number(r.summary.minimum_terminal_real_capital)}</td><td>{number(r.summary.median_drawdown_real_sales)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.spendingBoundary}/>
 <LocaleText text={c.stress} as="h4"/><LocaleText text={c.stressNote}/>
 <AssetInteractiveChart kind="stress"/>
@@ -52,6 +52,7 @@ const root=document.querySelector('#asset-decision-evidence');
 const demand=root?.querySelector<HTMLSelectElement>('#decision-demand');
 const shock=root?.querySelector<HTMLSelectElement>('#decision-shock');
 function refresh(){for(const row of root?.querySelectorAll<HTMLTableRowElement>('#decision-spending tbody tr')??[]){row.hidden=row.dataset.demand!==demand?.value||row.dataset.shock!==shock?.value;}}
+refresh();
 demand?.addEventListener('change',refresh);shock?.addEventListener('change',refresh);
 </script>
 <style>

@@ -14,3 +14,19 @@ test('full topic evidence and relocation links remain usable without scripts',as
  for(const topic of topics){await page.goto(`research/${topic.route}/`);await expect(page.locator('main details:not([open])')).toHaveCount(0);expect(await page.locator('main table').count()).toBeGreaterThanOrEqual(topic.kinds.length);}
  await page.goto('research/cashflow/#cashflow-long-run');await expect(page.locator('a[href$="/research/asset-returns/"]').first()).toBeVisible();await context.close();
 });
+test('topic links preserve Chinese when browser storage is blocked',async({page})=>{
+ await page.addInitScript(()=>{Storage.prototype.getItem=()=>{throw Error('storage blocked')};Storage.prototype.setItem=()=>{throw Error('storage blocked')};});
+ await page.goto('research/asset-returns/?lang=zh-CN');
+ await page.locator('.asset-topic-links').first().getByRole('link',{name:'分散配置与取款',exact:true}).click();
+ await expect(page.locator('html')).toHaveAttribute('lang','zh-CN');await expect(page).toHaveURL(/asset-allocation\/\?lang=zh-CN$/);
+ await page.locator('.asset-topic-links').first().getByRole('link',{name:'现金流指数研究',exact:true}).click();await expect(page.locator('html')).toHaveAttribute('lang','zh-CN');
+});
+test('every allocation and spending assumption is labeled and visible without scripts',async({browser})=>{
+ const context=await browser.newContext({javaScriptEnabled:false});const page=await context.newPage();await page.goto('research/asset-allocation/');
+ await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(19);
+ for(const cost of ['0','10','50'])expect(await page.locator(`#allocation-rules tr[data-cost="${cost}"]:visible`).count()).toBeGreaterThan(0);
+ await expect(page.locator('#decision-spending tbody tr:visible')).toHaveCount(108);
+ await expect(page.locator('#decision-spending tbody tr[data-demand="6"][data-shock="60"]:visible')).toHaveCount(9);
+ await expect(page.locator('#decision-spending tbody tr[data-demand="6"][data-shock="60"]').first()).toContainText('After 60 months');
+ await context.close();
+});

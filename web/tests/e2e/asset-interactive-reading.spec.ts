@@ -21,5 +21,5 @@ test('static evidence tables remain open without JavaScript',async({browser})=>{
  for(const topic of topics){await page.goto(`research/${topic.route}/`);for(const kind of topic.kinds)await expect(page.locator(`details[data-asset-table="${kind}"]`)).toHaveAttribute('open','');}
  await expect(page.locator('[data-asset-chart="etf"] .asset-selected-table tbody tr')).toHaveCount(9);
  await page.goto('research/asset-returns/');expect(await page.locator('[data-asset-chart="endpoints"] .asset-selected-table tbody tr').count()).toBeGreaterThan(20);
- await page.goto('research/asset-allocation/');await expect(page.locator('#decision-spending tbody tr:visible')).toHaveCount(9);await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(7);await context.close();
+ await page.goto('research/asset-allocation/');await expect(page.locator('#decision-spending tbody tr:visible')).toHaveCount(108);await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(19);await context.close();
 });

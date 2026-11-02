@@ -30,7 +30,7 @@ const source='https://github.com/runchengxie/quant-market-research/blob/main/stu
 <label for="allocation-cost"><LocaleText text={c.costLabel} as="span"/></label>
 <select id="allocation-cost">{[c.zero,c.ten,c.fifty].map((text,i)=><option value={[0,10,50][i]} data-locale-text data-en={text[0]} data-zh={text[1]}>{text[0]}</option>)}</select>
 <AssetInteractiveChart kind="allocation"/>
-<details open data-asset-table="allocation"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="robustness-table"><table id="allocation-rules"><thead><tr>{[c.portfolio,c.rule,c.cagr,c.drawdown,c.turnover,c.realLoss].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.allocations.map(r=><tr data-cost={r.id==='equity_only'?'all':r.cost_bps_per_traded_notional} hidden={r.cost_bps_per_traded_notional!==0}><th><LocaleText text={portfolioNames[r.id]} as="span"/></th><td><LocaleText text={ruleNames[r.policy]} as="span"/></td><td>{percent(r.summary.net_cagr)}</td><td>{percent(r.summary.net_max_drawdown)}</td><td>{percent(r.summary.annualized_two_sided_turnover)}</td><td>{percent(r.summary.ten_year_real_loss_fraction)}</td></tr>)}</tbody></table></div></details>
+<details open data-asset-table="allocation"><summary data-locale-text data-en="Open the full data table" data-zh="展开完整数据表">Open the full data table</summary><div class="robustness-table"><table id="allocation-rules"><thead><tr>{[c.portfolio,c.rule,c.costBps,c.cagr,c.drawdown,c.turnover,c.realLoss].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead><tbody>{data.allocations.map(r=><tr data-cost={r.id==='equity_only'?'all':r.cost_bps_per_traded_notional}><th><LocaleText text={portfolioNames[r.id]} as="span"/></th><td><LocaleText text={ruleNames[r.policy]} as="span"/></td><td data-scenario-cell>{r.cost_bps_per_traded_notional}</td><td>{percent(r.summary.net_cagr)}</td><td>{percent(r.summary.net_max_drawdown)}</td><td>{percent(r.summary.annualized_two_sided_turnover)}</td><td>{percent(r.summary.ten_year_real_loss_fraction)}</td></tr>)}</tbody></table></div></details>
 <LocaleText text={c.allocationBoundary}/><LocaleText text={c.costBasis}/>
 </>}
 {topic==='implementation'&&<>
@@ -48,11 +48,13 @@ const source='https://github.com/runchengxie/quant-market-research/blob/main/stu
 </section>
 <script>
 const control=document.querySelector<HTMLSelectElement>('#allocation-cost');
-control?.addEventListener('change',()=>{
+const refresh=()=>{
  for(const row of document.querySelectorAll<HTMLTableRowElement>('#allocation-rules tbody tr')){
-  row.hidden=row.dataset.cost!=='all'&&row.dataset.cost!==control.value;
+  row.hidden=row.dataset.cost!=='all'&&row.dataset.cost!==control?.value;
  }
-});
+};
+control?.addEventListener('change',refresh);
+refresh();
 </script>
 <style>
 .robustness-evidence{margin-block:1.5rem}.robustness-table{overflow-x:auto;margin-block:1rem}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;text-align:left;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}td{white-space:nowrap}select{margin:.5rem;max-width:100%}

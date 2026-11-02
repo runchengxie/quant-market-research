@@ -26,7 +26,7 @@ test('robustness keeps zero-cost evidence available without JavaScript',async({b
  const context=await browser.newContext({javaScriptEnabled:false});
  const page=await context.newPage();
  await page.goto('research/asset-allocation/');
- await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(7);
+ await expect(page.locator('#allocation-rules tbody tr:visible')).toHaveCount(19);
  await page.goto('research/asset-implementation/');await expect(page.locator('#cashflow-robustness')).toContainText('138/300');
  await context.close();
 });
