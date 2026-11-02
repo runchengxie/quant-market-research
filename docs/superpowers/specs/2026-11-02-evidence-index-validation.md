@@ -1,0 +1,11 @@
+# Evidence index and version validation
+
+Every asset topic now lists its substantive non-chart blocks in reading order, alongside all existing charts. New anchors identify diversification tables, cost assumptions, outstanding gaps, constituent coverage, evidence checks, the conclusion register and full records. Existing identifiers and expanded-content behavior remain.
+
+The version date is explicitly the current evidence bundle's main-branch merge day in Asia/Shanghai. GitHub records PR249 merged at `2026-11-01T01:06:13Z`, revision `dc85d825d4e3eadd587020ffced36e038c0df27f`. The manifest in that revision and the current manifest have the same SHA-256, `f92fbc71c480d508f67843d2f0573fef563fab09dad8ab729e22ef08399be781`. Thus the displayed bundle version is `2026-11-01`. Only the first two summaries explicitly declare acquisition on `2026-10-31`; other acquisition records keep their original scope. Sample dates remain separate.
+
+The publication record is curated source metadata outside the six-file sealed research bundle. Website builds compare its manifest hash and calendar/timezone meaning. The existing release guard separately checks the sealed file bytes. A changed bundle requires corresponding publication review rather than silently inheriting a stale date. The historic event was verified against GitHub and Git history during this task; builds validate the retained record locally without depending on a live GitHub request.
+
+Unit regressions cover full directory ownership, all three summary dates, immutable revision links, a manifest mismatch, a wrong date and a UTC-to-Beijing date crossing. Browser checks cover every destination, keyboard/click navigation, both locales at 320 and 1280 pixels and disabled scripts. The first focused browser pass completed five checks successfully. Python completed 923 tests with 22 optional skips and Ruff passed. Website contracts completed 332 tests. Final full-browser and static-site results are retained in the external project task record `evidence-index-20261102` and must pass before merge.
+
+One independent whole-branch review found no Critical/Important issues. Its heading-level observation was reproduced with a failing browser assertion and corrected. No review items are deferred. No research dataset, sample observation or historical download is changed by this task.
