@@ -1,3 +1,4 @@
+import {assetTopics} from './asset-topics';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { resolve } from 'node:path';
@@ -16,6 +17,7 @@ const range = (start?: string, end?: string): Copy => [
   `${start ? iso(start) : '未提供'} 至 ${end ? iso(end) : '未提供'}`,
 ];
 const definition: Record<string, { snapshot?: string; files: string[]; conclusion: Copy; scope: Copy; limit: Copy; related?: string[]; stage?: ReadingSummary['stage'] }> = {
+ ...Object.fromEntries(assetTopics.map(t=>[`asset-${t.id}`,{files:t.id==='returns'?['asset_returns_reviewed.json','asset_robustness_reviewed.json','asset_decision_reviewed.json']:t.id==='allocation'?['asset_robustness_reviewed.json','asset_decision_reviewed.json']:['asset_robustness_reviewed.json','asset_closure_reviewed.json','asset_decision_reviewed.json'],conclusion:t.finding,scope:t.sample,limit:t.limit,stage:'description' as const,related:assetTopics.filter(x=>x.id!==t.id).map(x=>`asset-${x.id}`)}])),
   'low-turnover': { snapshot:'low_turnover', files:['low_turnover_reader.json'], conclusion:lowTurnoverCopy.lead,
     scope:['60-session turnover; positive-PE common sample; monthly gross low-minus-high spread.', '选股日前 60 日换手率，市盈率为正的共同样本，比较低换手组减高换手组的月均毛收益。'],
     limit:['Revision risk and repeated historical inspection remain. After-cost performance is unverified.', '历史数据仍有修订风险，样本已经反复查看。扣费后的实际收益仍待验证。'], related:['low-turnover-method'] },
@@ -56,6 +58,7 @@ export const readingSummaries: ReadingSummary[] = Object.entries(definition).map
   if(id==='overseas-leadlag') { const data=read(files[0]); coverage=['Separate forecast and ETF starts; through '+data.sample_end,'预测与 ETF 起点各异，截至 '+data.sample_end];date=data.generated_at_utc.slice(0,10); }
   if(id==='rotation') { const index=read(files[0]);files.push(...index.releases.map((r:{path:string})=>r.path));date=index.releases.find((r:{release_id:string})=>r.release_id===index.current_release_id).published_at.slice(0,10);coverage=['See the period for each experiment; no common performance window','查看各实验期间，尚无统一业绩窗口']; }
   if(id==='liquidity') { const data=read(files[0]);const period=data.periods.find((r:{period:string})=>r.period==='common snapshot');coverage=['Common cross-market snapshot '+period.common_end,'跨市场共同快照 '+period.common_end];date=data.generated_on; }
+  if(id.startsWith('asset-'))coverage=assetTopics.find(t=>`asset-${t.id}`===id)!.sample;
   const sources=files.map(path=>({path,sha256:createHash('sha256').update(readFileSync(resolve('public/data',path))).digest('hex')}));
   return {id,route:page.route,title:[englishCopy(page).title,page.title],conclusion:d.conclusion,scope:d.scope,limit:d.limit,stage:d.stage??'exploration',coverage,date,sources,related:d.related??[]};
 });

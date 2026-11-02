@@ -3,13 +3,15 @@ import { test, expect } from '@playwright/test';
 for (const width of [1280, 390]) {
   test(`closure evidence, cost basis and download at ${width}px`, async ({ page, request }) => {
     await page.setViewportSize({ width, height: 844 });
-    await page.goto('research/cashflow/?lang=en-US');
+    await page.goto('research/asset-allocation/?lang=en-US');
     const section = page.locator('#cashflow-robustness');
-    await expect(section).toContainText('Cost bases differ');
+    await expect(page.locator('#asset-fixed-rules')).toContainText('Cost bases differ');
+    await page.goto('research/asset-implementation/?lang=en-US');
     await expect(section).toContainText('Not admitted; zero completed windows');
     await expect(section).toContainText('Strict report-rounding checks still fail for 2018 and 2019');
-    await page.goto('research/cashflow/?lang=zh-CN');
-    await expect(section).toContainText('0.5%的费用会随计费基数变化');
+    await page.goto('research/asset-allocation/?lang=zh-CN');
+    await expect(page.locator('#asset-fixed-rules')).toContainText('0.5%的费用会随计费基数变化');
+    await page.goto('research/asset-implementation/?lang=zh-CN');
     await expect(section).toContainText('正式观察尚未开始，完成窗口为0');
     await expect(page.locator('body')).toHaveJSProperty('scrollWidth', width);
     const link = section.getByRole('link', { name: '已核查的派生汇总' });

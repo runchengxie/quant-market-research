@@ -1,8 +1,8 @@
 import { test, expect } from '@playwright/test';
 test('research library groups all topics without hiding their sample or limitation', async ({ page }) => {
   await page.goto('research/?lang=en-US');
-  await expect(page.locator('.library-group')).toHaveCount(4);
-  await expect(page.locator('[data-research-id]')).toHaveCount(9);
+  await expect(page.locator('.library-group')).toHaveCount(5);
+  await expect(page.locator('[data-research-id]')).toHaveCount(12);
   await page.getByRole('navigation', { name: 'Research areas' }).getByRole('link').last().click();
   await expect(page).toHaveURL(/#area-execution$/);
   await expect(page.locator('[data-research-id="liquidity"] .reading-limit')).toBeVisible();

@@ -1,0 +1,12 @@
+---
+import T from './LocaleText.astro';
+import AssetTopicLinks from './AssetTopicLinks.astro';
+import {assetReadingCopy as c} from '../content/asset-topics';
+---
+<aside class="asset-relocation"><T text={c.cashflowNote}/><AssetTopicLinks/></aside>
+<script>
+import {assetLegacyTarget} from '../content/asset-topics';
+import {withBase} from '../lib/routes';
+const relocate=()=>{const target=assetLegacyTarget(location.hash,location.search);if(target)location.replace(withBase(target,import.meta.env.BASE_URL));};
+relocate();window.addEventListener('hashchange',relocate);
+</script>

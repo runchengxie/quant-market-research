@@ -13,5 +13,6 @@ test('old cashflow asset anchors retain the owning page, query and selected anch
  assert.equal(assetLegacyTarget('#cashflow-long-run','?lang=zh-CN'),'/research/asset-returns/?lang=zh-CN#cashflow-long-run');
  assert.equal(assetLegacyTarget('#cashflow-robustness','?lang=en-US'),'/research/asset-implementation/?lang=en-US#cashflow-robustness');
  assert.equal(assetLegacyTarget('#asset-chart-spending-title','?lang=zh-CN'),'/research/asset-allocation/?lang=zh-CN#asset-chart-spending-title');
+ assert.equal(assetLegacyTarget('#allocation-rules','?lang=zh-CN'),'/research/asset-allocation/?lang=zh-CN#allocation-rules');
  assert.equal(assetLegacyTarget('#cashflow-recovery','?lang=zh-CN'),null);
 });

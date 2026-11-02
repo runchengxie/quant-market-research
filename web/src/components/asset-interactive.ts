@@ -73,8 +73,6 @@ export function mountAssetCharts(){
     if(kind==='launch')option.tooltip.formatter=(params:any)=>{const id=view.categories[params[0].dataIndex];return [escape(t(id)),...params.map((p:any)=>`${escape(p.seriesName)} ${escape(number(p.value/scale,view.unit))} · ${view.samples[id][p.seriesIndex===0&&selected.include_pre==='yes'?'pre':'post']} ${escape(t('months'))}`)].join('<br/>');};
    }
    chart.setOption(option,true);root.dataset.chartReady='true';
-   const table=document.querySelector<HTMLDetailsElement>(`details[data-asset-table="${kind}"]`);
-   if(table&&!table.dataset.chartFolded){table.open=false;table.dataset.chartFolded='true';}
   };
   root.querySelectorAll('select').forEach(s=>s.addEventListener('change',()=>{try{sessionStorage.setItem(`asset-chart-${kind}`,JSON.stringify(state()));}catch{/* Optional storage. */}paint();}));
   if(kind==='spending')for(const id of ['decision-demand','decision-shock'])document.getElementById(id)?.addEventListener('change',paint);
