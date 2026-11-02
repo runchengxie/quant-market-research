@@ -37,9 +37,9 @@ test('research topics switch between English and Chinese shell copy', async ({ p
 test('research stages follow the selected locale',async({page})=>{
  await page.goto('research/?lang=en-US');
  const labels=page.locator('.research-card .research-stage');
- await expect(labels).toHaveText(['Historical exploration','Historical exploration','Historical exploration','Historical description','Historical description','Historical exploration','Historical exploration','Historical exploration','Historical description']);
+ await expect(labels).toHaveText(['Historical description','Historical description','Historical description','Historical exploration','Historical exploration','Historical exploration','Historical description','Historical description','Historical exploration','Historical exploration','Historical exploration','Historical description']);
  await page.getByRole('button',{name:'Switch to Chinese'}).click();
- await expect(labels).toHaveText(['历史探索','历史探索','历史探索','历史描述','历史描述','历史探索','历史探索','历史探索','历史描述']);
+ await expect(labels).toHaveText(['历史描述','历史描述','历史描述','历史探索','历史探索','历史探索','历史描述','历史描述','历史探索','历史探索','历史探索','历史描述']);
 });
 
 test('a shared locale URL overrides a conflicting saved preference', async ({ page }) => {

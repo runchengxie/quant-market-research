@@ -65,7 +65,7 @@ test('English research overview uses English punctuation in generated findings',
   expect(conclusions.join('\n')).not.toMatch(/[。，；：“”]/);
   await page.locator('[data-research-id="low-turnover"] details summary').click();
   await expect(page.locator('[data-research-id="low-turnover"] details')).toContainText('percentage points');
-  expect(conclusions[1]).toContain('unverified');
+  await expect(page.locator('[data-research-id="valuation-groups"] .reading-conclusion')).toContainText('unverified');
 });
 
 test('style-factor language switch preserves the selected factor and its metrics', async ({ page }) => {
@@ -90,7 +90,7 @@ test('recovery reports localize source labels and expanded methodology in Englis
   await page.locator('astro-island[component-export="CashflowPage"]').scrollIntoViewIfNeeded();
   const recovery = page.getByRole('region', { name: 'Recovery and holding-period risk' });
   await expect(recovery).toContainText('CSI 800 Cash Flow');
-  await recovery.getByText('Method and reading notes', { exact: true }).click();
+  await expect(recovery.locator('details.recovery-method')).toHaveAttribute('open','');
   await expect(recovery.getByText(
     'The gain needed to recover is the prior high divided by the current level, minus one. For example, a 50% loss requires a 100% gain to break even.',
     { exact: true },
