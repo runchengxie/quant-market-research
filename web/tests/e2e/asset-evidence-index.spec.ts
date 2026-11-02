@@ -4,6 +4,7 @@ for(const width of[320,1280])for(const locale of['en-US','zh-CN'])test(`full evi
  await page.setViewportSize({width,height:900});
  for(const topic of topics){await page.goto(`research/asset-${topic}/?lang=${locale}`);const links=page.locator('.asset-page-contents a');expect(await links.count()).toBeGreaterThan(topic==='returns'?5:topic==='allocation'?3:2);
   const ids=await links.evaluateAll(xs=>xs.map(x=>(x as HTMLAnchorElement).hash.slice(1)));const status=await page.evaluate(ids=>ids.map(id=>({id,count:document.querySelectorAll(`[id="${id}"]`).length,open:!document.getElementById(id)?.closest('details:not([open])')})),ids);expect(status.filter(x=>x.count!==1||!x.open)).toEqual([]);
+  await expect(page.locator('#asset-evidence-version h3')).toHaveText(locale==='zh-CN'?'取数记录':'Acquisition records');
   await expect(page.locator('[data-evidence-version-date]').first()).toHaveText('2026-11-01');await expect(page.locator('#asset-evidence-version')).toContainText(locale==='zh-CN'?'北京时间':'Beijing time');await expect(page.locator('#asset-evidence-version a[data-version-manifest]')).toHaveAttribute('href',/\/dc85d825d4e3eadd587020ffced36e038c0df27f\/studies\/asset_returns\/release-manifest.json$/);
   await expect(page.locator('body')).toHaveJSProperty('scrollWidth',width);
  }

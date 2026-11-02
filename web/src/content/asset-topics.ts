@@ -13,7 +13,7 @@ export const assetTopics:AssetTopic[]=[
 export const assetReadingCopy={
  versionHeading:['Evidence version and acquisition records','资料版本与取数记录'],
  versionDate:['Evidence version date','资料版本日期'],
- versionBasis:['This date records when the current evidence bundle merged into the main branch, using Beijing time. The linked records identify its exact files. Editorial page changes are recorded separately.','这个日期记录当前研究资料合入主分支的北京时间。旁边的版本记录列明对应文件，页面文字和排版调整另行记录。'],
+ versionBasis:['This date records when the current evidence bundle merged into the main branch, using Beijing time. The linked records identify its exact files. Editorial page changes are recorded separately.','这个日期记录网站正式版本收录这组研究资料的时间，按北京时间标注。旁边的版本记录列明对应文件，页面文字和排版调整另行记录。'],
  acquisitionBasis:['The returns and robustness summaries explicitly record acquisition on 31 October 2026. Other sources retain their own acquisition records; that date does not cover every input.','收益和稳健性两份汇总明确记录了2026年10月31日取数。其他来源按各自记录查看，这个日期只适用于已明确标注的资料。'],
  versionRecord:['Publication record','公开版本记录'],versionFiles:['Files in this version','本版本的文件清单'],acquisitionLabel:['Acquisition records','取数记录'],
  decisionRecords:['Full experiment records','完整实验记录'],
