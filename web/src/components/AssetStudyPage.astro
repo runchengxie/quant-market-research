@@ -3,17 +3,20 @@ import SiteLayout from '../layouts/SiteLayout.astro';
 import T from './LocaleText.astro';
 import AssetTopicLinks from './AssetTopicLinks.astro';
 import {assetTopics,assetReadingCopy as c,type AssetTopicId} from '../content/asset-topics';
-import {assetChartCopy} from '../content/asset-chart-copy';
+import {assetTopicContents} from '../content/asset-topics';
+import {assetEvidenceVersion} from '../content/asset-publication.server';
+import AssetEvidenceVersion from './AssetEvidenceVersion.astro';
 const {topic}=Astro.props as {topic:AssetTopicId};
 const study=assetTopics.find(t=>t.id===topic)!;
 ---
 <SiteLayout title={study.title[1]} titleEn={study.title[0]} description={study.intro[1]} section="research">
 <article class="asset-study">
-<header class="asset-introduction"><T text={c.directory} as="span"/><h1><T text={study.title} as="span"/></h1><T text={study.intro}/><h2><T text={c.current} as="span"/></h2><T text={study.finding}/><dl><dt><T text={c.sample} as="span"/></dt><dd><T text={study.sample}/></dd><dt><T text={c.limits} as="span"/></dt><dd><T text={study.limit}/></dd></dl></header>
+<header class="asset-introduction"><T text={c.directory} as="span"/><h1><T text={study.title} as="span"/></h1><T text={study.intro}/><h2><T text={c.current} as="span"/></h2><T text={study.finding}/><dl><dt><T text={c.sample} as="span"/></dt><dd><T text={study.sample}/></dd><dt><T text={c.limits} as="span"/></dt><dd><T text={study.limit}/></dd><dt><T text={c.versionDate} as="span"/></dt><dd><time datetime={assetEvidenceVersion.date} data-evidence-version-date>{assetEvidenceVersion.date}</time> · <a href="#asset-evidence-version"><T text={c.versionRecord} as="span"/></a></dd></dl></header>
 <AssetTopicLinks current={topic}/>
-<nav class="asset-page-contents" aria-label={c.contents[0]} data-locale-aria data-aria-en={c.contents[0]} data-aria-zh={c.contents[1]}><h2><T text={c.contents} as="span"/></h2><ul>{study.charts.map(kind=><li><a href={`#asset-chart-${kind}-title`}><T text={assetChartCopy[kind as keyof typeof assetChartCopy]} as="span"/></a></li>)}</ul></nav>
+<nav class="asset-page-contents" aria-label={c.contents[0]} data-locale-aria data-aria-en={c.contents[0]} data-aria-zh={c.contents[1]}><h2><T text={c.contents} as="span"/></h2><ul>{assetTopicContents[topic].map(entry=><li><a href={`#${entry.id}`}><T text={entry.label} as="span"/></a></li>)}</ul></nav>
 <section class="reading-basics"><T text={topic==='returns'?c.returnBasics:topic==='allocation'?c.allocationBasics:c.implementationBasics}/>{topic==='returns'&&<T text={c.annualMeaning}/>}{topic==='allocation'&&<T text={c.spendingBasics}/>}</section>
 <slot/>
+<AssetEvidenceVersion version={assetEvidenceVersion} id="asset-evidence-version" heading="h2"/>
 <section class="asset-next"><h2><T text={c.next} as="span"/></h2><AssetTopicLinks current={topic}/></section>
 </article>
 </SiteLayout>

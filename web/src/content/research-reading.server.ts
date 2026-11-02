@@ -1,3 +1,4 @@
+import {assetEvidenceVersion} from './asset-publication.server';
 import {assetTopics} from './asset-topics';
 import { readFileSync } from 'node:fs';
 import { createHash } from 'node:crypto';
@@ -58,9 +59,9 @@ export const readingSummaries: ReadingSummary[] = Object.entries(definition).map
   if(id==='overseas-leadlag') { const data=read(files[0]); coverage=['Separate forecast and ETF starts; through '+data.sample_end,'预测与 ETF 起点各异，截至 '+data.sample_end];date=data.generated_at_utc.slice(0,10); }
   if(id==='rotation') { const index=read(files[0]);files.push(...index.releases.map((r:{path:string})=>r.path));date=index.releases.find((r:{release_id:string})=>r.release_id===index.current_release_id).published_at.slice(0,10);coverage=['See the period for each experiment; no common performance window','查看各实验期间，尚无统一业绩窗口']; }
   if(id==='liquidity') { const data=read(files[0]);const period=data.periods.find((r:{period:string})=>r.period==='common snapshot');coverage=['Common cross-market snapshot '+period.common_end,'跨市场共同快照 '+period.common_end];date=data.generated_on; }
-  if(id.startsWith('asset-'))coverage=assetTopics.find(t=>`asset-${t.id}`===id)!.sample;
+  if(id.startsWith('asset-')){coverage=assetTopics.find(t=>`asset-${t.id}`===id)!.sample;date=assetEvidenceVersion.date;}
   const sources=files.map(path=>({path,sha256:createHash('sha256').update(readFileSync(resolve('public/data',path))).digest('hex')}));
-  return {id,route:page.route,title:[englishCopy(page).title,page.title],conclusion:d.conclusion,scope:d.scope,limit:d.limit,stage:d.stage??'exploration',coverage,date,sources,related:d.related??[]};
+  return {id,route:page.route,title:[englishCopy(page).title,page.title],conclusion:d.conclusion,scope:d.scope,limit:d.limit,stage:d.stage??'exploration',coverage,date,...(id.startsWith('asset-')?{evidenceVersion:assetEvidenceVersion}:{}),sources,related:d.related??[]};
 });
 export function summaryForRoute(path: string) { return readingSummaries.find(r=>path.endsWith(r.route)); }
 export { readingCopy };

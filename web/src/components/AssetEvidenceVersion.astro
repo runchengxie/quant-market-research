@@ -1,0 +1,14 @@
+---
+import type {EvidenceVersion} from '../content/research-reading';
+import {assetReadingCopy as c} from '../content/asset-topics';
+import T from './LocaleText.astro';
+const {version,id,heading='h3'}=Astro.props as {version:EvidenceVersion;id?:string;heading?:'h2'|'h3'};
+---
+<section id={id} class="asset-evidence-version" data-evidence-version>
+<T text={c.versionHeading} as={heading}/>
+<dl><dt><T text={c.versionDate} as="span"/></dt><dd><time datetime={version.date} data-evidence-version-date>{version.date}</time> · <a href={version.publicationUrl} data-version-publication><T text={c.versionRecord} as="span"/></a></dd></dl>
+<T text={version.explanation}/>
+<p><a href={version.manifestUrl} data-version-manifest><T text={c.versionFiles} as="span"/></a> · <code>{version.revision.slice(0,8)}</code></p>
+<T text={c.acquisitionLabel} as={heading==='h2'?'h3':'h4'}/><T text={version.acquisition}/>
+</section>
+<style>.asset-evidence-version{margin-block:1.5rem;padding-top:.75rem;border-top:1px solid var(--rule)}.asset-evidence-version p{max-width:76ch;line-height:1.85}.asset-evidence-version dd{margin:.4rem 0}.asset-evidence-version code{overflow-wrap:anywhere}</style>

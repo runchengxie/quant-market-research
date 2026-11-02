@@ -21,15 +21,15 @@ const sourceBase='https://github.com/runchengxie/quant-market-research/blob/main
 <thead><tr>{[c.index,c.price,c.total,c.residual].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
 <tbody>{data.equities.map(row=><tr><th><LocaleText text={assetNames[row.id]} as="span"/></th><td>{percent(row.price_cagr)}</td><td>{percent(row.total_cagr)}</td><td>{percent(row.distribution_component_cagr)}</td></tr>)}</tbody>
 </table></div></details><LocaleText text={c.dividendNote}/>
-<LocaleText text={c.stress} as="h3"/><LocaleText text={c.stressScope}/>
+<LocaleText id="asset-diversification" text={c.stress} as="h3"/><LocaleText text={c.stressScope}/>
 <div class="asset-return-table"><table>
 <thead><tr>{[c.asset,c.correlation,c.positive,c.stressWorst].map(text=><th><LocaleText text={text} as="span"/></th>)}</tr></thead>
 <tbody>{(['gold','bond'] as const).map(id=><tr><th><LocaleText text={c[id]} as="span"/></th><td>{stress.correlation.total[id].toFixed(3)}</td><td>{percent(stress.down_market[id].positive_fraction)}</td><td>{percent(stress.down_market[id].worst_return)}</td></tr>)}</tbody>
 </table></div><LocaleText text={c.mix}/>
-<LocaleText text={c.costs} as="h3"/>
+<LocaleText id="asset-smallcap-costs" text={c.costs} as="h3"/>
 <div class="asset-return-table"><table><thead><tr><th><LocaleText text={c.drag} as="span"/></th><th><LocaleText text={c.relative} as="span"/></th></tr></thead><tbody>{data.small_vs_large.cost_sensitivities.map(row=><tr><td>{percent(row.annual_wealth_drag)}</td><td>{percent(row.relative_cagr)}</td></tr>)}</tbody></table></div>
-<LocaleText text={c.costNote}/><LocaleText text={c.pending} as="h3"/><LocaleText text={c.pendingNote}/>
-<details open><LocaleText text={c.methods} as="summary"/><p><a href={sourceBase+'findings-20261031.md'}><LocaleText text={c.sourceEn} as="span"/></a> · <a href={sourceBase+'findings-20261031.zh-CN.md'}><LocaleText text={c.sourceZh} as="span"/></a></p><a href="https://youzhiyouxing.cn/sbbi2025/">SBBI China 2025</a></details>
+<LocaleText text={c.costNote}/><LocaleText id="asset-return-gaps" text={c.pending} as="h3"/><LocaleText text={c.pendingNote}/>
+<details open id="asset-return-records"><LocaleText text={c.methods} as="summary"/><p><a href={sourceBase+'findings-20261031.md'}><LocaleText text={c.sourceEn} as="span"/></a> · <a href={sourceBase+'findings-20261031.zh-CN.md'}><LocaleText text={c.sourceZh} as="span"/></a></p><a href="https://youzhiyouxing.cn/sbbi2025/">SBBI China 2025</a></details>
 </section>
 <style>
 .asset-return-evidence{margin-block:1.5rem}.asset-return-table{overflow-x:auto;margin-block:1rem}table{width:100%;border-collapse:collapse}th,td{padding:.65rem;text-align:left;border-bottom:1px solid var(--border);font-variant-numeric:tabular-nums}td{white-space:nowrap}
