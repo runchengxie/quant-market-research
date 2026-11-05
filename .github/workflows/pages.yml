@@ -18,12 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Install uv
-        uses: astral-sh/setup-uv@v10.0.1
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
+          version: "0.13.7"
           python-version: "3.13"
           enable-cache: false
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
       - name: Verify installed shared matching provider and accounting
         run: |
           uv run --locked --extra formal --extra duckdb --extra dev python -c "import importlib.metadata; importlib.metadata.distribution('quant-platform'); from portfolio_backtester.minute_execution import MinuteExecutionConfig, simulate_minute_execution"
@@ -36,14 +37,14 @@ jobs:
       pages: read
     steps:
       - name: Install uv
-        uses: astral-sh/setup-uv@v10.0.1
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
-          version: latest
+          version: "0.13.7"
           python-version: "3.11"
           enable-cache: false
 
       - name: Check out repository
-        uses: actions/checkout@v7
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
       - name: Run Python tests
         run: uv run --locked --extra duckdb --extra dev pytest -q
@@ -52,9 +53,9 @@ jobs:
         run: uv run --locked --extra dev ruff check src tests scripts
 
       - name: Set up Node
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
         with:
-          node-version: 22
+          node-version: 24.22.2
           cache: npm
           cache-dependency-path: web/package-lock.json
 
@@ -80,7 +81,7 @@ jobs:
 
       - name: Retain failed browser smoke diagnostics
         if: failure() && steps.browser_smoke.outcome == 'failure'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: browser-smoke-${{ github.sha }}
           retention-days: 14
@@ -104,10 +105,10 @@ jobs:
           fi
 
       - name: Configure Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
 
       - name: Upload Pages artifact
-        uses: actions/upload-pages-artifact@v5
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
           path: web/dist
 
@@ -125,4 +126,4 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v5
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

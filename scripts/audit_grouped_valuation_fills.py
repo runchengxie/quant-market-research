@@ -63,7 +63,7 @@ def main():
     )
     duplicate_prices = con.execute(
         "SELECT count(*) FROM (SELECT ts_code,trade_date FROM prices GROUP BY ts_code,trade_date HAVING count(*)>1)"
-    ).fetchone()[0]
+    ).fetchall()[0][0]
     if duplicate_prices:
         raise ValueError("duplicate quote identity")
     rows = []
@@ -94,7 +94,7 @@ def main():
                        OR p.down_limit IS NULL OR NOT isfinite(p.down_limit) OR p.down_limit<=0 OR p.low<=p.down_limit))))
           """,
             [portfolio["scenario"] != "close10"],
-        ).fetchone()[0]
+        ).fetchall()[0][0]
         if violations:
             raise AssertionError(
                 f"{portfolio['portfolio']}: {violations} ineligible hypothetical fills"

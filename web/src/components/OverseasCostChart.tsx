@@ -11,7 +11,7 @@ export default function OverseasCostChart({ rows, svg }: { rows: CostRow[]; svg:
  const [lag, setLag] = useState(0);
  const [revision, setRevision] = useState(0);
  const canvas = useRef<HTMLDivElement>(null);
- const chart = useRef<import('echarts').ECharts>();
+ const chart = useRef<import('echarts').ECharts | undefined>(undefined);
  const t = (key: keyof typeof c) => c[key][locale];
  const modelName = (model: typeof costModels[number]) => overseasCopy.models[model][locale];
  const selected = selectCostRows(rows, target, lag);
