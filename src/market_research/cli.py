@@ -153,7 +153,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "report" and args.report_command == "smallcap-turnover":
         config = _load_config(Path(args.config))
         sources = config.get("sources", {})
-        a_share_root = Path(str(sources.get("a_share_root", ""))) if isinstance(sources, dict) else Path("")
+        if not isinstance(sources, dict) or not sources.get("a_share_root"):
+            raise RuntimeError("A-share source is required for smallcap-turnover report")
+        a_share_root = Path(str(sources["a_share_root"]))
         if not a_share_root.exists():
             raise RuntimeError("A-share source is required for smallcap-turnover report")
         panel, metadata = build_a_share_panel(
@@ -304,7 +306,9 @@ def main(argv: list[str] | None = None) -> int:
     if args.command == "report" and args.report_command == "microcap":
         config = _load_config(Path(args.config))
         sources = config.get("sources", {})
-        a_share_root = Path(str(sources.get("a_share_root", ""))) if isinstance(sources, dict) else Path("")
+        if not isinstance(sources, dict) or not sources.get("a_share_root"):
+            raise RuntimeError("A-share source is required for microcap report")
+        a_share_root = Path(str(sources["a_share_root"]))
         if not a_share_root.exists():
             raise RuntimeError("A-share source is required for microcap report")
         output_root = resolve_output_root(config)

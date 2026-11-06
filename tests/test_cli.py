@@ -2,6 +2,7 @@ from pathlib import Path
 
 import json
 import pandas as pd
+import pytest
 
 
 def _dated_st_manifest(root: Path) -> None:
@@ -219,3 +220,34 @@ def test_smallcap_turnover_audit_writes_overlap_summary(tmp_path: Path):
     assert result.loc[0, "common_days"] == 2
     assert result.loc[0, "within_10pct_ratio"] == 0.5
     assert (tmp_path / "output" / "smallcap_turnover_overlap_audit_manifest.json").exists()
+
+
+@pytest.mark.parametrize("report", ["smallcap-turnover", "microcap"])
+@pytest.mark.parametrize("sources", ["", '[sources]\na_share_root = ""\n', "sources = []\n"])
+def test_reports_require_explicit_a_share_source_before_using_cwd(
+    tmp_path: Path, monkeypatch, report: str, sources: str,
+):
+    from market_research.cli import main
+
+    # Valid neighboring data must not turn an omitted source into an implicit cwd scan.
+    _dated_st_manifest(tmp_path)
+    pd.DataFrame({
+        "ts_code": ["000001.SZ"] * 2,
+        "trade_date": ["2024-01-01", "2024-01-02"],
+        "close": [10.0, 11.0],
+        "adj_close": [10.0, 11.0],
+        "vol": [100.0] * 2,
+        "amount": [100.0] * 2,
+        "total_mv": [1.0] * 2,
+        "is_st": [False] * 2,
+        "st_available_from": [None] * 2,
+        "is_suspended": [False] * 2,
+    }).to_parquet(tmp_path / "neighbor.parquet", index=False)
+    output = tmp_path / "output"
+    config = tmp_path / "config.toml"
+    config.write_text(f'output_root = "{output.as_posix()}"\n{sources}', encoding="utf-8")
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(RuntimeError, match=f"A-share source is required for {report} report"):
+        main(["report", report, "--config", str(config)])
+    assert not output.exists()
