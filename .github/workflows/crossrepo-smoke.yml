@@ -42,6 +42,35 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
+      - name: Record the checked-out consumer and workflow event
+        run: |
+          python3 - <<'PYTHON'
+          import json
+          import os
+          from pathlib import Path
+          import subprocess
+
+          event = json.loads(Path(os.environ["GITHUB_EVENT_PATH"]).read_text())
+          receipt = {
+              "schema_version": 1,
+              "consumer_revision": subprocess.check_output(
+                  ["git", "rev-parse", "HEAD"], text=True).strip(),
+              "workflow": {key: os.environ.get(key) for key in (
+                  "GITHUB_EVENT_NAME", "GITHUB_REPOSITORY", "GITHUB_REF", "GITHUB_SHA",
+                  "GITHUB_RUN_ID", "GITHUB_RUN_ATTEMPT", "GITHUB_WORKFLOW_REF",
+                  "GITHUB_WORKFLOW_SHA")},
+          }
+          if "pull_request" in event:
+              pr = event["pull_request"]
+              receipt["pull_request"] = {
+                  "number": event["number"],
+                  **{side: {"sha": pr[side]["sha"], "ref": pr[side]["ref"],
+                            "repository": pr[side]["repo"]["full_name"]}
+                     for side in ("base", "head")},
+              }
+          destination = Path(os.environ["RUNNER_TEMP"]) / "workflow-provenance.json"
+          destination.write_text(json.dumps(receipt, indent=2) + "\n")
+          PYTHON
       - uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
         with:
           version: "0.13.7"
@@ -54,7 +83,7 @@ jobs:
       - name: Verify the real synthetic chain without dependency skips
         env:
           REQUIRE_CROSSREPO_SMOKE: "1"
-        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q tests/test_synthetic_chain.py tests/test_crossrepo_candidates.py tests/test_locked_providers.py
+        run: uv run --locked --extra dev --extra duckdb --extra formal --extra integration pytest -q --junitxml="$RUNNER_TEMP/crossrepo-tests.xml" tests/test_synthetic_chain.py tests/test_crossrepo_candidates.py tests/test_locked_providers.py
       - name: Produce a versioned synthetic acceptance receipt
         run: uv run --locked --extra formal --extra integration market-research-synthetic-chain --output "$RUNNER_TEMP/research-chain" --expected-providers "$RUNNER_TEMP/locked-providers.json"
       - name: Verify the exact PR lock or explicit manual candidates in a disposable environment
@@ -67,6 +96,8 @@ jobs:
         with:
           name: crossrepo-acceptance-${{ github.sha }}
           path: |
+            ${{ runner.temp }}/workflow-provenance.json
+            ${{ runner.temp }}/crossrepo-tests.xml
             ${{ runner.temp }}/provider-selection.json
             ${{ runner.temp }}/locked-providers.json
             ${{ runner.temp }}/research-chain

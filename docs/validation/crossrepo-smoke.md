@@ -174,3 +174,15 @@ passes no repository secrets and does not use `pull_request_target`. Provider an
 consumer code run with the same unprivileged permissions as ordinary PR tests.
 The recorded consumer revision is the actual checkout (the prospective merge
 revision on PR runs), with source hashes, not an unverified PR-body revision.
+
+The artifact also retains `crossrepo-tests.xml`, the JUnit receipt from the existing
+strict locked-provider tests, including failures when pytest produces a report.
+`workflow-provenance.json` is written immediately after checkout, before dependency
+installation. It records the actual checked-out consumer commit, workflow event/ref,
+run ID and attempt, workflow revision, and PR number with base/head repository, ref
+and SHA when applicable. PR acceptance tests the checked-out prospective merge and
+its committed lock, not a sibling worktree or provider main. The separate PR head
+and base fields identify that merge's inputs; they do not replace its checkout SHA.
+No PR title, body or other free text is copied into this receipt. The always-run
+artifact upload retains available provenance if setup, validation or tests fail;
+a step that was never reached cannot produce its test or acceptance receipt.
