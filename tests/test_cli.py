@@ -251,3 +251,59 @@ def test_reports_require_explicit_a_share_source_before_using_cwd(
     with pytest.raises(RuntimeError, match=f"A-share source is required for {report} report"):
         main(["report", report, "--config", str(config)])
     assert not output.exists()
+
+
+def _write_neighboring_historical_data(root: Path) -> None:
+    pd.DataFrame({
+        "ts_code": ["000001.SZ", "000002.SZ"],
+        "trade_date": [20080102, 20080102],
+        "amount": [10.0, 20.0],
+        "total_mv": [100.0, 200.0],
+    }).to_parquet(root / "neighbor.parquet", index=False)
+
+
+@pytest.mark.parametrize("fields", [
+    "",
+    'daily_basic_root = "."\n',
+    'daily_root = "."\n',
+    'daily_root = ""\ndaily_basic_root = "."\n',
+    'daily_root = "."\ndaily_basic_root = ""\n',
+], ids=["missing-both", "missing-daily", "missing-basic", "empty-daily", "empty-basic"])
+def test_historical_report_requires_both_sources_before_reading_cwd(
+    tmp_path: Path, monkeypatch, fields: str,
+):
+    from market_research.cli import main
+
+    _write_neighboring_historical_data(tmp_path)
+    output = tmp_path / "output"
+    config = tmp_path / "config.toml"
+    config.write_text(
+        f'output_root = "{output.as_posix()}"\n[smallcap_turnover_history]\n{fields}',
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(tmp_path)
+
+    with pytest.raises(RuntimeError, match="historical daily and daily_basic roots are required"):
+        main(["report", "smallcap-turnover-history", "--config", str(config)])
+    assert not output.exists()
+
+
+def test_historical_report_accepts_explicit_current_directory_sources(tmp_path: Path, monkeypatch):
+    from market_research.cli import main
+
+    _write_neighboring_historical_data(tmp_path)
+    output = tmp_path / "output"
+    config = tmp_path / "config.toml"
+    config.write_text(
+        f'output_root = "{output.as_posix()}"\n[smallcap_turnover_history]\n'
+        'daily_root = "."\ndaily_basic_root = "."\n',
+        encoding="utf-8",
+    )
+    monkeypatch.chdir(tmp_path)
+
+    assert main(["report", "smallcap-turnover-history", "--config", str(config)]) == 0
+    summary = json.loads((output / "smallcap_turnover_history_summary.json").read_text())
+    assert summary["quality_status"] == "incomplete"
+    assert summary["trading_days"] == 1
+    daily = pd.read_csv(output / "smallcap_turnover_history_daily.csv")
+    assert daily.loc[daily["rank_count"] == 1, "turnover_sum"].item() == 10_000.0

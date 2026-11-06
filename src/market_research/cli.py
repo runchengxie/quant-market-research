@@ -221,8 +221,10 @@ def main(argv: list[str] | None = None) -> int:
         section = config.get("smallcap_turnover_history", {})
         if not isinstance(section, dict):
             raise RuntimeError("smallcap_turnover_history must be a mapping")
-        daily_root = Path(str(section.get("daily_root", "")))
-        daily_basic_root = Path(str(section.get("daily_basic_root", "")))
+        if not section.get("daily_root") or not section.get("daily_basic_root"):
+            raise RuntimeError("historical daily and daily_basic roots are required")
+        daily_root = Path(str(section["daily_root"]))
+        daily_basic_root = Path(str(section["daily_basic_root"]))
         panel, metadata = load_historical_turnover_panel(
             daily_root,
             daily_basic_root,
