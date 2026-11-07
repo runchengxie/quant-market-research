@@ -19,6 +19,8 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
+  'commodity-equity': { title: 'China commodity futures and equity returns', summary: 'Protocol stage: coverage and return definitions await audit; no verified findings.' },
+  'commodity-equity-zh-CN': { title: 'China commodity futures and equity returns', summary: 'Protocol stage: coverage and return definitions await audit; no verified findings.' },
  ...Object.fromEntries(assetTopics.map(t=>[`asset-${t.id}`,{title:t.title[0],summary:t.finding[0]}])),
   'reader-forward-registration': { title: 'Future-observation registration', summary: 'Pre-entry receipts, independent time proof and pending evidence.' },
   'valuation-groups': { title: 'Low-valuation research', summary: 'Annual minima and percentiles, five accounting definitions, ST groups and the limits of valuation-factor evidence.' },

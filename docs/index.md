@@ -31,3 +31,7 @@ Use this site for independent market research projects and their reproducible me
 
 - [ST paired exit evidence](research/experiments/microcap-st-exit-evidence-20261019.md): 107 events, suspension identity matches and unresolved terminal values.
 - [Financial template coverage diagnosis](research/experiments/financial-template-coverage-20261019.md): 87 financial-template issuers and quarantined ambiguous statements.
+
+## Cross-asset research
+
+- [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): Protocol only; target December 2004–December 2025, subject to common coverage. The next question is whether return definitions and history are comparable.

@@ -17,6 +17,8 @@ export type PublicPage = {
 export type PublicDoc = PublicPage & { source: string; slug: string };
 
 const docSources = new Set([
+  'docs/research/asset-returns/china-commodity-equity.zh-CN.md',
+  'docs/research/asset-returns/china-commodity-equity.md',
   'docs/research/experiments/reader-forward-registration-20261022.md',
   'docs/research/experiments/reader-forward-registration-20261022.zh-CN.md',
 
@@ -67,6 +69,10 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
+  page({ id: 'commodity-equity-zh-CN', route: '/docs/research/asset-returns/china-commodity-equity.zh-CN/', title: '中国商品期货与股票收益', summary: '协议阶段：待核验覆盖与收益口径，尚无收益结论。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns'], snapshotKeys: [] }),
+
+  page({ id: 'commodity-equity', route: '/docs/research/asset-returns/china-commodity-equity/', title: '中国商品期货与股票收益', summary: '协议阶段：待核验覆盖与收益口径，尚无收益结论。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns'], snapshotKeys: [] }),
+
   ...assetTopics.map(t=>page({id:`asset-${t.id}`,route:t.route,title:t.title[1],summary:t.finding[1],section:'research',topic:'assets',aliases:[],related:assetTopics.filter(x=>x.id!==t.id).map(x=>`asset-${x.id}`),snapshotKeys:[]})),
   page({ id: 'reader-forward-registration', route: '/docs/research/experiments/reader-forward-registration-20261022/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
   page({ id: 'reader-forward-registration-zh-CN', route: '/docs/research/experiments/reader-forward-registration-20261022.zh-CN/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),
@@ -128,6 +134,8 @@ export const publicPages: readonly PublicPage[] = [
 ];
 
 export const publicDocs: readonly PublicDoc[] = [
+  { ...publicPages.find((p) => p.id === 'commodity-equity-zh-CN'), source: 'docs/research/asset-returns/china-commodity-equity.zh-CN.md', slug: 'research/asset-returns/china-commodity-equity.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'commodity-equity'), source: 'docs/research/asset-returns/china-commodity-equity.md', slug: 'research/asset-returns/china-commodity-equity' },
   { ...publicPages.find(p => p.id === 'reader-forward-registration'), source: 'docs/research/experiments/reader-forward-registration-20261022.md', slug: 'research/experiments/reader-forward-registration-20261022' },
   { ...publicPages.find(p => p.id === 'reader-forward-registration-zh-CN'), source: 'docs/research/experiments/reader-forward-registration-20261022.zh-CN.md', slug: 'research/experiments/reader-forward-registration-20261022.zh-CN' },
 

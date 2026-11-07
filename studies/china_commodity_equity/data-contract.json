@@ -1,0 +1,46 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "raw_data_owner": "quant-market-data-platform",
+  "research_owner": "quant-market-research",
+  "results_path": "DATA_ROOT/quant/quant-market-research/china_commodity_equity/<task-id>/",
+  "required_receipt_fields": [
+    "source_revision",
+    "provider",
+    "provider_series_id",
+    "methodology_version",
+    "retrieved_at",
+    "currency",
+    "return_basis",
+    "roll_treatment",
+    "collateral_treatment",
+    "fee_treatment",
+    "calendar_id",
+    "first_observation",
+    "last_observation",
+    "missing_dates",
+    "input_sha256",
+    "output_sha256",
+    "publication_rights"
+  ],
+  "observation_fields": [
+    "series_id",
+    "date",
+    "level"
+  ],
+  "uniqueness": [
+    "series_id",
+    "date"
+  ],
+  "validation": [
+    "finite_positive_levels",
+    "unique_sorted_dates",
+    "verified_calendar",
+    "no_forward_fill",
+    "no_zero_fill",
+    "common_coverage",
+    "original_publisher_reconciliation"
+  ],
+  "publication": "reviewed_derived_aggregates_only",
+  "shared_alias_updates": false
+}
