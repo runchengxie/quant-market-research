@@ -1,0 +1,4031 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "evidence_stage": "descriptive_index_history",
+  "primary": {
+    "series": {
+      "equity": {
+        "id": "H00300.CSI",
+        "return_basis": "total_return",
+        "currency": "CNY"
+      },
+      "commodity": {
+        "id": "NHCI.NH",
+        "return_basis": "commodity_futures_return_index",
+        "currency": "CNY"
+      }
+    },
+    "daily": {
+      "equity": {
+        "start": "2006-12-29",
+        "end": "2025-12-31",
+        "observations": 4619,
+        "total_return": 2.282186403192461,
+        "cagr": 0.0645294518853825,
+        "daily_volatility_252": 0.25519848297155145,
+        "max_drawdown": -0.720356345739303
+      },
+      "commodity": {
+        "start": "2006-12-29",
+        "end": "2025-12-31",
+        "observations": 4619,
+        "total_return": 1.1097536618937194,
+        "cagr": 0.040062164770735986,
+        "daily_volatility_252": 0.15404904229997374,
+        "max_drawdown": -0.5194056588358633
+      }
+    },
+    "holding_periods": {
+      "equity": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45161290322580644,
+          "worst_annualized_return": -0.7047252993766974,
+          "median_annualized_return": 0.03661065555345622
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.37823834196891193,
+          "worst_annualized_return": -0.18461804225197298,
+          "median_annualized_return": 0.048874861427129046
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1893491124260355,
+          "worst_annualized_return": -0.15833800291679423,
+          "median_annualized_return": 0.04043944719934012
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.06422018348623854,
+          "worst_annualized_return": -0.019922452665043666,
+          "median_annualized_return": 0.06217278400277171
+        }
+      ],
+      "commodity": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.423963133640553,
+          "worst_annualized_return": -0.35590048024232246,
+          "median_annualized_return": 0.030191670082925004
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.26424870466321243,
+          "worst_annualized_return": -0.15202679093630067,
+          "median_annualized_return": 0.04802607971954864
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.2781065088757396,
+          "worst_annualized_return": -0.12072972436294604,
+          "median_annualized_return": 0.04772200971747287
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.11926605504587157,
+          "worst_annualized_return": -0.007313224516361627,
+          "median_annualized_return": 0.0398397882640098
+        }
+      ]
+    },
+    "monthly_max_drawdown": {
+      "equity": -0.7047252993766974,
+      "commodity": -0.49656993183988196
+    },
+    "correlation": {
+      "equity": {
+        "equity": 1.0,
+        "commodity": 0.3418713438096104
+      },
+      "commodity": {
+        "equity": 0.3418713438096104,
+        "commodity": 1.0
+      }
+    },
+    "down_equity_months": {
+      "equity": {
+        "months": 99,
+        "mean_return": -0.05529620906820117,
+        "positive_fraction": 0.0,
+        "worst_return": -0.2583626281248076
+      },
+      "commodity": {
+        "months": 99,
+        "mean_return": -0.011112081935808387,
+        "positive_fraction": 0.3333333333333333,
+        "worst_return": -0.22480537203307582
+      }
+    },
+    "period_returns": {
+      "equity": {
+        "last_week": {
+          "start": "2025-12-19",
+          "end": "2025-12-26",
+          "return": 0.01971661689167492
+        },
+        "last_month": {
+          "start": "2025-11-28",
+          "end": "2025-12-31",
+          "return": 0.02468485882119187
+        },
+        "year_to_date": {
+          "start": "2024-12-31",
+          "end": "2025-12-31",
+          "return": 0.2098364673187978
+        },
+        "trailing_12_months": {
+          "start": "2024-12-31",
+          "end": "2025-12-31",
+          "return": 0.2098364673187978
+        },
+        "trailing_3_years": {
+          "start": "2022-12-30",
+          "end": "2025-12-31",
+          "return": 0.2998212784168248
+        },
+        "trailing_5_years": {
+          "start": "2020-12-31",
+          "end": "2025-12-31",
+          "return": 0.005335170949492873
+        },
+        "trailing_10_years": {
+          "start": "2015-12-31",
+          "end": "2025-12-31",
+          "return": 0.5648619511732189
+        }
+      },
+      "commodity": {
+        "last_week": {
+          "start": "2025-12-19",
+          "end": "2025-12-26",
+          "return": 0.03996248611868669
+        },
+        "last_month": {
+          "start": "2025-11-28",
+          "end": "2025-12-31",
+          "return": 0.030903762674147073
+        },
+        "year_to_date": {
+          "start": "2024-12-31",
+          "end": "2025-12-31",
+          "return": 0.054016270974616365
+        },
+        "trailing_12_months": {
+          "start": "2024-12-31",
+          "end": "2025-12-31",
+          "return": 0.054016270974616365
+        },
+        "trailing_3_years": {
+          "start": "2022-12-30",
+          "end": "2025-12-31",
+          "return": 0.10529101175847133
+        },
+        "trailing_5_years": {
+          "start": "2020-12-31",
+          "end": "2025-12-31",
+          "return": 0.5996160901930292
+        },
+        "trailing_10_years": {
+          "start": "2015-12-31",
+          "end": "2025-12-31",
+          "return": 2.052469171606557
+        }
+      }
+    },
+    "calendar_year_returns": [
+      {
+        "year": 2007,
+        "equity": 1.6327732102504924,
+        "commodity": 0.0926489358264686
+      },
+      {
+        "year": 2008,
+        "equity": -0.6560619660129239,
+        "commodity": -0.3505090367413429
+      },
+      {
+        "year": 2009,
+        "equity": 0.9857930350456521,
+        "commodity": 0.6068121948673311
+      },
+      {
+        "year": 2010,
+        "equity": -0.11578756824555803,
+        "commodity": 0.12039569107138504
+      },
+      {
+        "year": 2011,
+        "equity": -0.2404979462905772,
+        "commodity": -0.1696149657794218
+      },
+      {
+        "year": 2012,
+        "equity": 0.0980012979618814,
+        "commodity": 0.04217326712506986
+      },
+      {
+        "year": 2013,
+        "equity": -0.053313488818695354,
+        "commodity": -0.12368741660381732
+      },
+      {
+        "year": 2014,
+        "equity": 0.5584896886771655,
+        "commodity": -0.16542535584243634
+      },
+      {
+        "year": 2015,
+        "equity": 0.07216352449966168,
+        "commodity": -0.14523549826474969
+      },
+      {
+        "year": 2016,
+        "equity": -0.0925883942984228,
+        "commodity": 0.5133812048304582
+      },
+      {
+        "year": 2017,
+        "equity": 0.24251117933788824,
+        "commodity": 0.07854320930874326
+      },
+      {
+        "year": 2018,
+        "equity": -0.2363729492198301,
+        "commodity": -0.05830470775686858
+      },
+      {
+        "year": 2019,
+        "equity": 0.39186526037592406,
+        "commodity": 0.15582684941266423
+      },
+      {
+        "year": 2020,
+        "equity": 0.29891885301252796,
+        "commodity": 0.07410431109663573
+      },
+      {
+        "year": 2021,
+        "equity": -0.03516801593592911,
+        "commodity": 0.2094289639499134
+      },
+      {
+        "year": 2022,
+        "equity": -0.19836708266256708,
+        "commodity": 0.19662689736081007
+      },
+      {
+        "year": 2023,
+        "equity": -0.09135478705714839,
+        "commodity": 0.06205086736310439
+      },
+      {
+        "year": 2024,
+        "equity": 0.1823951190058939,
+        "commodity": -0.012620729478954984
+      },
+      {
+        "year": 2025,
+        "equity": 0.2098364673187978,
+        "commodity": 0.054016270974616365
+      }
+    ]
+  },
+  "allocations": [
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.282186403192465,
+      "cagr": 0.0645294518853825,
+      "daily_volatility_252": 0.25519848297155145,
+      "max_drawdown": -0.7203563457393025,
+      "commodity_weight": 0,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45161290322580644,
+          "worst_annualized_return": -0.704725299376697,
+          "median_annualized_return": 0.036610655553455995
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.37823834196891193,
+          "worst_annualized_return": -0.18461804225197254,
+          "median_annualized_return": 0.0488748614271286
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1893491124260355,
+          "worst_annualized_return": -0.15833800291679412,
+          "median_annualized_return": 0.04043944719934012
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.06422018348623854,
+          "worst_annualized_return": -0.019922452665043777,
+          "median_annualized_return": 0.062172784002771486
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.9839281807447278,
+      "cagr": 0.05920680462595551,
+      "daily_volatility_252": 0.2551862390122547,
+      "max_drawdown": -0.7218299696938849,
+      "commodity_weight": 0,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45161290322580644,
+          "worst_annualized_return": -0.7062046968404367,
+          "median_annualized_return": 0.0314311410045478
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.39378238341968913,
+          "worst_annualized_return": -0.18870330251208012,
+          "median_annualized_return": 0.043638841862596145
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.21893491124260356,
+          "worst_annualized_return": -0.1625480368312907,
+          "median_annualized_return": 0.03523511888955633
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.09174311926605505,
+          "worst_annualized_return": -0.024824847839610364,
+          "median_annualized_return": 0.05686554607431393
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.7114715468339141,
+      "cagr": 0.05388415736652874,
+      "daily_volatility_252": 0.2551741786362853,
+      "max_drawdown": -0.7233031932861009,
+      "commodity_weight": 0,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45622119815668205,
+          "worst_annualized_return": -0.7076840790389793,
+          "median_annualized_return": 0.02625160864053666
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.41450777202072536,
+          "worst_annualized_return": -0.19278852061833474,
+          "median_annualized_return": 0.038402780275908155
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.24260355029585798,
+          "worst_annualized_return": -0.1667580620574849,
+          "median_annualized_return": 0.030030801320013456
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.11009174311926606,
+          "worst_annualized_return": -0.02972723289703949,
+          "median_annualized_return": 0.05155828989144484
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.329969685949229,
+      "cagr": 0.06533929124510984,
+      "daily_volatility_252": 0.23538054479443404,
+      "max_drawdown": -0.6908663688119565,
+      "commodity_weight": 0.1,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41935483870967744,
+          "worst_annualized_return": -0.6751503172124953,
+          "median_annualized_return": 0.035206417260166045
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.35233160621761656,
+          "worst_annualized_return": -0.1617317628728583,
+          "median_annualized_return": 0.05023144455823636
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.17159763313609466,
+          "worst_annualized_return": -0.1404977446809057,
+          "median_annualized_return": 0.04493054129202423
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.014280795255935175,
+          "median_annualized_return": 0.0646212864202178
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.027369310062587,
+      "cagr": 0.06001259478888432,
+      "daily_volatility_252": 0.2353683637458245,
+      "max_drawdown": -0.6924953945994005,
+      "commodity_weight": 0.1,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4377880184331797,
+          "worst_annualized_return": -0.6767778924696982,
+          "median_annualized_return": 0.030019170365559678
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.38341968911917096,
+          "worst_annualized_return": -0.16593168891231114,
+          "median_annualized_return": 0.044979092262572795
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.17751479289940827,
+          "worst_annualized_return": -0.14479701642778242,
+          "median_annualized_return": 0.039703748312920784
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.05504587155963303,
+          "worst_annualized_return": -0.019211410273037965,
+          "median_annualized_return": 0.05929745311958712
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.750946151775079,
+      "cagr": 0.0546858983326588,
+      "daily_volatility_252": 0.2353563871584907,
+      "max_drawdown": -0.6941239778040422,
+      "commodity_weight": 0.1,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45161290322580644,
+          "worst_annualized_return": -0.678405450932728,
+          "median_annualized_return": 0.024832593152074534
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.38860103626943004,
+          "worst_annualized_return": -0.17013157161472947,
+          "median_annualized_return": 0.03972674598877224
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.20710059171597633,
+          "worst_annualized_return": -0.1490962793021955,
+          "median_annualized_return": 0.03447696612041895
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.08256880733944955,
+          "worst_annualized_return": -0.024142015114765547,
+          "median_annualized_return": 0.053973623481247124
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.3338573444382296,
+      "cagr": 0.06540469479594657,
+      "daily_volatility_252": 0.21667552695473358,
+      "max_drawdown": -0.6590934419676882,
+      "commodity_weight": 0.2,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41935483870967744,
+          "worst_annualized_return": -0.643479031678797,
+          "median_annualized_return": 0.04423126559360946
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.34196891191709844,
+          "worst_annualized_return": -0.13948003273635323,
+          "median_annualized_return": 0.06078379510254184
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.16568047337278108,
+          "worst_annualized_return": -0.12318204395402743,
+          "median_annualized_return": 0.05060184939856205
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.009466166649004792,
+          "median_annualized_return": 0.06514185018435303
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.0309036899842012,
+      "cagr": 0.06007767132196684,
+      "daily_volatility_252": 0.21666336029699837,
+      "max_drawdown": -0.6608898999331614,
+      "commodity_weight": 0.2,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.423963133640553,
+          "worst_annualized_return": -0.6452652877149255,
+          "median_annualized_return": 0.03901367400935252
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.35751295336787564,
+          "worst_annualized_return": -0.14379144531040688,
+          "median_annualized_return": 0.055488325729447396
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1893491124260355,
+          "worst_annualized_return": -0.12756792967131758,
+          "median_annualized_return": 0.04534668826270338
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.014420864670676048,
+          "median_annualized_return": 0.059816868157874126
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.7541578143931678,
+      "cagr": 0.05475064784798711,
+      "daily_volatility_252": 0.21665142102820295,
+      "max_drawdown": -0.6626858698269253,
+      "commodity_weight": 0.2,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.42857142857142855,
+          "worst_annualized_return": -0.6470515253195296,
+          "median_annualized_return": 0.03379606447902539
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.3626943005181347,
+          "worst_annualized_return": -0.14810281339704956,
+          "median_annualized_return": 0.050192813857077745
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.20710059171597633,
+          "worst_annualized_return": -0.13195380633739762,
+          "median_annualized_return": 0.040091537971990165
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.07339449541284404,
+          "worst_annualized_return": -0.01937555246727163,
+          "median_annualized_return": 0.05449188246831138
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.294159154942365,
+      "cagr": 0.06473341175501268,
+      "daily_volatility_252": 0.1993588016507074,
+      "max_drawdown": -0.624924160897047,
+      "commodity_weight": 0.3,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41013824884792627,
+          "worst_annualized_return": -0.6096259762054252,
+          "median_annualized_return": 0.04444168692380779
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.31088082901554404,
+          "worst_annualized_return": -0.11789666722378489,
+          "median_annualized_return": 0.059793647703941355
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1834319526627219,
+          "worst_annualized_return": -0.10640676472393917,
+          "median_annualized_return": 0.056659232706370855
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.01834862385321101,
+          "worst_annualized_return": -0.005473528806225425,
+          "median_annualized_return": 0.06093154453365046
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.9948129468606433,
+      "cagr": 0.05940974469623761,
+      "daily_volatility_252": 0.1993466049356961,
+      "max_drawdown": -0.6269006789866437,
+      "commodity_weight": 0.3,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41935483870967744,
+          "worst_annualized_return": -0.611581844214071,
+          "median_annualized_return": 0.03923730592170083
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.3471502590673575,
+          "worst_annualized_return": -0.12231621766447887,
+          "median_annualized_return": 0.054493473511586066
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.20118343195266272,
+          "worst_annualized_return": -0.11087656119724376,
+          "median_annualized_return": 0.05137377224697448
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.010448198195006864,
+          "median_annualized_return": 0.05562471376438105
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.7213624462891017,
+      "cagr": 0.05408607763746254,
+      "daily_volatility_252": 0.1993346604375025,
+      "max_drawdown": -0.6288766600847935,
+      "commodity_weight": 0.3,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4377880184331797,
+          "worst_annualized_return": -0.6135376920410471,
+          "median_annualized_return": 0.03403283541581725
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.35233160621761656,
+          "worst_annualized_return": -0.12673572250193876,
+          "median_annualized_return": 0.04919330539592215
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.24260355029585798,
+          "worst_annualized_return": -0.11534634844617042,
+          "median_annualized_return": 0.04608832269525265
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.045871559633027525,
+          "worst_annualized_return": -0.015422857317497485,
+          "median_annualized_return": 0.050317893946888015
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.2127876846340655,
+      "cagr": 0.06333315297033582,
+      "daily_volatility_252": 0.18379079991793112,
+      "max_drawdown": -0.588243631116139,
+      "commodity_weight": 0.4,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.3870967741935484,
+          "worst_annualized_return": -0.5735061428847541,
+          "median_annualized_return": 0.04895630398273365
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.27979274611398963,
+          "worst_annualized_return": -0.10460851417118544,
+          "median_annualized_return": 0.05687679934015355
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.21301775147928995,
+          "worst_annualized_return": -0.09018778948071915,
+          "median_annualized_return": 0.0615075289838658
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.01834862385321101,
+          "worst_annualized_return": -0.002297707410880978,
+          "median_annualized_return": 0.06226984034189975
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.9208358494217537,
+      "cagr": 0.058016487205484024,
+      "daily_volatility_252": 0.18377854184037287,
+      "max_drawdown": -0.590413442729577,
+      "commodity_weight": 0.4,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.391705069124424,
+          "worst_annualized_return": -0.5756429799696279,
+          "median_annualized_return": 0.0436721336617778
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.3005181347150259,
+          "worst_annualized_return": -0.10908649047867336,
+          "median_annualized_return": 0.0515767811994563
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.23668639053254437,
+          "worst_annualized_return": -0.09473871405065748,
+          "median_annualized_return": 0.056209413038216915
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.027522935779816515,
+          "worst_annualized_return": -0.007288262411496049,
+          "median_annualized_return": 0.05695776587710677
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.6541400526278554,
+      "cagr": 0.052699821440632455,
+      "daily_volatility_252": 0.1837665621416202,
+      "max_drawdown": -0.5925826648365067,
+      "commodity_weight": 0.4,
+      "rebalance": "monthly",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41935483870967744,
+          "worst_annualized_return": -0.5777797950054984,
+          "median_annualized_return": 0.03838816326246164
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.32124352331606215,
+          "worst_annualized_return": -0.11356446165212641,
+          "median_annualized_return": 0.046284214489157094
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.24260355029585798,
+          "worst_annualized_return": -0.09928962922879281,
+          "median_annualized_return": 0.05091124971254324
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.045871559633027525,
+          "worst_annualized_return": -0.012278807113036971,
+          "median_annualized_return": 0.05164569506651562
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.282186403192465,
+      "cagr": 0.0645294518853825,
+      "daily_volatility_252": 0.25519848297155145,
+      "max_drawdown": -0.7203563457393025,
+      "commodity_weight": 0,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45161290322580644,
+          "worst_annualized_return": -0.704725299376697,
+          "median_annualized_return": 0.036610655553455995
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.37823834196891193,
+          "worst_annualized_return": -0.18461804225197254,
+          "median_annualized_return": 0.0488748614271286
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1893491124260355,
+          "worst_annualized_return": -0.15833800291679412,
+          "median_annualized_return": 0.04043944719934012
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.06422018348623854,
+          "worst_annualized_return": -0.019922452665043777,
+          "median_annualized_return": 0.062172784002771486
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.9839281807447278,
+      "cagr": 0.05920680462595551,
+      "daily_volatility_252": 0.2551862390122547,
+      "max_drawdown": -0.7218299696938849,
+      "commodity_weight": 0,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45161290322580644,
+          "worst_annualized_return": -0.7062046968404367,
+          "median_annualized_return": 0.0314311410045478
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.39378238341968913,
+          "worst_annualized_return": -0.18870330251208012,
+          "median_annualized_return": 0.043638841862596145
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.21893491124260356,
+          "worst_annualized_return": -0.1625480368312907,
+          "median_annualized_return": 0.03523511888955633
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.09174311926605505,
+          "worst_annualized_return": -0.024824847839610364,
+          "median_annualized_return": 0.05686554607431393
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.7114715468339141,
+      "cagr": 0.05388415736652874,
+      "daily_volatility_252": 0.2551741786362853,
+      "max_drawdown": -0.7233031932861009,
+      "commodity_weight": 0,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.45622119815668205,
+          "worst_annualized_return": -0.7076840790389793,
+          "median_annualized_return": 0.02625160864053666
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.41450777202072536,
+          "worst_annualized_return": -0.19278852061833474,
+          "median_annualized_return": 0.038402780275908155
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.24260355029585798,
+          "worst_annualized_return": -0.1667580620574849,
+          "median_annualized_return": 0.030030801320013456
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.11009174311926606,
+          "worst_annualized_return": -0.02972723289703949,
+          "median_annualized_return": 0.05155828989144484
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.487715247276446,
+      "cagr": 0.06793675919353026,
+      "daily_volatility_252": 0.23478325431730618,
+      "max_drawdown": -0.6837449499735688,
+      "commodity_weight": 0.1,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41935483870967744,
+          "worst_annualized_return": -0.6679808390897319,
+          "median_annualized_return": 0.036167295145278944
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.35233160621761656,
+          "worst_annualized_return": -0.16078942821437292,
+          "median_annualized_return": 0.05177977547548673
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.17159763313609466,
+          "worst_annualized_return": -0.14022227728972325,
+          "median_annualized_return": 0.04632551337750357
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.0125278315323325,
+          "median_annualized_return": 0.06620308935662367
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.170780246557188,
+      "cagr": 0.06259707539756265,
+      "daily_volatility_252": 0.234770737788603,
+      "max_drawdown": -0.6854115031399859,
+      "commodity_weight": 0.1,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4377880184331797,
+          "worst_annualized_return": -0.6696443351614468,
+          "median_annualized_return": 0.03097584709635326
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.37823834196891193,
+          "worst_annualized_return": -0.1649940755777347,
+          "median_annualized_return": 0.04651967976336979
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.17751479289940827,
+          "worst_annualized_return": -0.14452292693778035,
+          "median_annualized_return": 0.04109174268072957
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.017467214958550525,
+          "median_annualized_return": 0.060869890065829546
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.8812625167329204,
+      "cagr": 0.05725739160159504,
+      "daily_volatility_252": 0.23475842476104536,
+      "max_drawdown": -0.6870776035279533,
+      "commodity_weight": 0.1,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4470046082949309,
+          "worst_annualized_return": -0.6713078140683387,
+          "median_annualized_return": 0.025784452615505105
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.38860103626943004,
+          "worst_annualized_return": -0.16919867955534484,
+          "median_annualized_return": 0.04125959008199387
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.20118343195266272,
+          "worst_annualized_return": -0.14882356771053018,
+          "median_annualized_return": 0.035857982784957
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.06422018348623854,
+          "worst_annualized_return": -0.022406588191297927,
+          "median_annualized_return": 0.05553670178122916
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.6205653460411913,
+      "cagr": 0.07003935704770337,
+      "daily_volatility_252": 0.21646180032171247,
+      "max_drawdown": -0.646695241011954,
+      "commodity_weight": 0.2,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41935483870967744,
+          "worst_annualized_return": -0.6309131277129881,
+          "median_annualized_return": 0.04431836349862284
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.34196891191709844,
+          "worst_annualized_return": -0.1382964279761849,
+          "median_annualized_return": 0.05806248452218732
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.16568047337278108,
+          "worst_annualized_return": -0.12302765306184149,
+          "median_annualized_return": 0.05293222586539548
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.027522935779816515,
+          "worst_annualized_return": -0.006516922389006474,
+          "median_annualized_return": 0.0681782203801149
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.291558016257673,
+      "cagr": 0.06468916026246485,
+      "daily_volatility_252": 0.21644899992120223,
+      "max_drawdown": -0.6485570331469808,
+      "commodity_weight": 0.2,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.423963133640553,
+          "worst_annualized_return": -0.6327623419585988,
+          "median_annualized_return": 0.03904329753323532
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.3626943005181347,
+          "worst_annualized_return": -0.14261377069554593,
+          "median_annualized_return": 0.0527709681156554
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1834319526627219,
+          "worst_annualized_return": -0.12741431104982281,
+          "median_annualized_return": 0.04766540807402331
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.011486372672749323,
+          "median_annualized_return": 0.06283951717227931
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 1.9910123049973252,
+      "cagr": 0.059338963477226336,
+      "daily_volatility_252": 0.21643642410244698,
+      "max_drawdown": -0.6504183194599473,
+      "commodity_weight": 0.2,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.42857142857142855,
+          "worst_annualized_return": -0.6346115371230492,
+          "median_annualized_return": 0.03376850371668105
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.36787564766839376,
+          "worst_annualized_return": -0.14693106886630547,
+          "median_annualized_return": 0.047479457775888356
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.20710059171597633,
+          "worst_annualized_return": -0.1318009599850002,
+          "median_annualized_return": 0.04239860115185223
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.016455812700972294,
+          "median_annualized_return": 0.05750080294686866
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.674864679059665,
+      "cagr": 0.07087776824086633,
+      "daily_volatility_252": 0.20005039291890545,
+      "max_drawdown": -0.609614355314851,
+      "commodity_weight": 0.3,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.39631336405529954,
+          "worst_annualized_return": -0.5934498012545517,
+          "median_annualized_return": 0.040348757737980634
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.29533678756476683,
+          "worst_annualized_return": -0.11697659938665861,
+          "median_annualized_return": 0.06115245067959263
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.17159763313609466,
+          "worst_annualized_return": -0.10663310120660885,
+          "median_annualized_return": 0.05893088783389566
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.01834862385321101,
+          "worst_annualized_return": -0.0017919963959092122,
+          "median_annualized_return": 0.0649516393991798
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.340923070549492,
+      "cagr": 0.06552337939966191,
+      "daily_volatility_252": 0.20003731596972207,
+      "max_drawdown": -0.6116289142802027,
+      "commodity_weight": 0.3,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.41013824884792627,
+          "worst_annualized_return": -0.5954867158010309,
+          "median_annualized_return": 0.035150565439093784
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.32642487046632124,
+          "worst_annualized_return": -0.12140075958911611,
+          "median_annualized_return": 0.055835820975582484
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.1952662721893491,
+          "worst_annualized_return": -0.11110176553390771,
+          "median_annualized_return": 0.05363406444595786
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.01834862385321101,
+          "worst_annualized_return": -0.00678508098741859,
+          "median_annualized_return": 0.05962615410810623
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.0358699329335215,
+      "cagr": 0.0601689905584577,
+      "daily_volatility_252": 0.2000244858569457,
+      "max_drawdown": -0.6136431476029313,
+      "commodity_weight": 0.3,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.42857142857142855,
+          "worst_annualized_return": -0.59752360932956,
+          "median_annualized_return": 0.029952355260860708
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.35233160621761656,
+          "worst_annualized_return": -0.1258248741407737,
+          "median_annualized_return": 0.05051924613133929
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.21301775147928995,
+          "worst_annualized_return": -0.11557042063916512,
+          "median_annualized_return": 0.04833725198914429
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.01177815527463344,
+          "median_annualized_return": 0.05430067248046
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.648428610703215,
+      "cagr": 0.07047105776879437,
+      "daily_volatility_252": 0.18554129603677982,
+      "max_drawdown": -0.5730970439764774,
+      "commodity_weight": 0.4,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 0,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.3778801843317972,
+          "worst_annualized_return": -0.5554951544704692,
+          "median_annualized_return": 0.053017657791898154
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.26424870466321243,
+          "worst_annualized_return": -0.10720245000955886,
+          "median_annualized_return": 0.05940611017149733
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.21301775147928995,
+          "worst_annualized_return": -0.09093342391797887,
+          "median_annualized_return": 0.06740076216049617
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.0,
+          "worst_annualized_return": 0.0017226886273071784,
+          "median_annualized_return": 0.0664755898116951
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.3168892955999105,
+      "cagr": 0.06511870247995022,
+      "daily_volatility_252": 0.1855279770088221,
+      "max_drawdown": -0.5753000480804986,
+      "commodity_weight": 0.4,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 50,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.391705069124424,
+          "worst_annualized_return": -0.5577222309511438,
+          "median_annualized_return": 0.04778492259119682
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.29015544041450775,
+          "worst_annualized_return": -0.11166745368617959,
+          "median_annualized_return": 0.05411269616746561
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.21893491124260356,
+          "worst_annualized_return": -0.09548061878848968,
+          "median_annualized_return": 0.06206448711640622
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.01834862385321101,
+          "worst_annualized_return": -0.0032879765882505296,
+          "median_annualized_return": 0.061141027460478226
+        }
+      ]
+    },
+    {
+      "start": "2006-12-29",
+      "end": "2025-12-31",
+      "observations": 4619,
+      "total_return": 2.0140306348702097,
+      "cagr": 0.059766347191106295,
+      "daily_volatility_252": 0.18551492797156385,
+      "max_drawdown": -0.5775026960807534,
+      "commodity_weight": 0.4,
+      "rebalance": "annual",
+      "annual_wealth_drag_bps": 100,
+      "calibrated_cost": false,
+      "holding_periods": [
+        {
+          "months": 12,
+          "completed_windows": 217,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.4147465437788018,
+          "worst_annualized_return": -0.559949284451678,
+          "median_annualized_return": 0.042552025404849925
+        },
+        {
+          "months": 36,
+          "completed_windows": 193,
+          "incomplete_windows": 36,
+          "nominal_loss_fraction": 0.31088082901554404,
+          "worst_annualized_return": -0.11613245224363844,
+          "median_annualized_return": 0.04881926395656988
+        },
+        {
+          "months": 60,
+          "completed_windows": 169,
+          "incomplete_windows": 60,
+          "nominal_loss_fraction": 0.24260355029585798,
+          "worst_annualized_return": -0.10002780427489455,
+          "median_annualized_return": 0.056728208401463975
+        },
+        {
+          "months": 120,
+          "completed_windows": 109,
+          "incomplete_windows": 120,
+          "nominal_loss_fraction": 0.03669724770642202,
+          "worst_annualized_return": -0.008298631463232509,
+          "median_annualized_return": 0.05580647611826817
+        }
+      ]
+    }
+  ],
+  "sectors": {
+    "NHCI.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHCI.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 2.282186403192461,
+          "cagr": 0.0645294518853825,
+          "daily_volatility_252": 0.25519848297155145,
+          "max_drawdown": -0.720356345739303
+        },
+        "commodity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 1.1097536618937194,
+          "cagr": 0.040062164770735986,
+          "daily_volatility_252": 0.15404904229997374,
+          "max_drawdown": -0.5194056588358633
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.45161290322580644,
+            "worst_annualized_return": -0.7047252993766974,
+            "median_annualized_return": 0.03661065555345622
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.37823834196891193,
+            "worst_annualized_return": -0.18461804225197298,
+            "median_annualized_return": 0.048874861427129046
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.1893491124260355,
+            "worst_annualized_return": -0.15833800291679423,
+            "median_annualized_return": 0.04043944719934012
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.06422018348623854,
+            "worst_annualized_return": -0.019922452665043666,
+            "median_annualized_return": 0.06217278400277171
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.423963133640553,
+            "worst_annualized_return": -0.35590048024232246,
+            "median_annualized_return": 0.030191670082925004
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.26424870466321243,
+            "worst_annualized_return": -0.15202679093630067,
+            "median_annualized_return": 0.04802607971954864
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.2781065088757396,
+            "worst_annualized_return": -0.12072972436294604,
+            "median_annualized_return": 0.04772200971747287
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.11926605504587157,
+            "worst_annualized_return": -0.007313224516361627,
+            "median_annualized_return": 0.0398397882640098
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.7047252993766974,
+        "commodity": -0.49656993183988196
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.3418713438096104
+        },
+        "commodity": {
+          "equity": 0.3418713438096104,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 99,
+          "mean_return": -0.05529620906820117,
+          "positive_fraction": 0.0,
+          "worst_return": -0.2583626281248076
+        },
+        "commodity": {
+          "months": 99,
+          "mean_return": -0.011112081935808387,
+          "positive_fraction": 0.3333333333333333,
+          "worst_return": -0.22480537203307582
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.5648619511732189
+          }
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.03996248611868669
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.030903762674147073
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.054016270974616365
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.054016270974616365
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.10529101175847133
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.5996160901930292
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 2.052469171606557
+          }
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2007,
+          "equity": 1.6327732102504924,
+          "commodity": 0.0926489358264686
+        },
+        {
+          "year": 2008,
+          "equity": -0.6560619660129239,
+          "commodity": -0.3505090367413429
+        },
+        {
+          "year": 2009,
+          "equity": 0.9857930350456521,
+          "commodity": 0.6068121948673311
+        },
+        {
+          "year": 2010,
+          "equity": -0.11578756824555803,
+          "commodity": 0.12039569107138504
+        },
+        {
+          "year": 2011,
+          "equity": -0.2404979462905772,
+          "commodity": -0.1696149657794218
+        },
+        {
+          "year": 2012,
+          "equity": 0.0980012979618814,
+          "commodity": 0.04217326712506986
+        },
+        {
+          "year": 2013,
+          "equity": -0.053313488818695354,
+          "commodity": -0.12368741660381732
+        },
+        {
+          "year": 2014,
+          "equity": 0.5584896886771655,
+          "commodity": -0.16542535584243634
+        },
+        {
+          "year": 2015,
+          "equity": 0.07216352449966168,
+          "commodity": -0.14523549826474969
+        },
+        {
+          "year": 2016,
+          "equity": -0.0925883942984228,
+          "commodity": 0.5133812048304582
+        },
+        {
+          "year": 2017,
+          "equity": 0.24251117933788824,
+          "commodity": 0.07854320930874326
+        },
+        {
+          "year": 2018,
+          "equity": -0.2363729492198301,
+          "commodity": -0.05830470775686858
+        },
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.15582684941266423
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": 0.07410431109663573
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": 0.2094289639499134
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.19662689736081007
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": 0.06205086736310439
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": -0.012620729478954984
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": 0.054016270974616365
+        }
+      ]
+    },
+    "NHII.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHII.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 2.282186403192461,
+          "cagr": 0.0645294518853825,
+          "daily_volatility_252": 0.25519848297155145,
+          "max_drawdown": -0.720356345739303
+        },
+        "commodity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 0.7737420774129731,
+          "cagr": 0.030612136989655703,
+          "daily_volatility_252": 0.1869561368774934,
+          "max_drawdown": -0.6034093438333784
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.45161290322580644,
+            "worst_annualized_return": -0.7047252993766974,
+            "median_annualized_return": 0.03661065555345622
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.37823834196891193,
+            "worst_annualized_return": -0.18461804225197298,
+            "median_annualized_return": 0.048874861427129046
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.1893491124260355,
+            "worst_annualized_return": -0.15833800291679423,
+            "median_annualized_return": 0.04043944719934012
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.06422018348623854,
+            "worst_annualized_return": -0.019922452665043666,
+            "median_annualized_return": 0.06217278400277171
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.45161290322580644,
+            "worst_annualized_return": -0.40296877467344194,
+            "median_annualized_return": 0.026782389717143307
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.32642487046632124,
+            "worst_annualized_return": -0.197242128301638,
+            "median_annualized_return": 0.05086910430746161
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.3609467455621302,
+            "worst_annualized_return": -0.152194487283832,
+            "median_annualized_return": 0.0617671154530961
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.26605504587155965,
+            "worst_annualized_return": -0.022009723622516297,
+            "median_annualized_return": 0.04548738297671484
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.7047252993766974,
+        "commodity": -0.5838327071454175
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.361142086436357
+        },
+        "commodity": {
+          "equity": 0.361142086436357,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 99,
+          "mean_return": -0.05529620906820117,
+          "positive_fraction": 0.0,
+          "worst_return": -0.2583626281248076
+        },
+        "commodity": {
+          "months": 99,
+          "mean_return": -0.015303228844211607,
+          "positive_fraction": 0.32323232323232326,
+          "worst_return": -0.3255114083216578
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.5648619511732189
+          }
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.028458644226490026
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.01442880617275133
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": -0.06028638215525206
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": -0.06028638215525206
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": -0.08772533453313525
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.3917883881294417
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 2.0660942871456456
+          }
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2007,
+          "equity": 1.6327732102504924,
+          "commodity": 0.05784146861011075
+        },
+        {
+          "year": 2008,
+          "equity": -0.6560619660129239,
+          "commodity": -0.40296877467344194
+        },
+        {
+          "year": 2009,
+          "equity": 0.9857930350456521,
+          "commodity": 0.9445280284065916
+        },
+        {
+          "year": 2010,
+          "equity": -0.11578756824555803,
+          "commodity": 0.04490694582917909
+        },
+        {
+          "year": 2011,
+          "equity": -0.2404979462905772,
+          "commodity": -0.1990450762586642
+        },
+        {
+          "year": 2012,
+          "equity": 0.0980012979618814,
+          "commodity": 0.0645278877545552
+        },
+        {
+          "year": 2013,
+          "equity": -0.053313488818695354,
+          "commodity": -0.17081948047203233
+        },
+        {
+          "year": 2014,
+          "equity": 0.5584896886771655,
+          "commodity": -0.20980480712035432
+        },
+        {
+          "year": 2015,
+          "equity": 0.07216352449966168,
+          "commodity": -0.19304946644269572
+        },
+        {
+          "year": 2016,
+          "equity": -0.0925883942984228,
+          "commodity": 0.6088672758995977
+        },
+        {
+          "year": 2017,
+          "equity": 0.24251117933788824,
+          "commodity": 0.11680090194078319
+        },
+        {
+          "year": 2018,
+          "equity": -0.2363729492198301,
+          "commodity": -0.032844533136378695
+        },
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.16580653662382505
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": 0.08741055895205618
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": 0.25887764315562634
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.21189243257507795
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": 0.029522111161280007
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": -0.057037514103985165
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": -0.06028638215525206
+        }
+      ]
+    },
+    "NHAI.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHAI.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 2.282186403192461,
+          "cagr": 0.0645294518853825,
+          "daily_volatility_252": 0.25519848297155145,
+          "max_drawdown": -0.720356345739303
+        },
+        "commodity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 0.2651261617372491,
+          "cagr": 0.01245032196425555,
+          "daily_volatility_252": 0.11982521374820256,
+          "max_drawdown": -0.38449532766240335
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.45161290322580644,
+            "worst_annualized_return": -0.7047252993766974,
+            "median_annualized_return": 0.03661065555345622
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.37823834196891193,
+            "worst_annualized_return": -0.18461804225197298,
+            "median_annualized_return": 0.048874861427129046
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.1893491124260355,
+            "worst_annualized_return": -0.15833800291679423,
+            "median_annualized_return": 0.04043944719934012
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.06422018348623854,
+            "worst_annualized_return": -0.019922452665043666,
+            "median_annualized_return": 0.06217278400277171
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.5299539170506913,
+            "worst_annualized_return": -0.2941462412686755,
+            "median_annualized_return": -0.010858748094680237
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.38341968911917096,
+            "worst_annualized_return": -0.07788656662072913,
+            "median_annualized_return": 0.015557456432525596
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.4378698224852071,
+            "worst_annualized_return": -0.07583294087766768,
+            "median_annualized_return": 0.007514951811960158
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.3577981651376147,
+            "worst_annualized_return": -0.021101507574164513,
+            "median_annualized_return": 0.0103500208143803
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.7047252993766974,
+        "commodity": -0.3359635510689565
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.21797023254827944
+        },
+        "commodity": {
+          "equity": 0.21797023254827944,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 99,
+          "mean_return": -0.05529620906820117,
+          "positive_fraction": 0.0,
+          "worst_return": -0.2583626281248076
+        },
+        "commodity": {
+          "months": 99,
+          "mean_return": -0.006614213977494685,
+          "positive_fraction": 0.42424242424242425,
+          "worst_return": -0.10437549869750351
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.5648619511732189
+          }
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.025257158472078434
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": -0.0058643814496373015
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.008162912941718226
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.008162912941718226
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": -0.06374894864056846
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.18902032725521067
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.41969688783228865
+          }
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2007,
+          "equity": 1.6327732102504924,
+          "commodity": 0.10954897433215338
+        },
+        {
+          "year": 2008,
+          "equity": -0.6560619660129239,
+          "commodity": -0.26085219808175686
+        },
+        {
+          "year": 2009,
+          "equity": 0.9857930350456521,
+          "commodity": 0.2771318375582901
+        },
+        {
+          "year": 2010,
+          "equity": -0.11578756824555803,
+          "commodity": 0.2048062216306521
+        },
+        {
+          "year": 2011,
+          "equity": -0.2404979462905772,
+          "commodity": -0.1425449011635943
+        },
+        {
+          "year": 2012,
+          "equity": 0.0980012979618814,
+          "commodity": 0.0005620047416645679
+        },
+        {
+          "year": 2013,
+          "equity": -0.053313488818695354,
+          "commodity": -0.036200704890875235
+        },
+        {
+          "year": 2014,
+          "equity": 0.5584896886771655,
+          "commodity": -0.10145696586570074
+        },
+        {
+          "year": 2015,
+          "equity": 0.07216352449966168,
+          "commodity": -0.049555795203615194
+        },
+        {
+          "year": 2016,
+          "equity": -0.0925883942984228,
+          "commodity": 0.2060595418197535
+        },
+        {
+          "year": 2017,
+          "equity": 0.24251117933788824,
+          "commodity": -0.06806858781233549
+        },
+        {
+          "year": 2018,
+          "equity": -0.2363729492198301,
+          "commodity": -0.0878922755805358
+        },
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.03772272283483047
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": 0.1223445223333488
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": 0.1510701669400243
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.10330392386475618
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": -0.051874666731754115
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": -0.020519373144424757
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": 0.008162912941718226
+        }
+      ]
+    },
+    "NHPMI.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHPMI.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2012-09-07",
+          "end": "2025-12-31",
+          "observations": 3234,
+          "total_return": 1.69653341644191,
+          "cagr": 0.07735031865508857,
+          "daily_volatility_252": 0.2150773734001691,
+          "max_drawdown": -0.46058939115449804
+        },
+        "commodity": {
+          "start": "2012-09-07",
+          "end": "2025-12-31",
+          "observations": 3234,
+          "total_return": 0.8425967034171604,
+          "cagr": 0.046974073049047105,
+          "daily_volatility_252": 0.17694142991122963,
+          "max_drawdown": -0.5358764105075373
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 148,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.3918918918918919,
+            "worst_annualized_return": -0.33488793381743454,
+            "median_annualized_return": 0.07806626165840636
+          },
+          {
+            "months": 36,
+            "completed_windows": 124,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.25,
+            "worst_annualized_return": -0.13765223911371216,
+            "median_annualized_return": 0.0679092664994091
+          },
+          {
+            "months": 60,
+            "completed_windows": 100,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.05,
+            "worst_annualized_return": -0.023960310438223775,
+            "median_annualized_return": 0.053393011408841895
+          },
+          {
+            "months": 120,
+            "completed_windows": 40,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.05,
+            "worst_annualized_return": -0.0009405729605683755,
+            "median_annualized_return": 0.06326420100915997
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 148,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.4594594594594595,
+            "worst_annualized_return": -0.3777509583984098,
+            "median_annualized_return": 0.04013941313349911
+          },
+          {
+            "months": 36,
+            "completed_windows": 124,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.3387096774193548,
+            "worst_annualized_return": -0.21034998112056258,
+            "median_annualized_return": 0.02509297908505237
+          },
+          {
+            "months": 60,
+            "completed_windows": 100,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.23,
+            "worst_annualized_return": -0.11491183825016527,
+            "median_annualized_return": 0.03313265255689779
+          },
+          {
+            "months": 120,
+            "completed_windows": 40,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.175,
+            "worst_annualized_return": -0.048117414519170176,
+            "median_annualized_return": 0.04153529163647274
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.39782881981374496,
+        "commodity": -0.5340664795631045
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.149086946532276
+        },
+        "commodity": {
+          "equity": 0.149086946532276,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 69,
+          "mean_return": -0.041839501459239536,
+          "positive_fraction": 0.0,
+          "worst_return": -0.21035775375351695
+        },
+        "commodity": {
+          "months": 69,
+          "mean_return": -0.0006444861364014051,
+          "positive_fraction": 0.4782608695652174,
+          "worst_return": -0.16169353684029664
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.5648619511732189
+          }
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.09694926776761181
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.14377947765135746
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.817441274919281
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.817441274919281
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 1.591473823742048
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 1.5365272184191578
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 2.682404721416425
+          }
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2013,
+          "equity": -0.053313488818695354,
+          "commodity": -0.34376812863256756
+        },
+        {
+          "year": 2014,
+          "equity": 0.5584896886771655,
+          "commodity": -0.07715915535243689
+        },
+        {
+          "year": 2015,
+          "equity": 0.07216352449966168,
+          "commodity": -0.09656954887218039
+        },
+        {
+          "year": 2016,
+          "equity": -0.0925883942984228,
+          "commodity": 0.17723316995098526
+        },
+        {
+          "year": 2017,
+          "equity": 0.24251117933788824,
+          "commodity": -0.058803446400652604
+        },
+        {
+          "year": 2018,
+          "equity": -0.2363729492198301,
+          "commodity": -0.03393882359398792
+        },
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.16870012415868607
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": 0.16049013709522408
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": -0.10420411833406251
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.09265646320770515
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": 0.13366508440786395
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": 0.2577712646390382
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": 0.817441274919281
+        }
+      ]
+    },
+    "NHNFI.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHNFI.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2018-07-16",
+          "end": "2025-12-31",
+          "observations": 1813,
+          "total_return": 0.5856165207641635,
+          "cagr": 0.0637361056583825,
+          "daily_volatility_252": 0.19424883185207698,
+          "max_drawdown": -0.41561006096794706
+        },
+        "commodity": {
+          "start": "2018-07-16",
+          "end": "2025-12-31",
+          "observations": 1813,
+          "total_return": 1.0571208603957554,
+          "cagr": 0.10150965974796011,
+          "daily_volatility_252": 0.16359546480891554,
+          "max_drawdown": -0.28268115657878223
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 78,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.4230769230769231,
+            "worst_annualized_return": -0.2699628370040169,
+            "median_annualized_return": 0.0720736707794879
+          },
+          {
+            "months": 36,
+            "completed_windows": 54,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.4444444444444444,
+            "worst_annualized_return": -0.13765223911371216,
+            "median_annualized_return": 0.010162032955793321
+          },
+          {
+            "months": 60,
+            "completed_windows": 30,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.06666666666666667,
+            "worst_annualized_return": -0.004446113960963505,
+            "median_annualized_return": 0.0201724972109939
+          },
+          {
+            "months": 120,
+            "completed_windows": 0,
+            "incomplete_windows": 90,
+            "nominal_loss_fraction": null,
+            "worst_annualized_return": null,
+            "median_annualized_return": null
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 78,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.23076923076923078,
+            "worst_annualized_return": -0.1799427126557721,
+            "median_annualized_return": 0.06571381936725618
+          },
+          {
+            "months": 36,
+            "completed_windows": 54,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.037037037037037035,
+            "worst_annualized_return": -0.013173324510544426,
+            "median_annualized_return": 0.12120690980895399
+          },
+          {
+            "months": 60,
+            "completed_windows": 30,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.0,
+            "worst_annualized_return": 0.09175573943730986,
+            "median_annualized_return": 0.11226469975656828
+          },
+          {
+            "months": 120,
+            "completed_windows": 0,
+            "incomplete_windows": 90,
+            "nominal_loss_fraction": null,
+            "worst_annualized_return": null,
+            "median_annualized_return": null
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.35872055429324856,
+        "commodity": -0.2047024463446946
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.3008734135853878
+        },
+        "commodity": {
+          "equity": 0.3008734135853878,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 41,
+          "mean_return": -0.036437663445562755,
+          "positive_fraction": 0.0,
+          "worst_return": -0.0826249315121268
+        },
+        "commodity": {
+          "months": 41,
+          "mean_return": -0.006129989902945294,
+          "positive_fraction": 0.3902439024390244,
+          "worst_return": -0.0950032648732444
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": null
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.04971684769846596
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.0923024658154743
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.1884394559164162
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.1884394559164162
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.1404108001868951
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.7169425132150204
+          },
+          "trailing_10_years": null
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.05853626752928753
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": 0.1623843610939124
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": 0.25855507589035964
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.19625070618008067
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": -0.08403939172100428
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": 0.04762888194749193
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": 0.1884394559164162
+        }
+      ]
+    },
+    "NHFI.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHFI.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2018-07-16",
+          "end": "2025-12-31",
+          "observations": 1813,
+          "total_return": 0.5856165207641635,
+          "cagr": 0.0637361056583825,
+          "daily_volatility_252": 0.19424883185207698,
+          "max_drawdown": -0.41561006096794706
+        },
+        "commodity": {
+          "start": "2018-07-16",
+          "end": "2025-12-31",
+          "observations": 1813,
+          "total_return": 1.5490612634565282,
+          "cagr": 0.1336261870352462,
+          "daily_volatility_252": 0.2511589852118652,
+          "max_drawdown": -0.34192523530140395
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 78,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.4230769230769231,
+            "worst_annualized_return": -0.2699628370040169,
+            "median_annualized_return": 0.0720736707794879
+          },
+          {
+            "months": 36,
+            "completed_windows": 54,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.4444444444444444,
+            "worst_annualized_return": -0.13765223911371216,
+            "median_annualized_return": 0.010162032955793321
+          },
+          {
+            "months": 60,
+            "completed_windows": 30,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.06666666666666667,
+            "worst_annualized_return": -0.004446113960963505,
+            "median_annualized_return": 0.0201724972109939
+          },
+          {
+            "months": 120,
+            "completed_windows": 0,
+            "incomplete_windows": 90,
+            "nominal_loss_fraction": null,
+            "worst_annualized_return": null,
+            "median_annualized_return": null
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 78,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.358974358974359,
+            "worst_annualized_return": -0.26581925789281535,
+            "median_annualized_return": 0.12194094326446425
+          },
+          {
+            "months": 36,
+            "completed_windows": 54,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.25925925925925924,
+            "worst_annualized_return": -0.10278766190904398,
+            "median_annualized_return": 0.18605396898250326
+          },
+          {
+            "months": 60,
+            "completed_windows": 30,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.0,
+            "worst_annualized_return": 0.01404426474242304,
+            "median_annualized_return": 0.1496739623967278
+          },
+          {
+            "months": 120,
+            "completed_windows": 0,
+            "incomplete_windows": 90,
+            "nominal_loss_fraction": null,
+            "worst_annualized_return": null,
+            "median_annualized_return": null
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.35872055429324856,
+        "commodity": -0.31513254005479063
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.15659287685591172
+        },
+        "commodity": {
+          "equity": 0.15659287685591172,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 41,
+          "mean_return": -0.036437663445562755,
+          "positive_fraction": 0.0,
+          "worst_return": -0.0826249315121268
+        },
+        "commodity": {
+          "months": 41,
+          "mean_return": 0.003771701157340653,
+          "positive_fraction": 0.5121951219512195,
+          "worst_return": -0.14781152855690827
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": null
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.00078561764227425
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.013821519845616415
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": -0.04294901414211805
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": -0.04294901414211805
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": -0.1760192764547054
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.07222163360133016
+          },
+          "trailing_10_years": null
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.3342729118088561
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": 0.6374762193371797
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": 0.0961520925854602
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.18712567079402742
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": 0.09147919464487853
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": -0.21120070265797097
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": -0.04294901414211805
+        }
+      ]
+    },
+    "NHECI.NH": {
+      "series": {
+        "equity": {
+          "id": "H00300.CSI",
+          "return_basis": "total_return",
+          "currency": "CNY"
+        },
+        "commodity": {
+          "id": "NHECI.NH",
+          "return_basis": "commodity_futures_return_index",
+          "currency": "CNY"
+        }
+      },
+      "daily": {
+        "equity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 2.282186403192461,
+          "cagr": 0.0645294518853825,
+          "daily_volatility_252": 0.25519848297155145,
+          "max_drawdown": -0.720356345739303
+        },
+        "commodity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "total_return": 0.24765666888878157,
+          "cagr": 0.01170989398899036,
+          "daily_volatility_252": 0.20080251930695722,
+          "max_drawdown": -0.6097811936270534
+        }
+      },
+      "holding_periods": {
+        "equity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.45161290322580644,
+            "worst_annualized_return": -0.7047252993766974,
+            "median_annualized_return": 0.03661065555345622
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.37823834196891193,
+            "worst_annualized_return": -0.18461804225197298,
+            "median_annualized_return": 0.048874861427129046
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.1893491124260355,
+            "worst_annualized_return": -0.15833800291679423,
+            "median_annualized_return": 0.04043944719934012
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.06422018348623854,
+            "worst_annualized_return": -0.019922452665043666,
+            "median_annualized_return": 0.06217278400277171
+          }
+        ],
+        "commodity": [
+          {
+            "months": 12,
+            "completed_windows": 217,
+            "incomplete_windows": 12,
+            "nominal_loss_fraction": 0.5161290322580645,
+            "worst_annualized_return": -0.3693298779976901,
+            "median_annualized_return": -0.004546921346955002
+          },
+          {
+            "months": 36,
+            "completed_windows": 193,
+            "incomplete_windows": 36,
+            "nominal_loss_fraction": 0.42487046632124353,
+            "worst_annualized_return": -0.20392133866607987,
+            "median_annualized_return": 0.02803294467184414
+          },
+          {
+            "months": 60,
+            "completed_windows": 169,
+            "incomplete_windows": 60,
+            "nominal_loss_fraction": 0.31952662721893493,
+            "worst_annualized_return": -0.15290053101328138,
+            "median_annualized_return": 0.028714347116473693
+          },
+          {
+            "months": 120,
+            "completed_windows": 109,
+            "incomplete_windows": 120,
+            "nominal_loss_fraction": 0.3761467889908257,
+            "worst_annualized_return": -0.04122881925097244,
+            "median_annualized_return": 0.020885673087084555
+          }
+        ]
+      },
+      "monthly_max_drawdown": {
+        "equity": -0.7047252993766974,
+        "commodity": -0.5878704058686629
+      },
+      "correlation": {
+        "equity": {
+          "equity": 1.0,
+          "commodity": 0.30915875355856054
+        },
+        "commodity": {
+          "equity": 0.30915875355856054,
+          "commodity": 1.0
+        }
+      },
+      "down_equity_months": {
+        "equity": {
+          "months": 99,
+          "mean_return": -0.05529620906820117,
+          "positive_fraction": 0.0,
+          "worst_return": -0.2583626281248076
+        },
+        "commodity": {
+          "months": 99,
+          "mean_return": -0.01558015184392875,
+          "positive_fraction": 0.3333333333333333,
+          "worst_return": -0.3141946840806946
+        }
+      },
+      "period_returns": {
+        "equity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.01971661689167492
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": 0.02468485882119187
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": 0.2098364673187978
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": 0.2998212784168248
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.005335170949492873
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.5648619511732189
+          }
+        },
+        "commodity": {
+          "last_week": {
+            "start": "2025-12-19",
+            "end": "2025-12-26",
+            "return": 0.02984885219842237
+          },
+          "last_month": {
+            "start": "2025-11-28",
+            "end": "2025-12-31",
+            "return": -0.01522025935579363
+          },
+          "year_to_date": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": -0.16109755763274025
+          },
+          "trailing_12_months": {
+            "start": "2024-12-31",
+            "end": "2025-12-31",
+            "return": -0.16109755763274025
+          },
+          "trailing_3_years": {
+            "start": "2022-12-30",
+            "end": "2025-12-31",
+            "return": -0.19301731627049956
+          },
+          "trailing_5_years": {
+            "start": "2020-12-31",
+            "end": "2025-12-31",
+            "return": 0.2546984570619999
+          },
+          "trailing_10_years": {
+            "start": "2015-12-31",
+            "end": "2025-12-31",
+            "return": 0.994421563005057
+          }
+        }
+      },
+      "calendar_year_returns": [
+        {
+          "year": 2007,
+          "equity": 1.6327732102504924,
+          "commodity": 0.16425267143008093
+        },
+        {
+          "year": 2008,
+          "equity": -0.6560619660129239,
+          "commodity": -0.35651614627380857
+        },
+        {
+          "year": 2009,
+          "equity": 0.9857930350456521,
+          "commodity": 0.7117863253072365
+        },
+        {
+          "year": 2010,
+          "equity": -0.11578756824555803,
+          "commodity": 0.07882908672398647
+        },
+        {
+          "year": 2011,
+          "equity": -0.2404979462905772,
+          "commodity": -0.22216260804733612
+        },
+        {
+          "year": 2012,
+          "equity": 0.0980012979618814,
+          "commodity": 0.1356098566253252
+        },
+        {
+          "year": 2013,
+          "equity": -0.053313488818695354,
+          "commodity": -0.1813056676785536
+        },
+        {
+          "year": 2014,
+          "equity": 0.5584896886771655,
+          "commodity": -0.24767337625295416
+        },
+        {
+          "year": 2015,
+          "equity": 0.07216352449966168,
+          "commodity": -0.168916137697957
+        },
+        {
+          "year": 2016,
+          "equity": -0.0925883942984228,
+          "commodity": 0.7321046869297743
+        },
+        {
+          "year": 2017,
+          "equity": 0.24251117933788824,
+          "commodity": 0.02764045028368467
+        },
+        {
+          "year": 2018,
+          "equity": -0.2363729492198301,
+          "commodity": -0.07639730608912454
+        },
+        {
+          "year": 2019,
+          "equity": 0.39186526037592406,
+          "commodity": 0.0695560146092391
+        },
+        {
+          "year": 2020,
+          "equity": 0.29891885301252796,
+          "commodity": -0.09598935564990019
+        },
+        {
+          "year": 2021,
+          "equity": -0.03516801593592911,
+          "commodity": 0.3307340691136975
+        },
+        {
+          "year": 2022,
+          "equity": -0.19836708266256708,
+          "commodity": 0.16837934966066337
+        },
+        {
+          "year": 2023,
+          "equity": -0.09135478705714839,
+          "commodity": 0.03045075483362969
+        },
+        {
+          "year": 2024,
+          "equity": 0.1823951190058939,
+          "commodity": -0.06647594091937326
+        },
+        {
+          "year": 2025,
+          "equity": 0.2098364673187978,
+          "commodity": -0.16109755763274025
+        }
+      ]
+    }
+  },
+  "recent": {
+    "series": {
+      "equity": {
+        "id": "H00300.CSI",
+        "return_basis": "total_return",
+        "currency": "CNY"
+      },
+      "commodity": {
+        "id": "NHCI.NH",
+        "return_basis": "commodity_futures_return_index",
+        "currency": "CNY"
+      }
+    },
+    "daily": {
+      "equity": {
+        "start": "2025-10-31",
+        "end": "2026-11-06",
+        "observations": 247,
+        "total_return": -0.1053736000868527,
+        "cagr": -0.10382835607701602,
+        "daily_volatility_252": 0.1778703470857914,
+        "max_drawdown": -0.20169459177657312
+      },
+      "commodity": {
+        "start": "2025-10-31",
+        "end": "2026-11-06",
+        "observations": 247,
+        "total_return": 0.11143934112420095,
+        "cagr": 0.10962082216694702,
+        "daily_volatility_252": 0.15159207611930972,
+        "max_drawdown": -0.15455534884898192
+      }
+    },
+    "holding_periods": {
+      "equity": [
+        {
+          "months": 12,
+          "completed_windows": 1,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 1.0,
+          "worst_annualized_return": -0.1206387379650612,
+          "median_annualized_return": -0.1206387379650612
+        },
+        {
+          "months": 36,
+          "completed_windows": 0,
+          "incomplete_windows": 13,
+          "nominal_loss_fraction": null,
+          "worst_annualized_return": null,
+          "median_annualized_return": null
+        },
+        {
+          "months": 60,
+          "completed_windows": 0,
+          "incomplete_windows": 13,
+          "nominal_loss_fraction": null,
+          "worst_annualized_return": null,
+          "median_annualized_return": null
+        },
+        {
+          "months": 120,
+          "completed_windows": 0,
+          "incomplete_windows": 13,
+          "nominal_loss_fraction": null,
+          "worst_annualized_return": null,
+          "median_annualized_return": null
+        }
+      ],
+      "commodity": [
+        {
+          "months": 12,
+          "completed_windows": 1,
+          "incomplete_windows": 12,
+          "nominal_loss_fraction": 0.0,
+          "worst_annualized_return": 0.14509998542658753,
+          "median_annualized_return": 0.14509998542658753
+        },
+        {
+          "months": 36,
+          "completed_windows": 0,
+          "incomplete_windows": 13,
+          "nominal_loss_fraction": null,
+          "worst_annualized_return": null,
+          "median_annualized_return": null
+        },
+        {
+          "months": 60,
+          "completed_windows": 0,
+          "incomplete_windows": 13,
+          "nominal_loss_fraction": null,
+          "worst_annualized_return": null,
+          "median_annualized_return": null
+        },
+        {
+          "months": 120,
+          "completed_windows": 0,
+          "incomplete_windows": 13,
+          "nominal_loss_fraction": null,
+          "worst_annualized_return": null,
+          "median_annualized_return": null
+        }
+      ]
+    },
+    "monthly_max_drawdown": {
+      "equity": -0.19076099805877555,
+      "commodity": -0.12714557143732708
+    },
+    "correlation": {
+      "equity": {
+        "equity": 1.0,
+        "commodity": -0.1036903224815878
+      },
+      "commodity": {
+        "equity": -0.1036903224815878,
+        "commodity": 1.0
+      }
+    },
+    "down_equity_months": {
+      "equity": {
+        "months": 5,
+        "mean_return": -0.058516564212951414,
+        "positive_fraction": 0.0,
+        "worst_return": -0.08347212653327518
+      },
+      "commodity": {
+        "months": 5,
+        "mean_return": 0.02044987824135285,
+        "positive_fraction": 0.8,
+        "worst_return": -0.026037025373704226
+      }
+    },
+    "period_returns": {
+      "equity": {
+        "last_week": {
+          "start": "2026-10-30",
+          "end": "2026-11-06",
+          "return": 0.017359347673427505
+        },
+        "last_month": {
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "return": -0.08347212653327518
+        },
+        "year_to_date": {
+          "start": "2025-12-31",
+          "end": "2026-11-06",
+          "return": -0.1056602319786536
+        },
+        "trailing_12_months": {
+          "start": "2025-11-06",
+          "end": "2026-11-06",
+          "return": -0.11551262564373899
+        },
+        "trailing_3_years": null,
+        "trailing_5_years": null,
+        "trailing_10_years": null
+      },
+      "commodity": {
+        "last_week": {
+          "start": "2026-10-30",
+          "end": "2026-11-06",
+          "return": -0.029395375714590388
+        },
+        "last_month": {
+          "start": "2026-09-30",
+          "end": "2026-10-30",
+          "return": -0.026037025373704226
+        },
+        "year_to_date": {
+          "start": "2025-12-31",
+          "end": "2026-11-06",
+          "return": 0.07238952312907587
+        },
+        "trailing_12_months": {
+          "start": "2025-11-06",
+          "end": "2026-11-06",
+          "return": 0.1133908349839412
+        },
+        "trailing_3_years": null,
+        "trailing_5_years": null,
+        "trailing_10_years": null
+      }
+    },
+    "calendar_year_returns": []
+  },
+  "full_history_audits": {
+    "H00300.CSI__NHCI.NH": {
+      "eligible": false,
+      "start": "2006-01-04",
+      "end": "2025-12-31",
+      "equity_missing": [],
+      "commodity_missing": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "equity_off_calendar": [],
+      "commodity_off_calendar": [],
+      "equity_only_sessions": [],
+      "commodity_only_sessions": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "common_sessions": 4859
+    },
+    "000300.SH__NHCI.NH": {
+      "eligible": false,
+      "start": "2006-01-04",
+      "end": "2025-12-31",
+      "equity_missing": [],
+      "commodity_missing": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "equity_off_calendar": [],
+      "commodity_off_calendar": [],
+      "equity_only_sessions": [],
+      "commodity_only_sessions": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "common_sessions": 4859
+    },
+    "H00985.CSI__NHCI.NH": {
+      "eligible": false,
+      "start": "2006-01-04",
+      "end": "2025-12-31",
+      "equity_missing": [
+        "2011-08-02"
+      ],
+      "commodity_missing": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "equity_off_calendar": [],
+      "commodity_off_calendar": [],
+      "equity_only_sessions": [],
+      "commodity_only_sessions": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "common_sessions": 4859
+    },
+    "H00852.CSI__NHCI.NH": {
+      "eligible": false,
+      "start": "2006-01-04",
+      "end": "2025-12-31",
+      "equity_missing": [],
+      "commodity_missing": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "equity_off_calendar": [],
+      "commodity_off_calendar": [],
+      "equity_only_sessions": [],
+      "commodity_only_sessions": [
+        "2006-01-26",
+        "2006-01-27"
+      ],
+      "common_sessions": 4859
+    }
+  },
+  "observed_coverage": {
+    "H00300.CSI": {
+      "first": "2004-12-31",
+      "last": "2026-11-06",
+      "rows": 5305
+    },
+    "000300.SH": {
+      "first": "2004-12-01",
+      "last": "2026-11-06",
+      "rows": 5327
+    },
+    "H00985.CSI": {
+      "first": "2004-12-31",
+      "last": "2026-11-06",
+      "rows": 5304
+    },
+    "H00852.CSI": {
+      "first": "2004-12-31",
+      "last": "2026-11-06",
+      "rows": 5305
+    },
+    "NHCI.NH": {
+      "first": "2006-01-04",
+      "last": "2026-11-06",
+      "rows": 5062
+    },
+    "NHII.NH": {
+      "first": "2006-01-04",
+      "last": "2026-11-06",
+      "rows": 5062
+    },
+    "NHAI.NH": {
+      "first": "2006-01-04",
+      "last": "2026-11-06",
+      "rows": 5062
+    },
+    "NHPMI.NH": {
+      "first": "2012-09-07",
+      "last": "2026-11-06",
+      "rows": 3437
+    },
+    "NHNFI.NH": {
+      "first": "2018-07-16",
+      "last": "2026-11-06",
+      "rows": 2016
+    },
+    "NHFI.NH": {
+      "first": "2018-07-16",
+      "last": "2026-11-06",
+      "rows": 2016
+    },
+    "NHECI.NH": {
+      "first": "2006-01-04",
+      "last": "2026-11-06",
+      "rows": 5062
+    }
+  },
+  "source_revision": "44ffeed9ae3790fb9cf660d4117ab7e37d1b20d7",
+  "run_manifest_sha256": {
+    "full": "b181475b6c3805794086b028562b956b4e62587a466319df7af4756eaea11335",
+    "baseline": "c781ebebbe1827762bf59dbc51a84faf38d1312dc85094bde1502cb85499bf70",
+    "recent": "2bca393ca708417207e60a844fd87fd07eba378c2d44a8a537b82cfdca468ec8"
+  },
+  "limitations": [
+    "Coverage-limited baseline starts 2006-12-29; full earlier history remains blocked.",
+    "Commodity sectors have different observed inception dates; no common sector ranking.",
+    "Fixed-weight index scenarios omit collateral interest and calibrated trading costs.",
+    "Point checks do not certify complete vendor history or annual-return conventions.",
+    "Current methodology has conflicting roll periods; historical versions remain unresolved.",
+    "No raw redistribution permission is asserted; only reviewed derived statistics are projected."
+  ],
+  "run_result_sha256": {
+    "full": "2719e1919432b0ffbf4174346e59c6a42a2bce3ae69acc6937364e2b4cdfb88e",
+    "baseline": "c32f5c7949503b42e53d6df82502813fd51aad323d55e01aeb789d1c772bb0fc",
+    "recent": "19db544bf56436a0acb569b0225fde6a0050a6007e2643301de1029a1cf0c447"
+  },
+  "projector_sha256": "c6a92d9636b8b77af1bdfc22713dcbe7438cad8fd0e143614275384344526845"
+}

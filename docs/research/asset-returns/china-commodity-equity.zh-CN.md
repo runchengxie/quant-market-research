@@ -2,7 +2,24 @@
 
 [English](china-commodity-equity.md)
 
-本专题研究：中国商品期货指数能否改善A股组合的长期收益与持有体验。**当前为研究协议阶段，尚无核验或发布的收益结果。** 历史目标区间为2004年12月至2025年12月，正式比较使用经过核验的共同有效区间。近期表现另设面板，截止到最近一个已核验的共同交易日，不自动延长冻结的历史样本。
+## 首轮发现
+
+2006年末至2025年末的完整样本中，股票年化收益高于商品。固定80%股票、20%商品的月度再平衡组合，将最大回撤从72.04%降至65.91%，年化收益从6.45%变为6.54%。抵押现金利息和实际执行成本仍未计入。
+
+| 比较 | 南华商品 | 沪深300全收益 |
+| --- | --- | --- |
+| 2006-12-29至2025-12-31年化收益 | 4.01% | 6.45% |
+| 历史日频最大回撤 | −51.94% | −72.04% |
+| 2026年初至11月6日收益 | 7.24% | −10.57% |
+
+**当前证据属于指数历史观察。** 更早的完整区间未通过来源与日历检查，原始审计已保留。板块起点各不相同。七项年末点位核对通过，完整年度收益和历史编制规则仍需核验，本轮不能代表可投资期货账户。
+
+详见[完整结果](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/findings-20261107.zh-CN.md)、[派生汇总](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/reviewed-summary-20261107.json)和[复现记录](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/validation-20261107.md)。下一步补齐来源缺口、年度收益口径和合约层面的投资实施证据。
+
+<details>
+<summary>已登记的研究协议</summary>
+
+本专题研究：中国商品期货指数能否改善A股组合的长期收益与持有体验。这里保留初始登记，当前证据见上文。 历史目标区间为2004年12月至2025年12月，正式比较使用经过核验的共同有效区间。近期表现另设面板，截止到最近一个已核验的共同交易日，不自动延长冻结的历史样本。
 
 ## 研究问题与范围
 
@@ -46,3 +63,5 @@
 发布需要经过审查的派生汇总、数据使用权、可复现运行收据，以及逐条关联证据和限制的结论台账。对话中的收益数字和第三方年度表仅为待核验线索，不作为正式输入或结论，不沿用此前“商品跑赢股票”的判断。
 
 第一步交付覆盖和收益口径审计，再完成共同样本的描述性比较。期货投资实施和宏观归因分别通过数据检查后推进。机器可读契约见[专题目录](https://github.com/runchengxie/quant-market-research/tree/main/studies/china_commodity_equity)，相关历史证据见[已有资产回报研究](https://github.com/runchengxie/quant-market-research/tree/main/studies/asset_returns)。
+
+</details>

@@ -34,4 +34,4 @@ Use this site for independent market research projects and their reproducible me
 
 ## Cross-asset research
 
-- [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): Protocol only; target December 2004–December 2025, subject to common coverage. The next question is whether return definitions and history are comparable.
+- [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): First-round descriptive history, with a gap-free December 2006–December 2025 baseline. Early data gaps and investable implementation remain unresolved.

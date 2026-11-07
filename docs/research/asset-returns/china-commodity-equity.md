@@ -2,7 +2,24 @@
 
 [Chinese version](china-commodity-equity.zh-CN.md)
 
-This topic asks whether Chinese commodity futures indices improve the long-term outcomes of an A-share portfolio. **Evidence stage: protocol only. No returns have been verified or published.** The target historical sample is December 2004–December 2025; actual comparisons must use verified common coverage. A separate recent panel will end on the latest verified common session and never extend the frozen historical sample silently.
+## First-round finding
+
+In the gap-free December 2006–December 2025 sample, equities compounded faster than commodities. A fixed 80/20 monthly equity/commodity mix reduced maximum drawdown from 72.04% to 65.91%, with gross CAGR of 6.54% versus 6.45% for equities. Collateral interest and calibrated implementation costs remain unresolved.
+
+| Comparison | Commodity | CSI 300 total return |
+| --- | --- | --- |
+| Historical CAGR, 2006-12-29 to 2025-12-31 | 4.01% | 6.45% |
+| Historical daily maximum drawdown | −51.94% | −72.04% |
+| 2026 YTD, ending November 6 | 7.24% | −10.57% |
+
+**Evidence stage is descriptive index history.** The attempted earlier full sample failed source/calendar checks and remains separately recorded. Sector histories have different starts. Seven year-end publisher point checks passed, but complete annual-return and historical-methodology reconciliation remain open. No investable futures-account result is claimed.
+
+Read the [full findings](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/findings-20261107.md), [reviewed aggregate](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/reviewed-summary-20261107.json), and [reproduction record](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/validation-20261107.md). Next priorities are unresolved source gaps, original annual-return conventions and contract-level implementation.
+
+<details>
+<summary>Registered research protocol</summary>
+
+This topic asks whether Chinese commodity futures indices improve the long-term outcomes of an A-share portfolio. This paragraph records the original registration; current evidence is above. The target historical sample is December 2004–December 2025; actual comparisons must use verified common coverage. A separate recent panel will end on the latest verified common session and never extend the frozen historical sample silently.
 
 ## Questions and scope
 
@@ -46,3 +63,5 @@ First audit endpoint identity, permission, methodology and history. Then freeze 
 Publication requires reviewed derived aggregates, data rights, a reproducible run receipt and a conclusion register linking each claim to its evidence and limitations. Conversation figures and third-party annual tables are unverified leads; they are not accepted input or findings. No previous claim that commodities outperformed equities is inherited.
 
 The first deliverable is a coverage and return-definition audit, followed by a common-sample descriptive comparison. Futures implementation and macro attribution follow only when their own data gates pass. The machine-readable study contracts are in the [study directory](https://github.com/runchengxie/quant-market-research/tree/main/studies/china_commodity_equity); related evidence is in the [existing asset-return study](https://github.com/runchengxie/quant-market-research/tree/main/studies/asset_returns).
+
+</details>
