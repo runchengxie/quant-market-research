@@ -1,33 +1,64 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "protocol_only",
-  "verified_findings": [],
+  "status": "first_round_descriptive_history",
+  "verified_findings": [
+    {
+      "id": "CF01",
+      "claim": "Long-run and fixed-window outperformance differ in the observed sample.",
+      "evidence": "reviewed-summary-20261107.json#/primary",
+      "limit": "Coverage-limited baseline; revised index history, not investable account."
+    },
+    {
+      "id": "CF02",
+      "claim": "Predeclared monthly 80/20 index mix reduced drawdown and volatility with a small gross CAGR difference.",
+      "evidence": "reviewed-summary-20261107.json#/allocations",
+      "limit": "No collateral interest or calibrated execution; rebalancing rule sensitivity."
+    },
+    {
+      "id": "CF03",
+      "claim": "2026 YTD commodities led the equity total-return reference, but the last completed week reversed direction.",
+      "evidence": "reviewed-summary-20261107.json#/recent",
+      "limit": "As of2026-11-06 only; no forecast."
+    }
+  ],
   "questions": [
     {
       "id": "CQ01",
       "question": "Do commodity indices outperform equity total returns across common holding periods?",
-      "status": "awaiting_data_audit",
-      "evidence": []
+      "status": "observed_window_dependent",
+      "evidence": [
+        "findings-20261107.md",
+        "reviewed-summary-20261107.json"
+      ]
     },
     {
       "id": "CQ02",
       "question": "Do fixed commodity allocations improve drawdown and worst five-year outcomes?",
-      "status": "awaiting_data_audit",
-      "evidence": []
+      "status": "hypothetical_index_result_only",
+      "evidence": [
+        "findings-20261107.md",
+        "reviewed-summary-20261107.json"
+      ]
     },
     {
       "id": "CQ03",
       "question": "Which regimes and sectors explain observed differences?",
-      "status": "awaiting_data_audit",
-      "evidence": []
+      "status": "sector_description_only_macro_unresolved",
+      "evidence": [
+        "findings-20261107.md",
+        "reviewed-summary-20261107.json"
+      ]
     },
     {
       "id": "CQ04",
       "question": "How much index performance survives investable implementation?",
-      "status": "awaiting_data_audit",
-      "evidence": []
+      "status": "awaiting_contract_implementation",
+      "evidence": [
+        "findings-20261107.md",
+        "reviewed-summary-20261107.json"
+      ]
     }
   ],
-  "unverified_material": "Conversation returns, endpoint permissions and history claims are leads only."
+  "unverified_material": "Prior conversation figures are not evidence. Original annual-return convention, early source gaps, historical methods, collateral and actual product performance remain unresolved."
 }

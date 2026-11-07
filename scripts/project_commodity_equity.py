@@ -24,11 +24,19 @@ def _stats(row: dict) -> dict:
     return {key: row[key] for key in _METRICS}
 
 
-def _analysis(pair: dict | None) -> dict | None:
+def _analysis(pair: dict | None, metadata: dict) -> dict | None:
     if not pair or pair["audit"]["eligible"] is not True or "analysis" not in pair:
         return None
     data = pair["analysis"]
     return {
+        "series": {
+            role: {
+                "id": pair[role],
+                "return_basis": pair[role + "_return_basis"],
+                "currency": metadata[pair[role]]["currency"],
+            }
+            for role in ["equity", "commodity"]
+        },
         "daily": {c: _stats(data["daily"][c]) for c in ["equity", "commodity"]},
         "holding_periods": data.get("holding_periods", {}),
         "monthly_max_drawdown": data.get("monthly_max_drawdown", {}),
@@ -41,7 +49,7 @@ def _analysis(pair: dict | None) -> dict | None:
 
 def project(full: dict, baseline: dict, recent: dict) -> dict:
     primary_pair = baseline["comparisons"].get(_PRIMARY)
-    primary = _analysis(primary_pair)
+    primary = _analysis(primary_pair, baseline["series_metadata"])
     allocations = []
     if primary:
         allocations = [
@@ -61,7 +69,7 @@ def project(full: dict, baseline: dict, recent: dict) -> dict:
             for row in primary_pair["analysis"]["allocation"]
         ]
     sectors = {
-        pair["commodity"]: _analysis(pair)
+        pair["commodity"]: _analysis(pair, baseline["series_metadata"])
         for pair in baseline["comparisons"].values()
         if pair["equity"] == "H00300.CSI"
     }
@@ -72,7 +80,7 @@ def project(full: dict, baseline: dict, recent: dict) -> dict:
         "primary": primary,
         "allocations": allocations,
         "sectors": sectors,
-        "recent": _analysis(recent["comparisons"].get(_PRIMARY)),
+        "recent": _analysis(recent["comparisons"].get(_PRIMARY), recent["series_metadata"]),
         "full_history_audits": {
             key: row["audit"]
             for key, row in full["comparisons"].items()
@@ -105,6 +113,7 @@ def main() -> None:
     result["run_result_sha256"] = {
         name: hashlib.sha256(path.read_bytes()).hexdigest() for name, path in paths.items()
     }
+    result["projector_sha256"] = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     text = json.dumps(result, indent=2, allow_nan=False) + "\n"
     with args.output.open("x") as stream:
         stream.write(text)

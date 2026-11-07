@@ -38,4 +38,4 @@
 
 ## 跨资产研究
 
-- [China commodity futures and equities / 中国商品期货与股票收益](research/asset-returns/china-commodity-equity.zh-CN.md)：协议阶段；目标覆盖2004年12月至2025年12月，以实际共同覆盖为准。下一步核验收益口径与历史完整性。
+- [China commodity futures and equities / 中国商品期货与股票收益](research/asset-returns/china-commodity-equity.zh-CN.md)：已有首轮历史观察，完整基准覆盖2006年末至2025年末。下一步补齐早期数据和实际投资实施证据。

@@ -19,10 +19,12 @@
 
 ## Tasks
 
-- [ ] Acquire a bounded endpoint probe using existing private configuration loading. Freeze responses, request parameters, retrieval times and hashes under the data owner. Inspect methodology and publisher cross-check sources.
-- [ ] Add failing synthetic tests in `tests/studies/test_commodity_equity.py` covering hash integrity, duplicate/invalid data, missing calendar sessions, monthly endpoint selection, compounding, drift/rebalancing and recovery censoring. Run them to confirm failure, then implement `src/market_research/studies/commodity_equity/{inputs,analysis,run}.py` with a frozen-input CLI and external output requirement.
-- [ ] Acquire annual data batches only for usable sources; reuse existing owner equity/calendar receipts by reference when appropriate. Run the audited analysis, retain unresolved semantic/coverage checks and independent reconciliations.
-- [ ] Update bilingual topic documents, benchmark identities and conclusion register with reviewed aggregates or explicit blocking evidence. Add reproducible commands and source receipts without raw data or local machine paths.
+- [x] Acquire a bounded endpoint probe using existing private configuration loading. Freeze responses, request parameters, retrieval times and hashes under the data owner. Inspect methodology and publisher cross-check sources.
+- [x] Add failing synthetic tests in `tests/studies/test_commodity_equity.py` covering hash integrity, duplicate/invalid data, missing calendar sessions, monthly endpoint selection, compounding, drift/rebalancing and recovery censoring. Run them to confirm failure, then implement `src/market_research/studies/commodity_equity/{inputs,analysis,run}.py` with a frozen-input CLI and external output requirement.
+- [x] Acquire annual data batches only for usable sources; reuse existing owner equity/calendar receipts by reference when appropriate. Run the audited analysis, retain unresolved semantic/coverage checks and independent reconciliations.
+- [x] Update bilingual topic documents, benchmark identities and conclusion register with reviewed aggregates or explicit blocking evidence. Add reproducible commands and source receipts without raw data or local machine paths.
 - [ ] Run relevant Python and web checks, review the whole diff, commit, push, create PR and merge only after remote checks pass against current main. Clean only this task's branch/worktree.
 
 All steps execute inline under the user's request to advance the remaining work. Independently review the completed implementation before publishing.
+
+Validation before PR: 952 Python passed /22 optional-provider skips; 332 web passed; Ruff, Astro build, static boundary and evidence bindings passed. Independent code and evidence review complete; calendar and public return-basis findings resolved. Remote checks and merge remain pending.

@@ -1,0 +1,42 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "evidence_stage": "descriptive_index_history",
+  "analysis_source_revision": "44ffeed9ae3790fb9cf660d4117ab7e37d1b20d7",
+  "summary_sha256": "d07bd5471861c9dda06919ad768ad80d746b51090b2269bd5f6fb4820ffd51ee",
+  "projector_sha256": "c6a92d9636b8b77af1bdfc22713dcbe7438cad8fd0e143614275384344526845",
+  "run_result_sha256": {
+    "full": "2719e1919432b0ffbf4174346e59c6a42a2bce3ae69acc6937364e2b4cdfb88e",
+    "baseline": "c32f5c7949503b42e53d6df82502813fd51aad323d55e01aeb789d1c772bb0fc",
+    "recent": "19db544bf56436a0acb569b0225fde6a0050a6007e2643301de1029a1cf0c447"
+  },
+  "run_manifest_sha256": {
+    "full": "b181475b6c3805794086b028562b956b4e62587a466319df7af4756eaea11335",
+    "baseline": "c781ebebbe1827762bf59dbc51a84faf38d1312dc85094bde1502cb85499bf70",
+    "recent": "2bca393ca708417207e60a844fd87fd07eba378c2d44a8a537b82cfdca468ec8"
+  },
+  "independent_terminal_wealth_cases": 30,
+  "terminal_wealth_tolerance": 1e-11,
+  "publisher_point_matches": 7,
+  "publisher_point_date": "2025-12-31",
+  "publisher_annual_return_reconciliation": "unresolved",
+  "raw_data_publication": false,
+  "existing_asset_return_release_modified": false,
+  "reviewed_artifacts": [
+    "findings-20261107.md",
+    "findings-20261107.zh-CN.md",
+    "reviewed-summary-20261107.json",
+    "validation-20261107.md"
+  ],
+  "data_owner_acquisition_revision": "e576ef761665145b4a9aa3811da028904d320587",
+  "local_validation": {
+    "python_passed": 952,
+    "python_skipped": 22,
+    "python_skip_basis": "optional formal/integration providers; separate CI job covers formal matching provider",
+    "web_passed": 332,
+    "ruff": "passed",
+    "astro_build": "passed",
+    "static_public_boundary": "passed",
+    "independent_review": "no_remaining_important_findings"
+  }
+}

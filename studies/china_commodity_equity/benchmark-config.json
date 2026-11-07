@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "protocol_only",
+  "status": "first_round_descriptive_history",
   "historical_target": [
     "2004-12-31",
     "2025-12-31"
@@ -16,13 +16,18 @@
     "NHFI.NH",
     "NHECI.NH"
   ],
-  "commodity_identity_verified": false,
+  "commodity_identity_verified": true,
   "primary_equity": "CSI 300 total return",
   "secondary_equities": [
     "CSI All Share total return",
     "CSI 1000 total return"
   ],
-  "equity_provider_codes": null,
+  "equity_provider_codes": {
+    "primary_total_return": "H00300.CSI",
+    "primary_price_diagnostic": "000300.SH",
+    "secondary_all_share_total_return": "H00985.CSI",
+    "secondary_small_cap_total_return": "H00852.CSI"
+  },
   "currency": "CNY",
   "rolling_months": [
     12,
@@ -45,5 +50,11 @@
     100
   ],
   "cost_status": "hypothetical_not_calibrated",
-  "recent_cutoff": null
+  "recent_cutoff": "2026-11-06",
+  "observed_baseline": [
+    "2006-12-29",
+    "2025-12-31"
+  ],
+  "baseline_reason": "First year-end after unresolved 2006 source/calendar gaps; original full-history audit retained.",
+  "methodology_status": "published_index_semantics_checked; historical_versions_and_implementation_unresolved"
 }

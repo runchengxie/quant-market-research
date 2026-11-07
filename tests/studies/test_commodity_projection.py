@@ -27,6 +27,8 @@ def test_projection_drops_private_receipts_levels_and_nonprimary_return_bases():
         "equity": "H00300.CSI",
         "commodity": "NHCI.NH",
         "audit": {"eligible": True},
+        "equity_return_basis": "total_return",
+        "commodity_return_basis": "commodity_futures_return_index",
         "analysis": analysis,
     }
     source = {
@@ -36,6 +38,7 @@ def test_projection_drops_private_receipts_levels_and_nonprimary_return_bases():
         "coverage": {},
         "comparisons": {"H00300.CSI__NHCI.NH": pair},
         "missing_series": [],
+        "series_metadata": {"H00300.CSI": {"currency": "CNY"}, "NHCI.NH": {"currency": "CNY"}},
     }
     result = project(source, source, source)
     import json
@@ -43,6 +46,12 @@ def test_projection_drops_private_receipts_levels_and_nonprimary_return_bases():
     assert "LOCAL_SECRET" not in json.dumps(result)
     assert "input_receipts" not in result
     assert result["primary"]["daily"]["commodity"]["cagr"] == 0.04
+    assert result["primary"]["series"]["equity"]["id"] == "H00300.CSI"
+    assert result["primary"]["series"]["equity"]["return_basis"] == "total_return"
+    assert (
+        result["primary"]["series"]["commodity"]["return_basis"] == "commodity_futures_return_index"
+    )
+    assert result["primary"]["series"]["equity"]["currency"] == "CNY"
     source["comparisons"]["H00300.CSI__NHCI.NH"]["audit"]["eligible"] = False
     blocked = project(source, source, source)
     assert blocked["primary"] is None
