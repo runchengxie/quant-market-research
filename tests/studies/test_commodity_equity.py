@@ -170,14 +170,14 @@ def test_recent_periods_use_exact_calendar_endpoints_and_missing_history():
         ["2025-11-06", "2025-12-31", "2026-09-30", "2026-10-23", "2026-10-30", "2026-11-06"]
     )
     s = pd.Series([100, 110, 120, 125, 130, 140], index=dates)
-    result = period_returns(s)
+    result = period_returns(s, dates)
     assert result["last_week"]["start"] == "2026-10-30"
     assert result["last_week"]["return"] == pytest.approx(140 / 130 - 1)
     assert result["last_month"]["start"] == "2026-09-30"
     assert result["last_month"]["end"] == "2026-10-30"
     assert result["year_to_date"]["return"] == pytest.approx(140 / 110 - 1)
     assert result["trailing_12_months"]["return"] == pytest.approx(0.4)
-    assert period_returns(s.iloc[1:])["trailing_12_months"] is None
+    assert period_returns(s.iloc[1:], dates)["trailing_12_months"] is None
 
 
 def complete_bundle(tmp_path):
@@ -263,3 +263,35 @@ def test_runner_rejects_mislabeled_return_basis_before_analysis(tmp_path):
     path.write_text(json.dumps(manifest))
     with pytest.raises(ValueError, match="return basis"):
         run_study(path, tmp_path / "result")
+
+
+def test_verified_weekend_month_end_is_included_and_is_latest_completed_month():
+    from market_research.studies.commodity_equity.analysis import period_returns
+
+    calendar = pd.to_datetime(["2026-08-31", "2026-09-30", "2026-10-30", "2026-11-30"])
+    values = pd.Series([100, 110, 121], index=calendar[:3])
+    marks = monthly_levels(values, calendar, pd.Timestamp("2026-10-30"))
+    assert len(marks) == 3
+    assert marks.index[-1] == pd.Timestamp("2026-10-31")
+    result = period_returns(values, calendar)
+    assert result["last_month"]["start"] == "2026-09-30"
+    assert result["last_month"]["end"] == "2026-10-30"
+    assert result["last_month"]["return"] == pytest.approx(0.1)
+
+
+def test_fixed_year_endpoint_uses_verified_prior_session_and_never_shortens_history():
+    from market_research.studies.commodity_equity.analysis import period_returns
+
+    calendar = pd.to_datetime(
+        ["2015-12-31", "2020-12-31", "2022-12-30", "2025-12-31", "2026-01-30"]
+    )
+    values = pd.Series([100, 110, 120, 150], index=calendar[:4])
+    result = period_returns(values, calendar)
+    assert result["trailing_3_years"] == {
+        "start": "2022-12-30",
+        "end": "2025-12-31",
+        "return": 0.25,
+    }
+    assert result["trailing_5_years"]["return"] == pytest.approx(150 / 110 - 1)
+    assert result["trailing_10_years"]["return"] == pytest.approx(0.5)
+    assert period_returns(values.iloc[1:], calendar)["trailing_10_years"] is None

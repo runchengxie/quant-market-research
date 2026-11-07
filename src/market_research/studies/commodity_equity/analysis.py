@@ -72,9 +72,11 @@ def monthly_levels(
     # with no verified final-session calendar is not declared complete by this helper.
     endpoints = pd.Series(calendar, index=calendar.to_period("M")).groupby(level=0).max()
     endpoints = endpoints[(endpoints >= values.index[0]) & (endpoints <= cutoff)]
-    # Even if a short calendar ends at cutoff, a partial terminal month is excluded.
-    if cutoff < cutoff + pd.offsets.MonthEnd(0):
-        endpoints = endpoints[endpoints.index < cutoff.to_period("M")]
+    # A later calendar month certifies earlier month endpoints even if the last
+    # session was a Friday before the calendar month end. Never infer completeness
+    # for the terminal calendar month from a truncated open-session list alone.
+    if not calendar[-1].is_month_end:
+        endpoints = endpoints[endpoints.index < calendar[-1].to_period("M")]
     selected = values.reindex(pd.DatetimeIndex(endpoints.to_numpy()))
     if selected.isna().any():
         raise ValueError("missing exact monthly endpoint")
@@ -128,7 +130,7 @@ def holding_summary(values: pd.Series) -> list[dict]:
     return rows
 
 
-def period_returns(values: pd.Series) -> dict:
+def period_returns(values: pd.Series, calendar: pd.DatetimeIndex) -> dict:
     """Synchronized endpoints; unavailable anchors remain explicit."""
     _valid(values)
     end = values.index[-1]
@@ -154,34 +156,39 @@ def period_returns(values: pd.Series) -> dict:
     week_end = week[-1] if len(week) else None
     week_start_days = values.index[values.index <= previous_friday - pd.Timedelta(days=7)]
     week_start = week_start_days[-1] if len(week_start_days) else None
-    completed = values.loc[values.index.to_period("M") < end.to_period("M")]
-    monthly = completed.groupby(completed.index.to_period("M")).tail(1)
+    ends = pd.Series(calendar, index=calendar.to_period("M")).groupby(level=0).max()
+    if not calendar[-1].is_month_end:
+        ends = ends[ends.index < calendar[-1].to_period("M")]
+    ends = ends[(ends <= end) & (ends >= values.index[0])]
     last_month = None
-    if (
-        len(monthly) >= 2
-        and monthly.index[-1].to_period("M").ordinal - monthly.index[-2].to_period("M").ordinal == 1
-    ):
-        last_month = interval(monthly.index[-2], monthly.index[-1])
-    year_days = values.index[values.index.year == end.year - 1]
-    year_start = year_days[-1] if len(year_days) and year_days[-1].month == 12 else None
-    target = end - pd.DateOffset(years=1)
-    trailing_days = values.index[values.index <= target]
-    # A prior common session may precede an anniversary by a market closure;
-    # report the actual date and reject absent history rather than inventing it.
-    trailing_start = trailing_days[-1] if len(trailing_days) else None
-    return {
+    if len(ends) >= 2 and ends.index[-1].ordinal - ends.index[-2].ordinal == 1:
+        last_month = interval(ends.iloc[-2], ends.iloc[-1])
+    previous_year_end = ends.get(pd.Period(f"{end.year - 1}-12", freq="M"))
+    result = {
         "last_week": interval(week_start, week_end),
         "last_month": last_month,
-        "year_to_date": interval(year_start, end),
-        "trailing_12_months": interval(trailing_start, end),
+        "year_to_date": interval(previous_year_end, end),
     }
+    for years, label in [
+        (1, "trailing_12_months"),
+        (3, "trailing_3_years"),
+        (5, "trailing_5_years"),
+        (10, "trailing_10_years"),
+    ]:
+        target = end - pd.DateOffset(years=years)
+        prior = calendar[calendar <= target]
+        anchor = prior[-1] if len(prior) else None
+        if anchor is not None and anchor.to_period("M") != target.to_period("M"):
+            anchor = None
+        result[label] = interval(anchor, end)
+    return result
 
 
 def describe_pair(levels: pd.DataFrame, calendar: pd.DatetimeIndex, cutoff: pd.Timestamp) -> dict:
     monthly = pd.DataFrame({c: monthly_levels(levels[c], calendar, cutoff) for c in levels})
     result = {
         "daily": {c: summarize(levels[c]) for c in levels},
-        "recent_periods": {c: period_returns(levels[c]) for c in levels},
+        "recent_periods": {c: period_returns(levels[c], calendar) for c in levels},
         "monthly_observations": len(monthly),
         "allocation": [],
     }
