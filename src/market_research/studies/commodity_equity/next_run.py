@@ -4,6 +4,7 @@ from __future__ import annotations
 import argparse
 import hashlib
 import json
+import io
 from pathlib import Path
 from tempfile import gettempdir
 
@@ -65,8 +66,15 @@ def run_next(manifest_path: Path, output: Path) -> dict:
     if not calendar.exchange.eq('DCE').all() or not calendar.is_open.astype(int).eq(1).all():
         raise ValueError('invalid DCE calendar')
     expected = pd.DatetimeIndex(pd.to_datetime(calendar.cal_date, format='%Y%m%d')).sort_values()
+    reference = calendars['SHFE'][(calendars['SHFE'] >= pd.Timestamp('2024-12-01')) & (calendars['SHFE'] <= pd.Timestamp('2025-12-31'))]
+    if expected.has_duplicates or expected.hasnans or not expected.equals(reference):
+        raise ValueError('DCE calendar missing, duplicate or inconsistent sessions')
+    if len(pd.DatetimeIndex(frame.trade_date.unique()).difference(expected)):
+        raise ValueError('off-calendar contract marks')
     schedule = [(pd.Timestamp('2024-12-31'), 'M2505.DCE'), (pd.Timestamp('2025-04-01'), 'M2509.DCE'), (pd.Timestamp('2025-08-01'), 'M2601.DCE')]
     end = pd.Timestamp('2025-12-31')
+    if any(d not in expected for d, _ in schedule) or end not in expected:
+        raise ValueError('scheduled contract date absent from DCE calendar')
     for i, (start, code) in enumerate(schedule):
         finish = schedule[i + 1][0] if i + 1 < len(schedule) else end
         needed = expected[(expected >= start) & (expected <= finish)]
@@ -94,7 +102,11 @@ def run_next(manifest_path: Path, output: Path) -> dict:
         seal = json.loads((path / 'manifest.seal.json').read_text())
         if seal['files']['raw.bin'] != hashlib.sha256(raw).hexdigest() or seal['files']['receipt.json'] != item['receipt_sha256']:
             raise ValueError('macro seal mismatch')
-        public_capture.append({k: item[k] for k in ['dataset', 'rows', 'periods', 'retrieved_at', 'raw_sha256', 'receipt_sha256']})
+        snapshot_frame = pd.read_csv(io.BytesIO(raw), dtype={'month': str})
+        derived = {'dataset': receipt['dataset'], 'rows': len(snapshot_frame), 'periods': sorted(snapshot_frame.month.unique().tolist()), 'retrieved_at': receipt['retrieved_at'], 'raw_sha256': receipt['sha256'], 'receipt_sha256': item['receipt_sha256']}
+        if any(item[k] != v for k, v in derived.items()):
+            raise ValueError('macro capture index contradicts verified snapshot')
+        public_capture.append(derived)
     result = {'schema_version': 1, 'study_id': 'china_commodity_equity', 'phase': 'risk_contract_prospective_exploration', 'source_revision': manifest['source_revision'], 'manifest_sha256': hashlib.sha256(manifest_path.read_bytes()).hexdigest(), 'code_sha256': {n: hashlib.sha256(Path(__file__).with_name(n).read_bytes()).hexdigest() for n in ['next_run.py', 'risk_controls.py', 'contract_trial.py']}, 'risk_controls': risk_result, 'contract_trial': {'start': '2024-12-31', 'end': '2025-12-31', 'variety': 'DCE soymeal', 'unit_tonnes_per_lot': 10, 'initial_capital_CNY': 1000000, 'schedule': [{'date': str(d.date()), 'contract': c} for d, c in schedule], 'margin_buffer_percentage_points': 5, 'cash_yield': 0, 'calendar_verified': True, 'exchange_fee_per_lot_CNY': sorted(frame.trading_fee.unique().tolist()), 'cases': results, 'nanhua_soymeal_index_return_same_calendar_year': comparison, 'execution_established': False}, 'prospective_archive': {'snapshots': public_capture, 'forward_outcomes': 0, 'historical_vintages_certified': False, 'recurring_job_installed': False}, 'source_requests': len(receipts)}
     output.mkdir(parents=True)
     (output / 'reviewed-candidate.json').write_text(json.dumps(result, indent=2, allow_nan=False) + '\n')

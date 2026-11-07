@@ -49,3 +49,10 @@ def test_contract_missing_mark_or_margin_fails_closed():
     frame.loc[frame.trade_date == dates[2], 'long_margin_rate'] = 2
     with pytest.raises(ValueError, match='margin'):
         settlement_trial(frame, [(dates[1], 'A')], dates[3], capital=10000, per_unit=10)
+
+
+def test_missing_interior_roll_day_cannot_be_silently_skipped():
+    frame, dates = trial_input()
+    frame = frame.loc[frame.trade_date != dates[2]]
+    with pytest.raises(ValueError, match='endpoints'):
+        settlement_trial(frame, [(dates[1], 'A'), (dates[2], 'B')], dates[3], capital=10000)

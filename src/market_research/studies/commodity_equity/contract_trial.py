@@ -25,7 +25,7 @@ def settlement_trial(frame: pd.DataFrame, schedule: list[tuple[pd.Timestamp, str
         raise ValueError('duplicate contract marks')
     data = data.set_index(['trade_date', 'ts_code']).sort_index()
     dates = data.index.get_level_values(0).unique().sort_values()
-    if schedule[0][0] not in dates or end not in dates or end <= schedule[-1][0]:
+    if any(day not in dates for day, _ in schedule) or end not in dates or end <= schedule[-1][0]:
         raise ValueError('invalid trial endpoints')
     changes = dict(schedule)
     equity, lots, held = float(capital), 0, None
