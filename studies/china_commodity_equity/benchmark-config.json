@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "first_round_descriptive_history",
+  "status": "four_line_exploration",
   "historical_target": [
     "2004-12-31",
     "2025-12-31"
@@ -56,5 +56,27 @@
     "2025-12-31"
   ],
   "baseline_reason": "First year-end after unresolved 2006 source/calendar gaps; original full-history audit retained.",
-  "methodology_status": "published_index_semantics_checked; historical_versions_and_implementation_unresolved"
+  "methodology_status": "published_index_semantics_checked; historical_versions_and_implementation_unresolved",
+  "followup": {
+    "rolling_months": [
+      60,
+      120
+    ],
+    "trade_cost_bps_per_two_sided_notional": [
+      0,
+      10,
+      50,
+      100
+    ],
+    "collateral_shibor_fractions": [
+      0,
+      0.5,
+      1
+    ],
+    "macro_thresholds": {
+      "manufacturing_pmi": 50,
+      "ppi_yoy": 0
+    },
+    "macro_historical_vintage_admitted": false
+  }
 }

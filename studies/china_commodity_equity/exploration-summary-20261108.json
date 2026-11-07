@@ -1,0 +1,1846 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "phase": "four_line_exploration",
+  "source_revision": "0677ed5f1ca2960706458ef5203546ddc6c5ce40",
+  "manifest_sha256": "8bc7cba65f21c3c38b3a434d18cbf1507e7146342e75bf2d184833cc228b88e9",
+  "code_sha256": {
+    "followup_run.py": "a7e787ce4eab1d70d983d5d9bec1cae992ec8a8f5bc5b2f6a6a864dc587c9983",
+    "followup_inputs.py": "5d66e17b8777c8baaa0c193bd2dcd99b8bbbeaa06a3725fcf92779e395fc27e6",
+    "robustness.py": "299052cb2b94fe49c274f9bba9e5595602563a07ae3295a97eb19d6079194c8d",
+    "implementation.py": "0021b6a80c35e8e4f263333feede0025b73aa321c1cdcd9ec915d41f219e2e97",
+    "regimes.py": "d5b4ccf977904e181b96ee10e6fc8643f6f1a2fb8ffecfcc47ef78881db818a0"
+  },
+  "series": {
+    "equity": {
+      "id": "H00300.CSI",
+      "return_basis": "total_return",
+      "currency": "CNY"
+    },
+    "commodity": {
+      "id": "NHCI.NH",
+      "return_basis": "published_futures_index",
+      "currency": "CNY"
+    }
+  },
+  "baseline": {
+    "eligible": true,
+    "start": "2006-12-29",
+    "end": "2025-12-31",
+    "equity_missing": [],
+    "commodity_missing": [],
+    "equity_off_calendar": [],
+    "commodity_off_calendar": [],
+    "equity_only_sessions": [],
+    "commodity_only_sessions": [],
+    "common_sessions": 4619
+  },
+  "robustness": {
+    "cases": {
+      "monthly_10_60": {
+        "policy": "monthly",
+        "commodity_weight": 0.1,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 107,
+          "fraction": 0.6331360946745562
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 107,
+          "fraction": 0.6331360946745562
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.14049774468090637,
+          "median": 0.04493054129202356
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.690866368811957,
+          "median": -0.3749354653065702
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 33.34926130683979,
+          "minimum": 0.0,
+          "positive_count": 107
+        }
+      },
+      "monthly_10_120": {
+        "policy": "monthly",
+        "commodity_weight": 0.1,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 68,
+          "fraction": 0.6238532110091743
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 68,
+          "fraction": 0.6238532110091743
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.014280795255935175,
+          "median": 0.06462128642021803
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.690866368811957,
+          "median": -0.4316321816854515
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 10.078282477034017,
+          "minimum": 0.0,
+          "positive_count": 68
+        }
+      },
+      "monthly_20_60": {
+        "policy": "monthly",
+        "commodity_weight": 0.2,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 105,
+          "fraction": 0.621301775147929
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 105,
+          "fraction": 0.621301775147929
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.12318204395402743,
+          "median": 0.05060184939856227
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6590934419676892,
+          "median": -0.35711460059700983
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 63.25211815259135,
+          "minimum": 0.0,
+          "positive_count": 105
+        },
+        "worst_return_difference_windows": [
+          {
+            "start": "2010-06-30",
+            "end": "2015-06-30",
+            "months": 60,
+            "portfolio_total_return": 0.6285971669985995,
+            "equity_total_return": 0.9226737984969902,
+            "portfolio_cagr": 0.10245973056099111,
+            "equity_cagr": 0.13967526222588367,
+            "portfolio_max_drawdown": -0.35711460059701006,
+            "equity_max_drawdown": -0.38549967010776476,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-05-31",
+            "end": "2015-05-29",
+            "months": 60,
+            "portfolio_total_return": 0.634951694162595,
+            "equity_total_return": 0.9209811219844346,
+            "portfolio_cagr": 0.10331871546696703,
+            "equity_cagr": 0.13947452289682816,
+            "portfolio_max_drawdown": -0.3571146005970094,
+            "equity_max_drawdown": -0.38549967010776476,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-12-31",
+            "end": "2015-12-31",
+            "months": 60,
+            "portfolio_total_return": 0.12731897108639179,
+            "equity_total_return": 0.3191766534832925,
+            "portfolio_cagr": 0.02425799624544922,
+            "equity_cagr": 0.056964963183879336,
+            "portfolio_max_drawdown": -0.374817625926529,
+            "equity_max_drawdown": -0.42860884934934507,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-04-30",
+            "end": "2015-04-30",
+            "months": 60,
+            "portfolio_total_return": 0.47333220573699264,
+            "equity_total_return": 0.7051710997245699,
+            "portfolio_cagr": 0.08058799026649055,
+            "equity_cagr": 0.11263724249394191,
+            "portfolio_max_drawdown": -0.3571146005970096,
+            "equity_max_drawdown": -0.38549967010776476,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-11-30",
+            "end": "2015-11-30",
+            "months": 60,
+            "portfolio_total_return": 0.09294898996383938,
+            "equity_total_return": 0.2573278011952458,
+            "portfolio_cagr": 0.01793483944011598,
+            "equity_cagr": 0.04686264611860347,
+            "portfolio_max_drawdown": -0.3748176259265289,
+            "equity_max_drawdown": -0.42860884934934507,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          }
+        ]
+      },
+      "monthly_20_120": {
+        "policy": "monthly",
+        "commodity_weight": 0.2,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 64,
+          "fraction": 0.5871559633027523
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 64,
+          "fraction": 0.5871559633027523
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.009466166649004903,
+          "median": 0.06514185018435281
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6590934419676892,
+          "median": -0.40179753373386173
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 12.16673493836029,
+          "minimum": 0.0,
+          "positive_count": 64
+        },
+        "worst_return_difference_windows": [
+          {
+            "start": "2011-01-31",
+            "end": "2021-01-29",
+            "months": 120,
+            "portfolio_total_return": 0.9216779743885701,
+            "equity_total_return": 1.1442796516361686,
+            "portfolio_cagr": 0.06750043641114134,
+            "equity_cagr": 0.07926512198493874,
+            "portfolio_max_drawdown": -0.4017975337338614,
+            "equity_max_drawdown": -0.46058939115449815,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-12-31",
+            "end": "2020-12-31",
+            "months": 120,
+            "portfolio_total_return": 0.863536878337287,
+            "equity_total_return": 1.0533742492688867,
+            "portfolio_cagr": 0.06422583885174382,
+            "equity_cagr": 0.07459993790369679,
+            "portfolio_max_drawdown": -0.4017975337338615,
+            "equity_max_drawdown": -0.46058939115449804,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-09-30",
+            "end": "2020-09-30",
+            "months": 120,
+            "portfolio_total_return": 0.768197291732152,
+            "equity_total_return": 0.9245833608584619,
+            "portfolio_cagr": 0.058651633830401284,
+            "equity_cagr": 0.06766172218644395,
+            "portfolio_max_drawdown": -0.40179753373386173,
+            "equity_max_drawdown": -0.46058939115449815,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-11-30",
+            "end": "2020-11-30",
+            "months": 120,
+            "portfolio_total_return": 0.7945715155540756,
+            "equity_total_return": 0.948881047773042,
+            "portfolio_cagr": 0.060220206303799984,
+            "equity_cagr": 0.0690020381352221,
+            "portfolio_max_drawdown": -0.40179753373386173,
+            "equity_max_drawdown": -0.46058939115449804,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          },
+          {
+            "start": "2010-08-31",
+            "end": "2020-08-31",
+            "months": 120,
+            "portfolio_total_return": 0.8943706757359144,
+            "equity_total_return": 1.0433732240740077,
+            "portfolio_cagr": 0.06597371582393419,
+            "equity_cagr": 0.07407539987469369,
+            "portfolio_max_drawdown": -0.4017975337338616,
+            "equity_max_drawdown": -0.46058939115449804,
+            "improves_return": false,
+            "improves_drawdown": true,
+            "improves_both": false,
+            "improves_neither": false,
+            "extra_annual_portfolio_drag_budget_bps": 0.0
+          }
+        ]
+      },
+      "monthly_30_60": {
+        "policy": "monthly",
+        "commodity_weight": 0.3,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 102,
+          "fraction": 0.6035502958579881
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 102,
+          "fraction": 0.6035502958579881
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.10640676472393917,
+          "median": 0.05665923270637019
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6249241608970474,
+          "median": -0.34907306310396125
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 86.23778470652321,
+          "minimum": 0.0,
+          "positive_count": 102
+        }
+      },
+      "monthly_30_120": {
+        "policy": "monthly",
+        "commodity_weight": 0.3,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 58,
+          "fraction": 0.5321100917431193
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 58,
+          "fraction": 0.5321100917431193
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.005473528806225425,
+          "median": 0.06093154453365024
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6249241608970474,
+          "median": -0.3710747515210455
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 8.07656414162028,
+          "minimum": 0.0,
+          "positive_count": 58
+        }
+      },
+      "monthly_40_60": {
+        "policy": "monthly",
+        "commodity_weight": 0.4,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 102,
+          "fraction": 0.6035502958579881
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 102,
+          "fraction": 0.6035502958579881
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.09018778948071926,
+          "median": 0.06150752898386691
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.588243631116139,
+          "median": -0.3394532511148042
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 105.13747371317051,
+          "minimum": 0.0,
+          "positive_count": 102
+        }
+      },
+      "monthly_40_120": {
+        "policy": "monthly",
+        "commodity_weight": 0.4,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 53,
+          "fraction": 0.48623853211009177
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 53,
+          "fraction": 0.48623853211009177
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.002297707410880645,
+          "median": 0.062269840341900196
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.588243631116139,
+          "median": -0.3394532511148045
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 0.0,
+          "minimum": 0.0,
+          "positive_count": 53
+        }
+      },
+      "annual_10_60": {
+        "policy": "annual",
+        "commodity_weight": 0.1,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 113,
+          "fraction": 0.6686390532544378
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 113,
+          "fraction": 0.6686390532544378
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.13958802068969323,
+          "median": 0.046286671330138196
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6837449499735687,
+          "median": -0.3813337429096988
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 36.43181541961194,
+          "minimum": 0.0,
+          "positive_count": 113
+        }
+      },
+      "annual_10_120": {
+        "policy": "annual",
+        "commodity_weight": 0.1,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 82,
+          "fraction": 0.7522935779816514
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 82,
+          "fraction": 0.7522935779816514
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.012205964760138244,
+          "median": 0.06624359089829412
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6837449499735687,
+          "median": -0.4354351469676835
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 29.040260300957634,
+          "minimum": 0.0,
+          "positive_count": 82
+        }
+      },
+      "annual_20_60": {
+        "policy": "annual",
+        "commodity_weight": 0.2,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 107,
+          "fraction": 0.6331360946745562
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 107,
+          "fraction": 0.6331360946745562
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.12180295617384385,
+          "median": 0.052925986748361575
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6466952410119539,
+          "median": -0.3597508274612985
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 67.89554363550553,
+          "minimum": 0.0,
+          "positive_count": 107
+        }
+      },
+      "annual_20_120": {
+        "policy": "annual",
+        "commodity_weight": 0.2,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 79,
+          "fraction": 0.7247706422018348
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 79,
+          "fraction": 0.7247706422018348
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.0059038965590151316,
+          "median": 0.0681890225251145
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.6466952410119539,
+          "median": -0.40906683992780535
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 48.45871586443007,
+          "minimum": 0.0,
+          "positive_count": 79
+        }
+      },
+      "annual_30_60": {
+        "policy": "annual",
+        "commodity_weight": 0.3,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 105,
+          "fraction": 0.621301775147929
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 105,
+          "fraction": 0.621301775147929
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.10488143743296008,
+          "median": 0.0587864979158812
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.609614355314851,
+          "median": -0.35279690803898844
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 96.75620786344763,
+          "minimum": 0.0,
+          "positive_count": 105
+        }
+      },
+      "annual_30_120": {
+        "policy": "annual",
+        "commodity_weight": 0.3,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 73,
+          "fraction": 0.6697247706422018
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 73,
+          "fraction": 0.6697247706422018
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.0009271876502096044,
+          "median": 0.06488641043332799
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.609614355314851,
+          "median": -0.38133938604310724
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 58.60877650168628,
+          "minimum": 0.0,
+          "positive_count": 73
+        }
+      },
+      "annual_40_60": {
+        "policy": "annual",
+        "commodity_weight": 0.4,
+        "horizon_months": 60,
+        "completed_windows": 169,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 100,
+          "fraction": 0.591715976331361
+        },
+        "improves_drawdown": {
+          "count": 169,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 100,
+          "fraction": 0.591715976331361
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": -0.08874274308662966,
+          "median": 0.06695161330190591
+        },
+        "equity_cagr": {
+          "minimum": -0.15833800291679423,
+          "median": 0.04043944719934012
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.5730970439764773,
+          "median": -0.34632095593543244
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.41745863429619556
+        },
+        "cost_budget_bps": {
+          "median": 124.81633607389631,
+          "minimum": 0.0,
+          "positive_count": 100
+        }
+      },
+      "annual_40_120": {
+        "policy": "annual",
+        "commodity_weight": 0.4,
+        "horizon_months": 120,
+        "completed_windows": 109,
+        "overlapping_not_independent": true,
+        "improves_return": {
+          "count": 69,
+          "fraction": 0.6330275229357798
+        },
+        "improves_drawdown": {
+          "count": 109,
+          "fraction": 1.0
+        },
+        "improves_both": {
+          "count": 69,
+          "fraction": 0.6330275229357798
+        },
+        "improves_neither": {
+          "count": 0,
+          "fraction": 0.0
+        },
+        "portfolio_cagr": {
+          "minimum": 0.002789311799648253,
+          "median": 0.06640076868869249
+        },
+        "equity_cagr": {
+          "minimum": -0.019922452665043666,
+          "median": 0.06217278400277171
+        },
+        "portfolio_max_drawdown": {
+          "minimum": -0.5730970439764773,
+          "median": -0.3520836249875303
+        },
+        "equity_max_drawdown": {
+          "minimum": -0.720356345739303,
+          "median": -0.46058939115449804
+        },
+        "cost_budget_bps": {
+          "median": 49.45795282093934,
+          "minimum": 0.0,
+          "positive_count": 69
+        }
+      }
+    },
+    "annual_entry_cohorts": [
+      {
+        "entry": "2006-12-29",
+        "equity": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "cagr": 0.0645294518853825,
+          "total_return": 2.282186403192461,
+          "daily_volatility_252": 0.25519848297155145,
+          "max_drawdown": -0.720356345739303
+        },
+        "portfolio": {
+          "start": "2006-12-29",
+          "end": "2025-12-31",
+          "observations": 4619,
+          "cagr": 0.06540469479594657,
+          "total_return": 2.3338573444382233,
+          "daily_volatility_252": 0.21667552695473358,
+          "max_drawdown": -0.6590934419676888
+        }
+      },
+      {
+        "entry": "2007-12-28",
+        "equity": {
+          "start": "2007-12-28",
+          "end": "2025-12-31",
+          "observations": 4377,
+          "cagr": 0.012317168878877238,
+          "total_return": 0.2466650718009169,
+          "daily_volatility_252": 0.24706882825281612,
+          "max_drawdown": -0.7132751382252873
+        },
+        "portfolio": {
+          "start": "2007-12-28",
+          "end": "2025-12-31",
+          "observations": 4377,
+          "cagr": 0.02229683534669169,
+          "total_return": 0.487572243900261,
+          "daily_volatility_252": 0.21051431934758047,
+          "max_drawdown": -0.6544092615051922
+        }
+      },
+      {
+        "entry": "2008-12-31",
+        "equity": {
+          "start": "2008-12-31",
+          "end": "2025-12-31",
+          "observations": 4131,
+          "cagr": 0.07869716080398992,
+          "total_return": 2.6246792986197094,
+          "daily_volatility_252": 0.224695727711048,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2008-12-31",
+          "end": "2025-12-31",
+          "observations": 4131,
+          "cagr": 0.08080388869794053,
+          "total_return": 2.7469179033647326,
+          "daily_volatility_252": 0.19285904337857185,
+          "max_drawdown": -0.40179753373386173
+        }
+      },
+      {
+        "entry": "2009-12-31",
+        "equity": {
+          "start": "2009-12-31",
+          "end": "2025-12-31",
+          "observations": 3887,
+          "cagr": 0.038325393337337754,
+          "total_return": 0.8253056761962005,
+          "daily_volatility_252": 0.21649683294456798,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2009-12-31",
+          "end": "2025-12-31",
+          "observations": 3887,
+          "cagr": 0.04248443498586596,
+          "total_return": 0.9458675247191146,
+          "daily_volatility_252": 0.18531503364623741,
+          "max_drawdown": -0.40179753373386173
+        }
+      },
+      {
+        "entry": "2010-12-31",
+        "equity": {
+          "start": "2010-12-31",
+          "end": "2025-12-31",
+          "observations": 3645,
+          "cagr": 0.0495045078543328,
+          "total_return": 1.0643293519120225,
+          "daily_volatility_252": 0.2140088839900103,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2010-12-31",
+          "end": "2025-12-31",
+          "observations": 3645,
+          "cagr": 0.05045697772466706,
+          "total_return": 1.0926118786096142,
+          "daily_volatility_252": 0.18255491477920063,
+          "max_drawdown": -0.4017975337338615
+        }
+      },
+      {
+        "entry": "2011-12-30",
+        "equity": {
+          "start": "2011-12-30",
+          "end": "2025-12-31",
+          "observations": 3401,
+          "cagr": 0.07401108428977565,
+          "total_return": 1.7180036470339974,
+          "daily_volatility_252": 0.2144745682995133,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2011-12-30",
+          "end": "2025-12-31",
+          "observations": 3401,
+          "cagr": 0.0735213236691834,
+          "total_return": 1.7006977823910931,
+          "daily_volatility_252": 0.18243103999602744,
+          "max_drawdown": -0.40179753373386173
+        }
+      },
+      {
+        "entry": "2012-12-31",
+        "equity": {
+          "start": "2012-12-31",
+          "end": "2025-12-31",
+          "observations": 3158,
+          "cagr": 0.07221566220733266,
+          "total_return": 1.4754102313714723,
+          "daily_volatility_252": 0.21528237266734376,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2012-12-31",
+          "end": "2025-12-31",
+          "observations": 3158,
+          "cagr": 0.07228603185016236,
+          "total_return": 1.4775229510706485,
+          "daily_volatility_252": 0.18305396723853076,
+          "max_drawdown": -0.40179753373386184
+        }
+      },
+      {
+        "entry": "2013-12-31",
+        "equity": {
+          "start": "2013-12-31",
+          "end": "2025-12-31",
+          "observations": 2920,
+          "cagr": 0.08339480652093911,
+          "total_return": 1.6148151496133383,
+          "daily_volatility_252": 0.21473026149300292,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2013-12-31",
+          "end": "2025-12-31",
+          "observations": 2920,
+          "cagr": 0.0846693332249635,
+          "total_return": 1.6519683621926462,
+          "daily_volatility_252": 0.18263083296782742,
+          "max_drawdown": -0.4017975337338616
+        }
+      },
+      {
+        "entry": "2014-12-31",
+        "equity": {
+          "start": "2014-12-31",
+          "end": "2025-12-31",
+          "observations": 2675,
+          "cagr": 0.0481643164389125,
+          "total_return": 0.677787904925296,
+          "daily_volatility_252": 0.21656303728163917,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2014-12-31",
+          "end": "2025-12-31",
+          "observations": 2675,
+          "cagr": 0.060791386457701435,
+          "total_return": 0.9140239765631015,
+          "daily_volatility_252": 0.18438870258475754,
+          "max_drawdown": -0.40179753373386173
+        }
+      },
+      {
+        "entry": "2015-12-31",
+        "equity": {
+          "start": "2015-12-31",
+          "end": "2025-12-31",
+          "observations": 2431,
+          "cagr": 0.04579109928719505,
+          "total_return": 0.5648619511732189,
+          "daily_volatility_252": 0.1899790845993819,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2015-12-31",
+          "end": "2025-12-31",
+          "observations": 2431,
+          "cagr": 0.0638012837232873,
+          "total_return": 0.8562730977488746,
+          "daily_volatility_252": 0.1643418712547969,
+          "max_drawdown": -0.2930083391509045
+        }
+      },
+      {
+        "entry": "2016-12-30",
+        "equity": {
+          "start": "2016-12-30",
+          "end": "2025-12-31",
+          "observations": 2187,
+          "cagr": 0.06240683813329362,
+          "total_return": 0.7245337632234992,
+          "daily_volatility_252": 0.1860786721261015,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2016-12-30",
+          "end": "2025-12-31",
+          "observations": 2187,
+          "cagr": 0.06938165381764705,
+          "total_return": 0.8291713181556022,
+          "daily_volatility_252": 0.1617028868261507,
+          "max_drawdown": -0.2930083391509043
+        }
+      },
+      {
+        "entry": "2017-12-29",
+        "equity": {
+          "start": "2017-12-29",
+          "end": "2025-12-31",
+          "observations": 1943,
+          "cagr": 0.04179975727333218,
+          "total_return": 0.38794225106487357,
+          "daily_volatility_252": 0.1941007699001776,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2017-12-29",
+          "end": "2025-12-31",
+          "observations": 1943,
+          "cagr": 0.05292810967450823,
+          "total_return": 0.5111668191510679,
+          "daily_volatility_252": 0.1683231902470547,
+          "max_drawdown": -0.2930083391509045
+        }
+      },
+      {
+        "entry": "2018-12-28",
+        "equity": {
+          "start": "2018-12-28",
+          "end": "2025-12-31",
+          "observations": 1700,
+          "cagr": 0.0889876426779661,
+          "total_return": 0.8175655899654988,
+          "daily_volatility_252": 0.19091612991268367,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2018-12-28",
+          "end": "2025-12-31",
+          "observations": 1700,
+          "cagr": 0.09514712344321774,
+          "total_return": 0.8908561652867064,
+          "daily_volatility_252": 0.16649460288318996,
+          "max_drawdown": -0.29300833915090463
+        }
+      },
+      {
+        "entry": "2019-12-31",
+        "equity": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.045468800504107065,
+          "total_return": 0.3058488071428689,
+          "daily_volatility_252": 0.18952170694443837,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.05851929260837352,
+          "total_return": 0.4067809483233553,
+          "daily_volatility_252": 0.1663957035148363,
+          "max_drawdown": -0.2930083391509043
+        }
+      },
+      {
+        "entry": "2020-12-31",
+        "equity": {
+          "start": "2020-12-31",
+          "end": "2025-12-31",
+          "observations": 1213,
+          "cagr": 0.0010649101840096709,
+          "total_return": 0.005335170949492873,
+          "daily_volatility_252": 0.18087178060311168,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2020-12-31",
+          "end": "2025-12-31",
+          "observations": 1213,
+          "cagr": 0.023461517393882136,
+          "total_return": 0.12292485484736648,
+          "daily_volatility_252": 0.15767885043346605,
+          "max_drawdown": -0.2930083391509044
+        }
+      }
+    ],
+    "contiguous_subperiods": [
+      {
+        "equity": {
+          "start": "2006-12-29",
+          "end": "2012-12-31",
+          "observations": 1462,
+          "cagr": 0.04808396387003033,
+          "total_return": 0.32591614981489503,
+          "daily_volatility_252": 0.3252167546634984,
+          "max_drawdown": -0.720356345739303
+        },
+        "portfolio": {
+          "start": "2006-12-29",
+          "end": "2012-12-31",
+          "observations": 1462,
+          "cagr": 0.05066371931736535,
+          "total_return": 0.34564135641912586,
+          "daily_volatility_252": 0.2757388537561844,
+          "max_drawdown": -0.6590934419676888
+        }
+      },
+      {
+        "equity": {
+          "start": "2012-12-31",
+          "end": "2019-12-31",
+          "observations": 1703,
+          "cagr": 0.09569789301647402,
+          "total_return": 0.8956331068583236,
+          "daily_volatility_252": 0.23511975964598478,
+          "max_drawdown": -0.46058939115449804
+        },
+        "portfolio": {
+          "start": "2012-12-31",
+          "end": "2019-12-31",
+          "observations": 1703,
+          "cagr": 0.08423477608184049,
+          "total_return": 0.7611291608856623,
+          "daily_volatility_252": 0.19622109926258963,
+          "max_drawdown": -0.40179753373386184
+        }
+      },
+      {
+        "equity": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.045468800504107065,
+          "total_return": 0.3058488071428689,
+          "daily_volatility_252": 0.18952170694443837,
+          "max_drawdown": -0.41561006096794706
+        },
+        "portfolio": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.05851929260837352,
+          "total_return": 0.4067809483233553,
+          "daily_volatility_252": 0.1663957035148363,
+          "max_drawdown": -0.2930083391509043
+        }
+      }
+    ],
+    "window_start_weights_reset": true,
+    "drawdown_frequency": "daily"
+  },
+  "implementation": {
+    "extra_annual_total_portfolio_drag_budget_bps": 8.215121585621876,
+    "two_sided_rebalance_fee_breakeven_bps": 39.53573863100246,
+    "fee_search_upper_bound_bps": 1000,
+    "rebalance_cost_sensitivities": [
+      {
+        "cost_bps_per_two_sided_traded_notional": 0,
+        "annualized_two_sided_rebalance_turnover": 0.20785758378661987,
+        "cost_paid_per_initial_capital": 0.0,
+        "rebalance_count": 227,
+        "start": "2006-12-29",
+        "end": "2025-12-31",
+        "observations": 4619,
+        "cagr": 0.06540469479594657,
+        "total_return": 2.3338573444382233,
+        "daily_volatility_252": 0.21667552695473358,
+        "max_drawdown": -0.6590934419676888
+      },
+      {
+        "cost_bps_per_two_sided_traded_notional": 10,
+        "annualized_two_sided_rebalance_turnover": 0.20785826810662225,
+        "cost_paid_per_initial_capital": 0.007493253685164938,
+        "rebalance_count": 227,
+        "start": "2006-12-29",
+        "end": "2025-12-31",
+        "observations": 4619,
+        "cagr": 0.06518326086406057,
+        "total_return": 2.3207124074955687,
+        "daily_volatility_252": 0.21667450071070382,
+        "max_drawdown": -0.6592427281671445
+      },
+      {
+        "cost_bps_per_two_sided_traded_notional": 50,
+        "annualized_two_sided_rebalance_turnover": 0.20786250200426823,
+        "cost_paid_per_initial_capital": 0.03713573329597247,
+        "rebalance_count": 227,
+        "start": "2006-12-29",
+        "end": "2025-12-31",
+        "observations": 4619,
+        "cagr": 0.06429788741289943,
+        "total_return": 2.268643194823887,
+        "daily_volatility_252": 0.21667067513666738,
+        "max_drawdown": -0.6598381151486856
+      },
+      {
+        "cost_bps_per_two_sided_traded_notional": 100,
+        "annualized_two_sided_rebalance_turnover": 0.2078711620587148,
+        "cost_paid_per_initial_capital": 0.07345661272759144,
+        "rebalance_count": 227,
+        "start": "2006-12-29",
+        "end": "2025-12-31",
+        "observations": 4619,
+        "cagr": 0.06319194978194997,
+        "total_return": 2.2046886655711666,
+        "daily_volatility_252": 0.21666652099031686,
+        "max_drawdown": -0.660578428942459
+      }
+    ],
+    "collateral_scenarios": [
+      {
+        "shibor_on_fraction": 0,
+        "cash_rate_is_investable": false,
+        "stock_reference": {
+          "start": "2007-01-31",
+          "end": "2025-12-31",
+          "observations": 4599,
+          "cagr": 0.056108577845786156,
+          "total_return": 1.8084508763167788,
+          "daily_volatility_252": 0.25393773456689556,
+          "max_drawdown": -0.720356345739303
+        },
+        "start": "2007-01-31",
+        "end": "2025-12-31",
+        "observations": 4599,
+        "cagr": 0.05887051662570175,
+        "total_return": 1.9506844579773275,
+        "daily_volatility_252": 0.21567484661030195,
+        "max_drawdown": -0.6590934419676887
+      },
+      {
+        "shibor_on_fraction": 0.5,
+        "cash_rate_is_investable": false,
+        "stock_reference": {
+          "start": "2007-01-31",
+          "end": "2025-12-31",
+          "observations": 4599,
+          "cagr": 0.056108577845786156,
+          "total_return": 1.8084508763167788,
+          "daily_volatility_252": 0.25393773456689556,
+          "max_drawdown": -0.720356345739303
+        },
+        "start": "2007-01-31",
+        "end": "2025-12-31",
+        "observations": 4599,
+        "cagr": 0.061149721026920956,
+        "total_return": 2.0731694767981224,
+        "daily_volatility_252": 0.2156608615597643,
+        "max_drawdown": -0.6581697821126791
+      },
+      {
+        "shibor_on_fraction": 1.0,
+        "cash_rate_is_investable": false,
+        "stock_reference": {
+          "start": "2007-01-31",
+          "end": "2025-12-31",
+          "observations": 4599,
+          "cagr": 0.056108577845786156,
+          "total_return": 1.8084508763167788,
+          "daily_volatility_252": 0.25393773456689556,
+          "max_drawdown": -0.720356345739303
+        },
+        "start": "2007-01-31",
+        "end": "2025-12-31",
+        "observations": 4599,
+        "cagr": 0.06343547885622769,
+        "total_return": 2.200832733159853,
+        "daily_volatility_252": 0.2156469525118411,
+        "max_drawdown": -0.6572429367079018
+      }
+    ],
+    "products": {
+      "159980.SZ": {
+        "name": "\u5927\u6210\u6709\u8272\u91d1\u5c5e\u671f\u8d27ETF",
+        "issuer_benchmark": "\u4e0a\u6d77\u671f\u8d27\u4ea4\u6613\u6240\u6709\u8272\u91d1\u5c5e\u671f\u8d27\u4ef7\u683c\u6307\u6570\u6536\u76ca\u7387\u00d7100%",
+        "reference_benchmark": "NHCI.NH",
+        "same_benchmark": false,
+        "tracking_error": null,
+        "manager_fees_subtracted_again": false,
+        "start": "2019-12-24",
+        "end": "2025-12-31",
+        "observations": 1461,
+        "market_total_return_proxy": 0.9645669291338583,
+        "adjusted_nav_return_proxy": 0.9705853418593211,
+        "market_cagr_proxy": 0.11869346263235614,
+        "adjusted_nav_cagr_proxy": 0.11926197142168626,
+        "premium_start": -0.0004918839153958965,
+        "premium_end": -0.003544506015675686,
+        "premium_min": -0.04026379729260665,
+        "premium_max": 0.054216867469879526,
+        "market_nav_relative_wealth": 0.9969458756250646,
+        "fees_taxes_slippage_in_market_proxy": false,
+        "nav_is_retrospective_valuation_not_executable_price": true,
+        "eligible": true,
+        "dividend_response_rows": 0,
+        "valuation_dates_not_announcement_signal": true,
+        "equity_80_product_20_index_scenario": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.06332000340256294,
+          "total_return": 0.4455076851445259,
+          "daily_volatility_252": 0.16859987766132672,
+          "max_drawdown": -0.3160819438433565
+        },
+        "matched_stock_reference": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.045468800504107065,
+          "total_return": 0.3058488071428689,
+          "daily_volatility_252": 0.18952170694443837,
+          "max_drawdown": -0.41561006096794706
+        },
+        "calendar_2025_nav_return": 0.2228191197118614
+      },
+      "159981.SZ": {
+        "name": "\u5efa\u4fe1\u6613\u76db\u90d1\u5546\u6240\u80fd\u6e90\u5316\u5de5\u671f\u8d27ETF",
+        "issuer_benchmark": "\u6613\u76db\u90d1\u5546\u6240\u80fd\u6e90\u5316\u5de5\u6307\u6570A\u6536\u76ca\u7387\u00d7100%",
+        "reference_benchmark": "NHCI.NH",
+        "same_benchmark": false,
+        "tracking_error": null,
+        "manager_fees_subtracted_again": false,
+        "start": "2020-01-17",
+        "end": "2025-12-31",
+        "observations": 1444,
+        "market_total_return_proxy": 0.28412537917087977,
+        "adjusted_nav_return_proxy": 0.26622924744010334,
+        "market_cagr_proxy": 0.042890131649524044,
+        "adjusted_nav_cagr_proxy": 0.040435119966681476,
+        "premium_start": -0.01680087483845316,
+        "premium_end": -0.0029049226662479777,
+        "premium_min": -0.07038371846512614,
+        "premium_max": 0.07043972030597412,
+        "market_nav_relative_wealth": 1.0141334057533078,
+        "fees_taxes_slippage_in_market_proxy": false,
+        "nav_is_retrospective_valuation_not_executable_price": true,
+        "eligible": true,
+        "dividend_response_rows": 0,
+        "valuation_dates_not_announcement_signal": true,
+        "equity_80_product_20_index_scenario": {
+          "start": "2020-01-23",
+          "end": "2025-12-31",
+          "observations": 1440,
+          "cagr": 0.055019730280385204,
+          "total_return": 0.37445523433958816,
+          "daily_volatility_252": 0.17163796444555232,
+          "max_drawdown": -0.32064093989548503
+        },
+        "matched_stock_reference": {
+          "start": "2020-01-23",
+          "end": "2025-12-31",
+          "observations": 1440,
+          "cagr": 0.05000028339627072,
+          "total_return": 0.3360760986188329,
+          "daily_volatility_252": 0.18962943839346152,
+          "max_drawdown": -0.41561006096794706
+        },
+        "calendar_2025_nav_return": -0.11836367411919435
+      },
+      "159985.SZ": {
+        "name": "\u534e\u590f\u9972\u6599\u8c46\u7c95\u671f\u8d27ETF",
+        "issuer_benchmark": "\u5927\u8fde\u5546\u54c1\u4ea4\u6613\u6240\u8c46\u7c95\u671f\u8d27\u4ef7\u683c\u6307\u6570\u6536\u76ca\u7387\u00d7100%",
+        "reference_benchmark": "NHCI.NH",
+        "same_benchmark": false,
+        "tracking_error": null,
+        "manager_fees_subtracted_again": false,
+        "start": "2019-12-05",
+        "end": "2025-12-31",
+        "observations": 1474,
+        "market_total_return_proxy": 0.9766734279918865,
+        "adjusted_nav_return_proxy": 0.9441608819926501,
+        "market_cagr_proxy": 0.11875038311915942,
+        "adjusted_nav_cagr_proxy": 0.1156991077791647,
+        "premium_start": 0.006533278889342631,
+        "premium_end": 0.02336571278550803,
+        "premium_min": -0.026399429201530933,
+        "premium_max": 0.048723646414828625,
+        "market_nav_relative_wealth": 1.0167231767187461,
+        "fees_taxes_slippage_in_market_proxy": false,
+        "nav_is_retrospective_valuation_not_executable_price": true,
+        "eligible": true,
+        "dividend_response_rows": 0,
+        "valuation_dates_not_announcement_signal": true,
+        "equity_80_product_20_index_scenario": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.06498097664418712,
+          "total_return": 0.45911166735615905,
+          "daily_volatility_252": 0.16002322552367323,
+          "max_drawdown": -0.2778095776475923
+        },
+        "matched_stock_reference": {
+          "start": "2019-12-31",
+          "end": "2025-12-31",
+          "observations": 1456,
+          "cagr": 0.045468800504107065,
+          "total_return": 0.3058488071428689,
+          "daily_volatility_252": 0.18952170694443837,
+          "max_drawdown": -0.41561006096794706
+        },
+        "calendar_2025_nav_return": 0.04179202450631814
+      }
+    },
+    "cash_and_contract_roll_costs_calibrated": false,
+    "cta": {
+      "eligible": false,
+      "reason": "No complete timestamped, survivorship-controlled CTA universe and net values established. No cherry-picked product proxy used."
+    }
+  },
+  "macro": {
+    "release_event_reconstruction": {
+      "groups": {
+        "pmi_at_least_50__ppi_at_least_0": {
+          "months": 90,
+          "equity": {
+            "mean_monthly_return": -0.0011311775095234277,
+            "positive_fraction": 0.5444444444444444
+          },
+          "commodity": {
+            "mean_monthly_return": 0.006544258511226959,
+            "positive_fraction": 0.5444444444444444
+          },
+          "mix": {
+            "mean_monthly_return": 0.00040390969462665127,
+            "positive_fraction": 0.5111111111111111
+          }
+        },
+        "pmi_below_50__ppi_at_least_0": {
+          "months": 17,
+          "equity": {
+            "mean_monthly_return": -0.0009700907480540128,
+            "positive_fraction": 0.5294117647058824
+          },
+          "commodity": {
+            "mean_monthly_return": -0.019262651498113532,
+            "positive_fraction": 0.47058823529411764
+          },
+          "mix": {
+            "mean_monthly_return": -0.004628602898065916,
+            "positive_fraction": 0.5294117647058824
+          }
+        },
+        "pmi_below_50__ppi_below_0": {
+          "months": 46,
+          "equity": {
+            "mean_monthly_return": 0.023832402257815733,
+            "positive_fraction": 0.6304347826086957
+          },
+          "commodity": {
+            "mean_monthly_return": 0.017201194386927212,
+            "positive_fraction": 0.6086956521739131
+          },
+          "mix": {
+            "mean_monthly_return": 0.02250616068363803,
+            "positive_fraction": 0.6086956521739131
+          }
+        },
+        "pmi_at_least_50__ppi_below_0": {
+          "months": 74,
+          "equity": {
+            "mean_monthly_return": 0.01007708079203643,
+            "positive_fraction": 0.5540540540540541
+          },
+          "commodity": {
+            "mean_monthly_return": -0.0006314439285051049,
+            "positive_fraction": 0.4189189189189189
+          },
+          "mix": {
+            "mean_monthly_return": 0.007935375847928122,
+            "positive_fraction": 0.5540540540540541
+          }
+        }
+      },
+      "eligible_months": 227,
+      "unavailable_months": 1,
+      "point_in_time_verified_months": 0,
+      "conditional_observations_not_spliced_into_wealth": true
+    },
+    "historical_vintage_verified": false,
+    "prediction_or_timing_effectiveness_established": false,
+    "strict_historical_admission": {
+      "groups": {},
+      "eligible_months": 0,
+      "unavailable_months": 228,
+      "point_in_time_verified_months": 0,
+      "conditional_observations_not_spliced_into_wealth": true
+    },
+    "revised_snapshot_lag_1_months": {
+      "groups": {
+        "pmi_at_least_50__ppi_at_least_0": {
+          "months": 91,
+          "equity": {
+            "mean_monthly_return": 0.0007349029925614562,
+            "positive_fraction": 0.5494505494505495
+          },
+          "commodity": {
+            "mean_monthly_return": 0.0061928526854926015,
+            "positive_fraction": 0.5384615384615384
+          },
+          "mix": {
+            "mean_monthly_return": 0.001826492931147687,
+            "positive_fraction": 0.5164835164835165
+          }
+        },
+        "pmi_below_50__ppi_at_least_0": {
+          "months": 17,
+          "equity": {
+            "mean_monthly_return": -0.0009700907480540128,
+            "positive_fraction": 0.5294117647058824
+          },
+          "commodity": {
+            "mean_monthly_return": -0.019262651498113532,
+            "positive_fraction": 0.47058823529411764
+          },
+          "mix": {
+            "mean_monthly_return": -0.004628602898065916,
+            "positive_fraction": 0.5294117647058824
+          }
+        },
+        "pmi_below_50__ppi_below_0": {
+          "months": 46,
+          "equity": {
+            "mean_monthly_return": 0.023832402257815733,
+            "positive_fraction": 0.6304347826086957
+          },
+          "commodity": {
+            "mean_monthly_return": 0.017201194386927212,
+            "positive_fraction": 0.6086956521739131
+          },
+          "mix": {
+            "mean_monthly_return": 0.02250616068363803,
+            "positive_fraction": 0.6086956521739131
+          }
+        },
+        "pmi_at_least_50__ppi_below_0": {
+          "months": 74,
+          "equity": {
+            "mean_monthly_return": 0.01007708079203643,
+            "positive_fraction": 0.5540540540540541
+          },
+          "commodity": {
+            "mean_monthly_return": -0.0006314439285051049,
+            "positive_fraction": 0.4189189189189189
+          },
+          "mix": {
+            "mean_monthly_return": 0.007935375847928122,
+            "positive_fraction": 0.5540540540540541
+          }
+        }
+      },
+      "eligible_months": 228,
+      "unavailable_months": 0,
+      "point_in_time_verified_months": 0,
+      "conditional_observations_not_spliced_into_wealth": true
+    },
+    "revised_snapshot_lag_2_months": {
+      "groups": {
+        "pmi_at_least_50__ppi_at_least_0": {
+          "months": 92,
+          "equity": {
+            "mean_monthly_return": 0.0016171886176636486,
+            "positive_fraction": 0.5652173913043478
+          },
+          "commodity": {
+            "mean_monthly_return": 0.004873886813216793,
+            "positive_fraction": 0.5434782608695652
+          },
+          "mix": {
+            "mean_monthly_return": 0.0022685282567742795,
+            "positive_fraction": 0.5217391304347826
+          }
+        },
+        "pmi_below_50__ppi_at_least_0": {
+          "months": 17,
+          "equity": {
+            "mean_monthly_return": 0.0039009452166755194,
+            "positive_fraction": 0.5882352941176471
+          },
+          "commodity": {
+            "mean_monthly_return": -0.010344541312584568,
+            "positive_fraction": 0.5294117647058824
+          },
+          "mix": {
+            "mean_monthly_return": 0.001051847910823502,
+            "positive_fraction": 0.5882352941176471
+          }
+        },
+        "pmi_below_50__ppi_below_0": {
+          "months": 45,
+          "equity": {
+            "mean_monthly_return": 0.02067178859557676,
+            "positive_fraction": 0.5777777777777777
+          },
+          "commodity": {
+            "mean_monthly_return": 0.015803573126555552,
+            "positive_fraction": 0.6
+          },
+          "mix": {
+            "mean_monthly_return": 0.019698145501772523,
+            "positive_fraction": 0.5777777777777777
+          }
+        },
+        "pmi_at_least_50__ppi_below_0": {
+          "months": 74,
+          "equity": {
+            "mean_monthly_return": 0.010095286537390542,
+            "positive_fraction": 0.5540540540540541
+          },
+          "commodity": {
+            "mean_monthly_return": -4.173736751130332e-05,
+            "positive_fraction": 0.40540540540540543
+          },
+          "mix": {
+            "mean_monthly_return": 0.008067881756410173,
+            "positive_fraction": 0.5540540540540541
+          }
+        }
+      },
+      "eligible_months": 228,
+      "unavailable_months": 0,
+      "point_in_time_verified_months": 0,
+      "conditional_observations_not_spliced_into_wealth": true
+    },
+    "existing_observed_archive": {
+      "rows": 19,
+      "series": [
+        "activity.pmi_manufacturing"
+      ],
+      "earliest_available_at": "2026-08-28 16:03:24.802274+00:00",
+      "archive_precedes_2025_sample_end": false
+    }
+  },
+  "source_audit": {
+    "requests": 88,
+    "empty_or_nonzero_responses": [
+      {
+        "id": "159980_SZ_fund_div",
+        "api": "fund_div",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "159981_SZ_fund_div",
+        "api": "fund_div",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "159985_SZ_fund_div",
+        "api": "fund_div",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "NHCI_NH_gap2006",
+        "api": "fut_index_daily",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "NHII_NH_gap2006",
+        "api": "fut_index_daily",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "NHAI_NH_gap2006",
+        "api": "fut_index_daily",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "NHECI_NH_gap2006",
+        "api": "fut_index_daily",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "allshare_gap2011",
+        "api": "index_daily",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "schedule_202001",
+        "api": "cn_schedule",
+        "rows": 0,
+        "code": 0
+      },
+      {
+        "id": "schedule_202512",
+        "api": "cn_schedule",
+        "rows": 0,
+        "code": 0
+      }
+    ]
+  },
+  "limitations": [
+    "Overlapping windows are descriptive, not future probabilities.",
+    "Idealized index sleeves omit contract quantities, margin calls and actual slippage.",
+    "Shibor is a rate proxy, not an achievable collateral investment.",
+    "ETF NAV/adjustment factors are revised provider proxies, not executable NAV quotes.",
+    "Economic-event publication dates do not authenticate historical vintages; no macro timing claim."
+  ]
+}

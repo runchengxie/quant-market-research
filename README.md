@@ -47,4 +47,4 @@ docs/                 runbooks, data documentation, and research methods
 
 Trading costs and capacity: [study protocol](studies/ashare_execution_costs/README.md) · [public topic](https://runchengxie.github.io/quant-market-research/research/execution-costs/). Ten selected L2 dates and eighteen constrained strategy sensitivities are complete; actual execution calibration remains pending.
 
-- [Commodity futures and equities](studies/china_commodity_equity/README.md): first-round historical comparison; early coverage and investable implementation remain unresolved.
+- [Commodity futures and equities](studies/china_commodity_equity/README.md): rolling allocation risks, cost budgets, sector ETF checks and macro-vintage limits.

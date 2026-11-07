@@ -69,9 +69,9 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
-  page({ id: 'commodity-equity-zh-CN', route: '/docs/research/asset-returns/china-commodity-equity.zh-CN/', title: '中国商品期货与股票收益', summary: '首轮历史观察：股票长期领先，商品配置降低部分风险；早期覆盖和实际实施仍待补证。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns'], snapshotKeys: [] }),
+  page({ id: 'commodity-equity-zh-CN', route: '/docs/research/asset-returns/china-commodity-equity.zh-CN/', title: '中国商品期货与股票收益', summary: '后续探索：滚动窗口、成本与商品ETF已比较，宏观择时仍缺历史版本证据。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns'], snapshotKeys: [] }),
 
-  page({ id: 'commodity-equity', route: '/docs/research/asset-returns/china-commodity-equity/', title: '中国商品期货与股票收益', summary: '首轮历史观察：股票长期领先，商品配置降低部分风险；早期覆盖和实际实施仍待补证。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns'], snapshotKeys: [] }),
+  page({ id: 'commodity-equity', route: '/docs/research/asset-returns/china-commodity-equity/', title: '中国商品期货与股票收益', summary: '后续探索：滚动窗口、成本与商品ETF已比较，宏观择时仍缺历史版本证据。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns'], snapshotKeys: [] }),
 
   ...assetTopics.map(t=>page({id:`asset-${t.id}`,route:t.route,title:t.title[1],summary:t.finding[1],section:'research',topic:'assets',aliases:[],related:assetTopics.filter(x=>x.id!==t.id).map(x=>`asset-${x.id}`),snapshotKeys:[]})),
   page({ id: 'reader-forward-registration', route: '/docs/research/experiments/reader-forward-registration-20261022/', title: '后续观察登记', summary: '事前记录、时间证据与待定状态。', section: 'docs', topic: 'low-turnover', aliases: [], related: ['low-turnover', 'valuation-groups'], snapshotKeys: [] }),

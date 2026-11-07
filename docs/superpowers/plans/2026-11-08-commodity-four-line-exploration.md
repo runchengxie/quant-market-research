@@ -19,11 +19,15 @@
 
 ## Tasks and files
 
-- [ ] Freeze bounded macro, cash-rate, ETF and evidence probes with parameter/hash receipts under a new owner task.
-- [ ] Add failing tests in `tests/studies/test_commodity_followup.py` for window resets, missing months, joint improvement counts, cost breakeven, cash double counting, macro availability and benchmark identity. Implement focused `robustness.py`, `implementation.py`, `regimes.py` and a frozen-input follow-up runner under `src/market_research/studies/commodity_equity/`.
-- [ ] Run each research line, independently reconcile selected results, preserve failures and produce one reviewed aggregate plus bilingual findings/validation records. Add a source-backed visualization using existing site facilities if useful.
+- [x] Freeze bounded macro, cash-rate, ETF and evidence probes with parameter/hash receipts under a new owner task.
+- [x] Add failing tests in `tests/studies/test_commodity_followup.py` for window resets, missing months, joint improvement counts, cost breakeven, cash double counting, macro availability and benchmark identity. Implement focused `robustness.py`, `implementation.py`, `regimes.py` and a frozen-input follow-up runner under `src/market_research/studies/commodity_equity/`.
+- [x] Run each research line, independently reconcile selected results, preserve failures and produce one reviewed aggregate plus bilingual findings/validation records. Add a source-backed visualization using existing site facilities if useful.
 - [ ] Complete Python/web checks, independent review, commit/push/PR, remote required checks and merge; clean only this task's resources.
 
 ## Review focus
 
 Window-specific starting weights, daily versus monthly drawdown scope, complete endpoint calendars, equal fee conventions on comparators, cash included once, actual fund distribution timing, denominator/sample selection, future economic releases and unverifiable historical revisions, supplier row caps and mixed benchmarks, raw-data/privacy boundaries.
+
+Ruling: Release-event values retrieved now remain unverified vintages even with publication dates; strict historical admission is empty. This permits descriptive reconstruction but no timing claim. Cash/ETF comparisons remain proxy scenarios, not full contract execution.
+
+Local Python verification: 962 passed, 22 optional-provider skips; targeted10 passed; Ruff passed. Independent review timestamp issue resolved and12 selected window paths reconciled against first-round daily engine. 332 web tests, Astro build, static boundary, source/figure hashes and final independent evidence review passed. Remote checks and merge remain pending.

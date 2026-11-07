@@ -10,3 +10,5 @@ First-round index diagnostics are available in the [findings](findings-20261107.
 - [Related frozen study](../asset_returns/README.md): existing evidence remains unchanged.
 
 The frozen-input runner is `python -m market_research.studies.commodity_equity.run`; acquisition stays with the data owner. Full runs and raw data remain outside Git. The protocol contains the validation and publication gates.
+
+[Four-part follow-up](exploration-20261108.md): robustness, implementation, source evidence and macro admission.

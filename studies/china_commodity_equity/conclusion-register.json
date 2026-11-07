@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "first_round_descriptive_history",
+  "status": "four_line_exploration",
   "verified_findings": [
     {
       "id": "CF01",
@@ -20,6 +20,24 @@
       "claim": "2026 YTD commodities led the equity total-return reference, but the last completed week reversed direction.",
       "evidence": "reviewed-summary-20261107.json#/recent",
       "limit": "As of2026-11-06 only; no forecast."
+    },
+    {
+      "id": "CF04",
+      "claim": "Monthly80/20 reduced daily maximum drawdown in all completed five/ten-year windows, with higher return in105/169 and64/109 respectively.",
+      "evidence": "exploration-summary-20261108.json#/robustness",
+      "limit": "Gross overlapping historical windows, no future probability."
+    },
+    {
+      "id": "CF05",
+      "claim": "Full-sample gross advantage permits8.22annual portfolio drag bp; rebalance-only funded fee threshold39.54bp per traded notional.",
+      "evidence": "exploration-summary-20261108.json#/implementation",
+      "limit": "Hypothetical index accounts; actual roll, margin and slippage unresolved."
+    },
+    {
+      "id": "CF06",
+      "claim": "Three sector ETFs annual2025NAV returns match issuer reports; none implements NHCI.",
+      "evidence": "exploration-summary-20261108.json#/implementation/products",
+      "limit": "Adjusted NAV/market proxy histories, not full investor execution."
     }
   ],
   "questions": [
@@ -29,36 +47,44 @@
       "status": "observed_window_dependent",
       "evidence": [
         "findings-20261107.md",
-        "reviewed-summary-20261107.json"
+        "reviewed-summary-20261107.json",
+        "exploration-summary-20261108.json"
       ]
     },
     {
       "id": "CQ02",
       "question": "Do fixed commodity allocations improve drawdown and worst five-year outcomes?",
-      "status": "hypothetical_index_result_only",
+      "status": "rolling_and_cost_sensitivities_completed",
       "evidence": [
         "findings-20261107.md",
-        "reviewed-summary-20261107.json"
+        "reviewed-summary-20261107.json",
+        "exploration-summary-20261108.json"
       ]
     },
     {
       "id": "CQ03",
       "question": "Which regimes and sectors explain observed differences?",
-      "status": "sector_description_only_macro_unresolved",
+      "status": "macro_diagnostic_only_no_verified_vintage",
       "evidence": [
         "findings-20261107.md",
-        "reviewed-summary-20261107.json"
+        "reviewed-summary-20261107.json",
+        "exploration-summary-20261108.json"
       ]
     },
     {
       "id": "CQ04",
       "question": "How much index performance survives investable implementation?",
-      "status": "awaiting_contract_implementation",
+      "status": "sector_etfs_checked_contracts_and_cta_unresolved",
       "evidence": [
         "findings-20261107.md",
-        "reviewed-summary-20261107.json"
+        "reviewed-summary-20261107.json",
+        "exploration-summary-20261108.json"
       ]
     }
   ],
-  "unverified_material": "Prior conversation figures are not evidence. Original annual-return convention, early source gaps, historical methods, collateral and actual product performance remain unresolved."
+  "unverified_material": "Prior conversation figures are not evidence. Original annual-return convention, early source gaps, historical methods, collateral and actual product performance remain unresolved.",
+  "followup_evidence": [
+    "exploration-20261108.md",
+    "exploration-summary-20261108.json"
+  ]
 }
