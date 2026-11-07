@@ -8,12 +8,14 @@ Use the existing Astro website and bilingual catalogs. Add a source-bound intera
 
 ## Tasks
 
-- [ ] Test and implement equal-risk diagnostics with only past observations for decisions; compare identical dates and zero cash yield, and disclose warmup.
-- [ ] Fetch and hash contract-level soymeal inputs under the data owner; test integer-lot settlement accounting, roll fees and margin insufficiency. Record missing/ambiguous inputs explicitly.
-- [ ] Capture prospective macro raw snapshots with actual retrieval timestamps using existing owner code; record coverage and a stable repeat command.
-- [ ] Add bilingual interactive selectors for horizon, commodity weight and rebalancing, plus cost, ETF and new evidence tables. Bind public values to reviewed results; verify changes in browser.
-- [ ] Run Python and website gates, obtain independent review, commit and PR, wait for required checks, merge and clean only task resources.
+- [x] Test and implement equal-risk diagnostics with only past observations for decisions; compare identical dates and zero cash yield, and disclose warmup.
+- [x] Fetch and hash contract-level soymeal inputs under the data owner; test integer-lot settlement accounting, roll fees and margin insufficiency. Record missing/ambiguous inputs explicitly.
+- [x] Capture prospective macro raw snapshots with actual retrieval timestamps using existing owner code; record coverage and a stable repeat command.
+- [x] Add bilingual interactive selectors for horizon, commodity weight and rebalancing, plus cost, ETF and new evidence tables. Bind public values to reviewed results; verify changes in browser.
+- [x] Run Python and website gates, obtain independent review, commit and PR, wait for required checks, merge and clean only task resources.
 
 ## Review focus
 
 Lookahead in volatility estimates or roll selection; fixed cash accounting and comparable dates; integer rounding/fees/initial and final trades; revised macro values never backdated; locale/base-path and control-to-source parity.
+
+Implementation complete. Local checks and independent review are recorded in the study validation; required remote checks and merge are tracked in the PR.

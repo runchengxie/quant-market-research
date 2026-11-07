@@ -1,0 +1,23 @@
+import {test,expect} from '@playwright/test';
+for(const width of [390,1280])test(`commodity explorer binds controls and translated evidence at ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:900});
+ await page.goto('research/commodity-equity/?lang=en-US');
+ const root=page.locator('[data-commodity-explorer]');
+ await expect(root).toHaveAttribute('data-chart-ready','true');
+ await expect(root.locator('[data-commodity-metric=count]')).toHaveText('169');
+ await root.locator('[data-commodity-control=horizon]').selectOption('120');
+ await expect(root.locator('[data-commodity-metric=count]')).toHaveText('109');
+ await root.locator('[data-commodity-control=weight]').selectOption('40');
+ await root.locator('[data-commodity-control=policy]').selectOption('annual');
+ await expect(root).toHaveAttribute('data-selection',JSON.stringify({policy:'annual',weight:'40',horizon:'120'}));
+ await expect(page.locator('article')).toContainText('205.25%');
+ await expect(page.locator('#risk')).toContainText('756 past sessions');
+ await expect(page.locator('#contract')).toContainText('not an executable quote');
+ await expect(page.locator('#archive')).toContainText('Forward outcomes: 0');
+ await expect(page.getByRole('link',{name:'Protocol and earlier findings'})).toHaveAttribute('href','/quant-market-research/docs/research/asset-returns/china-commodity-equity/');
+ await page.reload();await expect(root.locator('[data-commodity-control=weight]')).toHaveValue('40');
+ await page.goto('research/commodity-equity/?lang=zh-CN');
+ await expect(root).toContainText('完整重叠窗口数');
+ await expect(page.locator('#archive')).toContainText('前瞻结果数为0');
+ await expect(page.locator('body')).toHaveJSProperty('scrollWidth',width);
+});

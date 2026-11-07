@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "four_line_exploration",
+  "status": "risk_contract_prospective_exploration",
   "historical_target": [
     "2004-12-31",
     "2025-12-31"
@@ -78,5 +78,13 @@
       "ppi_yoy": 0
     },
     "macro_historical_vintage_admitted": false
+  },
+  "third_exploration": {
+    "summary": "next-summary-20261108.json",
+    "risk_warmup_sessions": 756,
+    "cash_rate": 0,
+    "contract_variety": "DCE soymeal",
+    "contract_schedule_retrospective": true,
+    "prospective_outcomes": 0
   }
 }

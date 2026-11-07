@@ -1,5 +1,7 @@
 # 中国商品期货与股票收益研究
 
+[打开交互研究专题](https://runchengxie.github.io/quant-market-research/research/commodity-equity/?lang=zh-CN)
+
 [English](china-commodity-equity.md)
 
 ## 后续探索

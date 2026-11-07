@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "summary_sha256": "3e160fd671b09abb1286e3bd0071ab753c8b3315aef58de7dd49821956caaec5",
+  "source_revision": "2fc467ac00ce8a7a31c6bcc7b07ac4cd039ab156",
+  "independent_contract_endpoint_checks": 3,
+  "independent_risk_cagr_checks": 5,
+  "independent_check_recipe_sha256": "9b7d3f5d74a27a40830c3e8a6dfe19f5e627c0a75ea20b58a6974151f9f84d4d",
+  "supplier_rows_public": false,
+  "macro_current_published": false,
+  "validation": "next-validation-20261108.md"
+}

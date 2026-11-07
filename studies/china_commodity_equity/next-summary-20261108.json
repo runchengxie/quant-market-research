@@ -1,0 +1,189 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "phase": "risk_contract_prospective_exploration",
+  "source_revision": "2fc467ac00ce8a7a31c6bcc7b07ac4cd039ab156",
+  "manifest_sha256": "3f19ed24bf01af2406632f0daeefb29d77192fe5ca7970ece5872a5bec5246f5",
+  "code_sha256": {
+    "next_run.py": "a17d7a78d7dac3ffa454ded5aa99d27d745743dbb4879607d05f4df0b9039a21",
+    "risk_controls.py": "70bfce12fdf87d55c81860b7ccd05ccc5de12f06d6da983ed69d01e01c9391c5",
+    "contract_trial.py": "07254931ca15545374a069f1965236ed39d7173b50a562b5dea6315022686304"
+  },
+  "risk_controls": {
+    "lookback_sessions": 756,
+    "cash_yield": 0,
+    "fees": 0,
+    "hindsight_is_descriptive_only": true,
+    "hindsight_equity_weight": 0.8555662810317421,
+    "decision_equity_weight_range": [
+      0.8251185254110859,
+      0.8857864976549068
+    ],
+    "decision_count": 191,
+    "cases": {
+      "equity": {
+        "start": "2010-02-26",
+        "end": "2025-12-31",
+        "observations": 3852,
+        "cagr": 0.044350609975001065,
+        "total_return": 0.988841096810714,
+        "daily_volatility_252": 0.21647125324462635,
+        "max_drawdown": -0.46058939115449815
+      },
+      "commodity_20": {
+        "start": "2010-02-26",
+        "end": "2025-12-31",
+        "observations": 3852,
+        "cagr": 0.04784685423368251,
+        "total_return": 1.09699500897209,
+        "daily_volatility_252": 0.18520550508878533,
+        "max_drawdown": -0.4017975337338616
+      },
+      "cash_20": {
+        "start": "2010-02-26",
+        "end": "2025-12-31",
+        "observations": 3852,
+        "cagr": 0.03911972332322966,
+        "total_return": 0.8367439608478557,
+        "daily_volatility_252": 0.17293240743459823,
+        "max_drawdown": -0.38357709743671
+      },
+      "lagged_risk_cash": {
+        "start": "2010-02-26",
+        "end": "2025-12-31",
+        "observations": 3852,
+        "cagr": 0.04110147530712416,
+        "total_return": 0.8930368453673436,
+        "daily_volatility_252": 0.18479127005851645,
+        "max_drawdown": -0.3956232762930564
+      },
+      "hindsight_vol_cash": {
+        "start": "2010-02-26",
+        "end": "2025-12-31",
+        "observations": 3852,
+        "cagr": 0.04075977212397763,
+        "total_return": 0.8832166378580373,
+        "daily_volatility_252": 0.18500729179370548,
+        "max_drawdown": -0.4056779841015037
+      }
+    },
+    "realized_volatility_matching_error": -0.002236623744366617
+  },
+  "contract_trial": {
+    "start": "2024-12-31",
+    "end": "2025-12-31",
+    "variety": "DCE soymeal",
+    "unit_tonnes_per_lot": 10,
+    "initial_capital_CNY": 1000000,
+    "schedule": [
+      {
+        "date": "2024-12-31",
+        "contract": "M2505.DCE"
+      },
+      {
+        "date": "2025-04-01",
+        "contract": "M2509.DCE"
+      },
+      {
+        "date": "2025-08-01",
+        "contract": "M2601.DCE"
+      }
+    ],
+    "margin_buffer_percentage_points": 5,
+    "cash_yield": 0,
+    "calendar_verified": true,
+    "exchange_fee_per_lot_CNY": [
+      1.5
+    ],
+    "cases": [
+      {
+        "slippage_ticks_per_traded_lot": 0,
+        "initial_capital": 1000000,
+        "terminal_equity": 1075792.0,
+        "total_pnl": 76110.0,
+        "total_fee": 318.0,
+        "total_slippage": 0.0,
+        "max_margin_fraction": 0.1496553087009496,
+        "return_from_pre_entry_capital": 0.07579200000000008,
+        "daily_max_drawdown_including_entry": -0.09254887176921078,
+        "traded_lots": 212
+      },
+      {
+        "slippage_ticks_per_traded_lot": 1,
+        "initial_capital": 1000000,
+        "terminal_equity": 1073672.0,
+        "total_pnl": 76110.0,
+        "total_fee": 318.0,
+        "total_slippage": 2120.0,
+        "max_margin_fraction": 0.14970780915412804,
+        "return_from_pre_entry_capital": 0.07367199999999996,
+        "daily_max_drawdown_including_entry": -0.09385497544911237,
+        "traded_lots": 212
+      },
+      {
+        "slippage_ticks_per_traded_lot": 2,
+        "initial_capital": 1000000,
+        "terminal_equity": 1071552.0,
+        "total_pnl": 76110.0,
+        "total_fee": 318.0,
+        "total_slippage": 4240.0,
+        "max_margin_fraction": 0.14976034645551295,
+        "return_from_pre_entry_capital": 0.07155200000000006,
+        "daily_max_drawdown_including_entry": -0.09516195349262191,
+        "traded_lots": 212
+      }
+    ],
+    "nanhua_soymeal_index_return_same_calendar_year": 0.022450946989413856,
+    "execution_established": false
+  },
+  "prospective_archive": {
+    "snapshots": [
+      {
+        "dataset": "cn_pmi",
+        "rows": 2,
+        "periods": [
+          "202609",
+          "202610"
+        ],
+        "retrieved_at": "2026-11-07T23:39:49.142018+00:00",
+        "raw_sha256": "2b2524ffde7886d82c40d72808f67c5609f3cb42fa44a61679a2b7dbe7cd6619",
+        "receipt_sha256": "d297a0ad5a89cbf5a38f974474159494e58b5eaa0432e0a6fbd7aefa3ecf9618"
+      },
+      {
+        "dataset": "cn_ppi",
+        "rows": 1,
+        "periods": [
+          "202609"
+        ],
+        "retrieved_at": "2026-11-07T23:39:49.145822+00:00",
+        "raw_sha256": "8665e07f8e8520c4eb89d5819f5ce5be89a3900a72d01235ff6e3606be6afb8e",
+        "receipt_sha256": "46cd792539cfd95cf0e0f4d4f3e0b3418e8721bc6f2b69ad1bf532b76a88d1b3"
+      },
+      {
+        "dataset": "cn_schedule",
+        "rows": 176,
+        "periods": [
+          "202601",
+          "202602",
+          "202603",
+          "202604",
+          "202605",
+          "202606",
+          "202607",
+          "202608",
+          "202609",
+          "202610",
+          "202611",
+          "202612"
+        ],
+        "retrieved_at": "2026-11-07T23:39:49.147206+00:00",
+        "raw_sha256": "9b199358d623425a184feaf2975760de8029432a85513fd0fa5fe5e75c4764df",
+        "receipt_sha256": "78a7061a0b40c53e0583ee92355015abc7b7a3892b64075b1195925f2760aef6"
+      }
+    ],
+    "forward_outcomes": 0,
+    "historical_vintages_certified": false,
+    "recurring_job_installed": false
+  },
+  "source_requests": 14
+}
