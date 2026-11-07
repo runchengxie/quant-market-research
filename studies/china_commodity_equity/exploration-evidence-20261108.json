@@ -1,0 +1,50 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "phase": "four_line_exploration",
+  "analysis_revision": "0677ed5f1ca2960706458ef5203546ddc6c5ce40",
+  "summary_sha256": "1ddd3e8ac102d3a637097f0478e9e3c7cca8eb3fb7946915fdf0d99f85926149",
+  "private_manifest_sha256": "8bc7cba65f21c3c38b3a434d18cbf1507e7146342e75bf2d184833cc228b88e9",
+  "code_sha256": {
+    "followup_run.py": "a7e787ce4eab1d70d983d5d9bec1cae992ec8a8f5bc5b2f6a6a864dc587c9983",
+    "followup_inputs.py": "5d66e17b8777c8baaa0c193bd2dcd99b8bbbeaa06a3725fcf92779e395fc27e6",
+    "robustness.py": "299052cb2b94fe49c274f9bba9e5595602563a07ae3295a97eb19d6079194c8d",
+    "implementation.py": "0021b6a80c35e8e4f263333feede0025b73aa321c1cdcd9ec915d41f219e2e97",
+    "regimes.py": "d5b4ccf977904e181b96ee10e6fc8643f6f1a2fb8ffecfcc47ef78881db818a0"
+  },
+  "raw_publication": false,
+  "source_receipt_sha256": {
+    "probe": "84def0921c0cd1f6a1d542d1ab27cee5016466b456b7bda014b1252744497210",
+    "macro-events": "bbbdf2d9eab499b39d0d6dcba7c04214d0b50d93b374b6a132ea8e4b2e4ebb66",
+    "publisher": "0fe1f8dae2a0eacd382da230d4c2088ef6f053c3ce7195ec09832c0896b68c76",
+    "publisher-extra": "f74440237517492f9614086cc8d6caeefb2d8a3752100454d1c5c37c806bee57"
+  },
+  "independent_check_sha256": "9e7a066205d38842bba694ebe76fc4fff6f331631439ae25bfc0fd1e2428cb98",
+  "independent_daily_window_checks": 12,
+  "issuer_annual_nav_matches": 3,
+  "strict_historical_macro_months": 0,
+  "figure_receipt_sha256": "50b2df940c3e4b2598e3c74fa9ce163ef279b5d1d40b6bb379cc14ade32e6b8c",
+  "figure_sha256": {
+    "commodity-followup-zh-CN.svg": "c21000bac7f2f274c1e5808c718c2ea31eeb2e837dd8d7988fccc6aa21fc7910",
+    "commodity-followup-en.svg": "54cb0b1b7893b289f6dae52fa77588b4160b6197eb67af311cebe99275129b7a"
+  },
+  "evidence_gates": {
+    "source_gaps": "unresolved",
+    "roll_method_history": "historical_material_recovered_conflict_unresolved",
+    "actual_execution": "proxy_scenarios_only",
+    "macro_vintages": "not_admitted"
+  },
+  "nanhua_20241230_point_matches": 7,
+  "publisher_point_check_sha256": "a740a4761326eaee4f4c109926ba21df209c7e3ddc4f975ef39c489e70ac55fc",
+  "plot_recipe_sha256": "426409cfa3debca78cc7970ab69952b83fc09f5655a76ac71f4b6fc5d3c3e7b4",
+  "local_validation": {
+    "python_passed": 962,
+    "python_optional_dependency_skips": 22,
+    "web_passed": 332,
+    "ruff": "passed",
+    "astro_build": "passed",
+    "static_public_boundary": "passed",
+    "source_links_and_hashes": "passed",
+    "independent_review": "no_remaining_important_findings"
+  }
+}

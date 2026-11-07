@@ -10,3 +10,5 @@
 - [相关冻结研究](../asset_returns/README.zh-CN.md)：保留现有证据。
 
 冻结输入运行器为 `python -m market_research.studies.commodity_equity.run`，供应商接入仍由数据所有者负责。完整结果和原始数据保存在Git之外，验证与发布条件见研究协议。
+
+[四条线后续探索](exploration-20261108.zh-CN.md)涵盖稳健性、投资实施、来源证据与宏观准入。

@@ -38,4 +38,4 @@
 
 ## 跨资产研究
 
-- [China commodity futures and equities / 中国商品期货与股票收益](research/asset-returns/china-commodity-equity.zh-CN.md)：已有首轮历史观察，完整基准覆盖2006年末至2025年末。下一步补齐早期数据和实际投资实施证据。
+- [China commodity futures and equities / 中国商品期货与股票收益](research/asset-returns/china-commodity-equity.zh-CN.md)：已探索稳健性、成本、商品ETF和宏观环境，基准覆盖2006年末至2025年末。实际执行和宏观历史版本仍待补证。

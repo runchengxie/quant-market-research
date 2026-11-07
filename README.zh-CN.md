@@ -45,4 +45,4 @@ uv run market-research --help
 
 交易成本与策略容量：[专题协议](studies/ashare_execution_costs/README.zh-CN.md) · [公开专题](https://runchengxie.github.io/quant-market-research/research/execution-costs/)。已完成十个交易日的盘口扩展与18组受约束策略诊断，真实执行校准仍待完成。
 
-- [商品期货与股票收益](studies/china_commodity_equity/README.zh-CN.md)：已有首轮历史比较，早期覆盖和实际投资实施仍待补证。
+- [商品期货与股票收益](studies/china_commodity_equity/README.zh-CN.md)：滚动配置风险、成本空间、商品ETF核对与宏观历史版本限制。

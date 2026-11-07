@@ -2,6 +2,554 @@
 
 [English](china-commodity-equity.md)
 
+## 后续探索
+
+80/20月度组合在169个五年窗口中，有105个同时改善收益和日频回撤，十年窗口为109个中的64个。全样本收益优势只容许每年额外扣减8.22个基点的整个组合净值。三只商品期货ETF各有不同基准，宏观重建也没有通过历史版本认证的月份。
+
+[四条线的完整结果](https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/exploration-20261108.zh-CN.md)保留了失败窗口、成本与现金收益敏感性、实际ETF核对和未决来源证据。窗口相互重叠，历史频率不代表未来概率，成本和现金仍为假设。
+
+<figure>
+<svg role="img" aria-label="商品配置的滚动改善频率与连续区间收益" style="max-width:100%;height:auto;display:block" xmlns:xlink="http://www.w3.org/1999/xlink" width="806.4pt" height="345.6pt" viewBox="0 0 806.4 345.6" xmlns="http://www.w3.org/2000/svg" version="1.1">
+ <metadata>
+  <rdf:RDF xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#">
+   <cc:Work>
+    <dc:type rdf:resource="http://purl.org/dc/dcmitype/StillImage"/>
+    <dc:format>image/svg+xml</dc:format>
+    <dc:creator>
+     <cc:Agent>
+      <dc:title>Reviewed commodity/equity derived research</dc:title>
+     </cc:Agent>
+    </dc:creator>
+   </cc:Work>
+  </rdf:RDF>
+ </metadata>
+ <defs>
+  <style type="text/css">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+ </defs>
+ <g id="figure_1">
+  <g id="patch_1">
+   <path d="M 0 345.6
+L 806.4 345.6
+L 806.4 0
+L 0 0
+z
+" style="fill: #ffffff"/>
+  </g>
+  <g id="axes_1">
+   <g id="patch_2">
+    <path d="M 78.316 284.632
+L 420.116755 284.632
+L 420.116755 124.464
+L 78.316 124.464
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_1">
+    <g id="xtick_1">
+     <g id="line2d_1">
+      <path d="M 78.316 284.632
+L 78.316 124.464
+" clip-path="url(#p552b94045c)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_2">
+      <defs>
+       <path id="m071f1f2554" d="M 0 0
+L 0 3.5
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m071f1f2554" x="78.316" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_1">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="78.316" y="299.591375" transform="rotate(-0 78.316 299.591375)">0</text>
+     </g>
+    </g>
+    <g id="xtick_2">
+     <g id="line2d_3">
+      <path d="M 153.935636 284.632
+L 153.935636 124.464
+" clip-path="url(#p552b94045c)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_4">
+      <g>
+       <use xlink:href="#m071f1f2554" x="153.935636" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_2">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="153.935636" y="299.591375" transform="rotate(-0 153.935636 299.591375)">25</text>
+     </g>
+    </g>
+    <g id="xtick_3">
+     <g id="line2d_5">
+      <path d="M 229.555272 284.632
+L 229.555272 124.464
+" clip-path="url(#p552b94045c)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_6">
+      <g>
+       <use xlink:href="#m071f1f2554" x="229.555272" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_3">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="229.555272" y="299.591375" transform="rotate(-0 229.555272 299.591375)">50</text>
+     </g>
+    </g>
+    <g id="xtick_4">
+     <g id="line2d_7">
+      <path d="M 305.174908 284.632
+L 305.174908 124.464
+" clip-path="url(#p552b94045c)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_8">
+      <g>
+       <use xlink:href="#m071f1f2554" x="305.174908" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_4">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="305.174908" y="299.591375" transform="rotate(-0 305.174908 299.591375)">75</text>
+     </g>
+    </g>
+    <g id="xtick_5">
+     <g id="line2d_9">
+      <path d="M 380.794544 284.632
+L 380.794544 124.464
+" clip-path="url(#p552b94045c)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_10">
+      <g>
+       <use xlink:href="#m071f1f2554" x="380.794544" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_5">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="380.794544" y="299.591375" transform="rotate(-0 380.794544 299.591375)">100</text>
+     </g>
+    </g>
+    <g id="text_6">
+     <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="249.216377" y="313.841375" transform="rotate(-0 249.216377 313.841375)">已完成窗口占比（%）</text>
+    </g>
+   </g>
+   <g id="matplotlib.axis_2">
+    <g id="ytick_1">
+     <g id="line2d_11">
+      <defs>
+       <path id="m3f28eecb9a" d="M 0 0
+L -3.5 0
+" style="stroke: #000000; stroke-width: 0.8"/>
+      </defs>
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="78.316" y="144.213495" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_7">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="71.316" y="148.193182" transform="rotate(-0 71.316 148.193182)">月度 / 五年</text>
+     </g>
+    </g>
+    <g id="ytick_2">
+     <g id="line2d_12">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="78.316" y="184.436498" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_8">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="71.316" y="188.416186" transform="rotate(-0 71.316 188.416186)">月度 / 十年</text>
+     </g>
+    </g>
+    <g id="ytick_3">
+     <g id="line2d_13">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="78.316" y="224.659502" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_9">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="71.316" y="228.639189" transform="rotate(-0 71.316 228.639189)">年度 / 五年</text>
+     </g>
+    </g>
+    <g id="ytick_4">
+     <g id="line2d_14">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="78.316" y="264.882505" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_10">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="71.316" y="268.862193" transform="rotate(-0 71.316 268.862193)">年度 / 十年</text>
+     </g>
+    </g>
+   </g>
+   <g id="patch_3">
+    <path d="M 78.316 131.744364
+L 266.246456 131.744364
+L 266.246456 143.811265
+L 78.316 143.811265
+z
+" clip-path="url(#p552b94045c)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_4">
+    <path d="M 78.316 171.967367
+L 255.918081 171.967367
+L 255.918081 184.034268
+L 78.316 184.034268
+z
+" clip-path="url(#p552b94045c)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_5">
+    <path d="M 78.316 212.190371
+L 269.826084 212.190371
+L 269.826084 224.257272
+L 78.316 224.257272
+z
+" clip-path="url(#p552b94045c)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_6">
+    <path d="M 78.316 252.413374
+L 297.543569 252.413374
+L 297.543569 264.480275
+L 78.316 264.480275
+z
+" clip-path="url(#p552b94045c)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_7">
+    <path d="M 78.316 144.615725
+L 380.794544 144.615725
+L 380.794544 156.682626
+L 78.316 156.682626
+z
+" clip-path="url(#p552b94045c)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_8">
+    <path d="M 78.316 184.838728
+L 380.794544 184.838728
+L 380.794544 196.905629
+L 78.316 196.905629
+z
+" clip-path="url(#p552b94045c)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_9">
+    <path d="M 78.316 225.061732
+L 380.794544 225.061732
+L 380.794544 237.128633
+L 78.316 237.128633
+z
+" clip-path="url(#p552b94045c)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_10">
+    <path d="M 78.316 265.284735
+L 380.794544 265.284735
+L 380.794544 277.351636
+L 78.316 277.351636
+z
+" clip-path="url(#p552b94045c)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_11">
+    <path d="M 78.316 284.632
+L 78.316 124.464
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_12">
+    <path d="M 78.316 284.632
+L 420.116755 284.632
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_11">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="269.271242" y="140.328752" transform="rotate(-0 269.271242 140.328752)">62.1%</text>
+   </g>
+   <g id="text_12">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="258.942866" y="180.551755" transform="rotate(-0 258.942866 180.551755)">58.7%</text>
+   </g>
+   <g id="text_13">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="272.85087" y="220.774759" transform="rotate(-0 272.85087 220.774759)">63.3%</text>
+   </g>
+   <g id="text_14">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="300.568354" y="260.997762" transform="rotate(-0 300.568354 260.997762)">72.5%</text>
+   </g>
+   <g id="text_15">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="78.316" y="76.464" transform="rotate(-0 78.316 76.464)">80/20组合的历史改善频率</text>
+   </g>
+   <g id="legend_1">
+    <g id="patch_13">
+     <path d="M 86.416 113.501598
+L 104.416 113.501598
+L 104.416 107.201598
+L 86.416 107.201598
+z
+" style="fill: #24586f"/>
+    </g>
+    <g id="text_16">
+     <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="111.616" y="113.501598" transform="rotate(-0 111.616 113.501598)">收益改善</text>
+    </g>
+    <g id="patch_14">
+     <path d="M 165.616 113.501598
+L 183.616 113.501598
+L 183.616 107.201598
+L 165.616 107.201598
+z
+" style="fill: #ce8c43"/>
+    </g>
+    <g id="text_17">
+     <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="190.816" y="113.501598" transform="rotate(-0 190.816 113.501598)">回撤改善</text>
+    </g>
+   </g>
+  </g>
+  <g id="axes_2">
+   <g id="patch_15">
+    <path d="M 482.356755 284.632
+L 787.536 284.632
+L 787.536 124.464
+L 482.356755 124.464
+z
+" style="fill: #ffffff"/>
+   </g>
+   <g id="matplotlib.axis_3">
+    <g id="xtick_6">
+     <g id="line2d_15">
+      <g>
+       <use xlink:href="#m071f1f2554" x="532.192423" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_18">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="532.192423" y="299.591375" transform="rotate(-0 532.192423 299.591375)">2007–2012</text>
+     </g>
+    </g>
+    <g id="xtick_7">
+     <g id="line2d_16">
+      <g>
+       <use xlink:href="#m071f1f2554" x="634.946377" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_19">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="634.946377" y="299.591375" transform="rotate(-0 634.946377 299.591375)">2013–2019</text>
+     </g>
+    </g>
+    <g id="xtick_8">
+     <g id="line2d_17">
+      <g>
+       <use xlink:href="#m071f1f2554" x="737.700332" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_20">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="737.700332" y="299.591375" transform="rotate(-0 737.700332 299.591375)">2020–2025</text>
+     </g>
+    </g>
+   </g>
+   <g id="matplotlib.axis_4">
+    <g id="ytick_5">
+     <g id="line2d_18">
+      <path d="M 482.356755 284.632
+L 787.536 284.632
+" clip-path="url(#p3705384b31)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_19">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="482.356755" y="284.632" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_21">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="475.356755" y="288.611687" transform="rotate(-0 475.356755 288.611687)">0</text>
+     </g>
+    </g>
+    <g id="ytick_6">
+     <g id="line2d_20">
+      <path d="M 482.356755 257.252855
+L 787.536 257.252855
+" clip-path="url(#p3705384b31)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_21">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="482.356755" y="257.252855" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_22">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="475.356755" y="261.232542" transform="rotate(-0 475.356755 261.232542)">2</text>
+     </g>
+    </g>
+    <g id="ytick_7">
+     <g id="line2d_22">
+      <path d="M 482.356755 229.873709
+L 787.536 229.873709
+" clip-path="url(#p3705384b31)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_23">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="482.356755" y="229.873709" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_23">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="475.356755" y="233.853397" transform="rotate(-0 475.356755 233.853397)">4</text>
+     </g>
+    </g>
+    <g id="ytick_8">
+     <g id="line2d_24">
+      <path d="M 482.356755 202.494564
+L 787.536 202.494564
+" clip-path="url(#p3705384b31)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_25">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="482.356755" y="202.494564" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_24">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="475.356755" y="206.474252" transform="rotate(-0 475.356755 206.474252)">6</text>
+     </g>
+    </g>
+    <g id="ytick_9">
+     <g id="line2d_26">
+      <path d="M 482.356755 175.115419
+L 787.536 175.115419
+" clip-path="url(#p3705384b31)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_27">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="482.356755" y="175.115419" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_25">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="475.356755" y="179.095106" transform="rotate(-0 475.356755 179.095106)">8</text>
+     </g>
+    </g>
+    <g id="ytick_10">
+     <g id="line2d_28">
+      <path d="M 482.356755 147.736274
+L 787.536 147.736274
+" clip-path="url(#p3705384b31)" style="fill: none; stroke: #b0b0b0; stroke-opacity: 0.15; stroke-width: 0.8; stroke-linecap: square"/>
+     </g>
+     <g id="line2d_29">
+      <g>
+       <use xlink:href="#m3f28eecb9a" x="482.356755" y="147.736274" style="stroke: #000000; stroke-width: 0.8"/>
+      </g>
+     </g>
+     <g id="text_26">
+      <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: end" x="475.356755" y="151.715961" transform="rotate(-0 475.356755 151.715961)">10</text>
+     </g>
+    </g>
+    <g id="text_27">
+     <text style="font-size: 10px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="457.96613" y="204.548" transform="rotate(-90 457.96613 204.548)">年化收益（%）</text>
+    </g>
+   </g>
+   <g id="patch_16">
+    <path d="M 496.228539 284.632
+L 531.164883 284.632
+L 531.164883 218.807108
+L 496.228539 218.807108
+z
+" clip-path="url(#p3705384b31)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_17">
+    <path d="M 598.982493 284.632
+L 633.918838 284.632
+L 633.918838 153.625674
+L 598.982493 153.625674
+z
+" clip-path="url(#p3705384b31)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_18">
+    <path d="M 701.736448 284.632
+L 736.672792 284.632
+L 736.672792 222.387155
+L 701.736448 222.387155
+z
+" clip-path="url(#p3705384b31)" style="fill: #24586f"/>
+   </g>
+   <g id="patch_19">
+    <path d="M 533.219962 284.632
+L 568.156307 284.632
+L 568.156307 215.275533
+L 533.219962 215.275533
+z
+" clip-path="url(#p3705384b31)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_20">
+    <path d="M 635.973917 284.632
+L 670.910261 284.632
+L 670.910261 169.318191
+L 635.973917 169.318191
+z
+" clip-path="url(#p3705384b31)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_21">
+    <path d="M 738.727872 284.632
+L 773.664216 284.632
+L 773.664216 204.521589
+L 738.727872 204.521589
+z
+" clip-path="url(#p3705384b31)" style="fill: #ce8c43"/>
+   </g>
+   <g id="patch_22">
+    <path d="M 482.356755 284.632
+L 482.356755 124.464
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="patch_23">
+    <path d="M 482.356755 284.632
+L 787.536 284.632
+" style="fill: none; stroke: #000000; stroke-width: 0.8; stroke-linejoin: miter; stroke-linecap: square"/>
+   </g>
+   <g id="text_28">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="513.696711" y="216.616777" transform="rotate(-0 513.696711 216.616777)">4.81</text>
+   </g>
+   <g id="text_29">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="616.450666" y="151.435342" transform="rotate(-0 616.450666 151.435342)">9.57</text>
+   </g>
+   <g id="text_30">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="719.20462" y="220.196824" transform="rotate(-0 719.20462 220.196824)">4.55</text>
+   </g>
+   <g id="text_31">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="550.688135" y="213.085202" transform="rotate(-0 550.688135 213.085202)">5.07</text>
+   </g>
+   <g id="text_32">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="653.442089" y="167.12786" transform="rotate(-0 653.442089 167.12786)">8.42</text>
+   </g>
+   <g id="text_33">
+    <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: middle" x="756.196044" y="202.331258" transform="rotate(-0 756.196044 202.331258)">5.85</text>
+   </g>
+   <g id="text_34">
+    <text style="font-weight: 700; font-size: 12px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="482.356755" y="76.464" transform="rotate(-0 482.356755 76.464)">连续子区间的收益差异</text>
+   </g>
+   <g id="legend_2">
+    <g id="patch_24">
+     <path d="M 490.456755 113.501598
+L 508.456755 113.501598
+L 508.456755 107.201598
+L 490.456755 107.201598
+z
+" style="fill: #24586f"/>
+    </g>
+    <g id="text_35">
+     <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="515.656755" y="113.501598" transform="rotate(-0 515.656755 113.501598)">纯股票</text>
+    </g>
+    <g id="patch_25">
+     <path d="M 560.656755 113.501598
+L 578.656755 113.501598
+L 578.656755 107.201598
+L 560.656755 107.201598
+z
+" style="fill: #ce8c43"/>
+    </g>
+    <g id="text_36">
+     <text style="font-size: 9px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="585.856755" y="113.501598" transform="rotate(-0 585.856755 113.501598)">80/20月度组合</text>
+    </g>
+   </g>
+  </g>
+  <g id="text_37">
+   <text style="font-weight: 700; font-size: 13px; font-family: 'Noto Sans CJK JP'; text-anchor: start" x="48.384" y="13.829594" transform="rotate(-0 48.384 13.829594)">商品配置改善风险更稳定，收益改善取决于样本</text>
+  </g>
+  <g id="text_38">
+   <text style="font-size: 8.5px; font-family: 'Noto Sans CJK JP'; text-anchor: start; fill: #555555" x="48.384" y="338.688" transform="rotate(-0 48.384 338.688)">五年169个、十年109个重叠窗口。未计实际执行和现金收益，历史频率不代表未来概率。</text>
+  </g>
+ </g>
+ <defs>
+  <clipPath id="p552b94045c">
+   <rect x="78.316" y="124.464" width="341.800755" height="160.168"/>
+  </clipPath>
+  <clipPath id="p3705384b31">
+   <rect x="482.356755" y="124.464" width="305.179245" height="160.168"/>
+  </clipPath>
+ </defs>
+</svg>
+
+<figcaption>历史未扣费指数情景，窗口彼此重叠。</figcaption>
+</figure>
+
 ## 首轮发现
 
 2006年末至2025年末的完整样本中，股票年化收益高于商品。固定80%股票、20%商品的月度再平衡组合，将最大回撤从72.04%降至65.91%，年化收益从6.45%变为6.54%。抵押现金利息和实际执行成本仍未计入。

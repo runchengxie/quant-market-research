@@ -34,4 +34,4 @@ Use this site for independent market research projects and their reproducible me
 
 ## Cross-asset research
 
-- [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): First-round descriptive history, with a gap-free December 2006–December 2025 baseline. Early data gaps and investable implementation remain unresolved.
+- [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): Four-line exploration on a December 2006–December 2025 baseline: rolling risk, costs, sector ETFs and unverified macro vintages. Actual execution remains unresolved.
