@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "status": "protocol_only",
+  "historical_target": [
+    "2004-12-31",
+    "2025-12-31"
+  ],
+  "coverage_policy": "verified_common_sessions_only",
+  "commodity_candidates": [
+    "NHCI.NH",
+    "NHII.NH",
+    "NHAI.NH",
+    "NHPMI.NH",
+    "NHNFI.NH",
+    "NHFI.NH",
+    "NHECI.NH"
+  ],
+  "commodity_identity_verified": false,
+  "primary_equity": "CSI 300 total return",
+  "secondary_equities": [
+    "CSI All Share total return",
+    "CSI 1000 total return"
+  ],
+  "equity_provider_codes": null,
+  "currency": "CNY",
+  "rolling_months": [
+    12,
+    36,
+    60,
+    120
+  ],
+  "commodity_weights": [
+    0,
+    0.1,
+    0.2,
+    0.3,
+    0.4
+  ],
+  "rebalance": "common_month_end_for_next_month",
+  "rebalance_sensitivity": "annual",
+  "annual_wealth_drag_bps": [
+    0,
+    50,
+    100
+  ],
+  "cost_status": "hypothetical_not_calibrated",
+  "recent_cutoff": null
+}

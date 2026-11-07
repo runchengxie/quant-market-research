@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "status": "protocol_only",
+  "verified_findings": [],
+  "questions": [
+    {
+      "id": "CQ01",
+      "question": "Do commodity indices outperform equity total returns across common holding periods?",
+      "status": "awaiting_data_audit",
+      "evidence": []
+    },
+    {
+      "id": "CQ02",
+      "question": "Do fixed commodity allocations improve drawdown and worst five-year outcomes?",
+      "status": "awaiting_data_audit",
+      "evidence": []
+    },
+    {
+      "id": "CQ03",
+      "question": "Which regimes and sectors explain observed differences?",
+      "status": "awaiting_data_audit",
+      "evidence": []
+    },
+    {
+      "id": "CQ04",
+      "question": "How much index performance survives investable implementation?",
+      "status": "awaiting_data_audit",
+      "evidence": []
+    }
+  ],
+  "unverified_material": "Conversation returns, endpoint permissions and history claims are leads only."
+}

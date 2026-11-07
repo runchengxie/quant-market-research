@@ -44,3 +44,5 @@ uv run market-research --help
 - `docs/`：运行手册、数据说明和研究方法文档。
 
 交易成本与策略容量：[专题协议](studies/ashare_execution_costs/README.zh-CN.md) · [公开专题](https://runchengxie.github.io/quant-market-research/research/execution-costs/)。已完成十个交易日的盘口扩展与18组受约束策略诊断，真实执行校准仍待完成。
+
+- [商品期货与股票收益](studies/china_commodity_equity/README.zh-CN.md)：协议阶段，待审计历史覆盖与收益口径。

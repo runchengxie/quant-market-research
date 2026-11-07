@@ -35,3 +35,7 @@
 
 - [ST成对退出证据](research/experiments/microcap-st-exit-evidence-20261019.zh-CN.md)。107个事件、停牌身份匹配和仍未解决的退市终值。
 - [金融模板报表覆盖诊断](research/experiments/financial-template-coverage-20261019.zh-CN.md)。87家金融模板公司与歧义报表隔离。
+
+## 跨资产研究
+
+- [China commodity futures and equities / 中国商品期货与股票收益](research/asset-returns/china-commodity-equity.zh-CN.md)：协议阶段；目标覆盖2004年12月至2025年12月，以实际共同覆盖为准。下一步核验收益口径与历史完整性。
