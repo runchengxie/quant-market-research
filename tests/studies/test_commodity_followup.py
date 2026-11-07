@@ -64,10 +64,30 @@ def test_macro_publication_guard_separates_release_timing_from_known_vintage():
     decisions = pd.to_datetime(["2025-01-31", "2025-02-28"])
     records = pd.DataFrame(
         [
-            {"series": "pmi", "available_at": "2025-01-01", "value": 49, "vintage_verified": True},
-            {"series": "ppi", "available_at": "2025-01-10", "value": -2, "vintage_verified": True},
-            {"series": "pmi", "available_at": "2025-02-01", "value": 51, "vintage_verified": False},
-            {"series": "ppi", "available_at": "2025-03-01", "value": 3, "vintage_verified": True},
+            {
+                "series": "pmi",
+                "available_at": "2025-01-01T00:00:00+08:00",
+                "value": 49,
+                "vintage_verified": True,
+            },
+            {
+                "series": "ppi",
+                "available_at": "2025-01-10T00:00:00+08:00",
+                "value": -2,
+                "vintage_verified": True,
+            },
+            {
+                "series": "pmi",
+                "available_at": "2025-02-01T00:00:00+08:00",
+                "value": 51,
+                "vintage_verified": False,
+            },
+            {
+                "series": "ppi",
+                "available_at": "2025-03-01T00:00:00+08:00",
+                "value": 3,
+                "vintage_verified": True,
+            },
         ]
     )
     strict = classify_regimes(decisions, records, require_verified=True)
@@ -183,3 +203,40 @@ def test_followup_runner_refuses_repository_outputs_and_changed_manifest(tmp_pat
     (tmp_path / "base.json").write_text("{}")
     with pytest.raises(ValueError, match="hash"):
         run_followup(path, tmp_path / "out")
+
+
+def test_strict_macro_cannot_certify_date_only_or_exact_decision_cutoff():
+    records = pd.DataFrame(
+        [
+            {
+                "series": "pmi",
+                "available_at": "2025-01-01T09:30:00+08:00",
+                "value": 49,
+                "vintage_verified": True,
+            },
+            {
+                "series": "ppi",
+                "available_at": "2025-01-10T09:30:00+08:00",
+                "value": -2,
+                "vintage_verified": True,
+            },
+            {
+                "series": "pmi",
+                "available_at": "2025-01-31T15:00:00+08:00",
+                "value": 51,
+                "vintage_verified": True,
+            },
+        ]
+    )
+    decisions = pd.DatetimeIndex(["2025-01-31T00:00:00Z"])
+    strict = classify_regimes(decisions, records, True)
+    assert strict[0]["pmi"] == 49
+    date_only = records.iloc[:2].copy()
+    date_only["available_at"] = ["2025-01-01", "2025-01-10"]
+    assert classify_regimes(pd.to_datetime(["2025-01-31"]), date_only, True)[0]["regime"] is None
+    assert (
+        classify_regimes(pd.to_datetime(["2025-01-31"]), date_only, False)[0][
+            "point_in_time_verified"
+        ]
+        is False
+    )

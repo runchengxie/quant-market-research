@@ -18,18 +18,21 @@ def classify_regimes(
     if not required <= set(records):
         raise ValueError("macro series, availability, values and vintage flags required")
     data = records.copy()
+    data["explicit_timezone"] = [pd.Timestamp(v).tzinfo is not None for v in data.available_at]
     data["available_at"] = [_available_time(v).tz_convert("UTC") for v in data.available_at]
     data["value"] = pd.to_numeric(data.value, errors="raise")
     if not np.isfinite(data.value).all() or data.duplicated(["series", "available_at"]).any():
         raise ValueError("finite unique macro releases required")
     if require_verified:
-        data = data.loc[data.vintage_verified.eq(True)]
+        data = data.loc[data.vintage_verified.eq(True) & data.explicit_timezone]
     data = data.sort_values("available_at")
     rows = []
     for decision in decisions:
-        cutoff = _available_time(decision.normalize()) + pd.Timedelta(hours=15)
+        cutoff = _available_time(decision).tz_convert("Asia/Shanghai").normalize() + pd.Timedelta(
+            hours=15
+        )
         known = data.loc[
-            (data.available_at <= cutoff) & (data.available_at > cutoff - pd.Timedelta(days=100))
+            (data.available_at < cutoff) & (data.available_at > cutoff - pd.Timedelta(days=100))
         ]
         picked = {s: known.loc[known.series.eq(s)].tail(1) for s in ["pmi", "ppi"]}
         row = {
@@ -44,7 +47,10 @@ def classify_regimes(
                 + "__"
                 + ("ppi_at_least_0" if ppi >= 0 else "ppi_below_0"),
                 point_in_time_verified=bool(
-                    all(v.vintage_verified.iloc[0] for v in picked.values())
+                    all(
+                        v.vintage_verified.iloc[0] and v.explicit_timezone.iloc[0]
+                        for v in picked.values()
+                    )
                 ),
                 pmi=pmi,
                 ppi=ppi,
