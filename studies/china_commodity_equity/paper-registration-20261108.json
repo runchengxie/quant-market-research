@@ -1,0 +1,11 @@
+{
+  "schema_version": 1,
+  "protocol_id": "commodity-equity-paper-v1-20261108",
+  "protocol_sha256": "c1d1d99c0df4a9ff8db80b6c36945715493361ce07fc1143a56e12dabcb8d2d4",
+  "registered_at": "2026-11-08T01:56:25.517247+00:00",
+  "first_eligible_session": "2026-11-09",
+  "completed_forward_windows": 0,
+  "observed_trades": 0,
+  "real_orders": false,
+  "status": "registered_before_first_session"
+}

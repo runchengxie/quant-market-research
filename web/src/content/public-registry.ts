@@ -69,7 +69,7 @@ const allowedSnapshotKeys = new Set([
 const page = (value: PublicPage): PublicPage => value;
 
 export const publicPages: readonly PublicPage[] = [
-  page({ id: 'commodity-explorer', route: '/research/commodity-equity/', title: '商品与股票交互研究', summary: '切换持有期、权重和再平衡，比较现金对照、豆粕合约试验与宏观前瞻归档。', section: 'research', topic: 'assets', aliases: [], related: ['commodity-equity', 'asset-allocation'], snapshotKeys: [] }),
+  page({ id: 'commodity-explorer', route: '/research/commodity-equity/', title: '商品与股票交互研究', summary: '2020—2025年实际ETF代理比较已完成；宏观采集已定时，前瞻纸面观察已登记，成交可实现性仍待验证。', section: 'research', topic: 'assets', aliases: [], related: ['commodity-equity', 'asset-allocation'], snapshotKeys: [] }),
   page({ id: 'commodity-equity-zh-CN', route: '/docs/research/asset-returns/china-commodity-equity.zh-CN/', title: '中国商品期货与股票收益', summary: '后续探索：滚动窗口、成本与商品ETF已比较，宏观择时仍缺历史版本证据。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns', 'commodity-explorer'], snapshotKeys: [] }),
 
   page({ id: 'commodity-equity', route: '/docs/research/asset-returns/china-commodity-equity/', title: '中国商品期货与股票收益', summary: '后续探索：滚动窗口、成本与商品ETF已比较，宏观择时仍缺历史版本证据。', section: 'docs', topic: 'assets', aliases: [], related: ['asset-returns', 'commodity-explorer'], snapshotKeys: [] }),

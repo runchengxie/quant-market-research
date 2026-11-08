@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "risk_contract_prospective_exploration",
+  "status": "product_sensitivity_and_forward_registration",
   "verified_findings": [
     {
       "id": "CF01",
@@ -56,6 +56,30 @@
       "claim": "PMI, PPI and release-calendar owner snapshots were sealed after actual retrieval on 2026-11-08 China time.",
       "evidence": "next-summary-20261108.json#/prospective_archive",
       "limit": "Zero forward outcomes; no recurring collection installed and no historical vintage certification."
+    },
+    {
+      "id": "CF10",
+      "claim": "All three selected stock/product ETF proxies exceeded the stock ETF CAGR in the shared 2020\u20132025 window at 10 bp per side.",
+      "evidence": "forward-summary-20261108.json#/products",
+      "limit": "Fractional adjusted-price proxies, no actual share-lot and dividend-cash reconstruction; selected sector products."
+    },
+    {
+      "id": "CF11",
+      "claim": "The extended calendar-audited training span allows the 252-session rule, but not 504/756, in a full 2008 stress comparison.",
+      "evidence": "forward-summary-20261108.json#/sensitivity",
+      "limit": "Retrospective sensitivity grid; severe crisis losses remain and no future superiority established."
+    },
+    {
+      "id": "CF12",
+      "claim": "Twice-daily macro capture was enabled and one complete run with three sealed nonempty snapshots verified.",
+      "evidence": "collection-status-20261108.json",
+      "limit": "Dated operating check, no uptime guarantee; availability no earlier than next full China day after job completion."
+    },
+    {
+      "id": "CF13",
+      "claim": "Paper observation was registered before 2026-11-09 with zero observed trades and forward windows.",
+      "evidence": "paper-registration-20261108.json",
+      "limit": "No real orders or automated paper-price delivery. Appended visibility cannot be backdated."
     }
   ],
   "questions": [

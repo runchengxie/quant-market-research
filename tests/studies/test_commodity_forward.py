@@ -106,6 +106,10 @@ def test_forward_observation_rejects_early_marks_and_rewrites(tmp_path):
     with pytest.raises(ValueError, match="availability"):
         append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T08:00:00Z"))
     payload["available_at"] = "2026-11-09T08:00:00Z"
+    payload["gross_growth"]["S"] = 1.1
+    with pytest.raises(ValueError, match="first paper mark"):
+        append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T09:00:00Z"))
+    payload["gross_growth"]["S"] = 1
     append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T09:00:00Z"))
     with pytest.raises(ValueError, match="rewriting"):
         append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T10:00:00Z"))

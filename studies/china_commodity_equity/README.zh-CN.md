@@ -2,6 +2,8 @@
 
 [English](README.md)
 
+[第四轮探索](forward-20261108.zh-CN.md)比较实际ETF代理、起点与现金敏感性，并记录宏观定时采集和已登记的纸面观察。
+
 [第三轮探索](next-20261108.zh-CN.md)补充现金与相近风险对照、豆粕合约记账和首批宏观前瞻归档。[打开交互专题](https://runchengxie.github.io/quant-market-research/research/commodity-equity/?lang=zh-CN)。
 
 首轮指数观察见[研究结果](findings-20261107.zh-CN.md)，复现与限制见[验证记录](validation-20261107.md)。继续研究前阅读[研究协议](../../docs/research/asset-returns/china-commodity-equity.zh-CN.md)，审计覆盖和收益口径，再开展比较。

@@ -21,3 +21,21 @@ for(const width of [390,1280])test(`commodity explorer binds controls and transl
  await expect(page.locator('#archive')).toContainText('前瞻结果数为0');
  await expect(page.locator('body')).toHaveJSProperty('scrollWidth',width);
 });
+
+for(const width of [390,1280])test(`fourth-round ETF controls and forward readiness at ${width}`,async({page})=>{
+ await page.setViewportSize({width,height:900});
+ await page.goto('research/commodity-equity/?lang=en-US');
+ const section=page.locator('#commodity-forward');
+ const row=section.locator('[data-product-case="159985.SZ_product_20"]');
+ await expect(row.locator('[data-product-value=cagr]')).toHaveText('6.61%');
+ await section.locator('[data-product-control=fee]').selectOption('50');
+ await expect(row.locator('[data-product-value=cagr]')).toHaveText('6.38%');
+ await section.locator('[data-product-control=basis]').selectOption('nav');
+ await expect(section.locator('[data-product-status]')).toContainText('Adjusted NAV diagnostic');
+ await expect(section).toContainText('twice-daily timer is enabled');
+ await expect(section).toContainText('automated paper-price delivery is not installed');
+ await page.goto('research/commodity-equity/?lang=zh-CN');
+ await expect(section).toContainText('前瞻纸面观察已登记');
+ await expect(section).toContainText('10:15和18:15');
+ await expect(page.locator('body')).toHaveJSProperty('scrollWidth',width);
+});

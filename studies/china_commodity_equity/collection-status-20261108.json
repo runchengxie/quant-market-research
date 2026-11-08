@@ -1,0 +1,49 @@
+{
+  "schema_version": 1,
+  "unit": "commodity-macro-observe-v1",
+  "timer_enabled": true,
+  "cadence_Asia_Shanghai": [
+    "10:15",
+    "18:15"
+  ],
+  "randomized_delay_seconds_max": 120,
+  "stable_owner_revision": "2204cf7823976371e3a0296d6a504a14ac2c6ff4",
+  "first_successful_run": {
+    "started_at": "2026-11-08T01:51:09Z",
+    "completed_at": "2026-11-08T01:51:14Z",
+    "datasets": [
+      "cn_pmi",
+      "cn_ppi",
+      "cn_schedule"
+    ],
+    "availability_rule": "next_full_Asia_Shanghai_calendar_day_after_completed_at",
+    "current_published": false
+  },
+  "verified_snapshots": [
+    {
+      "dataset": "cn_pmi",
+      "rows": 3,
+      "source_retrieved_at": "2026-11-08T01:51:09.899558+00:00",
+      "raw_sha256": "0e539311ce4cc71e45fee156f7117ddde5845bab29bf9efdd7023c1201808047",
+      "receipt_sha256": "3ac9e44c24e60e22bd53479c3c940030cc660030d2b2c32700f16bd088e11e0a"
+    },
+    {
+      "dataset": "cn_ppi",
+      "rows": 2,
+      "source_retrieved_at": "2026-11-08T01:51:11.462206+00:00",
+      "raw_sha256": "2a4901c2a2c5fb034bcb84bf7d5909dbf66fd8d06cbe6e7adae90d20e07a882f",
+      "receipt_sha256": "68a52028e78e4d9dc71b53aab1285a8fdfb90bd847fdf95264d272ede3a68270"
+    },
+    {
+      "dataset": "cn_schedule",
+      "rows": 14,
+      "source_retrieved_at": "2026-11-08T01:51:13.035478+00:00",
+      "raw_sha256": "9ae79ab72852b0f202ebea26a9b942026b21acc97a21833dd3914f92750090f4",
+      "receipt_sha256": "4be26bc9f77b9cc9b45a15d5416f5c51d6d4dfbe00c44578693ba9bdb4425fc3"
+    }
+  ],
+  "as_of_utc": "2026-11-08T01:56:29.493234+00:00",
+  "current_or_latest_published": false,
+  "intraday_publication_claim": false,
+  "admission_rule": "next_full_Asia_Shanghai_calendar_day_after_successful_job_completion"
+}
