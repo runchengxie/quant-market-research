@@ -19,7 +19,7 @@ export function topicLabel(topic: TopicId) {
 }
 
 const englishCopies: Record<string, { title: string; summary: string }> = {
-  'commodity-explorer': { title: 'Commodity and equity research explorer', summary: 'Compare holding periods, weights, cash controls, a soymeal contract trial and prospective macro archives.' },
+  'commodity-explorer': { title: 'Commodity and equity research explorer', summary: 'Explore actual ETF costs, cash and sample sensitivities, scheduled macro capture and registered paper observation.' },
   'commodity-equity': { title: 'China commodity futures and equity returns', summary: 'Follow-up: rolling windows, costs and sector ETFs compared; macro timing still lacks verified historical vintages.' },
   'commodity-equity-zh-CN': { title: 'China commodity futures and equity returns', summary: 'Follow-up: rolling windows, costs and sector ETFs compared; macro timing still lacks verified historical vintages.' },
  ...Object.fromEntries(assetTopics.map(t=>[`asset-${t.id}`,{title:t.title[0],summary:t.finding[0]}])),

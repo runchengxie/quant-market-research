@@ -1,0 +1,28 @@
+---
+import T from './LocaleText.astro';
+import {forwardCopy as c} from '../content/commodity-forward-copy';
+import evidence from '../../../studies/china_commodity_equity/forward-summary-20261108.json';
+import collection from '../../../studies/china_commodity_equity/collection-status-20261108.json';
+import paper from '../../../studies/china_commodity_equity/paper-registration-20261108.json';
+import {selectProductCases} from '../lib/commodity-products';
+const pct=(n:number)=>`${(100*n).toFixed(2)}%`;
+const products=evidence.products.products;
+const controls=[{id:'fee',label:c.fee,options:[['0',['0','0']],['10',['10','10']],['50',['50','50']]],initial:'10'},{id:'cash',label:c.cash,options:[['0',c.zero],['0.5',c.half]],initial:'0'},{id:'basis',label:c.basis,options:[['market',c.market],['nav',c.nav]],initial:'market'}];
+const rows=selectProductCases(products,{fee:'10',cash:'0',basis:'market'});
+---
+<section id="commodity-forward"><h2><T text={c.title} as="span"/></h2><T text={c.intro}/><T text={c.scroll}/>
+<div data-product-explorer><div class="product-controls">{controls.map(control=><label><T text={control.label} as="span"/><select data-product-control={control.id} aria-label={control.label[0]} data-locale-aria data-aria-en={control.label[0]} data-aria-zh={control.label[1]}>{control.options.map(([value,label])=><option value={value as string} selected={value===control.initial} data-locale-text data-en={label[0]} data-zh={label[1]}>{label[0]}</option>)}</select></label>)}</div>
+<div class="product-scroll"><table><thead><tr>{[c.product,c.strategy,c.cagr,c.dd].map(label=><th><T text={label} as="span"/></th>)}</tr></thead><tbody>{rows.map(r=><tr data-product-case={`${r.product}_${r.strategy}`}><td>{r.product}</td><td><T text={c[r.strategy as 'equity'|'product_20'|'cash_20']} as="span"/></td><td data-product-value="cagr">{pct(r.cagr)}</td><td data-product-value="dd">{pct(r.max_drawdown)}</td></tr>)}</tbody></table></div><p data-product-status aria-live="polite"></p>
+<script is:inline type="application/json" data-product-payload set:html={JSON.stringify(products).replace(/</g,'\u003c')}/></div><T text={c.limits}/>
+<h3><T text={c.sensitivity} as="span"/></h3><T text={c.sensitivityHelp}/><div class="product-scroll"><table><thead><tr>{[c.lookback,c.cash,c.commodity,c.riskCash].map(label=><th><T text={label} as="span"/></th>)}</tr></thead><tbody>{evidence.sensitivity.risk_grid.filter(r=>r.common_start_across_lookbacks).map(r=><tr><td>{r.lookback_sessions}</td><td><T text={r.cash_shibor_fraction===0?c.zero:c.half} as="span"/></td><td>{pct(r.commodity_20.cagr)}</td><td>{pct(r.risk_cash.cagr)}</td></tr>)}</tbody></table></div>
+<div class="product-scroll"><table><thead><tr>{[c.start,c.stock,c.commodity].map(label=><th><T text={label} as="span"/></th>)}</tr></thead><tbody>{evidence.sensitivity.fixed_starts.map(r=><tr><td>{r.equity.start}</td><td>{pct(r.equity.cagr)}</td><td>{pct(r.commodity_20.cagr)}</td></tr>)}</tbody></table></div><T text={c.stress}/>
+<h3><T text={c.collection} as="span"/></h3><T text={c.collectionHelp}/><p>{collection.as_of_utc} · {collection.first_successful_run.completed_at}</p>
+<h3><T text={c.paper} as="span"/></h3><T text={c.paperHelp}/><p><T text={c.registered} as="span"/> {paper.registered_at}</p><p><a href="https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/forward-20261108.md"><T text={c.report} as="span"/></a> · <a href="https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/paper-protocol-v1.json"><T text={c.protocol} as="span"/></a></p>
+</section>
+<script>
+import {selectProductCases} from '../lib/commodity-products';
+import {forwardCopy as c} from '../content/commodity-forward-copy';
+const root=document.querySelector<HTMLElement>('[data-product-explorer]');
+if(root){const products=JSON.parse(root.querySelector('[data-product-payload]')!.textContent!);const controls=[...root.querySelectorAll<HTMLSelectElement>('select')];const paint=()=>{const state=Object.fromEntries(controls.map(s=>[s.dataset.productControl!,s.value])) as {fee:string;cash:string;basis:string};const rows=selectProductCases(products,state);const locale=document.documentElement.lang==='zh-CN'?1:0;const pct=(n:number)=>new Intl.NumberFormat(locale?'zh-CN':'en-US',{style:'percent',minimumFractionDigits:2,maximumFractionDigits:2}).format(n);for(const row of rows){const tr=root.querySelector(`[data-product-case="${row.product}_${row.strategy}"]`)!;tr.querySelector('[data-product-value=cagr]')!.textContent=pct(row.cagr);tr.querySelector('[data-product-value=dd]')!.textContent=pct(row.max_drawdown);}root.dataset.productSelection=JSON.stringify(state);root.querySelector('[data-product-status]')!.textContent=`${c.basis[locale]} ${state.basis==='market'?c.market[locale]:c.nav[locale]} · ${c.fee[locale]} ${state.fee} · ${state.cash==='0'?c.zero[locale]:c.half[locale]}`;};controls.forEach(s=>s.addEventListener('change',paint));new MutationObserver(paint).observe(document.documentElement,{attributes:true,attributeFilter:['lang']});paint();}
+</script>
+<style>.product-controls{display:flex;gap:.8rem;flex-wrap:wrap}.product-controls label{display:grid;gap:.4rem;max-width:100%}.product-controls select{padding:.4rem;max-width:100%}.product-scroll{overflow-x:auto}table{width:100%;font-size:.9rem}td,th{padding:.6rem;text-align:left}@media(max-width:480px){table{font-size:.8rem}}</style>

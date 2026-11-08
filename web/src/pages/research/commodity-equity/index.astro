@@ -1,4 +1,6 @@
 ---
+import {forwardCopy} from '../../../content/commodity-forward-copy';
+import CommodityForwardEvidence from '../../../components/CommodityForwardEvidence.astro';
 import SiteLayout from '../../../layouts/SiteLayout.astro';
 import T from '../../../components/LocaleText.astro';
 import {commodityCopy as c, commodityPeriods as periods} from '../../../content/commodity-copy';
@@ -16,7 +18,7 @@ const displayReturns=Object.fromEntries(Object.keys(periods).map(id=>{const key=
 <SiteLayout title={c.title[1]} titleEn={c.title[0]} description={c.intro[0]} section="research">
 <article class="commodity-study">
 <h1><T text={c.title} as="span"/></h1><T text={c.intro}/><T text={c.sample}/>
-<nav><a href="#windows"><T text={c.windows} as="span"/></a> · <a href="#risk"><T text={c.risk} as="span"/></a> · <a href="#contract"><T text={c.contract} as="span"/></a> · <a href="#archive"><T text={c.archive} as="span"/></a></nav>
+<nav><a href="#windows"><T text={c.windows} as="span"/></a> · <a href="#risk"><T text={c.risk} as="span"/></a> · <a href="#contract"><T text={c.contract} as="span"/></a> · <a href="#archive"><T text={c.archive} as="span"/></a> · <a href="#commodity-forward"><T text={forwardCopy.title} as="span"/></a></nav>
 <section id="windows" data-commodity-explorer><h2><T text={c.windows} as="span"/></h2><T text={c.help}/>
 <div class="controls">{controls.map(control=><label><T text={control.label as readonly [string,string]} as="span"/><select data-commodity-control={control.id} aria-label={control.label[0]} data-locale-aria data-aria-en={control.label[0]} data-aria-zh={control.label[1]}>{control.values.map(([value,label])=><option value={value as string} selected={value===(control.id==='policy'?'monthly':control.id==='weight'?'20':'60')} data-locale-text data-en={label[0]} data-zh={label[1]}>{label[0]}</option>)}</select></label>)}</div>
 <div data-commodity-chart class="chart" role="img" aria-label={c.windows[0]}></div><p data-commodity-status aria-live="polite"></p>
@@ -31,6 +33,7 @@ const displayReturns=Object.fromEntries(Object.keys(periods).map(id=>{const key=
 <section id="contract"><h2><T text={c.contract} as="span"/></h2><T text={c.contractHelp}/><table><thead><tr>{[c.ticks,c.accountReturn,c.dd,c.margin].map(label=><th><T text={label} as="span"/></th>)}</tr></thead><tbody>{next.contract_trial.cases.map(r=><tr><td>{r.slippage_ticks_per_traded_lot}</td><td>{pct(r.return_from_pre_entry_capital)}</td><td>{pct(r.daily_max_drawdown_including_entry)}</td><td>{pct(r.max_margin_fraction)}</td></tr>)}</tbody></table><T text={c.contractLimit}/></section>
 <section><h2><T text={c.etf} as="span"/></h2><T text={c.etfHelp}/><div class="scroll"><table><thead><tr>{[c.product,c.start,c.end,c.market,c.nav].map(label=><th><T text={label} as="span"/></th>)}</tr></thead><tbody>{Object.entries(follow.implementation.products).map(([id,r])=><tr><td>{id}</td><td>{r.start}</td><td>{r.end}</td><td>{pct(r.market_cagr_proxy)}</td><td>{pct(r.adjusted_nav_cagr_proxy)}</td></tr>)}</tbody></table></div></section>
 <section id="archive"><h2><T text={c.archive} as="span"/></h2><T text={c.archiveHelp}/><div class="scroll"><table><thead><tr>{[c.dataset,c.rows,c.observed].map(label=><th><T text={label} as="span"/></th>)}</tr></thead><tbody>{next.prospective_archive.snapshots.map(r=><tr><td>{r.dataset}</td><td>{r.rows}</td><td>{r.retrieved_at}</td></tr>)}</tbody></table></div></section>
+<CommodityForwardEvidence/>
 <section><h2><T text={c.evidence} as="span"/></h2><p><a href="https://github.com/runchengxie/quant-market-research/blob/main/studies/china_commodity_equity/next-20261108.md"><T text={c.report} as="span"/></a> · <a href={withBase('/docs/research/asset-returns/china-commodity-equity/', import.meta.env.BASE_URL)}><T text={c.protocol} as="span"/></a></p></section>
 </article>
 </SiteLayout>

@@ -1,0 +1,40 @@
+{
+  "schema_version": 1,
+  "protocol_id": "commodity-equity-paper-v1-20261108",
+  "first_eligible_session": "2026-11-09",
+  "initial_capital_CNY": 1000000,
+  "currency": "CNY",
+  "real_orders": false,
+  "stock_product": "510300.SH",
+  "commodity_product": "159985.SZ",
+  "comparisons": {
+    "equity": {
+      "510300.SH": 1.0
+    },
+    "soymeal_20": {
+      "510300.SH": 0.8,
+      "159985.SZ": 0.2
+    },
+    "cash_20": {
+      "510300.SH": 0.8,
+      "cash": 0.2
+    }
+  },
+  "rebalance": "last_verified_common_session_of_completed_calendar_month_after_close",
+  "fee_bps_per_side": 10,
+  "cash_yield": 0,
+  "return_basis": "fractional_adjusted_market_price_proxy",
+  "first_mark_rule": "use_first_eligible_session_close_as_hypothetical_entry_mark_and_charge_entry_cost",
+  "execution_established": false,
+  "premium_is_signal": false,
+  "macro_is_signal": false,
+  "change_policy": "new_protocol_id_required_never_rewrite_prior_observations",
+  "admission": "actual_source_retrieval_after_close_and_date_not_before_first_session",
+  "frequency": "daily_observation_monthly_review",
+  "evaluation_horizons_months": [
+    12,
+    36,
+    60
+  ],
+  "early_performance_is_descriptive": true
+}

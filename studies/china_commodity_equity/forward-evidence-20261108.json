@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "study_id": "china_commodity_equity",
+  "files_sha256": {
+    "forward-summary-20261108.json": "20ebc400b213fa5e5b23d6c00fab016c9417a5be38868376a365264ccd0a4d75",
+    "collection-status-20261108.json": "3b226449b3a802bc7fab3388d461d3b6556c776016347f760f1730871b88e7bf",
+    "paper-protocol-v1.json": "22e4132b8777954755cd49da8437b2a81cf8ae80c3c271077f3a20b15af49cd5",
+    "paper-registration-20261108.json": "0487a969cbfdb1d7f57d2e4519e16ed78f6406ccfe1d868cecab63302420ebb1"
+  },
+  "paper_registry_code_sha256": "87537730ae316c84e4d93c9750bdba198ab86a6701daace2bbc23946e6e9a9fd",
+  "independent_product_cases_checked": 108,
+  "validation": "forward-validation-20261108.md"
+}
