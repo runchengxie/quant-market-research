@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "study_id": "china_commodity_equity",
-  "status": "four_line_exploration",
+  "status": "risk_contract_prospective_exploration",
   "verified_findings": [
     {
       "id": "CF01",
@@ -38,6 +38,24 @@
       "claim": "Three sector ETFs annual2025NAV returns match issuer reports; none implements NHCI.",
       "evidence": "exploration-summary-20261108.json#/implementation/products",
       "limit": "Adjusted NAV/market proxy histories, not full investor execution."
+    },
+    {
+      "id": "CF07",
+      "claim": "The 2010\u20132025 commodity allocation had higher CAGR than fixed-cash and past-volatility cash controls, but larger drawdown than both.",
+      "evidence": "next-summary-20261108.json#/risk_controls",
+      "limit": "Zero cash yield and fees; approximate realized risk, historical sample only."
+    },
+    {
+      "id": "CF08",
+      "claim": "One 2025 soymeal integer-lot settlement-accounting trial reconciles fees, rolls and terminal equity.",
+      "evidence": "next-summary-20261108.json#/contract_trial",
+      "limit": "Retrospective roll schedule, settlement marks not executable fills; broker fees and intraday constraints unverified."
+    },
+    {
+      "id": "CF09",
+      "claim": "PMI, PPI and release-calendar owner snapshots were sealed after actual retrieval on 2026-11-08 China time.",
+      "evidence": "next-summary-20261108.json#/prospective_archive",
+      "limit": "Zero forward outcomes; no recurring collection installed and no historical vintage certification."
     }
   ],
   "questions": [

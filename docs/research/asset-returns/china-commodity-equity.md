@@ -1,5 +1,7 @@
 # China commodity futures and equity returns
 
+[Open the interactive research explorer](https://runchengxie.github.io/quant-market-research/research/commodity-equity/)
+
 [Chinese version](china-commodity-equity.zh-CN.md)
 
 ## Follow-up exploration
