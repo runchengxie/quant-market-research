@@ -53,3 +53,127 @@ def test_registration_cannot_retroactively_start_or_overwrite(tmp_path):
         register_paper(protocol, calendar, now, tmp_path / "new")
     with pytest.raises(ValueError, match="future"):
         register_paper(protocol, calendar, pd.Timestamp("2026-11-09T01:00:00Z"), tmp_path / "bad")
+
+
+def test_paper_rejects_nonfinite_capital(tmp_path):
+    from market_research.studies.commodity_equity.paper_registry import register_paper
+
+    protocol = {
+        "protocol_id": "bad",
+        "first_eligible_session": "2026-11-09",
+        "real_orders": False,
+        "initial_capital_CNY": float("nan"),
+    }
+    with pytest.raises(ValueError):
+        register_paper(
+            protocol,
+            pd.DatetimeIndex(["2026-11-09"]),
+            pd.Timestamp("2026-11-08T01:00:00Z"),
+            tmp_path / "bad",
+        )
+
+
+def test_forward_observation_rejects_early_marks_and_rewrites(tmp_path):
+    import hashlib
+    import json
+    from market_research.studies.commodity_equity.paper_registry import (
+        register_paper,
+        append_observation,
+    )
+
+    protocol = {
+        "protocol_id": "test",
+        "first_eligible_session": "2026-11-09",
+        "real_orders": False,
+        "initial_capital_CNY": 1000000,
+        "stock_product": "S",
+        "commodity_product": "C",
+    }
+    dates = pd.DatetimeIndex(["2026-11-09", "2026-11-10"])
+    registry = tmp_path / "registry"
+    register_paper(protocol, dates, pd.Timestamp("2026-11-08T01:00:00Z"), registry)
+    source = tmp_path / "owner.json"
+    payload = {
+        "trade_date": "2026-11-09",
+        "available_at": "2026-11-09T07:00:00Z",
+        "gross_growth": {"S": 1, "C": 1},
+    }
+
+    def write():
+        source.write_text(json.dumps(payload))
+        return hashlib.sha256(source.read_bytes()).hexdigest()
+
+    with pytest.raises(ValueError, match="availability"):
+        append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T08:00:00Z"))
+    payload["available_at"] = "2026-11-09T08:00:00Z"
+    append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T09:00:00Z"))
+    with pytest.raises(ValueError, match="rewriting"):
+        append_observation(registry, source, write(), dates, pd.Timestamp("2026-11-09T10:00:00Z"))
+
+
+def test_reviewed_product_source_and_registered_protocol_bindings():
+    import hashlib
+    import json
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    study = root / "studies/china_commodity_equity"
+    summary = json.loads((study / "forward-summary-20261108.json").read_text())
+    for name, digest in summary["code_sha256"].items():
+        assert (
+            hashlib.sha256(
+                (root / "src/market_research/studies/commodity_equity" / name).read_bytes()
+            ).hexdigest()
+            == digest
+        )
+    protocol = json.loads((study / "paper-protocol-v1.json").read_text())
+    registered = json.loads((study / "paper-registration-20261108.json").read_text())
+    canonical = (json.dumps(protocol, sort_keys=True, separators=(",", ":")) + "\n").encode()
+    assert hashlib.sha256(canonical).hexdigest() == registered["protocol_sha256"]
+    assert registered["completed_forward_windows"] == 0 and registered["real_orders"] is False
+
+
+def test_appended_visibility_cannot_precede_previous_record(tmp_path):
+    import hashlib
+    import json
+    from market_research.studies.commodity_equity.paper_registry import (
+        register_paper,
+        append_observation,
+    )
+
+    dates = pd.DatetimeIndex(["2026-11-09", "2026-11-10"])
+    registry = tmp_path / "r"
+    register_paper(
+        {
+            "protocol_id": "test",
+            "first_eligible_session": "2026-11-09",
+            "real_orders": False,
+            "initial_capital_CNY": 1000000,
+            "stock_product": "S",
+            "commodity_product": "C",
+        },
+        dates,
+        pd.Timestamp("2026-11-08T01:00:00Z"),
+        registry,
+    )
+    source = tmp_path / "owner.json"
+
+    def write(day):
+        source.write_text(
+            json.dumps(
+                {
+                    "trade_date": day,
+                    "available_at": day + "T08:00:00Z",
+                    "gross_growth": {"S": 1, "C": 1},
+                }
+            )
+        )
+        return hashlib.sha256(source.read_bytes()).hexdigest()
+
+    append_observation(
+        registry, source, write("2026-11-09"), dates, pd.Timestamp("2026-11-12T08:00:00Z")
+    )
+    with pytest.raises(ValueError, match="backdate"):
+        append_observation(
+            registry, source, write("2026-11-10"), dates, pd.Timestamp("2026-11-11T08:00:00Z")
+        )
