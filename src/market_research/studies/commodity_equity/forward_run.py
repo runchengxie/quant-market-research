@@ -86,7 +86,17 @@ def sensitivities(levels: pd.DataFrame, endpoints: pd.DatetimeIndex, rates: pd.S
     for n, rule in rules.items():
         if rule["nav"].index[0] <= pd.Timestamp("2007-12-28"):
             sub = rule["nav"].loc["2007-12-28":"2008-12-31"]
-            stress.append({"lookback_sessions": n, "eligible": True, "metrics": _metrics(sub)})
+            stress.append(
+                {
+                    "lookback_sessions": n,
+                    "eligible": True,
+                    "metrics": _metrics(sub),
+                    "equity": _metrics(levels.equity.loc[sub.index]),
+                    "commodity_20": _metrics(
+                        index_account(levels.loc[sub.index], 0.2, "monthly", set(endpoints))["nav"]
+                    ),
+                }
+            )
         else:
             stress.append(
                 {
