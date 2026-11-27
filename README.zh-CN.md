@@ -16,6 +16,8 @@
 - [微盘股研究](docs/research/factors/microcap.md)
 - 网站由 `web/` 中的 Astro 应用构建，只有公开 Markdown allowlist 中的文档会被渲染。MkDocs 已不属于网站构建流程或运行依赖。
 
+小盘股与微盘股的持续深入研究、文献交叉核查和跨市场研究，现由 [A Study in Small Caps](https://runchengxie.github.io/a-study-in-small-caps/) 维护。本站现有图表与记录保留为注明日期的历史来源；本次衔接没有重新运行研究。
+
 ## 本地运行
 
 需要 Python 3.11 或更新版本，以及 [uv](https://docs.astral.sh/uv/)：
