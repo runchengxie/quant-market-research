@@ -14,6 +14,7 @@ This repository owns independent public market research projects, their reproduc
 - [Methods and research documentation](https://runchengxie.github.io/quant-market-research/docs/)
 - [Low-turnover research](docs/research/factors/low-turnover.md)
 - [Microcap research](docs/research/factors/microcap.md)
+- [BMLL US liquidity pilot](docs/research/bmll/README.md): reproducible queries and limitations; provider-derived results remain private.
 
 Ongoing in-depth small- and micro-cap investigations, literature cross-checks, and cross-market research are maintained in [A Study in Small Caps](https://runchengxie.github.io/a-study-in-small-caps/). Existing figures and records here remain dated historical sources; this handoff does not rerun them.
 
