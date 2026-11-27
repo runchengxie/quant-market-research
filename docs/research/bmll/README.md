@@ -52,3 +52,5 @@ Each query is read-only, bounded by symbols and dates, and retains its SQL, stat
 Keep all provider-derived per-security observations and reports outside Git. Do not publish them under an assumed blanket redistribution permission. The public small-cap site can link to reviewed methodological conclusions; new numerical publication requires a separate rights and aggregation review.
 
 Source definitions: [BMLL Trades Plus specification](https://www.bmlltech.com/files/documents/BMLL-Trades-Plus.pdf), [BMLL coverage](https://www.bmlltech.com/market-data-coverage). The local shared schema, rather than the latest PDF alone, determines which columns the queries can use.
+
+[Follow-up experiments](followup.md)
