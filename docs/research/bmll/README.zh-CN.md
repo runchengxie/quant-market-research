@@ -54,3 +54,5 @@ PYTHONPATH=src uv run python scripts/summarize_bmll_pilot.py --input-dir "$BMLL_
 字段依据为 [BMLL Trades Plus 说明](https://www.bmlltech.com/files/documents/BMLL-Trades-Plus.pdf)和[数据覆盖说明](https://www.bmlltech.com/market-data-coverage)。实际可用字段以共享表结构为准，不能仅凭最新 PDF 假定所有字段都已开放。
 
 [下一轮实验](followup.zh-CN.md)
+
+[核对历史证券身份](identity.zh-CN.md)

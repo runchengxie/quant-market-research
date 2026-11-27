@@ -54,3 +54,5 @@ Keep all provider-derived per-security observations and reports outside Git. Do 
 Source definitions: [BMLL Trades Plus specification](https://www.bmlltech.com/files/documents/BMLL-Trades-Plus.pdf), [BMLL coverage](https://www.bmlltech.com/market-data-coverage). The local shared schema, rather than the latest PDF alone, determines which columns the queries can use.
 
 [Follow-up experiments](followup.md)
+
+[Historical identity reconciliation](identity.md)
