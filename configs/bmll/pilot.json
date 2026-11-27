@@ -1,0 +1,10 @@
+{
+  "catalog": "bmll_data_feed",
+  "schema": "market_data",
+  "symbols": ["AVIR", "AWRE", "DOW", "HCSG", "IDYA", "INTT", "KOSS", "NDSN", "OFIX", "REKR", "IWM", "SPY"],
+  "baseline_dates": ["2025-03-18", "2025-03-19"],
+  "comparison_dates": ["2025-04-03", "2025-04-04", "2025-04-07", "2025-04-08", "2025-04-09"],
+  "windows": [["open", "09:30:00", "10:00:00"], ["midday", "11:00:00", "11:30:00"], ["close", "15:30:00", "16:00:00"]],
+  "selection": "Purposive liquidity pilot, not a point-in-time market-cap universe. IWM and SPY are ETF references, not small-cap constituents.",
+  "publication": "Keep provider-derived per-security results outside the repository. No blanket redistribution permission is assumed."
+}

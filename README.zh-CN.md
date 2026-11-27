@@ -14,6 +14,7 @@
 - [研究方法与说明](https://runchengxie.github.io/quant-market-research/docs/)
 - [低换手研究](docs/research/factors/low-turnover.md)
 - [微盘股研究](docs/research/factors/microcap.md)
+- [BMLL 美股流动性试验](docs/research/bmll/README.zh-CN.md)，包含复现查询与解释限制，供应商派生结果保留在私有数据目录。
 - 网站由 `web/` 中的 Astro 应用构建，只有公开 Markdown allowlist 中的文档会被渲染。MkDocs 已不属于网站构建流程或运行依赖。
 
 小盘股与微盘股的持续深入研究、文献交叉核查和跨市场研究，现由 [A Study in Small Caps](https://runchengxie.github.io/a-study-in-small-caps/) 维护。本站现有图表与记录保留为注明日期的历史来源；本次衔接没有重新运行研究。
