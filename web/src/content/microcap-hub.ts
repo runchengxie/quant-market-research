@@ -1,5 +1,7 @@
 // Reviewed public synthesis. Numerical charts read the existing published snapshot.
 export const hubCopy = {
+  handoffTitle: ["Continue at A Study in Small Caps", "前往 A Study in Small Caps 继续研究"],
+  handoffNote: ["Ongoing in-depth small- and micro-cap investigations, literature cross-checks, and cross-market research are maintained there. Figures and records on this page remain dated historical sources; this handoff does not rerun them.", "小盘股与微盘股的持续深入研究、文献交叉核查和跨市场研究由该项目维护。本页图表与记录保留为注明日期的历史来源；本次衔接没有重新运行研究。"],
   reportTitle: ['Research history and evidence report', '研究历史与证据汇编'],
   reportDescription: ['A continuous reading edition with the research map, matched definitions, numerical comparisons, revisions, open questions and full public methodology appendices. Reviewed on 2026-10-16; underlying samples keep their own dates.', '按阅读顺序完整整理研究地图、组合口径、数值对照、修正记录、待解问题与公开方法附录。整理于 2026-10-16，各项样本仍保留各自截止日期。'],
   readReport: ['Read the research history and evidence report', '阅读研究历史与证据汇编'],

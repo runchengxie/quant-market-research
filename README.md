@@ -15,6 +15,8 @@ This repository owns independent public market research projects, their reproduc
 - [Low-turnover research](docs/research/factors/low-turnover.md)
 - [Microcap research](docs/research/factors/microcap.md)
 
+Ongoing in-depth small- and micro-cap investigations, literature cross-checks, and cross-market research are maintained in [A Study in Small Caps](https://runchengxie.github.io/a-study-in-small-caps/). Existing figures and records here remain dated historical sources; this handoff does not rerun them.
+
 ## Local development
 
 Requirements: Python 3.11 or newer and [uv](https://docs.astral.sh/uv/).
