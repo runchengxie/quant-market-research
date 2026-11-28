@@ -35,5 +35,3 @@ Use this site for independent market research projects and their reproducible me
 ## Cross-asset research
 
 - [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): Four-line exploration on a December 2006–December 2025 baseline: rolling risk, costs, sector ETFs and unverified macro vintages. Actual execution remains unresolved.
-
-- [Market-state baseline](../studies/market_regimes/README.md) and [research intake conditions](research/literature-intake-20261128.md).
