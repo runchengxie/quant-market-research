@@ -81,4 +81,4 @@ Run `scripts/explore_smallcap_style_breadth.py --panel <retained-panel> --output
 
 Low-turnover manifest SHA-256: `9638fd5f4a3edc39896ac20dcfb7e47ddb4cd0f0d861e4033a4751e82b5f543f`; effect-summary SHA-256: `3d52f7713be407752fc0dc36252fb1830f3b214a31ac4720f8314d2a65b243e4`.
 
-Related evidence: [factor dictionary](barra-factor-dictionary.md), [low turnover](low-turnover.md), [next experiments](../../next-explorations.md). [MSCI's CNE5 factsheet](https://www.msci.com/documents/10199/2935796a-0a80-4050-934a-12966d1e2518) describes a commercial risk model that also models factor covariance and specific risk; matching factor names does not reproduce it.
+Related evidence: [factor dictionary](barra-factor-dictionary.md), [low turnover](low-turnover.md), [next experiments](https://github.com/runchengxie/quant-market-research/blob/main/docs/next-explorations.md). [MSCI's CNE5 factsheet](https://www.msci.com/documents/10199/2935796a-0a80-4050-934a-12966d1e2518) describes a commercial risk model that also models factor covariance and specific risk; matching factor names does not reproduce it.

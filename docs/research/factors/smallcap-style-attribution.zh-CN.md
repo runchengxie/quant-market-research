@@ -95,4 +95,4 @@
 
 低换手manifest SHA-256：`9638fd5f4a3edc39896ac20dcfb7e47ddb4cd0f0d861e4033a4751e82b5f543f`；收益汇总：`3d52f7713be407752fc0dc36252fb1830f3b214a31ac4720f8314d2a65b243e4`。
 
-相关资料：[因子字典](barra-factor-dictionary.zh-CN.md)、[低换手](low-turnover.zh-CN.md)、[后续实验](../../next-explorations.md)。[MSCI CNE5说明](https://www.msci.com/documents/10199/2935796a-0a80-4050-934a-12966d1e2518)包括因子协方差和特质风险；因子同名并不构成商业模型复刻。
+相关资料：[因子字典](barra-factor-dictionary.zh-CN.md)、[低换手](low-turnover.zh-CN.md)、[后续实验](https://github.com/runchengxie/quant-market-research/blob/main/docs/next-explorations.md)。[MSCI CNE5说明](https://www.msci.com/documents/10199/2935796a-0a80-4050-934a-12966d1e2518)包括因子协方差和特质风险；因子同名并不构成商业模型复刻。
