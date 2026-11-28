@@ -1,6 +1,6 @@
 # Small-cap signals need portfolio-level style checks
 
-[简体中文](smallcap-style-attribution.zh-CN.md)
+[Chinese (Simplified)](smallcap-style-attribution.zh-CN.md)
 
 ## Current assessment
 
