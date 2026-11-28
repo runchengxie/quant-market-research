@@ -15,7 +15,7 @@ The machine-readable source is [task-registry.json](task-registry.json). Waiting
 | [SC-003](#sc-003) | P0 | Waiting for evidence | Certify historical membership | SC-001 |
 | [SC-004](#sc-004) | P0 | Partial | Reconcile prices and corporate actions | SC-001 |
 | [SC-005](#sc-005) | P0 | Waiting for evidence | Fix missing-price and delisting treatment | SC-003, SC-004 |
-| [SC-006](#sc-006) | P0 | Ready to start | Specify the common timing contract | SC-001 |
+| [SC-006](#sc-006) | P0 | Done (bounded deliverable) | Specify the common timing contract | SC-001 |
 | [SC-007](#sc-007) | P0 | Done (bounded deliverable) | Build matched three-arm target support | SC-001 |
 | [SC-008](#sc-008) | P0 | Partial | Extend the shared share/cash ledger | SC-006, SC-007 |
 | [SC-009](#sc-009) | P1 | Waiting for evidence | Compare three matched net long-only accounts | SC-003, SC-004, SC-005, SC-008 |
@@ -30,14 +30,14 @@ The machine-readable source is [task-registry.json](task-registry.json). Waiting
 | [SC-018](#sc-018) | P2 | Partial | Separate holding buffers from signal smoothing | SC-007, SC-008 |
 | [SC-019](#sc-019) | P1 | Partial | Audit execution clocks and order evidence | SC-001 |
 | [SC-020](#sc-020) | P1 | Waiting for evidence | Estimate matched cost scenarios and calibration | SC-008, SC-019 |
-| [SC-021](#sc-021) | P1 | Ready to start | Predefine pressure events and controls | SC-001 |
+| [SC-021](#sc-021) | P1 | Partial | Predefine pressure events and controls | SC-001 |
 | [SC-022](#sc-022) | P1 | Waiting for evidence | Replay frozen-cohort stress exits | SC-003, SC-005, SC-008, SC-019, SC-021 |
 | [SC-023](#sc-023) | P2 | Waiting for evidence | Map capital, participation and exit capacity | SC-020, SC-022 |
 | [SC-024](#sc-024) | P2 | Waiting for evidence | Audit historical financial coverage | SC-003 |
 | [SC-025](#sc-025) | P2 | Waiting for evidence | Run market-characteristic ablations | SC-009, SC-010, SC-016 |
 | [SC-026](#sc-026) | P2 | Waiting for evidence | Test quality and valuation incrementally | SC-024, SC-025 |
-| [SC-027](#sc-027) | P0 | Ready to start | Draft one timestamped prospective protocol | SC-001 |
-| [SC-028](#sc-028) | P1 | Ready to start | Specify paired inference and search accounting | SC-001 |
+| [SC-027](#sc-027) | P0 | Partial | Draft one timestamped prospective protocol | SC-001 |
+| [SC-028](#sc-028) | P1 | Done (bounded deliverable) | Specify paired inference and search accounting | SC-001 |
 | [SC-029](#sc-029) | P0 | Done (bounded deliverable) | Maintain a dependency-checked task register | SC-001 |
 | [SC-030](#sc-030) | P1 | Partial | Publish and maintain the evidence map | SC-029 |
 
@@ -99,11 +99,13 @@ Unmet gate: Complete historical terminal valuations and interval coverage are no
 <a id="sc-006"></a>
 ## SC-006 · Specify the common timing contract
 
-P0 · Ready to start · quant-market-research
+P0 · Done (bounded deliverable) · quant-market-research
 
 Acceptance: Formation, earliest decision/execution, T+1 and valuation intervals are explicit for every comparison.
 
-Next action: Write one timing contract for the three-arm ledger experiment.
+Next action: Apply the written specification only after the data and ledger admission gates pass.
+
+Evidence: [source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-007"></a>
 ## SC-007 · Build matched three-arm target support
@@ -262,11 +264,13 @@ Unmet gate: Existing quote/account scenarios do not establish broker-calibrated 
 <a id="sc-021"></a>
 ## SC-021 · Predefine pressure events and controls
 
-P1 · Ready to start · quant-market-research
+P1 · Partial · quant-market-research
 
 Acceptance: Fix market/size drawdown event rules before outcomes and retain normal controls; distinguish low-ADV months.
 
-Next action: Register an event dictionary with retrospective versus prospective labels.
+Next action: Review and freeze the draft only after the required input, account and clock evidence is admitted; do not relabel history as prospective.
+
+Evidence: [source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-022"></a>
 ## SC-022 · Replay frozen-cohort stress exits
@@ -326,20 +330,24 @@ Unmet gate: Financial coverage cannot be inferred from the historical 19-factor 
 <a id="sc-027"></a>
 ## SC-027 · Draft one timestamped prospective protocol
 
-P0 · Ready to start · quant-market-research
+P0 · Partial · quant-market-research
 
 Acceptance: Name the protocol, freeze date, models, support, allocation, costs, endpoints and amendment policy; reconcile the prior 12/24-period rules.
 
-Next action: Draft the protocol now; do not claim registration before it is actually frozen.
+Next action: Review and freeze the draft only after the required input, account and clock evidence is admitted; do not relabel history as prospective.
+
+Evidence: [source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-028"></a>
 ## SC-028 · Specify paired inference and search accounting
 
-P1 · Ready to start · quant-market-research
+P1 · Done (bounded deliverable) · quant-market-research
 
 Acceptance: Record every tried specification, overlapping horizons, block/HAC choice and multiplicity; no best-cell selection.
 
-Next action: Attach one evaluation specification to the next admitted experiment.
+Next action: Apply the written specification only after the data and ledger admission gates pass.
+
+Evidence: [source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-029"></a>
 ## SC-029 · Maintain a dependency-checked task register

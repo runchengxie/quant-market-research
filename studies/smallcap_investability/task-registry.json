@@ -143,7 +143,7 @@
       "id": "SC-006",
       "priority": "P0",
       "workstream": "account",
-      "status": "ready",
+      "status": "done",
       "title": {
         "en": "Specify the common timing contract",
         "zh": "明确共同交易时点契约"
@@ -157,10 +157,12 @@
         "zh": "所有比较明确形成、最早决策／执行、T+1及估值区间。"
       },
       "nextAction": {
-        "en": "Write one timing contract for the three-arm ledger experiment.",
-        "zh": "为三组账本实验写一份统一时点契约。"
+        "en": "Apply the written specification only after the data and ledger admission gates pass.",
+        "zh": "数据及账本门槛通过后，再按已写规范实施。"
       },
-      "evidence": [],
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
       "gap": null
     },
     {
@@ -550,7 +552,7 @@
       "id": "SC-021",
       "priority": "P1",
       "workstream": "execution",
-      "status": "ready",
+      "status": "partial",
       "title": {
         "en": "Predefine pressure events and controls",
         "zh": "预定义压力事件与对照"
@@ -564,10 +566,12 @@
         "zh": "在查看结果前固定市场／规模回撤事件规则，保留正常对照，并与低ADV月份区分。"
       },
       "nextAction": {
-        "en": "Register an event dictionary with retrospective versus prospective labels.",
-        "zh": "登记事件字典，区分回溯与前瞻。"
+        "en": "Review and freeze the draft only after the required input, account and clock evidence is admitted; do not relabel history as prospective.",
+        "zh": "必需输入、账户及时钟证据获准后再审查冻结草案，不将历史重标为前瞻。"
       },
-      "evidence": [],
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
       "gap": null
     },
     {
@@ -717,7 +721,7 @@
       "id": "SC-027",
       "priority": "P0",
       "workstream": "validation",
-      "status": "ready",
+      "status": "partial",
       "title": {
         "en": "Draft one timestamped prospective protocol",
         "zh": "起草统一的前瞻协议"
@@ -731,17 +735,19 @@
         "zh": "明确协议名、冻结日、模型、支持集、配置、成本、终点及修订政策，核对历史12／24期规则。"
       },
       "nextAction": {
-        "en": "Draft the protocol now; do not claim registration before it is actually frozen.",
-        "zh": "现在起草协议，实际冻结前不宣称已注册。"
+        "en": "Review and freeze the draft only after the required input, account and clock evidence is admitted; do not relabel history as prospective.",
+        "zh": "必需输入、账户及时钟证据获准后再审查冻结草案，不将历史重标为前瞻。"
       },
-      "evidence": [],
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
       "gap": null
     },
     {
       "id": "SC-028",
       "priority": "P1",
       "workstream": "validation",
-      "status": "ready",
+      "status": "done",
       "title": {
         "en": "Specify paired inference and search accounting",
         "zh": "规定配对推断与试验登记"
@@ -755,10 +761,12 @@
         "zh": "记录全部尝试、重叠周期、分块／HAC选择和多重比较，不挑最优格。"
       },
       "nextAction": {
-        "en": "Attach one evaluation specification to the next admitted experiment.",
-        "zh": "为下一项获准实验附统一评价规范。"
+        "en": "Apply the written specification only after the data and ledger admission gates pass.",
+        "zh": "数据及账本门槛通过后，再按已写规范实施。"
       },
-      "evidence": [],
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
       "gap": null
     },
     {

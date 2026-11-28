@@ -15,7 +15,7 @@
 | [SC-003](#sc-003) | P0 | 等待证据 | 认证历史入选资格 | SC-001 |
 | [SC-004](#sc-004) | P0 | 部分完成 | 核对价格与公司行动 | SC-001 |
 | [SC-005](#sc-005) | P0 | 等待证据 | 固定缺价与退市处理 | SC-003, SC-004 |
-| [SC-006](#sc-006) | P0 | 可启动 | 明确共同交易时点契约 | SC-001 |
+| [SC-006](#sc-006) | P0 | 已完成限定交付 | 明确共同交易时点契约 | SC-001 |
 | [SC-007](#sc-007) | P0 | 已完成限定交付 | 构建三组共同支持的目标名单 | SC-001 |
 | [SC-008](#sc-008) | P0 | 部分完成 | 扩展共同份额与现金账本 | SC-006, SC-007 |
 | [SC-009](#sc-009) | P1 | 等待证据 | 比较三组配对多头净账户 | SC-003, SC-004, SC-005, SC-008 |
@@ -30,14 +30,14 @@
 | [SC-018](#sc-018) | P2 | 部分完成 | 区分持有缓冲与信号平滑 | SC-007, SC-008 |
 | [SC-019](#sc-019) | P1 | 部分完成 | 审计执行时钟与订单证据 | SC-001 |
 | [SC-020](#sc-020) | P1 | 等待证据 | 估计匹配成本情景与校准 | SC-008, SC-019 |
-| [SC-021](#sc-021) | P1 | 可启动 | 预定义压力事件与对照 | SC-001 |
+| [SC-021](#sc-021) | P1 | 部分完成 | 预定义压力事件与对照 | SC-001 |
 | [SC-022](#sc-022) | P1 | 等待证据 | 重放固定持仓的压力退出 | SC-003, SC-005, SC-008, SC-019, SC-021 |
 | [SC-023](#sc-023) | P2 | 等待证据 | 绘制资金、参与率与退出容量 | SC-020, SC-022 |
 | [SC-024](#sc-024) | P2 | 等待证据 | 审计历史财务覆盖 | SC-003 |
 | [SC-025](#sc-025) | P2 | 等待证据 | 运行市场特征剔除实验 | SC-009, SC-010, SC-016 |
 | [SC-026](#sc-026) | P2 | 等待证据 | 增量检验质量与估值 | SC-024, SC-025 |
-| [SC-027](#sc-027) | P0 | 可启动 | 起草统一的前瞻协议 | SC-001 |
-| [SC-028](#sc-028) | P1 | 可启动 | 规定配对推断与试验登记 | SC-001 |
+| [SC-027](#sc-027) | P0 | 部分完成 | 起草统一的前瞻协议 | SC-001 |
+| [SC-028](#sc-028) | P1 | 已完成限定交付 | 规定配对推断与试验登记 | SC-001 |
 | [SC-029](#sc-029) | P0 | 已完成限定交付 | 维护经过依赖检查的任务登记 | SC-001 |
 | [SC-030](#sc-030) | P1 | 部分完成 | 发布并持续维护证据地图 | SC-029 |
 
@@ -99,11 +99,13 @@ P0 · 等待证据 · quant-market-research
 <a id="sc-006"></a>
 ## SC-006 · 明确共同交易时点契约
 
-P0 · 可启动 · quant-market-research
+P0 · 已完成限定交付 · quant-market-research
 
 验收：所有比较明确形成、最早决策／执行、T+1及估值区间。
 
-下一步：为三组账本实验写一份统一时点契约。
+下一步：数据及账本门槛通过后，再按已写规范实施。
+
+已有证据：[source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-007"></a>
 ## SC-007 · 构建三组共同支持的目标名单
@@ -262,11 +264,13 @@ P1 · 等待证据 · quant-market-research
 <a id="sc-021"></a>
 ## SC-021 · 预定义压力事件与对照
 
-P1 · 可启动 · quant-market-research
+P1 · 部分完成 · quant-market-research
 
 验收：在查看结果前固定市场／规模回撤事件规则，保留正常对照，并与低ADV月份区分。
 
-下一步：登记事件字典，区分回溯与前瞻。
+下一步：必需输入、账户及时钟证据获准后再审查冻结草案，不将历史重标为前瞻。
+
+已有证据：[source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-022"></a>
 ## SC-022 · 重放固定持仓的压力退出
@@ -326,20 +330,24 @@ P2 · 等待证据 · quant-market-research
 <a id="sc-027"></a>
 ## SC-027 · 起草统一的前瞻协议
 
-P0 · 可启动 · quant-market-research
+P0 · 部分完成 · quant-market-research
 
 验收：明确协议名、冻结日、模型、支持集、配置、成本、终点及修订政策，核对历史12／24期规则。
 
-下一步：现在起草协议，实际冻结前不宣称已注册。
+下一步：必需输入、账户及时钟证据获准后再审查冻结草案，不将历史重标为前瞻。
+
+已有证据：[source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-028"></a>
 ## SC-028 · 规定配对推断与试验登记
 
-P1 · 可启动 · quant-market-research
+P1 · 已完成限定交付 · quant-market-research
 
 验收：记录全部尝试、重叠周期、分块／HAC选择和多重比较，不挑最优格。
 
-下一步：为下一项获准实验附统一评价规范。
+下一步：数据及账本门槛通过后，再按已写规范实施。
+
+已有证据：[source 1](https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md)
 
 <a id="sc-029"></a>
 ## SC-029 · 维护经过依赖检查的任务登记
