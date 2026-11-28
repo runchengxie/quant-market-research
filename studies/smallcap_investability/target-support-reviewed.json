@@ -1,0 +1,110 @@
+{
+  "schema": "smallcap.target-support.reviewed.v1",
+  "reviewedOn": "2026-11-29",
+  "stage": "archived_target_diagnostic",
+  "source_input_sha256": "8dc7c10c3483163703dd1c0bf5cf03b82249d2ce471f676095ca7f2101efa3e5",
+  "source_summary_sha256": "779180d26cb70153f3e87a162d2f04edd69d1f69266d45b92907ebd3a7d5ef90",
+  "source_support_sha256": "75ab28f7f3481d9f08fbd4b6cdb2c1e2d9745d3a51572eb0165634038ffe5f31",
+  "formations": {
+    "input": 138,
+    "supported": 137,
+    "unsupported": 1,
+    "first": "2015-03-31",
+    "last": "2026-07-31"
+  },
+  "verified_target_groups": 822,
+  "verified_transitions": 816,
+  "signal_coverage_supported_dates": {
+    "all": 0.9681244291769491,
+    "smallest_20pct": 0.9628203351642318
+  },
+  "pit_certified": false,
+  "returns_computed": false,
+  "execution_simulated": false,
+  "rows": [
+    {
+      "scope": "all",
+      "arm": "benchmark",
+      "selected_count": 4013.8467153284673,
+      "selected_count_valid_dates": 137,
+      "lowvol_score_vs_benchmark": 0.0,
+      "lowvol_score_vs_benchmark_valid_dates": 137,
+      "activity_20d_score_vs_benchmark": 0.0,
+      "activity_20d_score_vs_benchmark_valid_dates": 137,
+      "target_change_half_l1": 0.0200354495593215,
+      "target_change_half_l1_valid_dates": 136,
+      "industry_missing_weight": 0.040279873401604,
+      "industry_missing_weight_valid_dates": 137
+    },
+    {
+      "scope": "all",
+      "arm": "exclude_high_turnover",
+      "selected_count": 3210.6496350364964,
+      "selected_count_valid_dates": 137,
+      "lowvol_score_vs_benchmark": 0.193987595532098,
+      "lowvol_score_vs_benchmark_valid_dates": 137,
+      "activity_20d_score_vs_benchmark": -0.1212007072050121,
+      "activity_20d_score_vs_benchmark_valid_dates": 137,
+      "target_change_half_l1": 0.0539261120470543,
+      "target_change_half_l1_valid_dates": 136,
+      "industry_missing_weight": 0.038488880600503,
+      "industry_missing_weight_valid_dates": 137
+    },
+    {
+      "scope": "all",
+      "arm": "low_turnover",
+      "selected_count": 803.1970802919708,
+      "selected_count_valid_dates": 137,
+      "lowvol_score_vs_benchmark": 0.5953513125644827,
+      "lowvol_score_vs_benchmark_valid_dates": 137,
+      "activity_20d_score_vs_benchmark": -0.3537569526652425,
+      "activity_20d_score_vs_benchmark_valid_dates": 137,
+      "target_change_half_l1": 0.1752257429071859,
+      "target_change_half_l1_valid_dates": 136,
+      "industry_missing_weight": 0.0531446337146352,
+      "industry_missing_weight_valid_dates": 137
+    },
+    {
+      "scope": "smallest_20pct",
+      "arm": "benchmark",
+      "selected_count": 799.5766423357665,
+      "selected_count_valid_dates": 137,
+      "lowvol_score_vs_benchmark": 0.0,
+      "lowvol_score_vs_benchmark_valid_dates": 137,
+      "activity_20d_score_vs_benchmark": 0.0,
+      "activity_20d_score_vs_benchmark_valid_dates": 137,
+      "target_change_half_l1": 0.1055424652327591,
+      "target_change_half_l1_valid_dates": 136,
+      "industry_missing_weight": 0.0313194119804575,
+      "industry_missing_weight_valid_dates": 137
+    },
+    {
+      "scope": "smallest_20pct",
+      "arm": "exclude_high_turnover",
+      "selected_count": 639.2992700729927,
+      "selected_count_valid_dates": 137,
+      "lowvol_score_vs_benchmark": 0.164456127553866,
+      "lowvol_score_vs_benchmark_valid_dates": 137,
+      "activity_20d_score_vs_benchmark": -0.1646560969343438,
+      "activity_20d_score_vs_benchmark_valid_dates": 137,
+      "target_change_half_l1": 0.1369450203912227,
+      "target_change_half_l1_valid_dates": 136,
+      "industry_missing_weight": 0.0342598557597019,
+      "industry_missing_weight_valid_dates": 137
+    },
+    {
+      "scope": "smallest_20pct",
+      "arm": "low_turnover",
+      "selected_count": 160.27737226277372,
+      "selected_count_valid_dates": 137,
+      "lowvol_score_vs_benchmark": 0.5455155483227943,
+      "lowvol_score_vs_benchmark_valid_dates": 137,
+      "activity_20d_score_vs_benchmark": -0.6673208026037438,
+      "activity_20d_score_vs_benchmark_valid_dates": 137,
+      "target_change_half_l1": 0.2584199557837629,
+      "target_change_half_l1_valid_dates": 136,
+      "industry_missing_weight": 0.0767558229988694,
+      "industry_missing_weight_valid_dates": 137
+    }
+  ]
+}

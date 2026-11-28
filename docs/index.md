@@ -37,3 +37,5 @@ Use this site for independent market research projects and their reproducible me
 - [China commodity futures and equities](research/asset-returns/china-commodity-equity.md): Four-line exploration on a December 2006–December 2025 baseline: rolling risk, costs, sector ETFs and unverified macro vintages. Actual execution remains unresolved.
 
 - [Small-cap style attribution](research/factors/smallcap-style-attribution.md): low-turnover, breadth, execution and the limits of a public risk model.
+
+- [Small-cap research checklist](https://github.com/runchengxie/quant-market-research/blob/main/studies/smallcap_investability/README.md)

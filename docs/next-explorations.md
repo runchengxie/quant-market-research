@@ -1,5 +1,7 @@
 # 后续探索执行协议
 
+小微盘方向的完整任务、依赖和验收现集中在[30项研究清单](https://github.com/runchengxie/quant-market-research/blob/main/studies/smallcap_investability/README.zh-CN.md)。本文件保留历史协议，12／24期差异须在下一轮具名前瞻协议中明确解决，不因清单发布而自动变更。
+
 这份协议把已经提出的研究问题拆成可以单独登记、复核和停止的工作。每次运行都应保存输入快照、代码版本、形成日名单、目标权重、评价区间和结果文件哈希。缺少必要数据时，输出 `blocked` 状态和缺口清单，不补造数值。
 
 ## 低换手

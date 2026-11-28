@@ -1,0 +1,825 @@
+{
+  "schema": "smallcap.research-roadmap.v1",
+  "reviewedOn": "2026-11-29",
+  "owner": "quant-market-research",
+  "statusMeaning": {
+    "en": "Status tracks deliverables, not investment validity. Done can mean a bounded diagnostic is complete; it does not certify PIT data, executable alpha or a successful hypothesis.",
+    "zh": "状态表示交付进展，不表示投资有效性。完成可以只指一项有边界的诊断完成，不认证时点数据、可成交Alpha或假设成立。"
+  },
+  "tasks": [
+    {
+      "id": "SC-001",
+      "priority": "P0",
+      "workstream": "data",
+      "status": "done",
+      "title": {
+        "en": "Identify retained source versions",
+        "zh": "固定保留来源与版本"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [],
+      "acceptance": {
+        "en": "Record hashes, dates and the distinct 86/134/136-period samples.",
+        "zh": "登记哈希、日期，区分86／134／136期样本。"
+      },
+      "nextAction": {
+        "en": "Preserve identities when new evidence is added.",
+        "zh": "新增证据时继续保留原版本身份。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md",
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/low-turnover.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-002",
+      "priority": "P0",
+      "workstream": "data",
+      "status": "partial",
+      "title": {
+        "en": "Resolve the 120-session replay discrepancy",
+        "zh": "解释120日窗口复现差异"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Recover generating code/input/support rules and reconcile 7.60%, 4.22% and 6.26% without selecting a preferred result.",
+        "zh": "恢复生成代码、输入与支持度规则，解释7.60%、4.22%、6.26%的差异，不挑选有利版本。"
+      },
+      "nextAction": {
+        "en": "Compare named replay receipts; separate recovered files from a recovered original run.",
+        "zh": "核对具名重放收据，区分找到了文件与恢复了原始运行。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/low-turnover.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-003",
+      "priority": "P0",
+      "workstream": "data",
+      "status": "waiting",
+      "title": {
+        "en": "Certify historical membership",
+        "zh": "认证历史入选资格"
+      },
+      "owner": "quant-market-data-platform",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Each formation membership has dated source/version, ST, listing and trading-eligibility evidence.",
+        "zh": "每个形成日名单有时点来源、版本、ST、上市及交易资格证据。"
+      },
+      "nextAction": {
+        "en": "Audit the historical membership release and keep unresolved classifications.",
+        "zh": "审查历史名单资产，保留未解决的资格分类。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Archived scores alone do not certify historical eligibility.",
+        "zh": "仅凭归档评分不能认证历史入选资格。"
+      }
+    },
+    {
+      "id": "SC-004",
+      "priority": "P0",
+      "workstream": "data",
+      "status": "partial",
+      "title": {
+        "en": "Reconcile prices and corporate actions",
+        "zh": "核对价格与公司行动"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Raw/adjusted prices, shares and cash reconcile across splits, dividends and anomalous jumps.",
+        "zh": "原始／复权价格、股数、现金能跨拆并股、分红与异常跳变核对。"
+      },
+      "nextAction": {
+        "en": "Prioritize unresolved 2008–2016 jumps and retain unmatched events.",
+        "zh": "优先核对2008至2016年未解决跳变，保留无法匹配的事件。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-005",
+      "priority": "P0",
+      "workstream": "data",
+      "status": "waiting",
+      "title": {
+        "en": "Fix missing-price and delisting treatment",
+        "zh": "固定缺价与退市处理"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-003",
+        "SC-004"
+      ],
+      "acceptance": {
+        "en": "Every selected holding remains in the ledger; unknown valuations are never silently zeroed or replaced.",
+        "zh": "所有入选持仓留在账本，未知估值不静默置零或换股。"
+      },
+      "nextAction": {
+        "en": "Bind interval valuation and settlement policies to an auditable source release.",
+        "zh": "将区间估值、结算政策绑定到可审计来源版本。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Complete historical terminal valuations and interval coverage are not yet certified.",
+        "zh": "完整历史终值与区间覆盖尚未认证。"
+      }
+    },
+    {
+      "id": "SC-006",
+      "priority": "P0",
+      "workstream": "account",
+      "status": "done",
+      "title": {
+        "en": "Specify the common timing contract",
+        "zh": "明确共同交易时点契约"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Formation, earliest decision/execution, T+1 and valuation intervals are explicit for every comparison.",
+        "zh": "所有比较明确形成、最早决策／执行、T+1及估值区间。"
+      },
+      "nextAction": {
+        "en": "Apply the written specification only after the data and ledger admission gates pass.",
+        "zh": "数据及账本门槛通过后，再按已写规范实施。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-007",
+      "priority": "P0",
+      "workstream": "account",
+      "status": "done",
+      "title": {
+        "en": "Build matched three-arm target support",
+        "zh": "构建三组共同支持的目标名单"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Use one outcome-free cohort/support for benchmark, high-turnover exclusion and low-turnover selection; audit weights and missingness.",
+        "zh": "基准、高换手剔除与低换手选择共用不依赖未来结果的股票池／支持集，并核对权重及缺失。"
+      },
+      "nextAction": {
+        "en": "Pass retained targets and support exclusions into the ledger readiness review.",
+        "zh": "将保留目标与支持集剔除记录交给账本就绪检查。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-target-support-20261128.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-008",
+      "priority": "P0",
+      "workstream": "account",
+      "status": "partial",
+      "title": {
+        "en": "Extend the shared share/cash ledger",
+        "zh": "扩展共同份额与现金账本"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-006",
+        "SC-007"
+      ],
+      "acceptance": {
+        "en": "Reconcile positions, cash, fees, actions, failures and terminal valuation over the admitted history using the shared provider.",
+        "zh": "使用共享提供方，在获准历史上核对仓位、现金、费用、公司行动、失败与终值。"
+      },
+      "nextAction": {
+        "en": "Reuse the existing ledger pilot; gate extension on timing and historical inputs.",
+        "zh": "复用已有账本试点，按时点及历史输入门槛扩展。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-009",
+      "priority": "P1",
+      "workstream": "account",
+      "status": "waiting",
+      "title": {
+        "en": "Compare three matched net long-only accounts",
+        "zh": "比较三组配对多头净账户"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-003",
+        "SC-004",
+        "SC-005",
+        "SC-008"
+      ],
+      "acceptance": {
+        "en": "Same dates, eligibility, ledger, execution and cost policy; report both spread legs and benchmark-relative net results.",
+        "zh": "相同日期、资格、账本、执行和成本政策，并列多空两腿及相对基准净结果。"
+      },
+      "nextAction": {
+        "en": "Run the benchmark, exclusion and low-turnover accounts only after ledger admission.",
+        "zh": "账本获准后再运行基准、剔除与低换手账户。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Targets exist; a certified matched full-history account does not.",
+        "zh": "目标名单已生成，经过认证的全历史配对账户尚未完成。"
+      }
+    },
+    {
+      "id": "SC-010",
+      "priority": "P1",
+      "workstream": "factors",
+      "status": "partial",
+      "title": {
+        "en": "Version the public descriptor contract",
+        "zh": "版本化公开风格描述符契约"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Document lag, unit, sign, clipping, standardization universe and coverage for each descriptor.",
+        "zh": "逐项登记滞后、单位、方向、缩尾、标准化股票池与覆盖。"
+      },
+      "nextAction": {
+        "en": "Separate archived proxies from newly reproducible size/beta/volatility/liquidity descriptors.",
+        "zh": "区分归档代理与可重新生成的规模、贝塔、波动、流动性描述符。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-011",
+      "priority": "P1",
+      "workstream": "factors",
+      "status": "waiting",
+      "title": {
+        "en": "Recover historical industry vintages",
+        "zh": "恢复历史行业版本"
+      },
+      "owner": "quant-market-data-platform",
+      "dependsOn": [
+        "SC-003"
+      ],
+      "acceptance": {
+        "en": "Formation-date industry assignments are traceable; unknown exposure remains visible.",
+        "zh": "形成日行业归属可追溯，未知行业暴露保持可见。"
+      },
+      "nextAction": {
+        "en": "Audit industry revisions before using dummies in attribution.",
+        "zh": "在归因使用行业变量前审计历史修订。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Archived Top-50 industry unknown weight is material; a current classification cannot replace history.",
+        "zh": "归档Top 50行业未知权重不可忽略，当前分类不能替代历史。"
+      }
+    },
+    {
+      "id": "SC-012",
+      "priority": "P1",
+      "workstream": "factors",
+      "status": "done",
+      "title": {
+        "en": "Measure archived final-holding exposures",
+        "zh": "测量归档最终持仓暴露"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Compare raw/residual scores and K on common dates using broad and local benchmarks, preserving missing descriptors.",
+        "zh": "共同日期比较原始／残差信号与K，保留广市场、局部基准及描述符缺失。"
+      },
+      "nextAction": {
+        "en": "Use the measured tail exposure reversal as a direct holding-level control requirement.",
+        "zh": "将已测得的尾部暴露反向纳入持仓层检查要求。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-013",
+      "priority": "P2",
+      "workstream": "factors",
+      "status": "waiting",
+      "title": {
+        "en": "Reconcile realized factor return attribution",
+        "zh": "核对已实现因子收益归因"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-008",
+        "SC-010",
+        "SC-011"
+      ],
+      "acceptance": {
+        "en": "Lagged exposures, identified market/industry regression and account intervals reconcile contributions plus residuals; use quant-platform APIs.",
+        "zh": "滞后暴露、可识别市场／行业回归与账户区间能核对贡献及残差；复用quant-platform接口。"
+      },
+      "nextAction": {
+        "en": "Admit the base model without turnover and the extended model with turnover.",
+        "zh": "分别纳入不含换手与含换手的两套模型。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Complete aligned exposure, industry and account intervals are not admitted.",
+        "zh": "完整对齐的暴露、行业及账户区间尚未获准。"
+      }
+    },
+    {
+      "id": "SC-014",
+      "priority": "P3",
+      "workstream": "factors",
+      "status": "waiting",
+      "title": {
+        "en": "Validate covariance and specific-risk forecasts",
+        "zh": "验证协方差与特质风险预测"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-013"
+      ],
+      "acceptance": {
+        "en": "Estimate only from past data; test rolling forecast/realized risk, coverage and stress calibration.",
+        "zh": "仅用过去数据估计，检验滚动预测／实现风险、覆盖及压力校准。"
+      },
+      "nextAction": {
+        "en": "Follow reconciled attribution with a separate forecast-validation experiment.",
+        "zh": "归因核对后，另立预测验证实验。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "An exposure diagnostic or explanatory regression is not a validated risk forecast.",
+        "zh": "暴露诊断或解释性回归不是经验证的风险预测。"
+      }
+    },
+    {
+      "id": "SC-015",
+      "priority": "P1",
+      "workstream": "factors",
+      "status": "partial",
+      "title": {
+        "en": "Test incremental low-turnover information",
+        "zh": "检验低换手的增量信息"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-007",
+        "SC-012"
+      ],
+      "acceptance": {
+        "en": "Common support/date comparisons separate low volatility, activity, illiquidity and high-turnover avoidance; retain raw controls.",
+        "zh": "共同支持／日期比较低波动、活跃度、非流动性及避开高换手的作用，保留原始控制。"
+      },
+      "nextAction": {
+        "en": "Pair the three-arm accounts with ablation and control-order sensitivities.",
+        "zh": "配对三组账户，做剔除实验及控制顺序敏感性。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/low-turnover.md",
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-target-support-20261128.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-016",
+      "priority": "P2",
+      "workstream": "portfolio",
+      "status": "waiting",
+      "title": {
+        "en": "Evaluate head calibration and monotonicity",
+        "zh": "检验头部校准与单调性"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-003",
+        "SC-005",
+        "SC-010"
+      ],
+      "acceptance": {
+        "en": "Predefine mutually exclusive rank bands and horizons; report paired uncertainty and overlapping-return treatment.",
+        "zh": "预定义互斥排名区间及周期，报告配对不确定性和收益重叠处理。"
+      },
+      "nextAction": {
+        "en": "Join frozen formation ranks to admitted forward labels without dropping failed holdings.",
+        "zh": "将冻结排名与获准未来标签对齐，不剔除失败持仓。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "The current exposure panel has no admitted forward-return labels.",
+        "zh": "当前暴露面板没有获准的未来收益标签。"
+      }
+    },
+    {
+      "id": "SC-017",
+      "priority": "P2",
+      "workstream": "portfolio",
+      "status": "partial",
+      "title": {
+        "en": "Run K × weighting comparisons",
+        "zh": "运行K与权重强度对照"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-009",
+        "SC-012"
+      ],
+      "acceptance": {
+        "en": "Compare a predeclared grid under matched risk/cost/eligibility and report stable regions, not a historical maximum.",
+        "zh": "按预定网格在匹配风险、成本、资格下比较，报告稳定区域而非历史最优格。"
+      },
+      "nextAction": {
+        "en": "Extend existing exposure-only K comparisons after net-account admission.",
+        "zh": "净账户获准后扩展现有仅暴露的K对照。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-018",
+      "priority": "P2",
+      "workstream": "portfolio",
+      "status": "partial",
+      "title": {
+        "en": "Separate holding buffers from signal smoothing",
+        "zh": "区分持有缓冲与信号平滑"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-007",
+        "SC-008"
+      ],
+      "acceptance": {
+        "en": "Same signals and dates; keep net returns, target changes, real turnover and residual risk separate.",
+        "zh": "固定信号及日期，分开报告净收益、目标变化、实际换手与残差风险。"
+      },
+      "nextAction": {
+        "en": "Reuse historical buffer records as development evidence and construct paired ledger cases.",
+        "zh": "以历史缓冲记录作开发证据，再构造配对账本案例。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/low-turnover.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-019",
+      "priority": "P1",
+      "workstream": "execution",
+      "status": "partial",
+      "title": {
+        "en": "Audit execution clocks and order evidence",
+        "zh": "审计执行时钟与订单证据"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Decisions, arrival quotes, trades, fees and unfilled inventory share verified units and clock semantics.",
+        "zh": "决策、到达报价、成交、费用、未成交库存具有已验证的单位及时钟语义。"
+      },
+      "nextAction": {
+        "en": "Extend the two-date fitness review without claiming universal coverage.",
+        "zh": "扩展两日期适用性检查，不宣称普遍覆盖。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-020",
+      "priority": "P1",
+      "workstream": "execution",
+      "status": "waiting",
+      "title": {
+        "en": "Estimate matched cost scenarios and calibration",
+        "zh": "估计匹配成本情景与校准"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-008",
+        "SC-019"
+      ],
+      "acceptance": {
+        "en": "Separate fee/spread/impact/delay without double charging; scenario assumptions stay distinct from actual calibration.",
+        "zh": "区分费用、价差、冲击、延迟并避免重复收费；情景假设与真实校准分开。"
+      },
+      "nextAction": {
+        "en": "Start with matched account scenarios; fit impact only if matched execution evidence is admitted.",
+        "zh": "先做配对账户情景，匹配执行证据获准后才拟合冲击。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Existing quote/account scenarios do not establish broker-calibrated costs.",
+        "zh": "现有报价／账户情景不足以确立经券商执行校准的成本。"
+      }
+    },
+    {
+      "id": "SC-021",
+      "priority": "P1",
+      "workstream": "execution",
+      "status": "partial",
+      "title": {
+        "en": "Predefine pressure events and controls",
+        "zh": "预定义压力事件与对照"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Fix market/size drawdown event rules before outcomes and retain normal controls; distinguish low-ADV months.",
+        "zh": "在查看结果前固定市场／规模回撤事件规则，保留正常对照，并与低ADV月份区分。"
+      },
+      "nextAction": {
+        "en": "Review and freeze the draft only after the required input, account and clock evidence is admitted; do not relabel history as prospective.",
+        "zh": "必需输入、账户及时钟证据获准后再审查冻结草案，不将历史重标为前瞻。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-022",
+      "priority": "P1",
+      "workstream": "execution",
+      "status": "waiting",
+      "title": {
+        "en": "Replay frozen-cohort stress exits",
+        "zh": "重放固定持仓的压力退出"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-003",
+        "SC-005",
+        "SC-008",
+        "SC-019",
+        "SC-021"
+      ],
+      "acceptance": {
+        "en": "Freeze pre-event holdings; retain suspensions, missing observations, unsold inventory and cash through the horizon.",
+        "zh": "冻结事件前持仓，在整个期限保留停牌、缺失、未售库存及现金。"
+      },
+      "nextAction": {
+        "en": "Run admission checks on pre-event targets, minute data and inventory before exit simulation.",
+        "zh": "先检查事件前目标、分钟数据及库存是否获准，再模拟退出。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Pre-event qualified holdings and aligned executable observations need admission.",
+        "zh": "事件前合格持仓及对齐的可执行观测仍需获准。"
+      }
+    },
+    {
+      "id": "SC-023",
+      "priority": "P2",
+      "workstream": "execution",
+      "status": "waiting",
+      "title": {
+        "en": "Map capital, participation and exit capacity",
+        "zh": "绘制资金、参与率与退出容量"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-020",
+        "SC-022"
+      ],
+      "acceptance": {
+        "en": "Report net return, cost, unfilled inventory and exit time by capital/participation/horizon; do not equate ADV with capacity.",
+        "zh": "按资金、参与率、期限报告净收益、成本、未成交库存和退出时间，不把ADV当容量。"
+      },
+      "nextAction": {
+        "en": "Use the same cost and stress-exit source revisions across the grid.",
+        "zh": "整个网格使用相同成本和压力退出来源版本。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Capacity depends on admitted execution and stress evidence.",
+        "zh": "容量结论依赖获准的执行与压力证据。"
+      }
+    },
+    {
+      "id": "SC-024",
+      "priority": "P2",
+      "workstream": "factors",
+      "status": "waiting",
+      "title": {
+        "en": "Audit historical financial coverage",
+        "zh": "审计历史财务覆盖"
+      },
+      "owner": "quant-market-data-platform",
+      "dependsOn": [
+        "SC-003"
+      ],
+      "acceptance": {
+        "en": "Announcement-dated versions and loss/negative-equity/missing-report rules cover the intended microcap universe.",
+        "zh": "公告时点版本及亏损、负净资产、缺报告规则覆盖目标微盘股票池。"
+      },
+      "nextAction": {
+        "en": "Measure coverage by date and size; retain the restricted post-2020 quality sample separately.",
+        "zh": "按日期和规模测量覆盖，将2020年后受限质量样本分开保留。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Existing quality diagnostics mainly cover post-2020 top-800 stocks.",
+        "zh": "现有质量诊断主要覆盖2020年以后前800只股票。"
+      }
+    },
+    {
+      "id": "SC-025",
+      "priority": "P2",
+      "workstream": "factors",
+      "status": "waiting",
+      "title": {
+        "en": "Run market-characteristic ablations",
+        "zh": "运行市场特征剔除实验"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-009",
+        "SC-010",
+        "SC-016"
+      ],
+      "acceptance": {
+        "en": "Size, turnover, volatility, reversal/momentum improve matched predictive or net portfolio outcomes with uncertainty reported.",
+        "zh": "规模、换手、波动、反转／动量在配对预测或净组合结果中有增量，并报告不确定性。"
+      },
+      "nextAction": {
+        "en": "Evaluate a small fixed family set before expanding the library.",
+        "zh": "扩展因子库前先评价少量固定因子组。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "The net-account and forward-label contracts must be satisfied first.",
+        "zh": "先满足净账户与未来标签契约。"
+      }
+    },
+    {
+      "id": "SC-026",
+      "priority": "P2",
+      "workstream": "factors",
+      "status": "waiting",
+      "title": {
+        "en": "Test quality and valuation incrementally",
+        "zh": "增量检验质量与估值"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-024",
+        "SC-025"
+      ],
+      "acceptance": {
+        "en": "Use matched PIT coverage; separate composite quality from components and do not duplicate leverage.",
+        "zh": "使用匹配的时点覆盖，区分复合质量与子项，不重复计入杠杆。"
+      },
+      "nextAction": {
+        "en": "Add financial families only after coverage and baseline ablation admission.",
+        "zh": "覆盖及基线剔除实验获准后再加入财务因子组。"
+      },
+      "evidence": [],
+      "gap": {
+        "en": "Financial coverage cannot be inferred from the historical 19-factor snapshot.",
+        "zh": "不能从历史19因子快照推断财务覆盖。"
+      }
+    },
+    {
+      "id": "SC-027",
+      "priority": "P0",
+      "workstream": "validation",
+      "status": "partial",
+      "title": {
+        "en": "Draft one timestamped prospective protocol",
+        "zh": "起草统一的前瞻协议"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Name the protocol, freeze date, models, support, allocation, costs, endpoints and amendment policy; reconcile the prior 12/24-period rules.",
+        "zh": "明确协议名、冻结日、模型、支持集、配置、成本、终点及修订政策，核对历史12／24期规则。"
+      },
+      "nextAction": {
+        "en": "Review and freeze the draft only after the required input, account and clock evidence is admitted; do not relabel history as prospective.",
+        "zh": "必需输入、账户及时钟证据获准后再审查冻结草案，不将历史重标为前瞻。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-028",
+      "priority": "P1",
+      "workstream": "validation",
+      "status": "done",
+      "title": {
+        "en": "Specify paired inference and search accounting",
+        "zh": "规定配对推断与试验登记"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Record every tried specification, overlapping horizons, block/HAC choice and multiplicity; no best-cell selection.",
+        "zh": "记录全部尝试、重叠周期、分块／HAC选择和多重比较，不挑最优格。"
+      },
+      "nextAction": {
+        "en": "Apply the written specification only after the data and ledger admission gates pass.",
+        "zh": "数据及账本门槛通过后，再按已写规范实施。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/experiments/smallcap-investability-protocol-draft.md"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-029",
+      "priority": "P0",
+      "workstream": "publication",
+      "status": "done",
+      "title": {
+        "en": "Maintain a dependency-checked task register",
+        "zh": "维护经过依赖检查的任务登记"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-001"
+      ],
+      "acceptance": {
+        "en": "Every task has an ID, owner, priority, status, acceptance, dependency and next action; completed items link earned evidence.",
+        "zh": "每项有编号、归属、优先级、状态、验收、依赖、下一步；完成项关联已有证据。"
+      },
+      "nextAction": {
+        "en": "Update status only through reviewed evidence changes.",
+        "zh": "只随经审查的证据变化更新状态。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/studies/smallcap_investability/task-registry.json"
+      ],
+      "gap": null
+    },
+    {
+      "id": "SC-030",
+      "priority": "P1",
+      "workstream": "publication",
+      "status": "partial",
+      "title": {
+        "en": "Publish and maintain the evidence map",
+        "zh": "发布并持续维护证据地图"
+      },
+      "owner": "quant-market-research",
+      "dependsOn": [
+        "SC-029"
+      ],
+      "acceptance": {
+        "en": "The bilingual site exposes priorities, current evidence, unmet gates and the next useful action with source identity.",
+        "zh": "双语网站展示优先级、当前证据、未满足门槛及下一步，并保留来源身份。"
+      },
+      "nextAction": {
+        "en": "Publish the current source-pinned snapshot; refresh when actual research gates change.",
+        "zh": "发布当前固定来源快照，实际研究门槛变化后再更新。"
+      },
+      "evidence": [
+        "https://github.com/runchengxie/quant-market-research/blob/main/docs/research/factors/smallcap-style-attribution.md"
+      ],
+      "gap": null
+    }
+  ]
+}

@@ -41,3 +41,5 @@
 - [China commodity futures and equities / 中国商品期货与股票收益](research/asset-returns/china-commodity-equity.zh-CN.md)：已探索稳健性、成本、商品ETF和宏观环境，基准覆盖2006年末至2025年末。实际执行和宏观历史版本仍待补证。
 
 - [小微盘风格归因](research/factors/smallcap-style-attribution.zh-CN.md)：低换手、持仓广度、执行成本与公开风险模型的边界。
+
+- [小微盘完整研究清单](https://github.com/runchengxie/quant-market-research/blob/main/studies/smallcap_investability/README.zh-CN.md)
