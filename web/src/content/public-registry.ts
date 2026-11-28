@@ -49,6 +49,7 @@ const docSources = new Set([
   'docs/research/factors/smallcap-turnover-history.md',
   'docs/research/factors/barra-factor-dictionary.md',
   'docs/research/factors/barra-source-inventory.md',
+  'docs/research/factors/smallcap-style-attribution.md',
   'docs/index.zh-CN.md',
   'docs/research-closeout-status.zh-CN.md',
   'docs/research/factors/low-turnover.zh-CN.md',
@@ -58,6 +59,7 @@ const docSources = new Set([
   'docs/research/factors/smallcap-turnover-history.zh-CN.md',
   'docs/research/factors/barra-factor-dictionary.zh-CN.md',
   'docs/research/factors/barra-source-inventory.zh-CN.md',
+  'docs/research/factors/smallcap-style-attribution.zh-CN.md',
 ]);
 const allowedSnapshotKeys = new Set([
   'valuation.grouped', 'overseas.leadlag', 'rotation.releases',
@@ -121,6 +123,7 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'microcap-execution-diagnostic', route: '/docs/research/experiments/microcap-execution-diagnostic-20260928/', title: '微盘执行模拟诊断', summary: '微盘执行账本、缺失结算事件与可验证边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
   page({ id: 'smallcap-turnover-history', route: '/docs/research/factors/smallcap-turnover-history/', title: '小盘换手历史', summary: '小盘换手历史研究的口径与结果。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap'], snapshotKeys: [] }),
   page({ id: 'barra-factor-dictionary', route: '/docs/research/factors/barra-factor-dictionary/', title: '市场风格因子字典', summary: '19 个历史因子、检查过的定义与核心代理。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
+  page({ id: 'smallcap-style-attribution', route: '/docs/research/factors/smallcap-style-attribution/', title: '小微盘风格归因', summary: '低换手、持仓广度与成本研究的共同日期诊断。', section: 'docs', topic: 'style', aliases: [], related: ['style', 'low-turnover'], snapshotKeys: [] }),
   page({ id: 'barra-source-inventory', route: '/docs/research/factors/barra-source-inventory/', title: '市场风格来源清单', summary: '市场风格因子来源、版本与可验证程度。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
   page({ id: 'docs-zh-CN', route: '/docs/index.zh-CN/', title: '研究说明', summary: '中文研究方法、因子定义、数据来源与收尾状态。', section: 'docs', aliases: [], related: ['docs'], snapshotKeys: [] }),
   page({ id: 'research-closeout-status-zh-CN', route: '/docs/research-closeout-status.zh-CN/', title: '研究收口状态', summary: '中文研究项目完成度、边界与未完成事项。', section: 'docs', aliases: [], related: ['docs'], snapshotKeys: [] }),
@@ -130,6 +133,7 @@ export const publicPages: readonly PublicPage[] = [
   page({ id: 'microcap-execution-diagnostic-zh-CN', route: '/docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN/', title: '微盘执行模拟诊断', summary: '中文微盘执行账本和可验证边界。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap-method'], snapshotKeys: [] }),
   page({ id: 'smallcap-turnover-history-zh-CN', route: '/docs/research/factors/smallcap-turnover-history.zh-CN/', title: '小盘换手历史', summary: '中文小盘换手历史研究口径与结果。', section: 'docs', topic: 'microcap', aliases: [], related: ['microcap'], snapshotKeys: [] }),
   page({ id: 'barra-factor-dictionary-zh-CN', route: '/docs/research/factors/barra-factor-dictionary.zh-CN/', title: '市场风格因子字典', summary: '中文市场风格因子定义与历史快照边界。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
+  page({ id: 'smallcap-style-attribution-zh-CN', route: '/docs/research/factors/smallcap-style-attribution.zh-CN/', title: '小微盘风格归因', summary: '低换手、持仓广度与成本研究的共同日期诊断。', section: 'docs', topic: 'style', aliases: [], related: ['style', 'low-turnover'], snapshotKeys: [] }),
   page({ id: 'barra-source-inventory-zh-CN', route: '/docs/research/factors/barra-source-inventory.zh-CN/', title: '市场风格来源清单', summary: '中文市场风格因子来源、版本与可验证程度。', section: 'docs', topic: 'style', aliases: [], related: ['style'], snapshotKeys: [] }),
   page({ id: 'data-sources', route: '/data-sources/', title: '数据与版本', summary: '公开数据快照、覆盖日期和生成版本。', section: 'data', aliases: [], related: ['overview', 'docs'], snapshotKeys: [] }),
 ];
@@ -167,6 +171,7 @@ export const publicDocs: readonly PublicDoc[] = [
   { ...publicPages.find((p) => p.id === 'microcap-execution-diagnostic'), source: 'docs/research/experiments/microcap-execution-diagnostic-20260928.md', slug: 'research/experiments/microcap-execution-diagnostic-20260928' },
   { ...publicPages.find((p) => p.id === 'smallcap-turnover-history'), source: 'docs/research/factors/smallcap-turnover-history.md', slug: 'research/factors/smallcap-turnover-history' },
   { ...publicPages.find((p) => p.id === 'barra-factor-dictionary'), source: 'docs/research/factors/barra-factor-dictionary.md', slug: 'research/factors/barra-factor-dictionary' },
+  { ...publicPages.find((p) => p.id === 'smallcap-style-attribution'), source: 'docs/research/factors/smallcap-style-attribution.md', slug: 'research/factors/smallcap-style-attribution' },
   { ...publicPages.find((p) => p.id === 'barra-source-inventory'), source: 'docs/research/factors/barra-source-inventory.md', slug: 'research/factors/barra-source-inventory' },
   { ...publicPages.find((p) => p.id === 'docs-zh-CN'), source: 'docs/index.zh-CN.md', slug: 'index.zh-CN' },
   { ...publicPages.find((p) => p.id === 'research-closeout-status-zh-CN'), source: 'docs/research-closeout-status.zh-CN.md', slug: 'research-closeout-status.zh-CN' },
@@ -176,6 +181,7 @@ export const publicDocs: readonly PublicDoc[] = [
   { ...publicPages.find((p) => p.id === 'microcap-execution-diagnostic-zh-CN'), source: 'docs/research/experiments/microcap-execution-diagnostic-20260928.zh-CN.md', slug: 'research/experiments/microcap-execution-diagnostic-20260928.zh-CN' },
   { ...publicPages.find((p) => p.id === 'smallcap-turnover-history-zh-CN'), source: 'docs/research/factors/smallcap-turnover-history.zh-CN.md', slug: 'research/factors/smallcap-turnover-history.zh-CN' },
   { ...publicPages.find((p) => p.id === 'barra-factor-dictionary-zh-CN'), source: 'docs/research/factors/barra-factor-dictionary.zh-CN.md', slug: 'research/factors/barra-factor-dictionary.zh-CN' },
+  { ...publicPages.find((p) => p.id === 'smallcap-style-attribution-zh-CN'), source: 'docs/research/factors/smallcap-style-attribution.zh-CN.md', slug: 'research/factors/smallcap-style-attribution.zh-CN' },
   { ...publicPages.find((p) => p.id === 'barra-source-inventory-zh-CN'), source: 'docs/research/factors/barra-source-inventory.zh-CN.md', slug: 'research/factors/barra-source-inventory.zh-CN' },
 ].map((doc) => ({ ...doc } as PublicDoc));
 
