@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 
 import numpy as np
 import pandas as pd
@@ -82,9 +83,8 @@ def classify_market_states(
         training_rows=len(train),
         high_quantile=high_quantile,
         thresholds=thresholds.to_dict(),
-        training_sha256=hashlib.sha256(
-            train.to_json(date_format="iso", orient="split").encode()
-        ).hexdigest(),
+        training_sha256=_training_digest(train),
+        training_serialization="utc-ns-float-hex.v1",
         historical_vintage_verified=False,
     )
     rows, previous = [], None
@@ -127,3 +127,16 @@ def classify_market_states(
         previous = row["state_label"]
         rows.append(row)
     return {"states": pd.DataFrame(rows), "calibration": calibration}
+
+
+def _training_digest(train):
+    rows = [
+        [
+            row.feature_time.value,
+            row.available_at.value,
+            *[float(getattr(row, column)).hex() for column in FEATURES],
+        ]
+        for row in train.itertuples(index=False)
+    ]
+    payload = ["utc-ns-float-hex.v1", ["feature_time", "available_at", *FEATURES], rows]
+    return hashlib.sha256(json.dumps(payload, separators=(",", ":")).encode()).hexdigest()

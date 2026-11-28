@@ -58,6 +58,19 @@ def test_missing_signal_has_no_fallback_or_claim_of_probability():
     assert pd.isna(row.change_event)
 
 
+@pytest.mark.parametrize("field", ["realized_volatility", "feature_time"])
+def test_training_hash_preserves_float_and_submillisecond_identity(field):
+    frame = inputs()
+    if field == "feature_time":
+        frame[field] = frame[field].dt.as_unit("ns")
+        frame.loc[1, field] += pd.Timedelta(nanoseconds=1)
+    else:
+        frame.loc[1, field] += 1e-12
+    assert run(frame)["calibration"]["training_sha256"] != run()["calibration"]["training_sha256"]
+    renamed = inputs().set_axis(range(10, 18))
+    assert run(renamed)["calibration"] == run()["calibration"]
+
+
 @pytest.mark.parametrize("case", ["naive", "late", "duplicate", "infinite", "few"])
 def test_invalid_or_unusable_training_inputs_fail(case):
     frame = inputs()
